@@ -2,12 +2,20 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.io.IOException;
 
+/**
+ * Main class for server program.
+ * Creates a server at the port specified in the argument and starts listening on it.
+ *
+ * @author Yuval Razieli
+ */
 public class ServerMain {
 
     private static final String TAG = "ServerMain";
 
     public static void main(String[] args) {
         int port;
+
+        // Validate port argument.
         if (args.length != 1) {
             printUsage();
         } else {
@@ -18,6 +26,7 @@ public class ServerMain {
                 return;
             }
 
+            // Create the server and start listening.
             Log.i(TAG, "Creating the server...");
             Server server = new Server(Integer.parseInt(args[0]));
             try {
@@ -30,6 +39,9 @@ public class ServerMain {
         }
     }
 
+    /**
+     * Prints the program's usage.
+     */
     private static void printUsage() {
         Log.e(TAG, "Usage: Server.jar <port>");
     }
