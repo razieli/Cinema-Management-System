@@ -4,8 +4,7 @@ import java.io.IOException;
 
 public class ServerMain {
 
-    public static final String TAG_INFO = "[INFO] ";
-    public static final String TAG_ERROR = "[ERROR] ";
+    private static final String TAG = "ServerMain";
 
     public static void main(String[] args) {
         int port;
@@ -19,20 +18,20 @@ public class ServerMain {
                 return;
             }
 
-            System.out.println(TAG_INFO + "Creating the server...");
+            Log.i(TAG, "Creating the server...");
             Server server = new Server(Integer.parseInt(args[0]));
             try {
-                System.out.println(TAG_INFO + "Trying to start the listener...");
+                Log.i(TAG, "Trying to start the listener...");
                 server.listen();
-                System.out.println(TAG_INFO + "Listening on port " + port + ".");
+                Log.i(TAG, "Listening on port " + port + ".");
             } catch(IOException e) {
-                System.out.println(TAG_ERROR + "IO error occurred while trying to create the server socket.");
+                Log.e(TAG, "IO error occurred while trying to create the server socket.");
             }
         }
     }
 
     private static void printUsage() {
-        System.out.println("Usage: Server.jar <port>");
+        Log.e(TAG, "Usage: Server.jar <port>");
     }
 
 }
