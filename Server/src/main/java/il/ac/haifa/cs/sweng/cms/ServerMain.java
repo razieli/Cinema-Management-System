@@ -1,5 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.util.Log;
+
 import java.io.IOException;
 
 /**

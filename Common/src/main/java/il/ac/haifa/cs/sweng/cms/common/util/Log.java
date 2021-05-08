@@ -1,4 +1,4 @@
-package il.ac.haifa.cs.sweng.cms;
+package il.ac.haifa.cs.sweng.cms.common.util;
 
 /**
  * Allows logging messages with level and class tags.
@@ -28,7 +28,7 @@ public class Log {
      * @param TAG Tag of the calling class.
      * @param msg Log message.
      */
-    protected static void d(final String TAG, String msg) {
+    public static void d(final String TAG, String msg) {
         log(TAG_DEBUG, TAG, msg);
     }
 
@@ -37,7 +37,7 @@ public class Log {
      * @param TAG Tag of the calling class.
      * @param msg Log message.
      */
-    protected static void i(final String TAG, String msg) {
+    public static void i(final String TAG, String msg) {
         log(TAG_INFO, TAG, msg);
     }
 
@@ -46,7 +46,7 @@ public class Log {
      * @param TAG Tag of the calling class.
      * @param msg Log message.
      */
-    protected static void w(final String TAG, String msg) {
+    public static void w(final String TAG, String msg) {
         log(TAG_WARNING, TAG, msg);
     }
 
@@ -55,7 +55,7 @@ public class Log {
      * @param TAG Tag of the calling class.
      * @param msg Log message.
      */
-    protected static void e(final String TAG, String msg) {
+    public static void e(final String TAG, String msg) {
         log(TAG_ERROR, TAG, msg);
     }
 
