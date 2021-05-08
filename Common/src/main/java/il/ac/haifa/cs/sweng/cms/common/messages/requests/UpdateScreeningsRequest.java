@@ -1,6 +1,10 @@
 package il.ac.haifa.cs.sweng.cms.common.messages.requests;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractRequest;
+
+import java.util.List;
 
 /**
  * Request for screenings update.

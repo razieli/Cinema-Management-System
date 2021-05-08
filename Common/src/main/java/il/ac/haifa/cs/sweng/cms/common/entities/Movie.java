@@ -1,4 +1,4 @@
-package il.ac.haifa.cs.sweng.cms;
+package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.util.ArrayList;
 import java.util.List;
