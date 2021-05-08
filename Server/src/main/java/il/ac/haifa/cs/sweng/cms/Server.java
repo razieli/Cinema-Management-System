@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.ConnectionToClient;
+import il.ac.haifa.cs.sweng.cms.common.util.Log;
 
 /**
  * Extension of the OCSF AbstractServer class.
