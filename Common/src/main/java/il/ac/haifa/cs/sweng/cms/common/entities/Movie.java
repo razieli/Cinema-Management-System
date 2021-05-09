@@ -14,6 +14,8 @@ public class Movie {
 	private int id;
 	private String name;
 	private List<String> castList;
+	@OneToMany(mappedBy="movie")
+	private List<Screening> screening;
 	private int length;
 	private int ageRestriction;
 	private String posterUrl;
@@ -33,15 +35,25 @@ public class Movie {
 	}
 	
 	public int getId() { return id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public List<String> getCastList() { return castList; }
-    public void setCastList(List<String> castList) { this.castList = castList; }
-    public int getLength() { return length; }
-    public void setLength(int length) { this.length = length; }
-    public int getAgeRestriction() { return ageRestriction; }
-    public void setAgeRestriction(int ageRestriction) { this.ageRestriction = ageRestriction; }
-    public String getPosterUrl() { return posterUrl; }
-    public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
+    
+	public String getName() { return name; }
+    
+	public void setName(String name) { this.name = name; }
+    
+	public List<String> getCastList() { return castList; }
+    
+	public void setCastList(List<String> castList) { this.castList = castList; }
+    
+	public int getLength() { return length; }
+    
+	public void setLength(int length) { this.length = length; }
+    
+	public int getAgeRestriction() { return ageRestriction; }
+    
+	public void setAgeRestriction(int ageRestriction) { this.ageRestriction = ageRestriction; }
+    
+	public String getPosterUrl() { return posterUrl; }
+    
+	public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
 	
 }

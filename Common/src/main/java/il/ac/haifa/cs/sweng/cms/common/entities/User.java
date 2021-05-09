@@ -1,10 +1,10 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
-@Entity
-@Table(name = "users")
 
-public class User {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -22,9 +22,13 @@ public class User {
 	}
 
 	public int getId() { return id; }
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    
+	public String getFirstName() { return firstName; }
+    
+	public void setFirstName(String firstName) { this.firstName = firstName; }
+    
+	public String getLastName() { return lastName; }
+    
+	public void setLastName(String lastName) { this.lastName = lastName; }
 	
 }
