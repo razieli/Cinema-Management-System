@@ -12,6 +12,7 @@ public class Theater {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private int seatsCapacity;
+	 @OneToMany(mappedBy="theater")
 	private List<Screening> screeningList;
 	
 	public Theater(int seatsCapacity)
@@ -26,8 +27,11 @@ public class Theater {
 	}
 	
 	public int getId() { return id; }
-    public int getSeatsCapacity() { return seatsCapacity; }
-    public void setSeatsCapacity(int seatsCapacity) { this.seatsCapacity = seatsCapacity; }
+    
+	public int getSeatsCapacity() { return seatsCapacity; }
+    
+	public void setSeatsCapacity(int seatsCapacity) { this.seatsCapacity = seatsCapacity; }
+	
 	public List<Screening> getScreeningList() { return screeningList; }
     
 }
