@@ -7,6 +7,7 @@
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,7 +16,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
-
 
 <VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -54,7 +54,10 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <TextField fx:id="movie1" />
-                        <ImageView fx:id="image1" fitHeight="62.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image1" fitHeight="62.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../../cs/89484098c4549f19dbf0c63a318b793f.jpg" />
+                           </image></ImageView>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                           <buttons>
                             <Button mnemonicParsing="false" text="Edit" />
@@ -67,7 +70,10 @@
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <TextField fx:id="movie2" />
-                        <ImageView fx:id="image2" fitHeight="69.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image2" fitHeight="69.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../../cs/37731.jpg" />
+                           </image></ImageView>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                            <buttons>
                               <Button mnemonicParsing="false" text="Edit" />
@@ -80,7 +86,10 @@
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
                         <TextField fx:id="movie3" />
-                        <ImageView fx:id="image3" fitHeight="69.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image3" fitHeight="69.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../../cs/download.jpg" />
+                           </image></ImageView>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                            <buttons>
                               <Button mnemonicParsing="false" text="Edit" />
@@ -93,7 +102,10 @@
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <TextField fx:id="movie4" />
-                        <ImageView fx:id="image4" fitHeight="73.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image4" fitHeight="73.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../../cs/download%20(1).jpg" />
+                           </image></ImageView>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                            <buttons>
                               <Button mnemonicParsing="false" text="Edit" />
@@ -106,7 +118,10 @@
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                      <children>
                         <TextField fx:id="movie5" />
-                        <ImageView fx:id="image5" fitHeight="72.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image5" fitHeight="72.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../../cs/MV5BYWU1MTM4OTktZTU4OS00ZWNiLTk0ZTYtOGM4Y2M3NTVhOGJlXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg" />
+                           </image></ImageView>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                            <buttons>
                               <Button mnemonicParsing="false" text="Edit" />
@@ -119,7 +134,10 @@
                   <VBox fx:id="vbox1" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <TextField fx:id="movie6" />
-                        <ImageView fx:id="image6" fitHeight="69.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="image6" fitHeight="123.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../../cs/Skyscraper_(2018)_film_poster.png" />
+                           </image></ImageView>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                            <buttons>
                               <Button mnemonicParsing="false" text="Edit" />
