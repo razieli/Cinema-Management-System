@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.util.Date;
+import java.util.Vector;
 
 import javax.persistence.*;
 
@@ -18,11 +19,14 @@ public class Screening {
     @JoinColumn(name="theater")
     private Theater theater;
 	private Date date;
+	@OneToMany(mappedBy = "screening")
+	private Vector<Ticket> tickets;
 	
 	public Screening() {
 		this.movie = new Movie();
 		this.theater = new Theater();
 		this.date = new Date();
+		this.setTickets(new Vector<Ticket>(theater.getSeatsCapacity()));
 	}
 	
 	public Screening(Movie movie, Theater theater, Date date)
@@ -31,6 +35,9 @@ public class Screening {
 		this.movie = movie;
 		this.theater = theater;
 		this.date = date;
+		this.setTickets(new Vector<Ticket>(this.theater.getSeatsCapacity()));
+		for(int i=0;i<this.theater.getSeatsCapacity();i++)
+			tickets.set(i, new Ticket(this,i));
 	}
 	
 	public int getId() { return id; }
@@ -43,9 +50,21 @@ public class Screening {
 	
 	public void setTheater(Theater theater) { this.theater = theater; }
 	
-	public Date getDate(Date date) { return date; }
+	public Date getDate() { return date; }
 	
 	public void setDate(Date date) { this.date = date; }
+
+	public Vector<Ticket> getTickets() {return tickets;}
+
+	public void setTickets(Vector<Ticket> tickets) {this.tickets = tickets;}
+
+	public void chooseTicket(Customer customer,int seat,boolean isPackage){
+		this.tickets.elementAt(seat).setCustomer(customer);
+		customer.addTicket(this.tickets.elementAt(seat),isPackage);
+	}
 	
+	public void unChooseTicket(int seat){
+		this.tickets.elementAt(seat).setCustomer(null);
+	}
 	
 }
