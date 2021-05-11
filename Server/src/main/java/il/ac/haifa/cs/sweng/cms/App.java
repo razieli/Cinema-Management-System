@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Employee;
 import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -43,7 +44,7 @@ public class App
 	}
 
     private static void generateUsers() {
-		User user = new User("Haim", "Cohen");
+		User user = new Employee("Haim", "Cohen", "1234", 1);
 		session.save(user);
         session.flush();
     }
