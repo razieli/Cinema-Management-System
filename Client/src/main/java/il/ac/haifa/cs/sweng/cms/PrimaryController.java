@@ -1,4 +1,4 @@
-package src.main.java.il.ac.haifa.cs.sweng.cms;
+package il.ac.haifa.cs.sweng.cms;
 
 public class PrimaryController {
 
