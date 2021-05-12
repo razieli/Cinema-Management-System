@@ -48,6 +48,8 @@ public class App
 		session.save(user);
         session.flush();
     }
+
+    public static void method() {}
 	
 }
 
