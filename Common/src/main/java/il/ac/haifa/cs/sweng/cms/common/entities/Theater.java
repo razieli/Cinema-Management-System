@@ -33,5 +33,7 @@ public class Theater {
 	public void setSeatsCapacity(int seatsCapacity) { this.seatsCapacity = seatsCapacity; }
 	
 	public List<Screening> getScreeningList() { return screeningList; }
+	
+	public void setScreeningList(List<Screening> s) { this.screeningList=s; }
     
 }
