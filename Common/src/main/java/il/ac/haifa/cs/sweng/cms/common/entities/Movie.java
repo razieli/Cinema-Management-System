@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,26 +15,28 @@ public class Movie {
 	private int id;
 	private String engName;
 	private String hebName;
+	private int year;
 	private List<String> castList;
 	@OneToMany(mappedBy="movie")
 	private List<Screening> screening;
 	private int length;
 	private int ageRestriction;
-	private String posterUrl;
+	private InputStream posterUrl;
 	
 	public Movie() {
 		castList = new ArrayList<>();
 	}
 	
-	public Movie(String engName,String hebName, List<String> castList, int length,
-			int ageRestriction, String posterUrl) {
+	public Movie(String engName,String hebName,int year, List<String> castList, int length,
+			int ageRestriction, InputStream inputStream) {
 		this();
 		this.engName = engName;
 		this.hebName=hebName;
+		this.year=year;
 		this.castList = castList;
 		this.length = length;
 		this.ageRestriction = ageRestriction;
-		this.posterUrl = posterUrl;
+		this.posterUrl = inputStream;
 	}
 	
 	public int getId() { return id; }
@@ -64,6 +67,14 @@ public class Movie {
 
 	public void setHebName(String hebName) {
 		this.hebName = hebName;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 	
 }
