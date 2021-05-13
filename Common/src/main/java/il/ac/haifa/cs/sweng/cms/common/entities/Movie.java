@@ -19,6 +19,8 @@ public class Movie {
 	private List<String> castList;
 	@OneToMany(mappedBy="movie")
 	private List<Screening> screening;
+	
+
 	private int length;
 	private int ageRestriction;
 	private InputStream posterUrl;
@@ -57,9 +59,9 @@ public class Movie {
     
 	public void setAgeRestriction(int ageRestriction) { this.ageRestriction = ageRestriction; }
     
-	public String getPosterUrl() { return posterUrl; }
+	public InputStream getPosterUrl() { return posterUrl; }
     
-	public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
+	public void setPosterUrl(InputStream posterUrl) { this.posterUrl = posterUrl; }
 
 	public String getHebName() {
 		return hebName;
@@ -75,6 +77,13 @@ public class Movie {
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+	public List<Screening> getScreening() {
+		return screening;
+	}
+
+	public void setScreening(List<Screening> screening) {
+		this.screening = screening;
 	}
 	
 }

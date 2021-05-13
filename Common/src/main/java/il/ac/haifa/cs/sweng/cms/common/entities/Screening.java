@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.persistence.*;
@@ -18,23 +19,23 @@ public class Screening {
     @ManyToOne
     @JoinColumn(name="theater")
     private Theater theater;
-	private Date date;
+	private GregorianCalendar date;
 	@OneToMany(mappedBy = "screening")
 	private Vector<Ticket> tickets;
 	
 	public Screening() {
 		this.movie = new Movie();
 		this.theater = new Theater();
-		this.date = new Date();
+		this.date = new GregorianCalendar();
 		this.setTickets(new Vector<Ticket>(theater.getSeatsCapacity()));
 	}
 	
-	public Screening(Movie movie, Theater theater, Date date)
+	public Screening(Movie movie, Theater theater, GregorianCalendar gregorianCalendar)
 	{
 		this();
 		this.movie = movie;
 		this.theater = theater;
-		this.date = date;
+		this.date = gregorianCalendar;
 		this.setTickets(new Vector<Ticket>(this.theater.getSeatsCapacity()));
 		for(int i=0;i<this.theater.getSeatsCapacity();i++)
 			tickets.set(i, new Ticket(this,i));
@@ -46,13 +47,13 @@ public class Screening {
 	
 	public void setMovie(Movie movie) { this.movie = movie; }
 	
-	public Theater getTheater(Theater theater) { return theater; }
+	public Theater getTheater() { return theater; }
 	
 	public void setTheater(Theater theater) { this.theater = theater; }
 	
-	public Date getDate() { return date; }
+	public GregorianCalendar getDate() { return date; }
 	
-	public void setDate(Date date) { this.date = date; }
+	public void setDate(GregorianCalendar date) { this.date = date; }
 
 	public Vector<Ticket> getTickets() {return tickets;}
 
