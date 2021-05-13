@@ -18,10 +18,9 @@ public class UpdateScreeningsRequest extends AbstractRequest {
 
     /**
      * Constructs an UpdateScreeningRequest instance with the movie and screenings to update.
-     * @param movie Movie to update screenings for.
      * @param screeningList List of screenings to replace the existing list of this movie.
      */
-    public UpdateScreeningsRequest(Movie movie, List<Screening> screeningList) {
+    public UpdateScreeningsRequest(List<Screening> screeningList) {
         this.movie = movie;
         this.screeningList = screeningList;
     }
