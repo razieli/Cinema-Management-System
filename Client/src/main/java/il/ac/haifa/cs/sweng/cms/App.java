@@ -115,7 +115,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("ViewMovies"), 600, 400);
         stage.setScene(scene);
-         stage.show();
+        stage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
