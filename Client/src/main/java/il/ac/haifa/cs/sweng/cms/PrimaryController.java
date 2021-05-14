@@ -1,7 +1,4 @@
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+package il.ac.haifa.cs.sweng.cms;
 
 public class PrimaryController {
 
