@@ -18,7 +18,8 @@ public abstract class User {
 	}
 	
 	public User() {
-		// TODO Auto-generated constructor stub
+		this.firstName="";
+		this.lastName="";
 	}
 
 	public int getId() { return id; }

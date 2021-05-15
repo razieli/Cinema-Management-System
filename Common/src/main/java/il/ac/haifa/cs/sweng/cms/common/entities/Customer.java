@@ -5,11 +5,14 @@ import java.util.Vector;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "customers")
 public class Customer extends User {
 	private boolean has_link=false;
 	private boolean has_package=false;
+	//TODO:
+	@OneToOne(mappedBy = "ticket")
 	private Ticket ticket=null;
+	@OneToMany(mappedBy = "customer")
 	private Vector<Ticket> packageList=null;
 	
 	Customer(){super();}
