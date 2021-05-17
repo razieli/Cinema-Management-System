@@ -1,8 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Vector;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -12,8 +10,8 @@ import javax.persistence.*;
 public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-    @ManyToOne
+	public int id;
+	@ManyToOne
     @JoinColumn(name="movie")
     private Movie movie;
     @ManyToOne
@@ -21,13 +19,13 @@ public class Screening {
     private Theater theater;
 	private GregorianCalendar date;
 	@OneToMany(mappedBy = "screening")
-	private Vector<Ticket> tickets;
+	private List<Ticket> tickets;
 	
 	public Screening() {
 		this.movie = new Movie();
 		this.theater = new Theater();
 		this.date = new GregorianCalendar();
-		this.setTickets(new Vector<Ticket>(theater.getSeatsCapacity()));
+		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
 	}
 	
 	public Screening(Movie movie, Theater theater, GregorianCalendar gregorianCalendar)
@@ -36,7 +34,7 @@ public class Screening {
 		this.movie = movie;
 		this.theater = theater;
 		this.date = gregorianCalendar;
-		this.setTickets(new Vector<Ticket>(this.theater.getSeatsCapacity()));
+		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
 		for(int i=0;i<this.theater.getSeatsCapacity();i++)
 			tickets.set(i, new Ticket(this,i));
 	}
@@ -55,17 +53,25 @@ public class Screening {
 	
 	public void setDate(GregorianCalendar date) { this.date = date; }
 
-	public Vector<Ticket> getTickets() {return tickets;}
+	public List<Ticket> getTickets() {return tickets;}
 
-	public void setTickets(Vector<Ticket> tickets) {this.tickets = tickets;}
+	public void setTickets(ArrayList<Ticket> tickets) {this.tickets = tickets;}
 
 	public void chooseTicket(Customer customer,int seat,boolean isPackage){
-		this.tickets.elementAt(seat).setCustomer(customer);
-		customer.addTicket(this.tickets.elementAt(seat),isPackage);
+		this.tickets.get(seat).setCustomer(customer);
+		customer.addTicket(this.tickets.get(seat),isPackage);
 	}
 	
 	public void unChooseTicket(int seat){
-		this.tickets.elementAt(seat).setCustomer(null);
+		this.tickets.get(seat).setCustomer(null);
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 	
 }

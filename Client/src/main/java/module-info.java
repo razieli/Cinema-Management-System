@@ -4,4 +4,5 @@ module Client {
 	  requires javafx.base;
     requires Common;
     exports il.ac.haifa.cs.sweng.cms;
+    opens il.ac.haifa.cs.sweng.cms;
 }

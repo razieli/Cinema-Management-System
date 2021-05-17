@@ -28,9 +28,13 @@ public class ServerMain {
                 return;
             }
 
+            // Create the DB session.
+            Log.i(TAG, "Creating the DB session...");
+            DB db = new DB();
+
             // Create the server and start listening.
             Log.i(TAG, "Creating the server...");
-            Server server = new Server(Integer.parseInt(args[0]));
+            OCSFServer server = new OCSFServer(Integer.parseInt(args[0]), db);
             try {
                 Log.i(TAG, "Trying to start the listener...");
                 server.listen();

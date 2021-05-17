@@ -58,7 +58,7 @@ import java.io.*;
 * <li> Instance variable <code>readToStop</code> is now initialized to <code>true</code>
 * </ul><p>
 *
-* Project Name: OCSF (Object Client-Server Framework)<p>
+* Project Name: OCSF (Object Client-OCSFServer Framework)<p>
 *
 * @author Dr Robert Lagani&egrave;re
 * @author Dr Timothy C. Lethbridge

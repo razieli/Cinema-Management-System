@@ -17,22 +17,25 @@ import java.util.List;
  *
  * @author Yuval Razieli
  */
-public class Server extends AbstractServer {
+public class OCSFServer extends AbstractServer {
 
-    private static final String TAG = "Server";
+    private static final String TAG = "OCSFServer";
 
     private static final int LOW_PORT_THRESH = 1024;
+
+    private final DB db;
 
     /**
      * Constructs a new server.
      *
      * @param port the port number on which to listen.
      */
-    public Server(int port) {
+    public OCSFServer(int port, DB db) {
         super(port);
         if(port <= LOW_PORT_THRESH) {
             Log.w(TAG, "Using low port " + port + ".");
         }
+        this.db = db;
     }
 
     /**
@@ -68,8 +71,8 @@ public class Server extends AbstractServer {
      */
     private AbstractResponse genResponse(AbstractRequest request) {
         if(request instanceof ListAllMoviesRequest) {
-            // TODO: get list of movies from DB.
-            List<Movie> movieList = null;
+            // Get list of movies from DB.
+            List<Movie> movieList = db.getAllMovies();
             return new ListAllMoviesResponse(movieList);
         }
         if(request instanceof UpdateScreeningsRequest) {

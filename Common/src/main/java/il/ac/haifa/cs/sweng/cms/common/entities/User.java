@@ -3,7 +3,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +31,8 @@ public abstract class User {
 	public String getLastName() { return lastName; }
     
 	public void setLastName(String lastName) { this.lastName = lastName; }
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

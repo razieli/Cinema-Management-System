@@ -35,5 +35,8 @@ public class Theater {
 	public List<Screening> getScreeningList() { return screeningList; }
 	
 	public void setScreeningList(List<Screening> s) { this.screeningList=s; }
-    
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

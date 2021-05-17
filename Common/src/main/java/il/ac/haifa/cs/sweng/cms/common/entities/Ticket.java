@@ -8,7 +8,8 @@ public class Ticket {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@OneToOne(mappedBy = "customer")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "costumer_id")
 	private Customer customer;
 	@ManyToOne
 	@JoinColumn(name ="screening")
@@ -42,5 +43,12 @@ public class Ticket {
 	public int getSeat() {return seat;}
 	
 	public void setSeat(int seat) {this.seat = seat;}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -10,13 +11,13 @@ public class Customer extends User {
 	private boolean has_link=false;
 	private boolean has_package=false;
 	//TODO:
-	@OneToOne(mappedBy = "ticket")
-	private Ticket ticket=null;
-	@OneToMany(mappedBy = "customer")
-	private Vector<Ticket> packageList=null;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	private List<Ticket> ticket=null;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	private List<Ticket> packageList=null;
 	
 	Customer(){super();}
-	Customer(String firstName, String lastName)
+	public Customer(String firstName, String lastName)
 	{
 		super(firstName,lastName);
 	}
@@ -29,22 +30,18 @@ public class Customer extends User {
 	
 	public void setHas_package(boolean has_package) {this.has_package = has_package;}
 	
-	public Ticket getTicket() {return ticket;}
+	public List<Ticket> getTicket() {return ticket;}
 	
-	public void setTicket(Ticket ticket) {this.ticket = ticket;}
-	
-	public Vector<Ticket> getpackageList() {return packageList;}
-	
-	public void setpackageList(Vector<Ticket> packageList) {this.packageList = packageList;}
+	public void setTicket(List<Ticket> ticket) {this.ticket = ticket;}
 
 	public void addTicket(Ticket ticket,boolean isPackage) {
 		if(isPackage) {
 			if (this.packageList==null)
-				this.packageList=new Vector<Ticket>();
+				this.packageList=new ArrayList<Ticket>();
 			this.packageList.add(ticket);
 		}
 		else
-			this.ticket=ticket;
+			this.ticket.add(ticket);
 	}
 	public void removeTicket(Ticket ticket, boolean isPackage) {
 		if(isPackage) {
@@ -52,5 +49,13 @@ public class Customer extends User {
 		}
 		else
 			this.ticket=null;
+	}
+
+	public List<Ticket> getPackageList() {
+		return packageList;
+	}
+
+	public void setPackageList(List<Ticket> packageList) {
+		this.packageList = packageList;
 	}
 }

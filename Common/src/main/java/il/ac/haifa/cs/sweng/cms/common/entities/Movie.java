@@ -1,6 +1,8 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,21 +18,31 @@ public class Movie {
 	private String engName;
 	private String hebName;
 	private int year;
-	private List<String> castList;
+	private String castList;
 	@OneToMany(mappedBy="movie")
 	private List<Screening> screening;
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getEngName() {
+		return engName;
+	}
+
+	public void setEngName(String engName) {
+		this.engName = engName;
+	}
 
 	private int length;
 	private int ageRestriction;
-	private InputStream posterUrl;
+	private URI posterUrl;
 	
 	public Movie() {
-		castList = new ArrayList<>();
 	}
 	
-	public Movie(String engName,String hebName,int year, List<String> castList, int length,
-			int ageRestriction, InputStream inputStream) {
+	public Movie(String engName,String hebName,int year, String castList, int length,
+			int ageRestriction, URI inputStream) {
 		this();
 		this.engName = engName;
 		this.hebName=hebName;
@@ -47,9 +59,9 @@ public class Movie {
     
 	public void setName(String name) { this.engName = name; }
     
-	public List<String> getCastList() { return castList; }
+	public String getCastList() { return castList; }
     
-	public void setCastList(List<String> castList) { this.castList = castList; }
+	public void setCastList(String castList) { this.castList = castList; }
     
 	public int getLength() { return length; }
     
@@ -59,9 +71,9 @@ public class Movie {
     
 	public void setAgeRestriction(int ageRestriction) { this.ageRestriction = ageRestriction; }
     
-	public InputStream getPosterUrl() { return posterUrl; }
+	public URI getPosterUrl() { return posterUrl; }
     
-	public void setPosterUrl(InputStream posterUrl) { this.posterUrl = posterUrl; }
+	public void setPosterUrl(URI posterUrl) { this.posterUrl = posterUrl; }
 
 	public String getHebName() {
 		return hebName;
