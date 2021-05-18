@@ -98,7 +98,7 @@ public class ViewMoviesController implements Initializable {
 //        String id = idToCut.substring(0, (idToCut.length() - 4));
         // System.out.println(id);
         // System.out.println(fileList.get(i).getName());
-        id=movies.get(index).getengName();
+        id=movies.get(index).getEngName();
 //        image = new Image(movies.get(index).getPosterUrl());
 //        image = new Image(movies.get(index).getPosterUrl());
         System.out.println("helooooooooooooooooo"+movies.get(index).getPosterUrl().toString());

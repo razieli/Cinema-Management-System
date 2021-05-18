@@ -37,7 +37,7 @@ public class OCSFClient extends AbstractClient {
         if(msg instanceof AbstractResponse) {
             handleResponse((AbstractResponse) msg);
         } else {
-            // TODO: Show "Received an unexpected message from client".
+            // TODO: Show "Received an unexpected message from client". pop up error
         }
     }
 
@@ -52,7 +52,7 @@ public class OCSFClient extends AbstractClient {
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
-        // TODO: Show "Unidentified response".
+        // TODO: Show "Unidentified response". pop up error
     }
 
     /**
@@ -62,7 +62,7 @@ public class OCSFClient extends AbstractClient {
         try {
             sendToServer(new ListAllMoviesRequest());
         } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server."
+            // TODO: Show "IO exception while sending request to server." pop up error
         }
     }
 
@@ -74,7 +74,7 @@ public class OCSFClient extends AbstractClient {
         try {
             sendToServer(new UpdateScreeningsRequest(screeningList));
         } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server."
+            // TODO: Show "IO exception while sending request to server." pop up error
         }
     }
 
