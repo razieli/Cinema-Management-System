@@ -34,9 +34,9 @@ public class Screening {
 		this.movie = movie;
 		this.theater = theater;
 		this.date = gregorianCalendar;
-		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
-		for(int i=0;i<this.theater.getSeatsCapacity();i++)
-			tickets.set(i, new Ticket(this,i));
+//		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
+//		for(int i=0;i<this.theater.getSeatsCapacity();i++)
+//			tickets.set(i, new Ticket(this,i));
 	}
 	
 	public int getId() { return id; }

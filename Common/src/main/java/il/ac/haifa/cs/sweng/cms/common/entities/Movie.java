@@ -54,8 +54,7 @@ public class Movie {
 	}
 	
 	public int getId() { return id; }
-    
-	public String getengName() { return engName; }
+
     
 	public void setName(String name) { this.engName = name; }
     
