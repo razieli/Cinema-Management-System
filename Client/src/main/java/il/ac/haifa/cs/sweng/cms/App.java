@@ -19,7 +19,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("ViewMovies.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("ManagerViewMovies.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ManagerViewMovies.fxml"));
+        Parent root = (Parent)loader.load();
+
         var scene = new Scene(root, 640, 480);
         stage.setScene(scene);
         stage.show();

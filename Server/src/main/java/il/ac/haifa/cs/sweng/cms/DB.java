@@ -46,7 +46,7 @@ public class DB {
 		try {
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
-			//init();
+			init();
 		} catch (Exception exception) {
 			if (session != null) {
 				session.getTransaction().rollback();
@@ -105,7 +105,7 @@ public class DB {
 		cast1.add("Heath Ledger");
 		cast1.add("Aaron Eckhart");
 		String cast1s = cast1.toString();
-		URI uri1 = new URI("www.google.com");
+		URI uri1 = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		session.save(new Movie("The Dark Knight","האביר האפל",2008,cast1s,152,13, uri1));
 		List<String> cast2=new LinkedList<String>();
 		cast2.add("Christopher Nolan");
@@ -113,7 +113,7 @@ public class DB {
 		cast2.add("Joseph Gordon-Levitt");
 		cast2.add("Elliot Page");
 		String cast2s = cast2.toString();
-		URI uri2 = new URI("www.google.com");
+		URI uri2 = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		session.save(new Movie("Inception","התחלה",2010,cast2s,148,13, uri2));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
@@ -121,7 +121,7 @@ public class DB {
 		cast3.add("Anne Hathaway");
 		cast3.add("Jessica Chastain");
 		String cast3s = cast3.toString();
-		URI uri3 = new URI("www.google.com");
+		URI uri3 = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		session.save(new Movie("Interstellar","בין כוכבים",2014,cast3s,169,13, uri3));
 		List<String> cast4=new LinkedList<String>();
 		cast4.add("Antoine Fuqua");
@@ -129,7 +129,7 @@ public class DB {
 		cast4.add("Ethan Hawke");
 		cast4.add("Scott Glenn");
 		String cast4s = cast4.toString();
-		URI uri4 = new URI("www.google.com");
+		URI uri4 = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		session.save(new Movie("Training Day","יום אימונים מסוכן",2001,cast4s,122,0, uri4));
 		session.flush();
 	}
