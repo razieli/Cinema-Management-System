@@ -4,6 +4,7 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,7 +54,12 @@ public class ViewMoviesController implements Initializable {
 @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            movies = DB.getAll(Movie.class);
+            /*
+            OCSFClient ocsfClient = new OCSFClient("localhost", 8080);
+            ocsfClient.openConnection();
+            ocsfClient.getListOfMovies();
+            */
+            //movies = Init.getAllMovies();
 
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -64,7 +70,7 @@ public class ViewMoviesController implements Initializable {
             // setting interior grid padding
             grid.setHgap(10);
             grid.setVgap(10);
-             grid.setGridLinesVisible(true);
+            grid.setGridLinesVisible(true);
 
             int rows = (movies.size() / 4) + 1;
             int columns = 4;
@@ -92,11 +98,11 @@ public class ViewMoviesController implements Initializable {
 //        String id = idToCut.substring(0, (idToCut.length() - 4));
         // System.out.println(id);
         // System.out.println(fileList.get(i).getName());
-        id=movies.get(index).getEngName();
+        id=movies.get(index).getengName();
 //        image = new Image(movies.get(index).getPosterUrl());
 //        image = new Image(movies.get(index).getPosterUrl());
         System.out.println("helooooooooooooooooo"+movies.get(index).getPosterUrl().toString());
-        pic = new ImageView(movies.get(index).getPosterUrl());
+        pic = new ImageView(movies.get(index).getPosterUrl().toString());
         pic.setFitWidth(160);
         pic.setFitHeight(220);
         pic.setImage(image);
@@ -106,7 +112,7 @@ public class ViewMoviesController implements Initializable {
 //         GridPane.setConstraints(pic, colIndex, rowIndex);
         grid.getChildren().addAll(pic);
 
-
+/*
         pic.setOnMouseClicked(e -> {
             // System.out.printf("Mouse clicked cell [%d, %d]%n", rowIndex, colIndex);
             // System.out.println("Film Title: " + id);
@@ -120,6 +126,8 @@ public class ViewMoviesController implements Initializable {
                 ex.printStackTrace();
             }
         });
+
+ */
     }
 
     @FXML

@@ -14,7 +14,7 @@
     <bytecodeTargetLevel>
       <module name="Client" target="15" />
       <module name="Common" target="15" />
-      <module name="Server" target="9" />
+      <module name="Server" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>

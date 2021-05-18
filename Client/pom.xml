@@ -32,6 +32,18 @@
             <classifier>win</classifier>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>15</version>
+            <classifier>linux</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>15</version>
+            <classifier>mac</classifier>
+        </dependency>
+        <dependency>
             <groupId>il.ac.haifa.cs.sweng.cms</groupId>
             <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
