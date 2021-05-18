@@ -1,13 +1,14 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "theaters")
 
-public class Theater {
+public class Theater implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

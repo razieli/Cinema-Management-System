@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "customers")
-public class Customer extends User {
+public class Customer extends User implements Serializable {
 	private boolean has_link=false;
 	private boolean has_package=false;
 	//TODO:

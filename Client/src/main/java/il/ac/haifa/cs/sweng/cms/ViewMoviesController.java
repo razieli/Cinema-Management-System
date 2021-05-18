@@ -54,11 +54,11 @@ public class ViewMoviesController implements Initializable {
 @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            /*
+
             OCSFClient ocsfClient = new OCSFClient("localhost", 8080);
             ocsfClient.openConnection();
             ocsfClient.getListOfMovies();
-            */
+
             //movies = Init.getAllMovies();
 
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -98,7 +98,7 @@ public class ViewMoviesController implements Initializable {
 //        String id = idToCut.substring(0, (idToCut.length() - 4));
         // System.out.println(id);
         // System.out.println(fileList.get(i).getName());
-        id=movies.get(index).getengName();
+        //id=movies.get(index).getengName();
 //        image = new Image(movies.get(index).getPosterUrl());
 //        image = new Image(movies.get(index).getPosterUrl());
         System.out.println("helooooooooooooooooo"+movies.get(index).getPosterUrl().toString());

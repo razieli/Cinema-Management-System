@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.io.Serializable;
 import java.util.*;
 
 import javax.persistence.*;
@@ -7,15 +8,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "screenings")
 
-public class Screening {
+public class Screening implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 	@ManyToOne
     @JoinColumn(name="movie")
     private Movie movie;
-    @ManyToOne
-    @JoinColumn(name="theater")
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="theater_id")
     private Theater theater;
 	private GregorianCalendar date;
 	@OneToMany(mappedBy = "screening")
@@ -34,9 +35,9 @@ public class Screening {
 		this.movie = movie;
 		this.theater = theater;
 		this.date = gregorianCalendar;
-		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
-		for(int i=0;i<this.theater.getSeatsCapacity();i++)
-			tickets.set(i, new Ticket(this,i));
+//		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
+//		for(int i=0;i<this.theater.getSeatsCapacity();i++)
+//			tickets.set(i, new Ticket(this,i));
 	}
 	
 	public int getId() { return id; }

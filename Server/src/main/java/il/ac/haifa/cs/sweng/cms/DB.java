@@ -27,7 +27,7 @@ public class DB {
 	private Session session;
 	private SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
-// Add ALL of your entities here. You can also try adding a whole package.
+		// Add ALL of your entities here. You can also try adding a whole package.
 		configuration.addAnnotatedClass(Movie.class);
 		configuration.addAnnotatedClass(Customer.class);
 		configuration.addAnnotatedClass(Screening.class);
@@ -46,7 +46,7 @@ public class DB {
 		try {
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
-			init();
+			//init();
 		} catch (Exception exception) {
 			if (session != null) {
 				session.getTransaction().rollback();
@@ -60,8 +60,24 @@ public class DB {
 		session.beginTransaction();
 		try {
 			generateMovie();
+			generateCustomer();
+			generateEmployee();
+			generateTheater();
+			generateScreening();
+			generateTicket();
+
+			List<Screening> scr = getAllScreening();
+			for (Screening screen : scr){
+				System.out.print("Movie: ");
+				System.out.print(screen.getMovie().getEngName());
+
+			}
+
+
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		session.getTransaction().commit(); // Save everything.
 	}
@@ -90,7 +106,7 @@ public class DB {
 		cast1.add("Aaron Eckhart");
 		String cast1s = cast1.toString();
 		URI uri1 = new URI("www.google.com");
-		session.save(new Movie("The Dark Knight","a",2008,cast1s,152,13, uri1));
+		session.save(new Movie("The Dark Knight","האביר האפל",2008,cast1s,152,13, uri1));
 		List<String> cast2=new LinkedList<String>();
 		cast2.add("Christopher Nolan");
 		cast2.add("Leonardo DiCaprio");
@@ -98,7 +114,7 @@ public class DB {
 		cast2.add("Elliot Page");
 		String cast2s = cast2.toString();
 		URI uri2 = new URI("www.google.com");
-		session.save(new Movie("Inception","b",2010,cast2s,148,13, uri2));
+		session.save(new Movie("Inception","התחלה",2010,cast2s,148,13, uri2));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");
@@ -106,7 +122,7 @@ public class DB {
 		cast3.add("Jessica Chastain");
 		String cast3s = cast3.toString();
 		URI uri3 = new URI("www.google.com");
-		session.save(new Movie("Inception","c",2014,cast3s,148,13, uri3));
+		session.save(new Movie("Interstellar","בין כוכבים",2014,cast3s,169,13, uri3));
 		List<String> cast4=new LinkedList<String>();
 		cast4.add("Antoine Fuqua");
 		cast4.add("Denzel Washington");
@@ -114,7 +130,7 @@ public class DB {
 		cast4.add("Scott Glenn");
 		String cast4s = cast4.toString();
 		URI uri4 = new URI("www.google.com");
-		session.save(new Movie("Training Day","d",2001,cast4s,122,0, uri4));
+		session.save(new Movie("Training Day","יום אימונים מסוכן",2001,cast4s,122,0, uri4));
 		session.flush();
 	}
 	public void generateTicket() throws Exception{
@@ -131,12 +147,15 @@ public class DB {
 		for(Movie m:movies){
 			int i=0;
 			List<Screening> s= new LinkedList<>();
-			s.add(new Screening(m,theaters.get(0),new GregorianCalendar(2021,5,20+i,17,00)));
-			s.add(new Screening(m,theaters.get(1),new GregorianCalendar(2021,5,20+i,21,00)));
-			s.add(new Screening(m,theaters.get(2),new GregorianCalendar(2021,5,20+i,10,00)));
-			session.save(s.get(0));
-			session.save(s.get(1));
-			session.save(s.get(2));
+			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,5,5+i,17,01));
+			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,5,5+i,21,02));
+			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,5,5+i,10,03));
+			s.add(sc1);
+			s.add(sc2);
+			s.add(sc3);
+			session.save(sc1);
+			session.save(sc2);
+			session.save(sc3);
 			m.setScreening(s);
 			session.save(m);
 			List<Screening> st=theaters.get(0).getScreeningList();

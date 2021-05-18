@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "movies")
 
-public class Movie {
+public class Movie implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -19,7 +20,7 @@ public class Movie {
 	private String hebName;
 	private int year;
 	private String castList;
-	@OneToMany(mappedBy="movie")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
 	private List<Screening> screening;
 
 	public void setId(int id) {
@@ -54,8 +55,7 @@ public class Movie {
 	}
 	
 	public int getId() { return id; }
-    
-	public String getengName() { return engName; }
+
     
 	public void setName(String name) { this.engName = name; }
     

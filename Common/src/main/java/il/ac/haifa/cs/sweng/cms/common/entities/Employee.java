@@ -1,10 +1,11 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "employees")
-public class Employee extends User {
+public class Employee extends User implements Serializable {
 	private String passkey;
 	private int permission;
 	
