@@ -14,8 +14,8 @@ public class Screening {
 	@ManyToOne
     @JoinColumn(name="movie")
     private Movie movie;
-    @ManyToOne
-    @JoinColumn(name="theater")
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="theater_id")
     private Theater theater;
 	private GregorianCalendar date;
 	@OneToMany(mappedBy = "screening")

@@ -19,7 +19,7 @@ public class Movie {
 	private String hebName;
 	private int year;
 	private String castList;
-	@OneToMany(mappedBy="movie")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
 	private List<Screening> screening;
 
 	public void setId(int id) {
