@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "movies")
 
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Movie implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String engName;
 	private String hebName;
@@ -37,12 +38,12 @@ public class Movie {
 	private int length;
 	private int ageRestriction;
 	private URI posterUrl;
-	
+
 	public Movie() {
 	}
-	
+
 	public Movie(String engName,String hebName,int year, String castList, int length,
-			int ageRestriction, URI inputStream) {
+				 int ageRestriction, URI inputStream) {
 		this();
 		this.engName = engName;
 		this.hebName=hebName;
@@ -52,26 +53,26 @@ public class Movie {
 		this.ageRestriction = ageRestriction;
 		this.posterUrl = inputStream;
 	}
-	
+
 	public int getId() { return id; }
 
-    
+
 	public void setName(String name) { this.engName = name; }
-    
+
 	public String getCastList() { return castList; }
-    
+
 	public void setCastList(String castList) { this.castList = castList; }
-    
+
 	public int getLength() { return length; }
-    
+
 	public void setLength(int length) { this.length = length; }
-    
+
 	public int getAgeRestriction() { return ageRestriction; }
-    
+
 	public void setAgeRestriction(int ageRestriction) { this.ageRestriction = ageRestriction; }
-    
+
 	public URI getPosterUrl() { return posterUrl; }
-    
+
 	public void setPosterUrl(URI posterUrl) { this.posterUrl = posterUrl; }
 
 	public String getHebName() {
@@ -96,5 +97,5 @@ public class Movie {
 	public void setScreening(List<Screening> screening) {
 		this.screening = screening;
 	}
-	
+
 }

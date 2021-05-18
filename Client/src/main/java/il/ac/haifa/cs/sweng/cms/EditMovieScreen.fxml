@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.EditMovieScreenController">
+   <children>
+      <MenuBar layoutY="36.0" prefHeight="0.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
+      <Text fx:id="genreHeader" layoutX="280.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Movie" textAlignment="CENTER" wrappingWidth="122.53671264648438" AnchorPane.topAnchor="13.0">
+         <font>
+            <Font name="Aharoni Bold" size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" text="back" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="Aharoni Bold" size="14.0" />
+         </font>
+      </Button>
+      <AnchorPane layoutX="3.0" layoutY="39.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
+         <children>
+            <SplitPane dividerPositions="0.5348148148148149" prefHeight="406.0" prefWidth="677.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <items>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: black;">
+                     <children>
+                        <ScrollPane prefHeight="364.0" prefWidth="397.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <VBox style="-fx-background-color: blacl;">
+                                 <children>
+                                    <GridPane prefHeight="338.0" prefWidth="360.0" style="-fx-background-color: black;">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" prefWidth="98.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0" prefWidth="264.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="66.0" minHeight="5.0" prefHeight="16.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="61.0" minHeight="0.0" prefHeight="28.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="87.0" minHeight="0.0" prefHeight="52.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="117.0" minHeight="0.0" prefHeight="76.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="27.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="33.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="33.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="10.0" vgrow="ALWAYS" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Image:" />
+                                          <TextField fx:id="imageBox" onInputMethodTextChanged="#handheldsImageURL" promptText="URL of the movie poster" GridPane.columnIndex="1" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Trailer:" GridPane.rowIndex="1" />
+                                          <TextField fx:id="trailerBox" onInputMethodTextChanged="#handheldsTrailerURL" prefWidth="251.0" promptText="URL of the movie" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" GridPane.rowIndex="2" />
+                                          <VBox style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <children>
+                                                <TextField fx:id="englishTitle" onInputMethodTextChanged="#handheldsEnglishName" prefHeight="25.0" prefWidth="224.0" promptText="Title in English">
+                                                   <VBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </VBox.margin>
+                                                </TextField>
+                                                <TextField fx:id="hebrewTitle" onInputMethodTextChanged="#handheldsHeberwName" prefHeight="25.0" prefWidth="237.0" promptText="Title in Hebrew">
+                                                   <VBox.margin>
+                                                      <Insets bottom="5.0" top="5.0" />
+                                                   </VBox.margin>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" GridPane.rowIndex="3" />
+                                          <TextArea fx:id="descriptionBox" onInputMethodTextChanged="#handheldsDescription" prefHeight="82.0" prefWidth="205.0" promptText="Whats the movie about." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Year:" GridPane.rowIndex="4" />
+                                          <TextField fx:id="yearBox" onInputMethodTextChanged="#handheldsYear" promptText="2021 etc." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Between:" GridPane.rowIndex="5" />
+                                          <TextField fx:id="availableBox" onInputMethodTextChanged="#handheldsAviabilety" promptText="1/1/2021-15/5/21 etc." GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Screening Times:" GridPane.rowIndex="8" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Cast:" GridPane.rowIndex="7" />
+                                          <TextArea fx:id="castBox" onInputMethodTextChanged="#handheldsCast" prefHeight="200.0" prefWidth="263.0" promptText="Leonardo Dicaprio etc." GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Director:" GridPane.rowIndex="6" />
+                                          <TextField fx:id="directorBox" onInputMethodTextChanged="#handheldsDirector" promptText="Christopher Nolan etc." GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                       </children>
+                                    </GridPane>
+                                    <VBox prefHeight="218.0" prefWidth="360.0" style="-fx-background-color: black;">
+                                       <children>
+                                          <TextArea fx:id="screeningBox" prefHeight="77.0" prefWidth="362.0" promptText="19:00, 20:35 etc.">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </TextArea>
+                                          <HBox style="-fx-background-color: black;">
+                                             <children>
+                                                <ComboBox fx:id="screeningControlBox" editable="true" onAction="#handheldsScreeningChack" prefWidth="150.0">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </ComboBox>
+                                              <Button fx:id="deleteLastButton" mnemonicParsing="false" onAction="#handheldsDeleteLastButton" text="Delete Last Screening Time">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <ButtonBar layoutX="25.0" layoutY="369.0" AnchorPane.bottomAnchor="10.0">
+                           <buttons>
+                              <Button fx:id="saveChangesButton" mnemonicParsing="false" onAction="#handheldsSaveChangesButton" text="Save Changes" />
+                              <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handheldsDeleteButton" style="-fx-background-color: red; -fx-font-color: white;" text="Delete" />
+                           </buttons>
+                        </ButtonBar>
+                     </children>
+                  </AnchorPane>
+                  <ScrollPane style="-fx-background-color: black;">
+                     <content>
+                        <AnchorPane cacheShape="false" focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="410.0" prefWidth="303.0" scaleShape="false" style="-fx-background-color: black;">
+                           <children>
+                              <Text fx:id="inputEngTitle" fill="WHITE" layoutX="88.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="English Name" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.topAnchor="5.0">
+                                 <font>
+                                    <Font name="Aharoni Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="inputHebTitle" fill="WHITE" layoutX="83.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heberw Name" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.bottomAnchor="361.0" AnchorPane.leftAnchor="83.0" AnchorPane.rightAnchor="94.5361328125" AnchorPane.topAnchor="31.0">
+                                 <font>
+                                    <Font name="Aharoni Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <ImageView fx:id="inputImage" fitHeight="220.0" fitWidth="160.0" layoutX="60.0" layoutY="58.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="126.0" AnchorPane.topAnchor="58.0" />
+                              <Hyperlink fx:id="inputTrailer" layoutX="125.0" layoutY="286.0" text="Trailer" />
+                              <VBox layoutX="45.0" layoutY="309.0">
+                                 <children>
+                                    <HBox>
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Movie Length:" />
+                                          <Text fx:id="inputLength" accessibleRole="DATE_PICKER" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="HH:mm">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="5.0" prefWidth="200.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Year:" />
+                                          <Text fx:id="inputYear" accessibleRole="DATE_PICKER" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="YYYY">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="5.0" prefWidth="200.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Director:" />
+                                          <Text fx:id="inputDirector" accessibleRole="DATE_PICKER" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Christopher Nolan etc.">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="5.0" prefWidth="200.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Cast:" />
+                                          <Text fx:id="inputCast" accessibleRole="DATE_PICKER" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Leonardo Dicaprio etc.">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <VBox>
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
+                                          <Text fx:id="inputDescription" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Whats the movie about." textAlignment="JUSTIFY" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
+               </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
