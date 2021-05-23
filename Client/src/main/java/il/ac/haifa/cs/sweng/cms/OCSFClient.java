@@ -18,14 +18,17 @@ import java.util.List;
  */
 public class OCSFClient extends AbstractClient {
 
+    private ManagerViewMoviesController controller;
+
     /**
      * Constructs the client.
      *
      * @param host the server's host name.
      * @param port the port number.
      */
-    public OCSFClient(String host, int port) {
+    public OCSFClient(String host, int port, ManagerViewMoviesController controller) {
         super(host, port);
+        this.controller = controller;
     }
 
     /**
@@ -37,7 +40,7 @@ public class OCSFClient extends AbstractClient {
         if(msg instanceof AbstractResponse) {
             handleResponse((AbstractResponse) msg);
         } else {
-            // TODO: Show "Received an unexpected message from client". pop up error
+            // TODO: Show "Received an unexpected message from client".
         }
     }
 
@@ -48,11 +51,12 @@ public class OCSFClient extends AbstractClient {
     private void handleResponse(AbstractResponse response) {
         if(response instanceof ListAllMoviesResponse) {
             // TODO: Update GUI with movies.
+            controller.setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
-        // TODO: Show "Unidentified response". pop up error
+        // TODO: Show "Unidentified response".
     }
 
     /**
@@ -62,7 +66,7 @@ public class OCSFClient extends AbstractClient {
         try {
             sendToServer(new ListAllMoviesRequest());
         } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server." pop up error
+            // TODO: Show "IO exception while sending request to server."
         }
     }
 
@@ -74,7 +78,7 @@ public class OCSFClient extends AbstractClient {
         try {
             sendToServer(new UpdateScreeningsRequest(screeningList));
         } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server." pop up error
+            // TODO: Show "IO exception while sending request to server."
         }
     }
 

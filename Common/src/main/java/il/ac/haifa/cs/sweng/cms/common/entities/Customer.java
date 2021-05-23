@@ -16,23 +16,23 @@ public class Customer extends User implements Serializable {
 	private List<Ticket> ticket=null;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
 	private List<Ticket> packageList=null;
-
+	
 	Customer(){super();}
 	public Customer(String firstName, String lastName)
 	{
 		super(firstName,lastName);
 	}
-
+	
 	public boolean isHas_link() {return has_link;}
-
+	
 	public void setHas_link(boolean has_link) {this.has_link = has_link;}
-
+	
 	public boolean isHas_package() {return has_package;}
-
+	
 	public void setHas_package(boolean has_package) {this.has_package = has_package;}
-
+	
 	public List<Ticket> getTicket() {return ticket;}
-
+	
 	public void setTicket(List<Ticket> ticket) {this.ticket = ticket;}
 
 	public void addTicket(Ticket ticket,boolean isPackage) {

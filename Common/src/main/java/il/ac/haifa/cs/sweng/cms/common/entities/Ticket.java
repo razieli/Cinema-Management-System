@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "tickets")
 public class Ticket implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "costumer_id")
@@ -16,7 +16,7 @@ public class Ticket implements Serializable {
 	@JoinColumn(name ="screening")
 	private Screening screening;
 	private int seat;
-
+	
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
@@ -25,24 +25,24 @@ public class Ticket implements Serializable {
 		this.customer=customer;
 		this.screening=screening;
 		this.seat=seat;
-
+		
 	}
 	public Ticket(Screening screening,int seat){
 		this.customer=null;
 		this.screening=screening;
 		this.seat=seat;
 	}
-
+	
 	public Customer getCustomer() {return customer;}
-
+	
 	public void setCustomer(Customer customer) {this.customer = customer;}
-
+	
 	public Screening getScreening() {return screening;}
 
 	public void setScreening(Screening screening) {this.screening = screening;}
-
+	
 	public int getSeat() {return seat;}
-
+	
 	public void setSeat(int seat) {this.seat = seat;}
 
 	public int getId() {

@@ -56,5 +56,6 @@
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
     <orderEntry type="module" module-name="Server" />
     <orderEntry type="library" name="Maven: com.microsoft.sqlserver:mssql-jdbc:9.2.1.jre11" level="project" />
+    <orderEntry type="library" name="javafx-swt" level="application" />
   </component>
 </module>
