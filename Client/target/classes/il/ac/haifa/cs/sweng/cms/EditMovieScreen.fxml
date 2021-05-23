@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.EditMovieScreenController">
+   <children>
+      <MenuBar layoutY="36.0" prefHeight="0.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
+      <Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Movie" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.topAnchor="6.0">
+         <font>
+            <Font name="Aharoni Bold" size="30.0" />
+         </font>
+      </Text>
+      <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="31.0" style="-fx-background-color: WHITE;" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="1.0">
+         <font>
+            <Font name="Aharoni Bold" size="14.0" />
+         </font>
+      </Button>
+      <BorderPane layoutY="38.0" prefHeight="51.0" prefWidth="683.0" style="-fx-background-color: WHITE;">
+         <top>
+            <ButtonBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="675.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
+               <buttons>
+                  <AnchorPane prefHeight="35.0" prefWidth="671.0">
+                     <children>
+                        <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="381.0" layoutY="11.0" mnemonicParsing="false" onAction="#handheldsMovieDelete" onMouseClicked="#handheldsMovieDelete" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: RED;" text="Delete Movie" textAlignment="CENTER" AnchorPane.rightAnchor="60.0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="saveChangesButton" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="11.0" minWidth="27.0" mnemonicParsing="false" onAction="#handheldsMovieUpdate" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: GREEN;" text="Update Movie" textAlignment="CENTER" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="395.33333333333337">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </buttons>
+            </ButtonBar>
+         </top>
+      </BorderPane>
+      <AnchorPane layoutX="2.0" layoutY="89.0" prefHeight="359.0" prefWidth="681.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="88.0">
+         <children>
+            <SplitPane cache="true" dividerPositions="0.6775308641975308" prefHeight="406.0" prefWidth="677.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" stylesheets="@split.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <items>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="353.0" prefWidth="429.0" style="-fx-background-color: black;">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="357.0" prefWidth="454.0" style="-fx-background-color: BLACK;" AnchorPane.bottomAnchor="-4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="491.0" prefWidth="418.0" style="-fx-background-color: BLACK;">
+                                 <children>
+                                    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="491.0" prefWidth="409.0" style="-fx-background-color: black;" vgap="5.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="75.99998982747395" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="361.3333435058594" minWidth="10.0" prefWidth="361.3333435058594" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="66.0" minHeight="0.0" prefHeight="0.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="61.0" minHeight="0.0" prefHeight="51.333333333333336" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="87.0" minHeight="0.0" prefHeight="3.4444122314453054" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="117.0" minHeight="0.0" prefHeight="32.55558776855469" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="29.666671752929688" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="99.0" minHeight="0.0" prefHeight="19.444442749023438" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="106.6666717529297" minHeight="10.0" prefHeight="42.66666666666666" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="105.33333333333334" minHeight="10.0" prefHeight="57.11110432942709" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="101.3333435058594" minHeight="0.0" prefHeight="43.22221883138019" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="109.22216796875" minHeight="0.0" prefHeight="98.77778116861981" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="147.00000000000003" minHeight="7.333363850911468" prefHeight="35.555582682291686" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="225.44444783528644" minHeight="15.222208658854186" prefHeight="15.222208658854186" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label text="Title:" textFill="ORANGE" underline="true" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <children>
+                                                <TextField fx:id="englishTitle" onInputMethodTextChanged="#handheldsEnglishName" prefHeight="14.0" prefWidth="331.0" promptText="Title in English">
+                                                   <VBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </VBox.margin>
+                                                </TextField>
+                                                <TextField fx:id="hebrewTitle" onInputMethodTextChanged="#handheldsHeberwName" prefHeight="12.0" prefWidth="349.0" promptText="Title in Hebrew">
+                                                   <VBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </VBox.margin>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                          <Label text="About:" textFill="ORANGE" underline="true" GridPane.rowIndex="3">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea fx:id="descriptionBox" onInputMethodTextChanged="#handheldsDescription" prefHeight="28.0" prefWidth="349.0" promptText="Whats the movie about.." wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="SOMETIMES" />
+                                          <Label text="Year:" textFill="ORANGE" underline="true" GridPane.rowIndex="4">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="yearBox" onInputMethodTextChanged="#handheldsYear" promptText="2021 etc." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label text="Length:" textFill="ORANGE" underline="true" GridPane.rowIndex="5">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="lengthBox" promptText="length in min" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <Label text="PG Rating" textFill="ORANGE" underline="true" GridPane.rowIndex="6">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="PGRaitingBox" onInputMethodTextChanged="#handheldsPGRaiting" prefHeight="39.0" prefWidth="359.0" promptText="13 / 18 etc." GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label text="Cast:" textFill="ORANGE" underline="true" GridPane.rowIndex="7">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea fx:id="castBox" onInputMethodTextChanged="#handheldsCast" prefHeight="30.0" prefWidth="349.0" promptText="The director of the film and then the main actors" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin></TextArea>
+                                          <Label text="Poster:" textFill="ORANGE" underline="true" GridPane.rowIndex="8">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea fx:id="posterBox" layoutX="85.0" layoutY="233.0" onInputMethodTextChanged="#handheldsPosterURL" prefHeight="63.0" prefWidth="331.0" promptText="URL of the movie poster" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                          <Label text="Trailer:" textFill="ORANGE" underline="true" GridPane.rowIndex="9">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea fx:id="trailerBox" layoutX="85.0" layoutY="264.0" onInputMethodTextChanged="#handheldsTrailerURL" prefHeight="97.0" prefWidth="349.0" promptText="URL of the movie trailer" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                          <Label text="Screening:" textFill="ORANGE" underline="true" GridPane.rowIndex="10">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea fx:id="screeningBox" prefHeight="68.0" prefWidth="349.0" promptText="19:00, 20:35 etc." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets right="5.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets top="1.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="353.0" prefWidth="237.0" style="-fx-background-color: black;">
+                     <content>
+                        <AnchorPane cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="413.0" prefWidth="261.0" style="-fx-background-color: black;">
+                           <children>
+                              <Text fx:id="inputEngTitle" fill="ORANGE" layoutX="-25.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="English Name" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="257.33331274986267" AnchorPane.bottomAnchor="390.3333333333333" AnchorPane.leftAnchor="-25.0" AnchorPane.rightAnchor="67.00002058347064" AnchorPane.topAnchor="5.0">
+                                 <font>
+                                    <Font name="Aharoni Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="inputHebTitle" fill="ORANGE" layoutX="-21.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heberw Name" textAlignment="CENTER" textOrigin="CENTER" underline="true" wrappingWidth="250.0" AnchorPane.bottomAnchor="365.3333333333333" AnchorPane.leftAnchor="-21.0" AnchorPane.rightAnchor="70.33333333333331" AnchorPane.topAnchor="30.0">
+                                 <font>
+                                    <Font name="Aharoni Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <ImageView fx:id="inputImage" fitHeight="120.0" fitWidth="127.0" layoutX="82.0" layoutY="48.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="245.33333333333331" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="90.33333333333331" AnchorPane.topAnchor="48.0" />
+                              <Hyperlink fx:id="inputTrailer" layoutX="83.0" layoutY="183.0" text="Trailer" underline="true" AnchorPane.topAnchor="183.0">
+                                 <font>
+                                    <Font name="System Bold Italic" size="12.0" />
+                                 </font></Hyperlink>
+                              <VBox layoutX="1.0" layoutY="207.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="135.0" prefWidth="198.0" AnchorPane.topAnchor="207.0">
+                                 <children>
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <Label text="Movie Length:" textFill="ORANGE" underline="true">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Text fx:id="inputLength" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="mmm">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <Label text="Year:" textFill="ORANGE" underline="true">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Text fx:id="inputYear" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="YYYY">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <Label text="PG Raiting:" textFill="ORANGE" underline="true">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Text fx:id="inputPGRaiting" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="13 / 18 etc.">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <TextFlow prefHeight="0.0" prefWidth="205.0">
+                                             <children>
+                                                <Label text="Cast:" textFill="ORANGE" underline="true">
+                                                   <opaqueInsets>
+                                                      <Insets right="5.0" />
+                                                   </opaqueInsets>
+                                                   <padding>
+                                                      <Insets right="5.0" />
+                                                   </padding>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Text fx:id="inputCast" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="The director of the film and then the main actors" wrappingWidth="180.0" />
+                                             </children>
+                                          </TextFlow>
+                                       </children>
+                                    </HBox>
+                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <Label text="About:" textFill="ORANGE" underline="true">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Text fx:id="inputDescription" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Whats the movie about.." textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
+               </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
