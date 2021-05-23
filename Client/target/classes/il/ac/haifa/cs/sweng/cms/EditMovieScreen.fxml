@@ -191,7 +191,7 @@
                                     <Font name="Aharoni Bold" size="18.0" />
                                  </font>
                               </Text>
-                              <ImageView fx:id="inputImage" fitHeight="120.0" fitWidth="127.0" layoutX="82.0" layoutY="48.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="245.33333333333331" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="90.33333333333331" AnchorPane.topAnchor="48.0" />
+                              <ImageView fx:id="inputImage" fitHeight="120.0" fitWidth="127.0" layoutX="55.0" layoutY="48.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="245.33333333333331" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="147.33333333333331" AnchorPane.topAnchor="48.0" />
                               <Hyperlink fx:id="inputTrailer" layoutX="83.0" layoutY="183.0" text="Trailer" underline="true" AnchorPane.topAnchor="183.0">
                                  <font>
                                     <Font name="System Bold Italic" size="12.0" />

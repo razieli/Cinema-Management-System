@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_16">
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="Client" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -9,20 +21,9 @@
       <excludeFolder url="file://$MODULE_DIR$/${project.build.directory}/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="16" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< Updated upstream
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:mac:16" level="project" />
-=======
+    <orderEntry type="library" name="javafx-swt" level="application" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:15" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:15" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:15" level="project" />
@@ -56,7 +57,5 @@
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
     <orderEntry type="module" module-name="Server" />
     <orderEntry type="library" name="Maven: com.microsoft.sqlserver:mssql-jdbc:9.2.1.jre11" level="project" />
-    <orderEntry type="library" name="javafx-swt" level="application" />
->>>>>>> Stashed changes
   </component>
 </module>
