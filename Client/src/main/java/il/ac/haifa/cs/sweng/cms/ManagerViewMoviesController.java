@@ -84,7 +84,7 @@ public class ManagerViewMoviesController implements Initializable {
             OCSFClient ocsfClient = new OCSFClient("localhost", 8080, this);
             ocsfClient.openConnection();
             ocsfClient.getListOfMovies();
-            //movies = Init.getAllMovies();
+
 
             URI searchButtonUri = new URI("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbws1761LoKcQ68sQeqmJNXr2WhuEE5SEVY1DmKK6mka1o8FpbeEmTj_cBWfRR1ksDbAc&usqp=CAU");
             ImageView searchButtonIm = new ImageView(searchButtonUri.toString());
@@ -103,73 +103,31 @@ public class ManagerViewMoviesController implements Initializable {
 
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+            scrollPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+                flow.prefWidthProperty().bind(scrollPane.widthProperty());
+            });
 
+            scrollPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+                flow.prefHeightProperty().bind(scrollPane.heightProperty());
+            });
 
-//            // gridpane settings
-//            // setting exterior grid padding
-//            grid.setPadding(new Insets(7, 7, 7, 7));
-//            // setting interior grid padding
-//            grid.setHgap(10);
-//            grid.setVgap(10);
-//            grid.setGridLinesVisible(true);
-
-            // gridpane settings
-            // setting exterior grid padding
-//            flow.setPadding(new Insets(7, 7, 7, 7));
-//            // setting interior grid padding
-//            flow.setHgap(10);
-//            flow.setVgap(10);
-//            flow.setGridLinesVisible(true);
-
-//            int rows = (movies.size() / 4) + 1;
-//            int columns = 4;
 while(movies.isEmpty()) { Thread.yield(); }
             for (Movie movie : movies) {
-//                for (int i = 0; i < rows; i++) {
-//                    for (int j = 0; j < columns; j++) {
-//                        addImage(movie.getId() /*, j, i*/);
-                        addImage(movie);
-//                        continue;
-                    }
-//                }
-//            }
 
+                        addImage(movie);
+                    }
         }
 
         catch(Exception e){
-//            System.out.println("dddddddddddd");
         e.printStackTrace();
     }
 
 }
 
-//    private void addImage(int index, int colIndex, int rowIndex) {
+
     protected void addImage(Movie movie){
 
-//        String idToCut = fileList.get(index).getName();
-//        String id = idToCut.substring(0, (idToCut.length() - 4));
-        // System.out.println(id);
-        // System.out.println(fileList.get(i).getName());
-//        id=movies.get(index).getEngName();
-//        image = new Image(movies.get(index).getPosterUrl());
-//        image = new Image(movies.get(index).getPosterUrl());
-//        System.out.println("helooooooooooooooooo"+movies.get(index).getPosterUrl().toString());
 
-//                pic = new ImageView(movie.getPosterUrl().toString());
-//        pic.setFitWidth(160);
-//        pic.setFitHeight(220);
-
-
-        //pic.setImage(image);
-//        pic.setId(movie.getId().toString());
-//        pic.setId(id);
-//        hb.getChildren().add(pic);
-//        GridPane.setConstraints(pic, colIndex, rowIndex, 1, 1, HPos.CENTER, VPos.CENTER);
-////         GridPane.setConstraints(pic, colIndex, rowIndex);
-//        grid.getChildren().addAll(pic);
-
-//        flow.setHgap(10);
-//        flow.setVgap(10);
 
 
         SimpleDateFormat format= new SimpleDateFormat ("HH:mm ");
@@ -196,14 +154,10 @@ while(movies.isEmpty()) { Thread.yield(); }
 
 
         vb.setOnMouseClicked(e -> {
-            // System.out.printf("Mouse clicked cell [%d, %d]%n", rowIndex, colIndex);
-//            System.out.println("Film Title: " + movie.getEngName());
             try {
                 // storing the selected film to customise the newly created scene
-
                 EditMovieScreenController.setSelectedFilmTitle(movie);
                 App.setRoot("EditMovieScreen.fxml");
-//                SceneCreator.launchScene("/scenes/ViewSelectedFilmScene.fxml");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

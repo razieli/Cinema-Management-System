@@ -14,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import javax.print.attribute.standard.Media;
@@ -67,11 +71,8 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="directorBox"
     private TextField directorBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="screeningBox"
-    private TextArea screeningBox; // Value injected by FXMLLoader
-
-    @FXML // fx:id="screeningControlBox"
-    private ComboBox<?> screeningControlBox; // Value injected by FXMLLoader
+    @FXML // fx:id="screeningFlow"
+    private FlowPane screeningFlow; // Value injected by FXMLLoader
 
     @FXML // fx:id="deleteLastButton"
     private Button deleteLastButton; // Value injected by FXMLLoader
@@ -112,6 +113,17 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="inputDescription"
     private Text inputDescription; // Value injected by FXMLLoader
 
+    @FXML // fx:id="scrollPaneLeft"
+    private ScrollPane scrollPaneLeft; // Value injected by FXMLLoader
+
+    @FXML // fx:id="anchorPaneLeft"
+    private AnchorPane anchorPaneLeft; // Value injected by FXMLLoader
+
+    @FXML // fx:id="scrollPaneRight"
+    private ScrollPane scrollPaneRight; // Value injected by FXMLLoader
+
+    @FXML // fx:id="anchorPaneRight"
+    private AnchorPane anchorPaneRight; // Value injected by FXMLLoader
 
 
     public static Movie getSelectedFilmTitle() {
@@ -171,6 +183,7 @@ public class EditMovieScreenController implements Initializable  {
             movie.setTrailerUrl(new URI(trailerBox.getText()));
             // TODO: need to update screenings
             updateScreen();
+
         }
     }
 
@@ -319,23 +332,26 @@ public class EditMovieScreenController implements Initializable  {
         this.directorBox = directorBox;
     }
 
-    public TextArea getScreeningBox() {
-        return screeningBox;
-    }
 
-    public void setScreeningBox(TextArea screeningBox) {
-        this.screeningBox = screeningBox;
-    }
-
-    public ComboBox<?> getScreeningControlBox() {
-        return screeningControlBox;
-    }
-
-    public void setScreeningControlBox(ComboBox<?> screeningControlBox) {
-        this.screeningControlBox = screeningControlBox;
-    }
 
     public void updateScreen(){
+
+        scrollPaneRight.widthProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneRight.prefWidthProperty().bind(scrollPaneRight.widthProperty());
+        });
+
+        scrollPaneRight.heightProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneRight.prefHeightProperty().bind(scrollPaneRight.heightProperty());
+        });
+
+        scrollPaneLeft.widthProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneLeft.prefWidthProperty().bind(scrollPaneLeft.widthProperty());
+        });
+
+        scrollPaneLeft.heightProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneLeft.prefHeightProperty().bind(scrollPaneLeft.heightProperty());
+        });
+
         URI backButtonUri = null;
         try {
             backButtonUri = new URI("https://cdn.pixabay.com/photo/2016/09/05/10/50/app-1646213_640.png");
@@ -352,14 +368,14 @@ public class EditMovieScreenController implements Initializable  {
         trailerBox.setText(movie.getTrailerUrl().toString());
         inputImage.setImage(new Image(movie.getPosterUrl().toString()));
         inputTrailer.setOnAction(new EventHandler<ActionEvent>() {
-                                     @Override public void handle(ActionEvent e) {
-                                         try {
-                                             Desktop.getDesktop().browse(movie.getTrailerUrl());
-                                         } catch (IOException e1) {
-                                             e1.printStackTrace();
-                                         }
-                                     }
-                                 }
+                 @Override public void handle(ActionEvent e) {
+                     try {
+                         Desktop.getDesktop().browse(movie.getTrailerUrl());
+                     } catch (IOException e1) {
+                         e1.printStackTrace();
+                     }
+                 }
+             }
         );
         englishTitle.setText(movie.getEngName());
         inputEngTitle.setText(movie.getEngName());
@@ -391,7 +407,8 @@ public class EditMovieScreenController implements Initializable  {
             String strDate = dateFormat.format(date);
             screeningsList.add(strDate);
         }
-        screeningBox.setText(screeningsList.toString());
+
+
     }
 
 
