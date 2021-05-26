@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
 /**
  * Employee Entity extends User
  */

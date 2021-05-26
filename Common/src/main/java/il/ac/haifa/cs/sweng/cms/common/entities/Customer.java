@@ -34,7 +34,6 @@ public class Customer extends User implements Serializable {
 	 */
 	public boolean isHas_link() {return has_link;}
 
-
 	/**
 	 * setting view link to customer
 	 * @param has_link
@@ -57,13 +56,11 @@ public class Customer extends User implements Serializable {
 	 */
 	public List<Ticket> getTicket() {return ticket;}
 
-
 	/**
 	 *  setting list of tickets to customer
 	 * @param ticket
 	 */
 	public void setTicket(List<Ticket> ticket) {this.ticket = ticket;}
-
 
 	/**
 	 * adding ticket to customer

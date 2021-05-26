@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
@@ -76,7 +77,9 @@ public class OCSFServer extends AbstractServer {
             return new ListAllMoviesResponse(movieList);
         }
         if(request instanceof UpdateScreeningsRequest) {
-            // TODO: send new screenings to DB.
+            // Save new screening list in DB.
+            List<Screening> screeningList = ((UpdateScreeningsRequest) request).getScreeningList();
+            db.setScreenings(screeningList);
             return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
         }
         Log.w(TAG, "Unidentified request.");

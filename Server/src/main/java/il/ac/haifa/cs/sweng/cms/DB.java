@@ -2,6 +2,11 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +21,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.jdbc.Work;
 import org.hibernate.service.ServiceRegistry;
-
 
 /**
  * DataBase class to configure and set the original DB
@@ -28,6 +33,7 @@ public class DB {
 	private static final String TAG = "DB";
 
 	private Session session;
+	private SessionFactory sessionFactory;
 	private SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
 		// Add ALL of your entities here. You can also try adding a whole package.
@@ -47,9 +53,14 @@ public class DB {
 
 	public DB() {
 		try {
-			SessionFactory sessionFactory = getSessionFactory();
+			sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
-			init();
+
+			// If there are no movies in the DB initialize it with init movies.
+			List<Movie> movies = getAllMovies();
+			if(movies.isEmpty()) {
+				init();
+			}
 		} catch (Exception exception) {
 			if (session != null) {
 				session.getTransaction().rollback();
@@ -71,15 +82,6 @@ public class DB {
 			generateTheater();
 			generateScreening();
 			generateTicket();
-
-			List<Screening> scr = getAllScreening();
-			for (Screening screen : scr){
-				System.out.print("Movie: ");
-				System.out.print(screen.getMovie().getEngName());
-
-			}
-
-
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
@@ -198,7 +200,7 @@ public class DB {
 		List<Movie> movies=getAllMovies();
 		List<Theater> theaters = getAllTheaters();
 		for(Movie m:movies){
-			List<Screening> s= new LinkedList<>();
+			ArrayList<Screening> s= new ArrayList<>();
 			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,6,27,17,00));
 			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,9,14,21,30));
 			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,7,17,23,00));
@@ -238,7 +240,7 @@ public class DB {
 	}
 
 	/**
-	 *
+	 * Gets list of all movies from the database.
 	 * @return list of database movies
 	 */
 	public List<Movie> getAllMovies() {
@@ -247,10 +249,11 @@ public class DB {
 		query.from(Movie.class);
 		List<Movie> data = session.createQuery(query).getResultList();
 		return data;
+
 	}
 
 	/**
-	 *
+	 * Gets list of all theaters from the database.
 	 * @return list of database theaters
 	 */
 	public List<Theater> getAllTheaters() {
@@ -259,10 +262,11 @@ public class DB {
 		query.from(Theater.class);
 		List<Theater> data = session.createQuery(query).getResultList();
 		return data;
+
 	}
 
 	/**
-	 *
+	 * Gets list of all screenings from the database.
 	 * @return list of database screenings
 	 */
 	public List<Screening> getAllScreening() {
@@ -271,5 +275,62 @@ public class DB {
 		query.from(Screening.class);
 		List<Screening> data = session.createQuery(query).getResultList();
 		return data;
+
+	}
+
+	/**
+	 * Updates the databse according to the given screening list for a specific movie.
+	 * @param screeningList New list of screenings for a movie.
+	 */
+	protected void setScreenings(List<Screening> screeningList) {
+		List<Screening> allScreenings = getAllScreening();
+		List<Screening> deleteList = findDeletedScreenings(allScreenings, screeningList);
+		session.beginTransaction();
+		for(Screening screening : screeningList) {
+			int screeningId = screening.getId();
+			Screening persistentScreening = (Screening) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Screening", screeningId);
+			Screening screeningToUpdate;
+			if(persistentScreening != null) {
+				screeningToUpdate = persistentScreening;
+			} else {
+				screeningToUpdate = screening;
+			}
+			session.saveOrUpdate(screeningToUpdate);
+		}
+		for(Screening screening : deleteList) {
+			session.delete(screening);
+		}
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Finds if there are screenings to be deleted according to the new screening list.
+	 * @param allScreenings List of current screenings.
+	 * @param screeningUpdateList New list of screenings.
+	 * @return List of screenings to be deleted.
+	 */
+	private List<Screening> findDeletedScreenings(List<Screening> allScreenings, List<Screening> screeningUpdateList) {
+		List<Screening> deleteList = new ArrayList<>();
+		int movieId = screeningUpdateList.get(0).getMovie().getId();
+		for(Screening screening : allScreenings) {
+			if(screening.getMovie().getId() == movieId) {
+				int screeningId = screening.getId();
+				boolean found = false;
+				for(Screening updatedScreening : screeningUpdateList) {
+					int updatedScreeningId = updatedScreening.getId();
+					if(screeningId == updatedScreeningId) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					deleteList.add(screening);
+				}
+			}
+		}
+		return deleteList;
 	}
 }

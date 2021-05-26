@@ -23,6 +23,7 @@ public abstract class User implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+	
 	public User() {
 		this.firstName="";
 		this.lastName="";
@@ -47,4 +48,6 @@ public abstract class User implements Serializable {
 	 */
 	public String getLastName() { return lastName; }
 	public void setLastName(String lastName) { this.lastName = lastName; }
+
+
 }

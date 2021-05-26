@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+
 /**
  * Theater Entity
  */
@@ -22,15 +23,15 @@ public class Theater implements Serializable {
 	/**
 	 * constructors
 	 */
-	public Theater()
-	{
-		screeningList = new ArrayList<>();
-	}
 	public Theater(String placeName, int seatsCapacity)
 	{
 		this();
 		this.placeName = placeName;
 		this.seatsCapacity = seatsCapacity;
+	}
+	public Theater()
+	{
+		screeningList = new ArrayList<>();
 	}
 
 	/**

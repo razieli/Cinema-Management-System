@@ -1,16 +1,20 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
-/**
- * Movie Entity
- */
+
 @Entity
 @Table(name = "movies")
 
+/**
+ * Movie Entity
+ */
 public class Movie implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +23,7 @@ public class Movie implements Serializable {
 	private String hebName;
 	private Integer year;
 	private String castList;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="movie")
 	private List<Screening> screening;
 	private Integer length;
 	private Integer ageRestriction;
@@ -32,6 +36,7 @@ public class Movie implements Serializable {
 	 */
 	public Movie() {
 	}
+	
 	public Movie(String engName,String hebName,Integer year,
 				 String castList, Integer length, Integer ageRestriction,
 				 String description, URI inputStream, URI inputStream2) {

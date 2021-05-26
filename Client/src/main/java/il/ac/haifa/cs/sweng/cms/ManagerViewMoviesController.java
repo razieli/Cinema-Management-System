@@ -18,12 +18,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-/**
- * manager view movies screen
- */
 public class ManagerViewMoviesController implements Initializable {
 
     Scene scene;
@@ -44,9 +43,6 @@ public class ManagerViewMoviesController implements Initializable {
     List<Movie> movies= new ArrayList<Movie>();
     HBox hb = new HBox();
 
-    /**
-     * javaFx buttons,texts and menus
-     */
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
 
@@ -84,10 +80,8 @@ public class ManagerViewMoviesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-/*open communication withe the server*/
-            OCSFClient ocsfClient = new OCSFClient("localhost", 8080, this);
-            ocsfClient.openConnection();
-            ocsfClient.getListOfMovies();
+/* Gets list of movies from the server*/
+            App.getOcsfClient(this).getListOfMovies();
 
 /*set up buttons*/
             URI searchButtonUri = new URI("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbws1761LoKcQ68sQeqmJNXr2WhuEE5SEVY1DmKK6mka1o8FpbeEmTj_cBWfRR1ksDbAc&usqp=CAU");
@@ -136,13 +130,6 @@ public class ManagerViewMoviesController implements Initializable {
      */
     protected void addImage(Movie movie){
 
-        /*add screening times*/
-        SimpleDateFormat format= new SimpleDateFormat ("D, HH:mm ");//set a date format
-        String screenTime="";
-        for(Screening screen:movie.getScreening()){
-            screenTime+= format.format(screen.getDate().getTime()).toString() ;
-        }
-
         /*add poster of the movie*/
         pic = new ImageView(movie.getPosterUrl().toString());
         pic.setFitWidth(160);
@@ -155,11 +142,30 @@ public class ManagerViewMoviesController implements Initializable {
         Text textEngName = new Text(movie.getEngName());
         textEngName.setFill(Color.ORANGE);//format title text
         textEngName.setFont(Font.font(null, FontWeight.BOLD, 12));
-        Text textScreenTime = new Text(screenTime);
-        textScreenTime.setFill(Color.ORANGE);
+
+        GridPane gridPane = new GridPane();
+
+        /*add screening times*/
+        SimpleDateFormat format= new SimpleDateFormat ("YY.MM.dd E HH:mm; ");//set a date format
+        String screenTime="";
+        int i=0,j=0;
+        for(Screening screen:movie.getScreening()){
+            screenTime= format.format(screen.getDate().getTime()).toString() ;
+            Text textScreenTime = new Text(screenTime);
+            textScreenTime.setFill(Color.ORANGE);
+            gridPane.add(textScreenTime,i,j);//add screening time to grid
+
+            //set location in the grid
+            i++;
+            if (i % 2 == 0) {
+                j++;
+                i=0;
+            }
+
+        }
 
 
-        VBox vb = new VBox(4, pic, textHebName, textEngName, textScreenTime); //creat new VBox component to hold all the movie data
+        VBox vb = new VBox(4, pic, textHebName, textEngName, gridPane); //create new VBox component to hold all the movie data
 
         /*add new component to the scene*/
         flow.getChildren().add(vb);

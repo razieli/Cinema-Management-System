@@ -31,6 +31,7 @@ public class Ticket implements Serializable {
 		this.customer=customer;
 		this.screening=screening;
 		this.seat=seat;
+		
 	}
 	public Ticket(Screening screening,int seat){
 		this.customer=null;

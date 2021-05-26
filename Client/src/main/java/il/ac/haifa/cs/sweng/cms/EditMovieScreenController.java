@@ -34,18 +34,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
-/**
- * edit movie screen
- */
 public class EditMovieScreenController implements Initializable  {
 
     private static Movie movie;
-    private  List<Screening> screeningList= new ArrayList<Screening>();
+    private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
     private String date, hour;
     URI backButtonUri = null;
-    /**
-     * javaFx buttons,texts and menus
-     */
+
     @FXML // fx:id="backButton"
     private Button backButton; // Value injected by FXMLLoader
 
@@ -152,7 +147,6 @@ public class EditMovieScreenController implements Initializable  {
         return movie;
     }
 
-
     public static void setSelectedFilmTitle(Movie selectedFilmTitle) {
         EditMovieScreenController.movie = selectedFilmTitle;
     }
@@ -216,7 +210,8 @@ public class EditMovieScreenController implements Initializable  {
             movie.setScreening(screeningList);
 
             //update move on database
-            // TODO: need to update back the entity (OCSF)
+            // TODO: update entire movie data.
+            App.getOcsfClient(this).updateScreenings(screeningList);
 
             updateScreen();
 
@@ -309,7 +304,7 @@ public class EditMovieScreenController implements Initializable  {
         }
 
         String displayScreening="";
-        SimpleDateFormat format= new SimpleDateFormat ("Y.M.d HH:mm, "); //set a date format
+        SimpleDateFormat format= new SimpleDateFormat ("YY.MM.dd E HH:mm; "); //set a date format
         for(Screening screening:movie.getScreening()){
             displayScreening += format.format(screening.getDate().getTime()).toString();
         }
@@ -367,13 +362,13 @@ public class EditMovieScreenController implements Initializable  {
             //add to screeningList
             String[] dateSplit = date.split("-", 3);//split the date string to year,mount and day
             String[] hourMin = hour.split(":", 2);//split the date string to hour and minuets
-            Screening screening = new Screening(movie, new GregorianCalendar(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[2]), Integer.parseInt(hourMin[0]), Integer.parseInt(hourMin[1]))); //create new screening object
+            Screening screening = new Screening(movie, null, new GregorianCalendar(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1])-1,Integer.parseInt(dateSplit[2]), Integer.parseInt(hourMin[0]), Integer.parseInt(hourMin[1]))); //create new screening object
 
             screeningList.add(screening); //add the screening object to the screeningList
 
             /*add a button*/
             //set a date format
-            SimpleDateFormat format = new SimpleDateFormat("Y.M.d HH:mm");
+            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm");
             String name = format.format(screening.getDate().getTime()).toString();
 
             //add button to screen
@@ -400,7 +395,7 @@ public class EditMovieScreenController implements Initializable  {
 
             /*add a button*/
             //set a date format
-            SimpleDateFormat format = new SimpleDateFormat("Y.M.d HH:mm");
+            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm");
             String name = format.format(screening.getDate().getTime()).toString();
 
             //add button to screen
