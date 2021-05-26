@@ -5,6 +5,9 @@ import java.util.*;
 
 import javax.persistence.*;
 
+/**
+ * Screening Entity
+ */
 @Entity
 @Table(name = "screenings")
 
@@ -21,14 +24,29 @@ public class Screening implements Serializable {
 	private GregorianCalendar date;
 	@OneToMany(mappedBy = "screening")
 	private List<Ticket> tickets;
-	
+
+
+	/**
+	 * constructors
+	 */
 	public Screening() {
 		this.movie = new Movie();
 		this.theater = new Theater();
 		this.date = new GregorianCalendar();
 		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
 	}
-	
+
+	//TODO: remove after prototype
+	public Screening(Movie movie, GregorianCalendar gregorianCalendar)
+	{
+		this();
+		this.movie = movie;
+		this.date = gregorianCalendar;
+//		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
+//		for(int i=0;i<this.theater.getSeatsCapacity();i++)
+//			tickets.set(i, new Ticket(this,i));
+	}
+
 	public Screening(Movie movie, Theater theater, GregorianCalendar gregorianCalendar)
 	{
 		this();
@@ -53,6 +71,8 @@ public class Screening implements Serializable {
 		this.tickets.get(seat).setCustomer(customer);
 		customer.addTicket(this.tickets.get(seat),isPackage);
 	}
+
+
 	public void unChooseTicket(int seat){
 		this.tickets.get(seat).setCustomer(null);
 	}

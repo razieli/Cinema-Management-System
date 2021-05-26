@@ -19,7 +19,10 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 
-
+/**
+ * DataBase class to configure and set the original DB
+ * Hibernate implementation
+ */
 public class DB {
 
 	private static final String TAG = "DB";
@@ -56,6 +59,9 @@ public class DB {
 		}
 	}
 
+	/**
+	 * initializing the database
+	 */
 	protected void init() {
 		session.beginTransaction();
 		try {
@@ -87,17 +93,28 @@ public class DB {
 		session.close();
 	}
 
+	/**
+	 * generate initial employees
+	 */
 	public void generateEmployee(){
 		session.save(new Employee("Haim","Cohen","asdfg",1));
 		session.save(new Employee("Eyal","Shani","poiuyt",0));
 		session.save(new Employee("Ilan","Newman","q2w34e",1));
 		session.flush();
 	}
+
+	/**
+	 * generate initial customers
+	 */
 	public void generateCustomer(){
 		session.save(new Customer("Gal","Galgal"));
 		session.save(new Customer("Ron","Bonbon"));
 		session.flush();
 	}
+
+	/**
+	 * generate initial movies
+	 */
 	public void generateMovie() throws URISyntaxException {
 		List<String> cast1=new LinkedList<String>();
 		cast1.add("Christopher Nolan");
@@ -161,6 +178,10 @@ public class DB {
 		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast5s,117,13,description6, uri6a, uri6b));
 		session.flush();
 	}
+
+	/**
+	 * generate initial tickets
+	 */
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		for(Screening s:screenings) {
@@ -169,6 +190,10 @@ public class DB {
 		}
 		session.flush();
 	}
+
+	/**
+	 * generate initial screenings
+	 */
 	public void generateScreening() throws Exception{
 		List<Movie> movies=getAllMovies();
 		List<Theater> theaters = getAllTheaters();
@@ -201,6 +226,10 @@ public class DB {
 		session.flush();
 
 	}
+
+	/**
+	 * generate initial theaters
+	 */
 	public void generateTheater(){
 		session.save(new Theater("Haifa", 18));
 		session.save(new Theater("Tel-Aviv", 32));
@@ -208,28 +237,39 @@ public class DB {
 		session.flush();
 	}
 
+	/**
+	 *
+	 * @return list of database movies
+	 */
 	public List<Movie> getAllMovies() {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Movie> query = builder.createQuery(Movie.class);
 		query.from(Movie.class);
 		List<Movie> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
+
+	/**
+	 *
+	 * @return list of database theaters
+	 */
 	public List<Theater> getAllTheaters() {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Theater> query = builder.createQuery(Theater.class);
 		query.from(Theater.class);
 		List<Theater> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
+
+	/**
+	 *
+	 * @return list of database screenings
+	 */
 	public List<Screening> getAllScreening() {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Screening> query = builder.createQuery(Screening.class);
 		query.from(Screening.class);
 		List<Screening> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 }
