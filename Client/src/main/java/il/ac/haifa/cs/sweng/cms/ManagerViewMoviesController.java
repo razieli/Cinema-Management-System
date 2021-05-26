@@ -5,14 +5,15 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,12 +21,17 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,9 +46,6 @@ public class ManagerViewMoviesController implements Initializable {
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
 
-//    @FXML // fx:id="grid"
-//    private GridPane grid; // Value injected by FXMLLoader
-
     @FXML // fx:id="flow"
     private FlowPane flow; // Value injected by FXMLLoader
 
@@ -55,6 +58,13 @@ public class ManagerViewMoviesController implements Initializable {
     @FXML // fx:id="backButton"
     private Button backButton; // Value injected by FXMLLoader
 
+    @FXML // fx:id="searchButton"
+    private Button searchButton; // Value injected by FXMLLoader
+
+    @FXML // fx:id="filterMenu"
+    private MenuButton filterMenu; // Value injected by FXMLLoader
+
+    //components and items to be added
     @FXML
     ImageView pic;
     @FXML
@@ -62,127 +72,168 @@ public class ManagerViewMoviesController implements Initializable {
     @FXML
     String id;
 
-@Override
+    /**
+     * method that initialize the scene after everything has loaded
+     * @param location
+     * @param resources
+     */
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+/* Gets list of movies from the server*/
+            App.getOcsfClient(this).getListOfMovies();
 
-            OCSFClient ocsfClient = new OCSFClient("localhost", 8080, this);
-            ocsfClient.openConnection();
-            ocsfClient.getListOfMovies();
+/*set up buttons*/
+            URI searchButtonUri = new URI("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbws1761LoKcQ68sQeqmJNXr2WhuEE5SEVY1DmKK6mka1o8FpbeEmTj_cBWfRR1ksDbAc&usqp=CAU");
+            ImageView searchButtonIm = new ImageView(searchButtonUri.toString());
+            searchButtonIm.setPreserveRatio(true);
+            searchButtonIm.setFitHeight(searchButton.getPrefHeight());
+            searchButtonIm.setFitWidth(searchButton.getPrefWidth());
+            searchButton.setGraphic(searchButtonIm);
 
-            //movies = Init.getAllMovies();
+            URI backButtonUri = new URI("https://cdn.pixabay.com/photo/2016/09/05/10/50/app-1646213_640.png");
+            ImageView backButtonIm = new ImageView(backButtonUri.toString());
+            backButtonIm.setPreserveRatio(true);
+            backButtonIm.setFitHeight(backButton.getPrefHeight());
+            backButtonIm.setFitWidth(backButton.getPrefWidth());
+            backButton.setGraphic(backButtonIm);
 
-            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);//remove the bottom bar
 
+            /*set components size to adapt window size*/
+            scrollPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+                flow.prefWidthProperty().bind(scrollPane.widthProperty());
+            });
 
-//            // gridpane settings
-//            // setting exterior grid padding
-//            grid.setPadding(new Insets(7, 7, 7, 7));
-//            // setting interior grid padding
-//            grid.setHgap(10);
-//            grid.setVgap(10);
-//            grid.setGridLinesVisible(true);
+            scrollPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+                flow.prefHeightProperty().bind(scrollPane.heightProperty());
+            });
 
-            // gridpane settings
-            // setting exterior grid padding
-//            flow.setPadding(new Insets(7, 7, 7, 7));
-//            // setting interior grid padding
-//            flow.setHgap(10);
-//            flow.setVgap(10);
-//            flow.setGridLinesVisible(true);
+            /*load movie component*/
+            while(movies.isEmpty()) { Thread.yield(); }
+                        for (Movie movie : movies) {
 
-//            int rows = (movies.size() / 4) + 1;
-//            int columns = 4;
-while(movies.isEmpty()) { Thread.yield(); }
-            for (Movie movie : movies) {
-//                for (int i = 0; i < rows; i++) {
-//                    for (int j = 0; j < columns; j++) {
-//                        addImage(movie.getId() /*, j, i*/);
-                        addImage(movie);
-//                        continue;
+                                    addImage(movie);
+                                }
                     }
-//                }
-//            }
-
-        }
 
         catch(Exception e){
-            System.out.println("dddddddddddd");
         e.printStackTrace();
     }
 
 }
 
-//    private void addImage(int index, int colIndex, int rowIndex) {
+    /**
+     * method to add new movie component to the screen
+     * @param movie - movie type to be added
+     */
     protected void addImage(Movie movie){
 
-//        String idToCut = fileList.get(index).getName();
-//        String id = idToCut.substring(0, (idToCut.length() - 4));
-        // System.out.println(id);
-        // System.out.println(fileList.get(i).getName());
-//        id=movies.get(index).getEngName();
-//        image = new Image(movies.get(index).getPosterUrl());
-//        image = new Image(movies.get(index).getPosterUrl());
-//        System.out.println("helooooooooooooooooo"+movies.get(index).getPosterUrl().toString());
+        /*add poster of the movie*/
         pic = new ImageView(movie.getPosterUrl().toString());
         pic.setFitWidth(160);
         pic.setFitHeight(220);
-        pic.setImage(image);
-//        pic.setId(movie.getId().toString());
-//        pic.setId(id);
-//        hb.getChildren().add(pic);
-//        GridPane.setConstraints(pic, colIndex, rowIndex, 1, 1, HPos.CENTER, VPos.CENTER);
-////         GridPane.setConstraints(pic, colIndex, rowIndex);
-//        grid.getChildren().addAll(pic);
 
-//        flow.setHgap(10);
-//        flow.setVgap(10);
+        /*add title of the movie*/
+        Text textHebName = new Text(movie.getHebName());
+        textHebName.setFill(Color.ORANGE);//format title text
+        textHebName.setFont(Font.font(null, FontWeight.BOLD, 12));
+        Text textEngName = new Text(movie.getEngName());
+        textEngName.setFill(Color.ORANGE);//format title text
+        textEngName.setFont(Font.font(null, FontWeight.BOLD, 12));
 
-        VBox vb = new VBox(4, /*pic,*/ new Text(movie.getHebName()),new Text(movie.getEngName()));
+        GridPane gridPane = new GridPane();
+
+        /*add screening times*/
+        SimpleDateFormat format= new SimpleDateFormat ("YY.MM.dd E HH:mm; ");//set a date format
+        String screenTime="";
+        int i=0,j=0;
+        for(Screening screen:movie.getScreening()){
+            screenTime= format.format(screen.getDate().getTime()).toString() ;
+            Text textScreenTime = new Text(screenTime);
+            textScreenTime.setFill(Color.ORANGE);
+            gridPane.add(textScreenTime,i,j);//add screening time to grid
+
+            //set location in the grid
+            i++;
+            if (i % 2 == 0) {
+                j++;
+                i=0;
+            }
+
+        }
+
+
+        VBox vb = new VBox(4, pic, textHebName, textEngName, gridPane); //create new VBox component to hold all the movie data
+
+        /*add new component to the scene*/
         flow.getChildren().add(vb);
-        FlowPane.setMargin(vb, new Insets(5,10,5,10));
+        FlowPane.setMargin(vb, new Insets(5,30,5,10));
 
-
-/*
-        pic.setOnMouseClicked(e -> {
-            // System.out.printf("Mouse clicked cell [%d, %d]%n", rowIndex, colIndex);
-            // System.out.println("Film Title: " + id);
+/*on action functionality, go into edit screen of the chosen movie*/
+        vb.setOnMouseClicked(e -> {
             try {
                 // storing the selected film to customise the newly created scene
-
-                App.setSelectedFilmTitle(movies.get(index));
-                App.setRoot("MovieEdit");
-//                SceneCreator.launchScene("/scenes/ViewSelectedFilmScene.fxml");
+                EditMovieScreenController.setSelectedFilmTitle(movie);//pass the movie to  the next screen
+                App.setRoot("EditMovieScreen.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
 
- */
     }
-
-    @FXML
-    void handheldsAddButton(ActionEvent event) {
-
-    System.out.println("pushed");
-
-    Button b2 = new Button("Information alert");
-
-
-    }
-
+    /**
+     * back button functionality
+     */
     @FXML
     void handheldsBackButton(ActionEvent event) {
-
+        //set an information alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("New features coming soon..  :)");
+        alert.showAndWait();
     }
 
+    /**
+     * filter menu functionality
+     */
+    @FXML
+    void handheldsFilterMenu(ActionEvent event) {
+        //set an information alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("New features coming soon..  :)");
+        alert.showAndWait();
+    }
+
+    /**
+     * search bar functionality
+     */
+    @FXML
+    void handheldsSearchButton(ActionEvent event) {
+        //set an information alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("New features coming soon..  :)");
+        alert.showAndWait();
+    }
+
+    /**
+     * @return given id ()
+     */
     @FXML
     public String getId () {
-
         return id;
     }
 
+    /**
+     * set movie list
+     * @param movies List
+     */
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }

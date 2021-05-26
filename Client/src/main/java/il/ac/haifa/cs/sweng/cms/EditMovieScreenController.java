@@ -4,30 +4,51 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 
-public class EditMovieScreenController {
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.ResourceBundle;
 
-    @FXML // fx:id="genreHeader"
-    private Text genreHeader; // Value injected by FXMLLoader
+public class EditMovieScreenController implements Initializable  {
+
+    private static Movie movie;
+    private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
+    private String date, hour;
+    URI backButtonUri = null;
 
     @FXML // fx:id="backButton"
     private Button backButton; // Value injected by FXMLLoader
 
-    @FXML // fx:id="imageBox"
-    private TextField imageBox; // Value injected by FXMLLoader
+    @FXML // fx:id="posterBox"
+    private TextArea posterBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="trailerBox"
-    private TextField trailerBox; // Value injected by FXMLLoader
+    private TextArea trailerBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="englishTitle"
     private TextField englishTitle; // Value injected by FXMLLoader
@@ -41,6 +62,12 @@ public class EditMovieScreenController {
     @FXML // fx:id="yearBox"
     private TextField yearBox; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lengthBox"
+    private TextField  lengthBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PGRaitingBox"
+    private TextField PGRaitingBox; // Value injected by FXMLLoader
+
     @FXML // fx:id="availableBox"
     private TextField availableBox; // Value injected by FXMLLoader
 
@@ -50,11 +77,8 @@ public class EditMovieScreenController {
     @FXML // fx:id="directorBox"
     private TextField directorBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="screeningBox"
-    private TextArea screeningBox; // Value injected by FXMLLoader
-
-    @FXML // fx:id="screeningControlBox"
-    private ComboBox<?> screeningControlBox; // Value injected by FXMLLoader
+    @FXML // fx:id="screeningFlow"
+    private FlowPane screeningFlow; // Value injected by FXMLLoader
 
     @FXML // fx:id="deleteLastButton"
     private Button deleteLastButton; // Value injected by FXMLLoader
@@ -83,6 +107,9 @@ public class EditMovieScreenController {
     @FXML // fx:id="inputYear"
     private Text inputYear; // Value injected by FXMLLoader
 
+    @FXML // fx:id="inputPGRaiting"
+    private Text inputPGRaiting; // Value injected by FXMLLoader
+
     @FXML // fx:id="inputDirector"
     private Text inputDirector; // Value injected by FXMLLoader
 
@@ -92,74 +119,296 @@ public class EditMovieScreenController {
     @FXML // fx:id="inputDescription"
     private Text inputDescription; // Value injected by FXMLLoader
 
-    @FXML
-    void handheldsAviabilety(InputMethodEvent event) {
+    @FXML // fx:id="scrollPaneLeft"
+    private ScrollPane scrollPaneLeft; // Value injected by FXMLLoader
 
+    @FXML // fx:id="anchorPaneLeft"
+    private AnchorPane anchorPaneLeft; // Value injected by FXMLLoader
+
+    @FXML // fx:id="scrollPaneRight"
+    private ScrollPane scrollPaneRight; // Value injected by FXMLLoader
+
+    @FXML // fx:id="anchorPaneRight"
+    private AnchorPane anchorPaneRight; // Value injected by FXMLLoader
+
+    @FXML // fx:id="hourComboBox"
+    private ComboBox<LocalTime> hourComboBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="addScreeningButton"
+    private Button addScreeningButton; // Value injected by FXMLLoader
+
+    @FXML // fx:id="inputScreening"
+    private Text inputScreening; // Value injected by FXMLLoader
+
+    @FXML // fx:id="datePicker"
+    private DatePicker datePicker; // Value injected by FXMLLoader
+
+    public static Movie getSelectedFilmTitle() {
+        return movie;
     }
 
+    public static void setSelectedFilmTitle(Movie selectedFilmTitle) {
+        EditMovieScreenController.movie = selectedFilmTitle;
+    }
+
+
+    /**
+     * back button functionality
+     */
     @FXML
     void handheldsBackButton(ActionEvent event) {
-
+        try {
+            App.setRoot("ManagerViewMovies.fxml"); //set the scean to the last page.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+    * delete button functionality
+     */
     @FXML
-    void handheldsCast(InputMethodEvent event) {
+    void handheldsMovieDelete(ActionEvent event) {
+        //set a warning alert
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText("Are You Sure?");
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
 
+        if (alert.getResult() == ButtonType.YES)//delete operation from database
+        {
+            // TODO: call function to delete the movie
+        }
     }
 
+    /**
+     * update state button functionality
+     */
     @FXML
-    void handheldsDeleteButton(ActionEvent event) {
+    void handheldsMovieUpdate(ActionEvent event) throws URISyntaxException {
+        //set a conformation alert
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Are You Sure?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK)
+        {
+            //update the current movie state
+            movie.setEngName(englishTitle.getText());
+            movie.setHebName(hebrewTitle.getText());
+            movie.setDescription(descriptionBox.getText());
+            movie.setYear(Integer.valueOf(yearBox.getText()));
+            movie.setLength(Integer.valueOf(lengthBox.getText()));
+            movie.setAgeRestriction(Integer.valueOf(PGRaitingBox.getText()));
+            movie.setCastList(castBox.getText());
+            movie.setPosterUrl(new URI(posterBox.getText()));
+            movie.setTrailerUrl(new URI(trailerBox.getText()));
+            movie.setScreening(screeningList);
 
+            //update move on database
+            // TODO: update entire movie data.
+            App.getOcsfClient(this).updateScreenings(screeningList);
+
+            updateScreen();
+
+        }
     }
 
+    /**
+     * method that update the scene components
+     */
+    public void updateScreen(){
+
+        /*
+        *set components size to adapt window size
+        */
+        scrollPaneRight.widthProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneRight.prefWidthProperty().bind(scrollPaneRight.widthProperty());
+        });
+
+        scrollPaneRight.heightProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneRight.prefHeightProperty().bind(scrollPaneRight.heightProperty());
+        });
+
+        scrollPaneLeft.widthProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneLeft.prefWidthProperty().bind(scrollPaneLeft.widthProperty());
+        });
+
+        scrollPaneLeft.heightProperty().addListener((obs, oldVal, newVal) -> {
+            anchorPaneLeft.prefHeightProperty().bind(scrollPaneLeft.heightProperty());
+        });
+
+
+        try {
+            backButtonUri = new URI("https://cdn.pixabay.com/photo/2016/09/05/10/50/app-1646213_640.png");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        ImageView backButtonIm = new ImageView(backButtonUri.toString());
+        backButtonIm.setPreserveRatio(true);
+        backButtonIm.setFitHeight(backButton.getPrefHeight());
+        backButtonIm.setFitWidth(backButton.getPrefWidth());
+        backButton.setGraphic(backButtonIm);
+
+        /*
+         *set loaded text from the entity in the scene components
+         */
+        //set title to show on screen
+        englishTitle.setText(movie.getEngName());
+        inputEngTitle.setText(movie.getEngName());
+        hebrewTitle.setText(movie.getHebName());
+        inputHebTitle.setText(movie.getHebName());
+
+        //set poster to show from url
+        posterBox.setText(movie.getPosterUrl().toString());
+        trailerBox.setText(movie.getTrailerUrl().toString());
+        inputImage.setImage(new Image(movie.getPosterUrl().toString()));
+        inputTrailer.setOnAction(new EventHandler<ActionEvent>() {
+                 @Override public void handle(ActionEvent e) {
+                     try {
+                         Desktop.getDesktop().browse(movie.getTrailerUrl());
+                     } catch (IOException e1) {
+                         e1.printStackTrace();
+                     }
+                 }
+             }
+        );
+
+        //set year to show
+        yearBox.setText(String.valueOf(movie.getYear()));
+        inputYear.setText(yearBox.getText());
+
+        //set movie length to show on screen
+        lengthBox.setText(String.valueOf(movie.getLength()));
+        inputLength.setText(String.valueOf(movie.getLength()) + " min");
+
+        //set cast list to show on screen
+        castBox.setText(movie.getCastList());
+        inputCast.setText(movie.getCastList());
+
+        //set PG rating to show on screen
+        PGRaitingBox.setText(String.valueOf(movie.getAgeRestriction()));
+        inputPGRaiting.setText(String.valueOf(movie.getAgeRestriction()));
+
+        //set description to show on screen
+        descriptionBox.setText(movie.getDescription());
+        inputDescription.setText(movie.getDescription());
+
+        //set movie screening time to show on screen
+        for (Screening screening:movie.getScreening()){
+            addScreening(screening);
+        }
+
+        String displayScreening="";
+        SimpleDateFormat format= new SimpleDateFormat ("YY.MM.dd E HH:mm; "); //set a date format
+        for(Screening screening:movie.getScreening()){
+            displayScreening += format.format(screening.getDate().getTime()).toString();
+        }
+        inputScreening.setText(displayScreening);
+    }
+
+    /**
+     * method that initialize the scene after everything has loaded
+     * @param location
+     * @param resources
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        updateScreen(); //call to refresh screen component
+
+        /*set Combobox*/
+        //set hour Combo box to be able to add new value
+        hourComboBox.setEditable(true);
+
+        /*set Combobox options*/
+        //hour
+        for(int i=0;i<=23;i++) {
+            for (int j = 0; j < 60; j=j+15) {
+                hourComboBox.getItems().add(LocalTime.of(i,j,0,0));
+            }
+        }
+
+        /*on action listener for comboBox*/
+        //date
+        datePicker.setOnAction((event) -> {
+            date = String.valueOf(datePicker.getValue());
+        });
+
+        //hour
+        hourComboBox.setOnAction((event) -> {
+            hour = String.valueOf(hourComboBox.getValue());
+        });
+    }
+
+    /**
+     * add new screening button
+     */
     @FXML
-    void handheldsDeleteLastButton(ActionEvent event) {
-
+    void handheldsAddScreeningButton(ActionEvent event) {
+        addScreening(date,hour);
     }
 
-    @FXML
-    void handheldsDescription(InputMethodEvent event) {
+    /**
+     * method that sat up new screening button and add new screening to screeningList
+     * @param date - string value that for the wanted date
+     * @param hour - string value that for the wanted hour
+     */
+    protected void addScreening(String date, String hour){
 
+            //add to screeningList
+            String[] dateSplit = date.split("-", 3);//split the date string to year,mount and day
+            String[] hourMin = hour.split(":", 2);//split the date string to hour and minuets
+            Screening screening = new Screening(movie, null, new GregorianCalendar(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1])-1,Integer.parseInt(dateSplit[2]), Integer.parseInt(hourMin[0]), Integer.parseInt(hourMin[1]))); //create new screening object
+
+            screeningList.add(screening); //add the screening object to the screeningList
+
+            /*add a button*/
+            //set a date format
+            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm");
+            String name = format.format(screening.getDate().getTime()).toString();
+
+            //add button to screen
+            Button screeningButton = new Button(name);
+            screeningFlow.getChildren().add(screeningButton);
+            FlowPane.setMargin(screeningButton, new Insets(3, 3, 3, 3));
+
+            //button functionality
+            screeningButton.setOnAction(e -> {
+                //remove the screening button and screening apprentice in screenList
+                    screeningFlow.getChildren().remove(screeningButton);
+                    screeningList.remove(screening);
+            });
     }
 
-    @FXML
-    void handheldsDirector(InputMethodEvent event) {
+    /**
+     * method that sat up new screening button and add new screening to screeningList
+     * @param screening - Screening value
+     */
+    protected void addScreening(Screening screening){
+        //add to screeningList
+        if(!screeningList.contains(screening)) {
+            screeningList.add(screening);
 
+            /*add a button*/
+            //set a date format
+            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm");
+            String name = format.format(screening.getDate().getTime()).toString();
+
+            //add button to screen
+            Button screeningButton = new Button(name);
+            screeningFlow.getChildren().add(screeningButton);
+            FlowPane.setMargin(screeningButton, new Insets(3, 3, 3, 3));
+
+            //button functionality
+            screeningButton.setOnAction(e -> {
+                //remove the screening button and screening apprentice in screenList
+                    screeningList.remove(screening);
+                    screeningFlow.getChildren().remove(screeningButton);
+            });
+        }
     }
-
-    @FXML
-    void handheldsEnglishName(InputMethodEvent event) {
-
-    }
-
-    @FXML
-    void handheldsHeberwName(InputMethodEvent event) {
-
-    }
-
-    @FXML
-    void handheldsImageURL(InputMethodEvent event) {
-
-    }
-
-    @FXML
-    void handheldsSaveChangesButton(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handheldsScreeningChack(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handheldsTrailerURL(InputMethodEvent event) {
-
-    }
-
-    @FXML
-    void handheldsYear(InputMethodEvent event) {
-
-    }
-
 }

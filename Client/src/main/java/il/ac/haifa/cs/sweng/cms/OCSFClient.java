@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllMoviesRequest;
@@ -7,9 +8,13 @@ import il.ac.haifa.cs.sweng.cms.common.messages.requests.UpdateScreeningsRequest
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Extension of the OCSF AbstractClient class.
@@ -18,7 +23,7 @@ import java.util.List;
  */
 public class OCSFClient extends AbstractClient {
 
-    private ManagerViewMoviesController controller;
+    private Initializable controller;
 
     /**
      * Constructs the client.
@@ -26,9 +31,8 @@ public class OCSFClient extends AbstractClient {
      * @param host the server's host name.
      * @param port the port number.
      */
-    public OCSFClient(String host, int port, ManagerViewMoviesController controller) {
+    public OCSFClient(String host, int port) {
         super(host, port);
-        this.controller = controller;
     }
 
     /**
@@ -50,8 +54,7 @@ public class OCSFClient extends AbstractClient {
      */
     private void handleResponse(AbstractResponse response) {
         if(response instanceof ListAllMoviesResponse) {
-            // TODO: Update GUI with movies.
-            controller.setMovies(((ListAllMoviesResponse) response).getMovieList());
+            ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
@@ -80,6 +83,14 @@ public class OCSFClient extends AbstractClient {
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
+    }
+
+    /**
+     * Sets the calling controller.
+     * @param controller Controller which called the OCSFClient.
+     */
+    protected void setController(Initializable controller) {
+        this.controller = controller;
     }
 
 }

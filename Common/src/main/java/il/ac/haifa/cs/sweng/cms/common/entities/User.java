@@ -3,6 +3,9 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * User Entity
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User implements Serializable {
@@ -11,8 +14,11 @@ public abstract class User implements Serializable {
 	private int id;
 	private String firstName;
 	private String lastName;
-	
-	User(String firstName, String lastName){
+
+	/**
+	 *constructors
+	 */
+	public User(String firstName, String lastName){
 		this();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -23,17 +29,25 @@ public abstract class User implements Serializable {
 		this.lastName="";
 	}
 
+	/**
+	 * id  set/get
+	 */
 	public int getId() { return id; }
-    
-	public String getFirstName() { return firstName; }
-    
-	public void setFirstName(String firstName) { this.firstName = firstName; }
-    
-	public String getLastName() { return lastName; }
-    
-	public void setLastName(String lastName) { this.lastName = lastName; }
-
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	/**
+	 * first name set/get
+	 */
+	public String getFirstName() { return firstName; }
+	public void setFirstName(String firstName) { this.firstName = firstName; }
+
+	/**
+	 * last name set/get
+	 */
+	public String getLastName() { return lastName; }
+	public void setLastName(String lastName) { this.lastName = lastName; }
+
+
 }
