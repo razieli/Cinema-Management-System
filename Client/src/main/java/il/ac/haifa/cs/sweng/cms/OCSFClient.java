@@ -86,6 +86,30 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
+     * Sends a request to the server to file a complaint.
+     * @param complaint Complaint to file.
+     */
+    protected void fileComplaint(Complaint complaint) {
+        try {
+            sendToServer(new ComplaintFileRequest(complaint));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
+     * Sends a request to the server to reply to a complaint.
+     * @param complaint Complaint to reply to.
+     */
+    protected void replyToComplaint(Complaint complaint) {
+        try {
+            sendToServer(new ComplaintReplyRequest(complaint));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
      * Sets the calling controller.
      * @param controller Controller which called the OCSFClient.
      */
