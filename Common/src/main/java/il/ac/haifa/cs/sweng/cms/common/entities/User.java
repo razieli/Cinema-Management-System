@@ -18,7 +18,7 @@ public abstract class User implements Serializable {
 	/**
 	 *constructors
 	 */
-	User(String firstName, String lastName){
+	public User(String firstName, String lastName){
 		this();
 		this.firstName = firstName;
 		this.lastName = lastName;
