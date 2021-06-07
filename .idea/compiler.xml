@@ -17,4 +17,9 @@
       <module name="Server" target="15" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Client" options="--add-exports java.base/jdk.internal.access=Client" />
+    </option>
+  </component>
 </project>

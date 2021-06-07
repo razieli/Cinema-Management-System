@@ -27,7 +27,7 @@ public class Ticket implements Serializable {
 		this.customer=null;
 		this.screening=null;
 	}
-	public Ticket(Customer customer, Screening screening,int seat){
+	public Ticket(Customer customer, Screening screening, int seat){
 		this.customer=customer;
 		this.screening=screening;
 		this.seat=seat;
@@ -65,5 +65,13 @@ public class Ticket implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * convert ticket to the movie name
+	 */
+	@Override
+	public String toString() {
+		return this.getScreening().getMovie().getEngName();
 	}
 }
