@@ -2,29 +2,21 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import jdk.internal.access.JavaNetUriAccess;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class CancelTicketController implements Initializable {
 
-    //test vals
+    //test DB
     private ArrayList<Ticket> ticketsList = new ArrayList<Ticket>();
     private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
     private  ArrayList<Customer> customerList= new ArrayList<Customer>();
@@ -49,7 +41,7 @@ public class CancelTicketController implements Initializable {
 
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.YY E HH:mm");
 
-
+    // javaFX buttons and fields
     @FXML
     private TextField movieName;
 
@@ -69,7 +61,8 @@ public class CancelTicketController implements Initializable {
     private Button CancelTicket;
 
     @FXML // fx:id="Tickets"
-    private ComboBox<Ticket> TicketsCoboBox;
+    private ComboBox<Ticket> TicketsComboBox;
+
 
     /**
      * handling back button
@@ -83,6 +76,7 @@ public class CancelTicketController implements Initializable {
         }
     }
 
+
     /**
      * handling cancel ticket button
      */
@@ -92,7 +86,7 @@ public class CancelTicketController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
         // if a ticket was selected remove it from DB
-        if(TicketsCoboBox.getValue()!= null) {
+        if(TicketsComboBox.getValue()!= null) {
             alert.setTitle("Ticket Cancel");
             alert.setHeaderText(null);
             alert.setContentText("Are You Sure you want to cancel selected ticket?");
@@ -103,7 +97,7 @@ public class CancelTicketController implements Initializable {
             //TODO: cancellation based on current time.
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
-                ticketsList.remove(TicketsCoboBox.getValue());
+                ticketsList.remove(TicketsComboBox.getValue());
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Canceled");
             } else {
@@ -124,28 +118,24 @@ public class CancelTicketController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //initializing TicketsCoboBox
 
-        ticketsList.add(ticket1);
-        ticketsList.add(ticket2);
-        updateScreen();
-    }
-
+    /**
+     * handle combobox selection
+     */
     public void handheldsSelectTicket(ActionEvent actionEvent) {
-        if (TicketsCoboBox.getValue() != null) {
+        if (TicketsComboBox.getValue() != null) {
             //setting right screen based on TicketsCoboBox selection
-            movieName.setText(TicketsCoboBox.getValue().getScreening().getMovie().getEngName());
+            movieName.setText(TicketsComboBox.getValue().getScreening().getMovie().getEngName());
 
-            locationName.setText(TicketsCoboBox.getValue().getScreening().getTheater().getPlaceName());
-            theaterName.setText(String.valueOf(TicketsCoboBox.getValue().getScreening().getTheater().getId()));
+            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName());
+            theaterName.setText(String.valueOf(TicketsComboBox.getValue().getScreening().getTheater().getId()));
 
-            String name = format.format(TicketsCoboBox.getValue().getScreening().getDate().getTime()).toString();
+            String name = format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()).toString();
             screeningTime.setText(name);
-            seats.setText(String.valueOf(TicketsCoboBox.getValue().getSeat()));
+            seats.setText(String.valueOf(TicketsComboBox.getValue().getSeat()));
         }
     }
+
 
     /**
      * reset text fields
@@ -156,16 +146,32 @@ public class CancelTicketController implements Initializable {
         theaterName.setText("Theater");
         screeningTime.setText("dd.MM.YY E HH:mm");
         seats.setText("Seats");
-        TicketsCoboBox.setPromptText("Your Tickets");
+        TicketsComboBox.setPromptText("Your Tickets");
     }
 
+
+    /**
+     * update scene components
+     */
     public void updateScreen(){
         resetTexts();
-        TicketsCoboBox.setItems(FXCollections.observableArrayList(ticketsList));
+        theater1.setId(0);
+        theater2.setId(1);
+        TicketsComboBox.setItems(FXCollections.observableArrayList(ticketsList));
 
     }
 
+    /**
+     * initializing scene components
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //initializing TicketsCoboBox
 
+        ticketsList.add(ticket1);
+        ticketsList.add(ticket2);
+        updateScreen();
+    }
 
 
 

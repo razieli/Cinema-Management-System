@@ -26,7 +26,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="434.0" prefWidth="150.0">
                <children>
-                  <ComboBox id="Tickets" fx:id="TicketsCoboBox" layoutX="47.0" layoutY="126.0" onAction="#handheldsSelectTicket" prefHeight="25.0" prefWidth="157.0" promptText="your tickets:" />
+                  <ComboBox id="Tickets" fx:id="TicketsComboBox" layoutX="47.0" layoutY="126.0" onAction="#handheldsSelectTicket" prefHeight="25.0" prefWidth="157.0" promptText="your tickets:" />
                   <Text fill="ORANGE" layoutX="22.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Purchased Tickets:">
                      <font>
                         <Font name="System Bold" size="24.0" />
