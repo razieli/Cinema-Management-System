@@ -12,15 +12,16 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CancelTicketController implements Initializable {
 
     //test DB
-    private ArrayList<Ticket> ticketsList = new ArrayList<Ticket>();
-    private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
-    private  ArrayList<Customer> customerList= new ArrayList<Customer>();
-    private  ArrayList<Movie> movieList= new ArrayList<Movie>();
+    private List<Ticket> ticketList = new ArrayList<Ticket>();
+    private List<Screening> screeningList= new ArrayList<Screening>();
+    private List<Customer> customerList= new ArrayList<Customer>();
+    private List<Movie> movieList= new ArrayList<Movie>();
     private Theater theater1 = new Theater("place1",50);
     private Theater theater2 = new Theater("place2",80);
     private GregorianCalendar time1 = new GregorianCalendar(2021, 8, 20, 16, 16, 47);
@@ -39,7 +40,7 @@ public class CancelTicketController implements Initializable {
     private Ticket ticket1 = new Ticket(cus1,screen1,8);
     private Ticket ticket2 = new Ticket(cus2,screen2,42);
 
-    SimpleDateFormat format = new SimpleDateFormat("dd.MM.YY E HH:mm");
+    SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm");
 
     // javaFX buttons and fields
     @FXML
@@ -97,7 +98,7 @@ public class CancelTicketController implements Initializable {
             //TODO: cancellation based on current time.
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
-                ticketsList.remove(TicketsComboBox.getValue());
+                ticketList.remove(TicketsComboBox.getValue());
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Canceled");
             } else {
@@ -144,7 +145,7 @@ public class CancelTicketController implements Initializable {
         movieName.setText("Movie Name");
         locationName.setText("Cinema Location");
         theaterName.setText("Theater");
-        screeningTime.setText("dd.MM.YY E HH:mm");
+        screeningTime.setText("dd.MM.YYYY E HH:mm");
         seats.setText("Seats");
         TicketsComboBox.setPromptText("Your Tickets");
     }
@@ -157,7 +158,7 @@ public class CancelTicketController implements Initializable {
         resetTexts();
         theater1.setId(0);
         theater2.setId(1);
-        TicketsComboBox.setItems(FXCollections.observableArrayList(ticketsList));
+        TicketsComboBox.setItems(FXCollections.observableArrayList(ticketList));
 
     }
 
@@ -167,12 +168,21 @@ public class CancelTicketController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //initializing TicketsCoboBox
-
-        ticketsList.add(ticket1);
-        ticketsList.add(ticket2);
+    try{
+        App.getOcsfClient(this).getListOfTickets();
+        ticketList.add(ticket1);
+        ticketList.add(ticket2);
         updateScreen();
+
+
+    }
+    catch(Exception e){
+        e.printStackTrace();
     }
 
+    }
 
-
+    public void setTickets(List<Ticket> tickets) {
+        this.ticketList = tickets;
+    }
 }

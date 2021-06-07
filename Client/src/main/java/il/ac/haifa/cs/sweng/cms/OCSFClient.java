@@ -2,19 +2,23 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllMoviesRequest;
+import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllTicketsRequest;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.UpdateScreeningsRequest;
+import il.ac.haifa.cs.sweng.cms.common.messages.requests.UpdateTicketsRequest;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllTicketsResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateTicketsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Queue;
+
 
 /**
  * Extension of the OCSF AbstractClient class.
@@ -56,10 +60,16 @@ public class OCSFClient extends AbstractClient {
         if(response instanceof ListAllMoviesResponse) {
             ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
+        if(response instanceof ListAllMoviesResponse) {
+            ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
+        }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
-        // TODO: Show "Unidentified response".
+        if(response instanceof UpdateTicketsResponse) {
+         // TODO: Show "Unidentified response".
+              }
+
     }
 
     /**
@@ -73,6 +83,19 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
+
+    /**
+     * Sends a request to the server to get the list of all tickets.
+     */
+    protected void getListOfTickets() {
+        try {
+            sendToServer(new ListAllTicketsRequest());
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+
     /**
      * Sends a request to the server to update a list of screenings.
      * @param screeningList New list of screenings.
@@ -84,6 +107,20 @@ public class OCSFClient extends AbstractClient {
             // TODO: Show "IO exception while sending request to server."
         }
     }
+
+
+    /**
+     * Sends a request to the server to update a list of tickets.
+     * @param ticketsList New list of screenings.
+     */
+    protected void updateTickets(List<Ticket> ticketsList) {
+        try {
+            sendToServer(new UpdateTicketsRequest(ticketsList));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
 
     /**
      * Sends a request to the server to file a complaint.

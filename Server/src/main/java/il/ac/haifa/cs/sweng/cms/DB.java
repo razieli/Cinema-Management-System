@@ -333,4 +333,13 @@ public class DB {
 		}
 		return deleteList;
 	}
+
+	public List<Ticket> getAllTickets() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Ticket> query = builder.createQuery(Ticket.class);
+		query.from(Ticket.class);
+		List<Ticket> data = session.createQuery(query).getResultList();
+		return data;
+
+	}
 }
