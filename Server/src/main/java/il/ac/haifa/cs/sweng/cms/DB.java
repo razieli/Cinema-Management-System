@@ -340,6 +340,5 @@ public class DB {
 		query.from(Ticket.class);
 		List<Ticket> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 }
