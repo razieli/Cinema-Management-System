@@ -12,6 +12,8 @@ module Common {
 	requires com.sun.xml.bind;
 	requires net.bytebuddy;
 	requires com.fasterxml.classmate;
+    requires mysql.connector.java;
+	requires java.desktop;
 
 	opens il.ac.haifa.cs.sweng.cms.common.messages;
 	opens il.ac.haifa.cs.sweng.cms.common.messages.responses;

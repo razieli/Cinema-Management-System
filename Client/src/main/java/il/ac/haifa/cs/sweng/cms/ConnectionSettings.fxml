@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ConnectionSettingsController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <AnchorPane prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MenuBar prefHeight="47.0" prefWidth="600.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TextFlow prefHeight="31.0" prefWidth="600.0" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Connection Settings" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="333.2513427734375">
+                           <font>
+                              <Font name="Aharoni Bold" size="30.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </TextFlow>
+                  <Button fx:id="back" layoutX="539.0" layoutY="8.0" mnemonicParsing="false" onAction="#backBtn" prefHeight="29.0" prefWidth="52.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Back" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </top>
+         <bottom>
+            <AnchorPane prefHeight="35.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="save" layoutX="488.0" layoutY="135.0" mnemonicParsing="false" onAction="#saveBtn" prefHeight="29.0" prefWidth="97.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Save" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </bottom>
+         <center>
+            <AnchorPane prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="318.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
+                           <children>
+                              <TextFlow prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="HOST:" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </TextFlow>
+                              <TextFlow prefHeight="100.0" prefWidth="299.0">
+                                 <children>
+                                    <TextField fx:id="ipText" prefHeight="25.0" prefWidth="230.0" promptText="localhost" />
+                                 </children>
+                              </TextFlow>
+                           </children>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="600.0">
+                           <children>
+                              <TextFlow prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="PORT:" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </TextFlow>
+                              <TextField fx:id="portText" prefHeight="25.0" prefWidth="230.0" promptText="8080" />
+                              <TextFlow prefHeight="100.0" prefWidth="68.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

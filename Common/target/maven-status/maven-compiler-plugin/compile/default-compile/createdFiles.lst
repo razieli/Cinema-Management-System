@@ -5,7 +5,6 @@ il\ac\haifa\cs\sweng\cms\common\messages\responses\UpdateScreeningsResponse.clas
 il\ac\haifa\cs\sweng\cms\common\messages\requests\UpdateScreeningsRequest.class
 il\ac\haifa\cs\sweng\cms\common\messages\AbstractMessage.class
 il\ac\haifa\cs\sweng\cms\common\entities\Movie.class
-il\ac\haifa\cs\sweng\cms\common\entities\Init.class
 il\ac\haifa\cs\sweng\cms\common\messages\AbstractResponse.class
 il\ac\haifa\cs\sweng\cms\common\entities\Screening.class
 il\ac\haifa\cs\sweng\cms\common\messages\ResponseStatus.class

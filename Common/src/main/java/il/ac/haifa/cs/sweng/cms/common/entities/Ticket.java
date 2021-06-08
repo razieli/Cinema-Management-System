@@ -3,6 +3,9 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Ticket Entity
+ */
 @Entity
 @Table(name = "tickets")
 public class Ticket implements Serializable {
@@ -16,7 +19,10 @@ public class Ticket implements Serializable {
 	@JoinColumn(name ="screening")
 	private Screening screening;
 	private int seat;
-	
+
+	/**
+	 * constructors
+	 */
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
@@ -32,23 +38,31 @@ public class Ticket implements Serializable {
 		this.screening=screening;
 		this.seat=seat;
 	}
-	
-	public Customer getCustomer() {return customer;}
-	
-	public void setCustomer(Customer customer) {this.customer = customer;}
-	
-	public Screening getScreening() {return screening;}
 
+	/**
+	 * customer set/get
+	 */
+	public Customer getCustomer() {return customer;}
+	public void setCustomer(Customer customer) {this.customer = customer;}
+
+	/**
+	 * screening set/get
+	 */
+	public Screening getScreening() {return screening;}
 	public void setScreening(Screening screening) {this.screening = screening;}
-	
+
+	/**
+	 * seat set/get
+	 */
 	public int getSeat() {return seat;}
-	
 	public void setSeat(int seat) {this.seat = seat;}
 
+	/**
+	 * Id set/get
+	 */
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
