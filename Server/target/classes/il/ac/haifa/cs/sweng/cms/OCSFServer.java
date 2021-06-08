@@ -6,6 +6,7 @@ import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllTicketsResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateTicketsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
@@ -91,6 +92,13 @@ public class OCSFServer extends AbstractServer {
             List<Screening> screeningList = ((UpdateScreeningsRequest) request).getScreeningList();
             db.setScreenings(screeningList);
             return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
+        }
+
+        if (request instanceof UpdateTicketsRequest) {
+            // Save new screening list in DB.
+            List<Ticket> ticketList = ((UpdateTicketsRequest) request).getTicketsList();
+            db.setTickets(ticketList);
+            return new UpdateTicketsResponse(ResponseStatus.Acknowledged);
         }
 
 
