@@ -186,9 +186,11 @@ public class DB {
 	 */
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
+		List<Customer> customers = getAllCustomers();
+
 		for(Screening s:screenings) {
 			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-				session.save(new Ticket(s,i));
+				session.save(new Ticket(customers.get(i%2),s,i ));
 		}
 		session.flush();
 	}
@@ -275,7 +277,6 @@ public class DB {
 		query.from(Screening.class);
 		List<Screening> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 
 	/**
@@ -334,12 +335,27 @@ public class DB {
 		return deleteList;
 	}
 
+	/**
+	 * Gets list of all tickets from the database.
+	 * @return list of database tickets
+	 */
 	public List<Ticket> getAllTickets() {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Ticket> query = builder.createQuery(Ticket.class);
 		query.from(Ticket.class);
 		List<Ticket> data = session.createQuery(query).getResultList();
 		return data;
+	}
 
+	/**
+	 * Gets list of all customers from the database.
+	 * @return list of database customers
+	 */
+	public List<Customer> getAllCustomers() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Customer> query = builder.createQuery(Customer.class);
+		query.from(Customer.class);
+		List<Customer> data = session.createQuery(query).getResultList();
+		return data;
 	}
 }
