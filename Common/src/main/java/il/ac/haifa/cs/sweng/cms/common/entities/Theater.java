@@ -18,7 +18,7 @@ public class Theater implements Serializable {
     private String placeName;
 	private int seatsCapacity;
 	 @OneToMany(mappedBy="theater")
-	private List<Screening> screeningList;
+	private List<Screening> screeningList= new ArrayList<>();
 
 	/**
 	 * constructors
@@ -31,7 +31,6 @@ public class Theater implements Serializable {
 	}
 	public Theater()
 	{
-		screeningList = new ArrayList<>();
 	}
 
 	/**
@@ -46,7 +45,7 @@ public class Theater implements Serializable {
 	 * theater location set/get
 	 */
 	public String getPlaceName() { return placeName; }
-	public void getPlaceName(String placeName) {
+	public void setPlaceName(String placeName) {
 		this.placeName = placeName;
 	}
 

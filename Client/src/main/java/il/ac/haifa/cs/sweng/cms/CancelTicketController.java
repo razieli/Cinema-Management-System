@@ -2,12 +2,14 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,10 +17,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static java.lang.Thread.sleep;
+
 public class CancelTicketController implements Initializable {
 
     //test DB
-    private List<Ticket> ticketList = new ArrayList<Ticket>();
+    public List<Ticket> ticketList = new ArrayList<Ticket>();
     private List<Screening> screeningList= new ArrayList<Screening>();
     private List<Customer> customerList= new ArrayList<Customer>();
     private List<Movie> movieList= new ArrayList<Movie>();
@@ -82,7 +86,7 @@ public class CancelTicketController implements Initializable {
      * handling cancel ticket button
      */
     @FXML
-    public void handheldsCancelTicket(ActionEvent actionEvent) {
+    public void handheldsCancelTicket(ActionEvent actionEvent) throws URISyntaxException {
         //set a warning alert
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
@@ -99,8 +103,10 @@ public class CancelTicketController implements Initializable {
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
                 ticketList.remove(TicketsComboBox.getValue());
+                App.getOcsfClient(this).updateTickets(ticketList);
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Canceled");
+                updateScreen();
             } else {
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Did Not Canceled");
@@ -127,13 +133,10 @@ public class CancelTicketController implements Initializable {
         if (TicketsComboBox.getValue() != null) {
             //setting right screen based on TicketsCoboBox selection
             movieName.setText(TicketsComboBox.getValue().getScreening().getMovie().getEngName());
-
-            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName());
             theaterName.setText(String.valueOf(TicketsComboBox.getValue().getScreening().getTheater().getId()));
-
-            String name = format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()).toString();
-            screeningTime.setText(name);
+            screeningTime.setText(format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()));
             seats.setText(String.valueOf(TicketsComboBox.getValue().getSeat()));
+//            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName()); // not working yet
         }
     }
 
@@ -170,16 +173,12 @@ public class CancelTicketController implements Initializable {
         //initializing TicketsCoboBox
     try{
         App.getOcsfClient(this).getListOfTickets();
-        ticketList.add(ticket1);
-        ticketList.add(ticket2);
+        while(ticketList.isEmpty()) { Thread.yield(); }
         updateScreen();
-
-
     }
     catch(Exception e){
         e.printStackTrace();
     }
-
     }
 
     public void setTickets(List<Ticket> tickets) {

@@ -60,7 +60,7 @@ public class OCSFClient extends AbstractClient {
         if(response instanceof ListAllMoviesResponse) {
             ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
-        if(response instanceof ListAllMoviesResponse) {
+        if(response instanceof ListAllTicketsResponse) {
             ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
         }
         if(response instanceof UpdateScreeningsResponse) {
@@ -122,10 +122,10 @@ public class OCSFClient extends AbstractClient {
     }
 
 
-    /**
-     * Sends a request to the server to file a complaint.
-     * @param complaint Complaint to file.
-     */
+//    /**
+//     * Sends a request to the server to file a complaint.
+//     * @param complaint Complaint to file.
+//     */
 //    protected void fileComplaint(Complaint complaint) {
 //        try {
 //            sendToServer(new ComplaintFileRequest(complaint));
