@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+
+
 @Entity
 @Table(name = "movies")
 
@@ -16,21 +18,24 @@ public class Movie {
 	private String engName;
 	private String hebName;
 	private int year;
+	@Column
+	@ElementCollection
 	private List<String> castList;
-	@OneToMany(mappedBy="movie")
+	@Column
+	@ElementCollection
+	@OneToMany(targetEntity = Screening.class ,cascade = CascadeType.ALL,mappedBy="movie", fetch = FetchType.LAZY)
 	private List<Screening> screening;
-	
-
 	private int length;
 	private int ageRestriction;
-	private InputStream posterUrl;
+	
+	private String posterUrl;
 	
 	public Movie() {
 		castList = new ArrayList<>();
 	}
 	
 	public Movie(String engName,String hebName,int year, List<String> castList, int length,
-			int ageRestriction, InputStream inputStream) {
+			int ageRestriction, String inputStream) {
 		this();
 		this.engName = engName;
 		this.hebName=hebName;
@@ -59,9 +64,9 @@ public class Movie {
     
 	public void setAgeRestriction(int ageRestriction) { this.ageRestriction = ageRestriction; }
     
-	public InputStream getPosterUrl() { return posterUrl; }
+	public String getPosterUrl() { return posterUrl; }
     
-	public void setPosterUrl(InputStream posterUrl) { this.posterUrl = posterUrl; }
+	public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
 
 	public String getHebName() {
 		return hebName;

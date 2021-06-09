@@ -12,18 +12,16 @@ public class Cinema {
 	public int id;
 	private String name;
 	private String address;
-	private PurpleBadge pb;
+	
 	@ManyToOne
 	@JoinColumn (name="employee")
-	
 	private Employee manager;
 	
-	@OneToMany (mappedBy = "cinema")
+	@OneToMany (targetEntity = Theater.class ,mappedBy = "cinema", fetch = FetchType.LAZY)
 	private List<Theater> theaters;
 	
 	public Cinema() {
 		this.theaters=new LinkedList<Theater>();
-		this.pb=PurpleBadge.getInstance();
 	}
 	public Cinema(String name,String address, Employee manager, List<Theater> theaters) {
 		this();

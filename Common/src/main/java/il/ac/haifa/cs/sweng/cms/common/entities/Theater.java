@@ -1,44 +1,3 @@
-<<<<<<< Updated upstream
-package il.ac.haifa.cs.sweng.cms.common.entities;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.ArrayList;
-
-@Entity
-@Table(name = "theaters")
-
-public class Theater {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private int seatsCapacity;
-	 @OneToMany(mappedBy="theater")
-	private List<Screening> screeningList;
-	
-	public Theater(int seatsCapacity)
-	{
-		this();
-		this.seatsCapacity = seatsCapacity;
-	}
-	
-	public Theater()
-	{
-		screeningList = new ArrayList<>();
-	}
-	
-	public int getId() { return id; }
-    
-	public int getSeatsCapacity() { return seatsCapacity; }
-    
-	public void setSeatsCapacity(int seatsCapacity) { this.seatsCapacity = seatsCapacity; }
-	
-	public List<Screening> getScreeningList() { return screeningList; }
-	
-	public void setScreeningList(List<Screening> s) { this.screeningList=s; }
-    
-}
-=======
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
@@ -60,12 +19,11 @@ public class Theater implements Serializable {
     private String placeName;
 	private int seatsCapacity;
 	private int realSeatsCapacity;
-	@OneToMany(mappedBy="theater")
+	@OneToMany(targetEntity = Screening.class ,mappedBy="theater", fetch = FetchType.LAZY)
 	private List<Screening> screeningList;
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="cinema_id")
 	private Cinema cinema;
-	private PurpleBadge pb;
 	
 	
 	/**
@@ -82,7 +40,6 @@ public class Theater implements Serializable {
 	public Theater()
 	{
 		screeningList = new ArrayList<>();
-		pb=PurpleBadge.getInstance();
 	}
 
 	/**
@@ -125,6 +82,7 @@ public class Theater implements Serializable {
 	 * @param realSeatsCapacity the realSeatsCapacity to set
 	 */
 	public void setRealSeatsCapacity() {
+		PurpleBadge pb=PurpleBadge.getInstance();
 		int y=pb.getY();
 		if(pb.getStatus()) {
 			if (this.seatsCapacity>1.2*y)
@@ -138,13 +96,13 @@ public class Theater implements Serializable {
 			this.realSeatsCapacity = this.seatsCapacity;
 	}
 	
-	public List<Customer> coronaCheck(){
+	public List<Customer> coronaCheck(PurpleBadge pb){
 		List<Customer> cancel = new LinkedList<Customer>();
 		for (Screening s: this.screeningList){
-			if(this.pb.getClosingDates().contains(s.getDate()))
+			if(pb.getClosingDates().contains(s.getDate()))
 				for(Ticket t: s.getTickets()) {
 //TODO:					//notify(t.getCustomer());//Send alert to the customer about canceling
-					if(t.getCustomer().getPackageList().contains(t))
+					if(t.getCustomer().getpackageList().contains(t))
 						t.getCustomer().removeTicket(t, true);
 					else
 						t.getCustomer().removeTicket(t, false);
@@ -171,4 +129,3 @@ public class Theater implements Serializable {
 	}
 
 }
->>>>>>> Stashed changes

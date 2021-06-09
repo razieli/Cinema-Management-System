@@ -28,6 +28,8 @@ public class Init {
         configuration.addAnnotatedClass(Ticket.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(PurpleBadge.class);
+        configuration.addAnnotatedClass(Cinema.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties())
@@ -40,7 +42,8 @@ public class Init {
             session = sessionFactory.openSession();
             session.beginTransaction();
             session.getTransaction().commit(); // Save everything.
-        } catch (Exception exception) {
+            //new Init();
+		} catch (Exception exception) {
             if (session != null) {
                 session.getTransaction().rollback();
             }
@@ -51,6 +54,26 @@ public class Init {
                 session.close();
         }
 
+	}
+	public Init() throws Exception {
+		generatePurpleBage();
+		generateCinema();
+		generateEmployee();
+		generateCustomer();
+		generateMovie();
+		generateTicket();
+		generateScreening();
+		generateTheater();
+	}
+	public static void generatePurpleBage() {
+		session.save(PurpleBadge.getInstance());
+		session.flush();
+	}
+	public static void generateCinema() throws Exception{
+		List<Employee> emps=getAllEmployee();
+		session.save(new Cinema("Haifa","Lev Hamifrats",emps.get(0),null));
+		session.save(new Cinema("Tel Aviv","Glilot",emps.get(1),null));
+		session.flush();
 	}
 	public static void generateEmployee(){
 		session.save(new Employee("Haim","Cohen","asdfg",1));
@@ -69,25 +92,25 @@ public class Init {
 		cast1.add("Christian Bale");
 		cast1.add("Heath Ledger");
 		cast1.add("Aaron Eckhart");
-		session.save(new Movie("The Dark Knight","האביר האפל",2008,cast1,152,13,Init.class.getResourceAsStream(null)));
+		session.save(new Movie("The Dark Knight","האביר האפל",2008,cast1,152,13,null));
 		List<String> cast2=new LinkedList<String>();
 		cast2.add("Christopher Nolan");
 		cast2.add("Leonardo DiCaprio");
 		cast2.add("Joseph Gordon-Levitt");
 		cast2.add("Elliot Page");
-		session.save(new Movie("Inception","התחלה",2010,cast2,148,13,Init.class.getResourceAsStream(null)));
+		session.save(new Movie("Inception","התחלה",2010,cast2,148,13,null));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");
 		cast3.add("Anne Hathaway");
 		cast3.add("Jessica Chastain");
-		session.save(new Movie("Inception","התחלה",2014,cast3,148,13,Init.class.getResourceAsStream(null)));
+		session.save(new Movie("Inception","התחלה",2014,cast3,148,13,null));
 		List<String> cast4=new LinkedList<String>();
 		cast4.add("Antoine Fuqua");
 		cast4.add("Denzel Washington");
 		cast4.add("Ethan Hawke");
 		cast4.add("Scott Glenn");
-		session.save(new Movie("Training Day","יום אימונים מסוכן",2001,cast4,122,0,Init.class.getResourceAsStream(null)));
+		session.save(new Movie("Training Day","יום אימונים מסוכן",2001,cast4,122,0,null));
 		session.flush();
 	}
 	public static void generateTicket() throws Exception{
@@ -130,9 +153,10 @@ public class Init {
 		
 	}
 	public static void generateTheater(){
-		session.save(new Theater(18));
-		session.save(new Theater(32));
-		session.save(new Theater(8));
+		
+		session.save(new Theater("1", 18, null));
+		session.save(new Theater(null, 32, null));
+		session.save(new Theater(null, 8, null));
 		session.flush();
 	}
 	
@@ -157,6 +181,22 @@ public class Init {
         CriteriaQuery<Screening> query = builder.createQuery(Screening.class);
         query.from(Screening.class);
         List<Screening> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
+	public static List<Employee> getAllEmployee() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        query.from(Employee.class);
+        List<Employee> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
+	public static List<Cinema> getAllCinemas() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);
+        query.from(Cinema.class);
+        List<Cinema> data = session.createQuery(query).getResultList();
         return data;
 
     }

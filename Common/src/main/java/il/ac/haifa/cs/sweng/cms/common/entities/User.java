@@ -3,7 +3,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

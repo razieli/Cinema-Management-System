@@ -9,11 +9,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "purpleBadge")
 public class PurpleBadge {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int id;
 	final static int DEFAULT = 100;
 	private static PurpleBadge single_instance;
 	
 	private boolean status;// false-No restrictions, true-No more than y 
 	private int Y;
+	@Column
+	@ElementCollection
 	private List<GregorianCalendar> closingDates;
 	private PurpleBadge()
 	{

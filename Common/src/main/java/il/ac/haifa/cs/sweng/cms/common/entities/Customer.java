@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
-import java.util.Vector;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -10,10 +11,12 @@ public class Customer extends User {
 	private boolean has_link=false;
 	private boolean has_package=false;
 	//TODO:
-	@OneToOne(mappedBy = "ticket")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ticket", referencedColumnName = "id")
 	private Ticket ticket=null;
-	@OneToMany(mappedBy = "customer")
-	private Vector<Ticket> packageList=null;
+	
+	@OneToMany(targetEntity = Ticket.class,mappedBy = "customer", fetch = FetchType.LAZY)
+	private List<Ticket> packageList=null;
 	
 	Customer(){super();}
 	Customer(String firstName, String lastName)
@@ -33,14 +36,14 @@ public class Customer extends User {
 	
 	public void setTicket(Ticket ticket) {this.ticket = ticket;}
 	
-	public Vector<Ticket> getpackageList() {return packageList;}
+	public List<Ticket> getpackageList() {return packageList;}
 	
-	public void setpackageList(Vector<Ticket> packageList) {this.packageList = packageList;}
+	public void setpackageList(List<Ticket> packageList) {this.packageList = packageList;}
 
 	public void addTicket(Ticket ticket,boolean isPackage) {
 		if(isPackage) {
 			if (this.packageList==null)
-				this.packageList=new Vector<Ticket>();
+				this.packageList=new LinkedList<Ticket>();
 			this.packageList.add(ticket);
 		}
 		else
