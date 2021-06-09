@@ -12,7 +12,7 @@ package il.ac.haifa.cs.sweng.cms.ocsf.server;
 * the orginator of the messages received. The originator
 * is null when the message sent concerns the server.
 *
-* Project Name: OCSF (Object Client-Server Framework)<p>
+* Project Name: OCSF (Object Client-OCSFServer Framework)<p>
 *
 * @author Dr Robert Lagani&egrave;re
 * @author Dr Timothy C. Lethbridge

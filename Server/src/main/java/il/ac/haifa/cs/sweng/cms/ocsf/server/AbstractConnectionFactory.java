@@ -23,7 +23,7 @@ import java.io.*;
 * <code>AbstractServer.handleMessageFromClient()</code>
 * method.
 *
-* Project Name: OCSF (Object Client-Server Framework)<p>
+* Project Name: OCSF (Object Client-OCSFServer Framework)<p>
 *
 * @author Dr Robert Lagani&egrave;re
 * @author Dr Timothy C. Lethbridge

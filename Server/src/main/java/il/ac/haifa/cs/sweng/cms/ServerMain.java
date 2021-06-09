@@ -2,7 +2,9 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Main class for server program.
@@ -27,14 +29,23 @@ public class ServerMain {
                 printUsage();
                 return;
             }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String message;
+            // Create the DB session.
+            Log.i(TAG, "Creating the DB session...");
+            DB db = new DB();
 
             // Create the server and start listening.
             Log.i(TAG, "Creating the server...");
-            Server server = new Server(Integer.parseInt(args[0]));
+            OCSFServer server = new OCSFServer(Integer.parseInt(args[0]), db);
             try {
                 Log.i(TAG, "Trying to start the listener...");
                 server.listen();
                 Log.i(TAG, "Listening on port " + port + ".");
+                message=reader.readLine();
+                if (message.equals("exit"))
+                	System.exit(0);
+                
             } catch(IOException e) {
                 Log.e(TAG, "IO error occurred while trying to create the server socket.");
             }

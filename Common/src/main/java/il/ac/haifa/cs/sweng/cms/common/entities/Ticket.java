@@ -44,5 +44,21 @@ public class Ticket {
 	public int getSeat() {return seat;}
 	
 	public void setSeat(int seat) {this.seat = seat;}
-	
+	/**
+	 * Id set/get
+	 */
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * convert ticket to the movie name
+	 */
+	@Override
+	public String toString() {
+		return this.getScreening().getMovie().getEngName();
+	}
 }

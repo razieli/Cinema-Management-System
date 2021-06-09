@@ -13,7 +13,6 @@ import java.util.List;
  */
 public class UpdateScreeningsRequest extends AbstractRequest {
 
-    private Movie movie;
     private List<Screening> screeningList;
 
     /**
@@ -21,16 +20,7 @@ public class UpdateScreeningsRequest extends AbstractRequest {
      * @param screeningList List of screenings to replace the existing list of this movie.
      */
     public UpdateScreeningsRequest(List<Screening> screeningList) {
-        this.movie = movie;
         this.screeningList = screeningList;
-    }
-
-    /**
-     * Returns the movie that is being updated.
-     * @return The movie.
-     */
-    public Movie getMovie() {
-        return movie;
     }
 
     /**
@@ -40,5 +30,4 @@ public class UpdateScreeningsRequest extends AbstractRequest {
     public List<Screening> getScreeningList() {
         return screeningList;
     }
-
 }

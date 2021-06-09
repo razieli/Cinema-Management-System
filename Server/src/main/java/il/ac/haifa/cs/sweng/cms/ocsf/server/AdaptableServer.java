@@ -13,7 +13,7 @@ import java.util.*;
 * that extends the <code> AbstractServer </code> class in place of
 * the <code> AbstractObservableServer </code>.<p>
 *
-* Project Name: OCSF (Object Client-Server Framework)<p>
+* Project Name: OCSF (Object Client-OCSFServer Framework)<p>
 *
 * @author Dr. Robert Lagani&egrave;re
 * @version Febuary 2001

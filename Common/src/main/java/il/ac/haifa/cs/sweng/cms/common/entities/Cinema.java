@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
@@ -21,14 +22,13 @@ public class Cinema {
 	private List<Theater> theaters;
 	
 	public Cinema() {
-		this.theaters=new LinkedList<Theater>();
+		this.theaters=null;
 	}
-	public Cinema(String name,String address, Employee manager, List<Theater> theaters) {
+	public Cinema(String name,String address, Employee manager) {
 		this();
 		this.name=name;
 		this.address=address;
 		this.manager=manager;
-		this.theaters.addAll(theaters);
 	}
 	public String getName() {
 		return name;
@@ -55,6 +55,8 @@ public class Cinema {
 		this.theaters = theaters;
 	}
 	public void addTheater(Theater theater) {
+		if (this.theaters==null)
+			this.theaters=new ArrayList<Theater>();
 		this.theaters.add(theater);
 	}
 	public void removeTheater(Theater theater) {

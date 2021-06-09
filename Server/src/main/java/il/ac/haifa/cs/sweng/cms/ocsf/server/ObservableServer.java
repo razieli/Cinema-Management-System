@@ -49,17 +49,17 @@ public class ObservableServer extends Observable
   /**
    * The string sent to the observers when the server has closed.
    */
-  public static final String SERVER_CLOSED= "#OS:Server closed.";
+  public static final String SERVER_CLOSED= "#OS:OCSFServer closed.";
 
   /**
    * The string sent to the observers when the server has started.
    */
-  public static final String SERVER_STARTED= "#OS:Server started.";
+  public static final String SERVER_STARTED= "#OS:OCSFServer started.";
 
   /**
    * The string sent to the observers when the server has stopped.
    */
-  public static final String SERVER_STOPPED= "#OS:Server stopped.";
+  public static final String SERVER_STOPPED= "#OS:OCSFServer stopped.";
 
 
   //Instance variables **********************************************
