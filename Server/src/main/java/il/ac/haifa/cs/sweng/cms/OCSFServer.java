@@ -2,7 +2,9 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.ConnectionToClient;
@@ -81,6 +83,18 @@ public class OCSFServer extends AbstractServer {
             List<Screening> screeningList = ((UpdateScreeningsRequest) request).getScreeningList();
             db.setScreenings(screeningList);
             return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
+        }
+        if(request instanceof LoginRequest) {
+            String username = ((LoginRequest) request).getUsername();
+            String password = ((LoginRequest) request).getPassword();
+            String pwFromDB = db.getPassword(username);
+            LoginResponse loginResponse;
+            if(DB.passMatches(password, pwFromDB) == 1) {
+                loginResponse = new LoginResponse(ResponseStatus.Acknowledged);
+            } else {
+                loginResponse = new LoginResponse(ResponseStatus.Declined);
+            }
+            return loginResponse;
         }
         Log.w(TAG, "Unidentified request.");
         return null;

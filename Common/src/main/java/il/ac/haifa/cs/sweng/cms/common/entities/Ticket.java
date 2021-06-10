@@ -1,28 +1,22 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-/**
- * Ticket Entity
- */
 @Entity
 @Table(name = "tickets")
-public class Ticket implements Serializable {
+public class Ticket {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "costumer_id")
+	@OneToOne(mappedBy = "customer")
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="customer")
 	private Customer customer;
-	@ManyToOne
-	@JoinColumn(name ="screening")
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="screening")
 	private Screening screening;
 	private int seat;
-
-	/**
-	 * constructors
-	 */
+	
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
@@ -38,25 +32,18 @@ public class Ticket implements Serializable {
 		this.screening=screening;
 		this.seat=seat;
 	}
-
-	/**
-	 * customer set/get
-	 */
+	
 	public Customer getCustomer() {return customer;}
+	
 	public void setCustomer(Customer customer) {this.customer = customer;}
-
-	/**
-	 * screening set/get
-	 */
+	
 	public Screening getScreening() {return screening;}
+
 	public void setScreening(Screening screening) {this.screening = screening;}
-
-	/**
-	 * seat set/get
-	 */
+	
 	public int getSeat() {return seat;}
+	
 	public void setSeat(int seat) {this.seat = seat;}
-
 	/**
 	 * Id set/get
 	 */
@@ -65,5 +52,13 @@ public class Ticket implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * convert ticket to the movie name
+	 */
+	@Override
+	public String toString() {
+		return this.getScreening().getMovie().getEngName();
 	}
 }
