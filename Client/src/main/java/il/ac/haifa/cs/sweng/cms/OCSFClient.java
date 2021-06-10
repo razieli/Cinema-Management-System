@@ -1,11 +1,12 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllMoviesRequest;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.UpdateScreeningsRequest;
+import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
@@ -59,6 +60,9 @@ public class OCSFClient extends AbstractClient {
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
+        if(response instanceof LoginResponse) {
+            // TODO Yaniv: check response and update gui.
+        }
         // TODO: Show "Unidentified response".
     }
 
@@ -86,6 +90,22 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
+     * Sets the calling controller.
+     * @param controller Controller which called the OCSFClient.
+     */
+    protected void setController(Initializable controller) {
+        this.controller = controller;
+    }
+
+    protected void tryLogin(String userName, String password) {
+        try {
+            sendToServer(new LoginRequest(userName, password));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sends a request to the server to file a complaint.
      * @param complaint Complaint to file.
      */
@@ -107,14 +127,6 @@ public class OCSFClient extends AbstractClient {
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
-    }
-
-    /**
-     * Sets the calling controller.
-     * @param controller Controller which called the OCSFClient.
-     */
-    protected void setController(Initializable controller) {
-        this.controller = controller;
     }
 
 }
