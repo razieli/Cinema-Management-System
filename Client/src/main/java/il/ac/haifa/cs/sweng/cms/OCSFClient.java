@@ -54,7 +54,7 @@ public class OCSFClient extends AbstractClient {
      */
     private void handleResponse(AbstractResponse response) {
         if(response instanceof ListAllMoviesResponse) {
-            ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.

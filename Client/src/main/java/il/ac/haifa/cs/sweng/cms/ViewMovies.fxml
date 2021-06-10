@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ManagerViewMoviesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ViewMoviesController">
    <children>
       <BorderPane layoutX="307.0" layoutY="-1.455078125" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -24,14 +24,15 @@
                         <AnchorPane BorderPane.alignment="CENTER">
                            <children>
                               <MenuBar prefHeight="40.0" prefWidth="640.0" style="-fx-background-color: black; -fx-border-color: ORANGE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <Text fx:id="genreHeader" boundsType="LOGICAL_VERTICAL_CENTER" fill="ORANGE" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0" text="Movie List" textAlignment="CENTER" wrappingWidth="639.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="ORANGE" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0" text="Movie List" textAlignment="CENTER" wrappingWidth="639.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <font>
                                     <Font name="Aharoni Bold" size="30.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="31.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <AnchorPane fx:id="addButtonAnchor" prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="6.0" />
+                              <Button fx:id="backButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
                                  <font>
-                                    <Font name="Aharoni Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
                            </children>
