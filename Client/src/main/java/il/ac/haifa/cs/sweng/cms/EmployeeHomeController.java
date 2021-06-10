@@ -81,7 +81,7 @@ public class EmployeeHomeController  implements Initializable {
     @FXML
     void switchToMovieListScreen(ActionEvent event) {
         try {
-            App.setRoot("ManagerViewMovies.fxml");
+            App.setRoot("ViewMovies.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

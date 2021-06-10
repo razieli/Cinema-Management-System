@@ -3,6 +3,7 @@ C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Com
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\AbstractRequest.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\module-info.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\entities\Employee.java
+C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\entities\PurpleBadge.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\responses\UpdateScreeningsResponse.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\ResponseStatus.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\entities\Movie.java
@@ -10,6 +11,7 @@ C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Com
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\entities\User.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\AbstractMessage.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\responses\ListAllMoviesResponse.java
+C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\entities\Cinema.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\entities\Screening.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\AbstractResponse.java
 C:\Users\regev\Documents\Code\Java\Jeyberd\IntelliJ\Cinema-Management-System\Common\src\main\java\il\ac\haifa\cs\sweng\cms\common\messages\requests\UpdateScreeningsRequest.java

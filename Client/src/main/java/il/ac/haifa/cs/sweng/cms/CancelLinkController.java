@@ -17,8 +17,8 @@ import java.util.ResourceBundle;
 public class CancelLinkController implements Initializable {
 
     //test DB
-    private Customer cus1 = new Customer("Customer1", "Customer1");
-    private Customer cus2 = new Customer("Customer2", "Customer2");
+    private Customer cus1 = new Customer("Customer1", "Customer1",null,null);
+    private Customer cus2 = new Customer("Customer2", "Customer2",null,null);
 
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.YY E HH:mm");
 

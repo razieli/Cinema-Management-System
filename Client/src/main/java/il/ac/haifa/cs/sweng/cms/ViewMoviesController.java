@@ -40,7 +40,7 @@ public class ViewMoviesController implements Initializable {
     List<Movie> movies= new ArrayList<Movie>();
     HBox hb = new HBox();
 
-    private int permission =2;
+    private String userType= App.getUserType();
 
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
@@ -100,7 +100,7 @@ public class ViewMoviesController implements Initializable {
 //            backButtonIm.setFitWidth(backButton.getPrefWidth());
 //            backButton.setGraphic(backButtonIm);
 
-            if (permission ==1) { //Manager
+            if (userType == "Employee") { //Manager
                 Button addMovieButton = new Button("+");
                 addMovieButton.setPrefSize(30,30);
 
@@ -195,7 +195,7 @@ public class ViewMoviesController implements Initializable {
 /*on action functionality, go into edit screen of the chosen movie*/
         vb.setOnMouseClicked(e -> {
 
-           if (permission ==1) { //Manager
+           if (userType == "Employee") { //Manager
                try {
                    // todo: what screen the press lead to
                    // storing the selected film to customise the newly created scene
@@ -206,7 +206,7 @@ public class ViewMoviesController implements Initializable {
                }
            }
 
-           else if (permission ==2) { //Costumer
+           else if (userType == "Customer") { //Costumer
                try {
                    // todo: what screen the press lead to
                    // storing the selected film to customise the newly created scene
@@ -226,12 +226,22 @@ public class ViewMoviesController implements Initializable {
      */
     @FXML
     void handheldsBackButton(ActionEvent event) {
-        //set an information alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
+        if (userType == "Customer"){
+            try {
+                // todo: what screen the press lead to
+                App.setRoot("CustomerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        else if (userType == "Employee"){
+            try {
+                App.setRoot("EmployeeHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     /**

@@ -22,6 +22,7 @@ public class App extends Application {
     // FIXME: Temporarily select the user type manually
     // FIXME: "Customer" or "Employee"
     private static String userType = "Employee";
+//    private static String userType = "Customer";
     private static String firstName = "David";
     private static String username = "david_1990";
     private static String pass = "123";
@@ -39,7 +40,7 @@ public class App extends Application {
         scene = new Scene(root, 640, 480);//new scene to load
         stage.setScene(scene);//set scene
         stage.setTitle("Cinema Managment System");
-        stage.getIcons().add(new Image(App.class.getResourceAsStream("icon.png")));
+//        stage.getIcons().add(new Image(App.class.getResourceAsStream("icon.png")));
 
         stage.show();//show stage
         

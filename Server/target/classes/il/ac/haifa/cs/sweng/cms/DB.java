@@ -44,6 +44,8 @@ public class DB {
 		configuration.addAnnotatedClass(Ticket.class);
 		configuration.addAnnotatedClass(User.class);
 		configuration.addAnnotatedClass(Employee.class);
+		configuration.addAnnotatedClass(Cinema.class);
+		configuration.addAnnotatedClass(PurpleBadge.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -55,7 +57,6 @@ public class DB {
 		try {
 			sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
-
 			// If there are no movies in the DB initialize it with init movies.
 			List<Movie> movies = getAllMovies();
 			if(movies.isEmpty()) {
@@ -76,10 +77,11 @@ public class DB {
 	protected void init() {
 		session.beginTransaction();
 		try {
-			generateMovie();
 			generateCustomer();
 			generateEmployee();
-			generateTheater();
+			generatePurpleBage();
+			generateCinemaandTheaters();
+			generateMovie();
 			generateScreening();
 			generateTicket();
 		} catch (URISyntaxException e) {
@@ -99,9 +101,9 @@ public class DB {
 	 * generate initial employees
 	 */
 	public void generateEmployee(){
-		session.save(new Employee("Haim","Cohen","asdfg",1));
-		session.save(new Employee("Eyal","Shani","poiuyt",0));
-		session.save(new Employee("Ilan","Newman","q2w34e",1));
+		session.save(new Employee("Haim","Cohen","asdfg", "HaimCohen",1));
+		session.save(new Employee("Eyal","Shani","poiuyt", "EyalShani",0));
+		session.save(new Employee("Ilan","Newman","q2w34e", "IlanNewman",1));
 		session.flush();
 	}
 
@@ -109,14 +111,15 @@ public class DB {
 	 * generate initial customers
 	 */
 	public void generateCustomer(){
-		session.save(new Customer("Gal","Galgal"));
-		session.save(new Customer("Ron","Bonbon"));
+		session.save(new Customer("Gal","Galgal", "182fde", "GalGalGal"));
+		session.save(new Customer("Ron","Bonbon", "df38jed", "RonBonbon"));
 		session.flush();
 	}
 
 	/**
 	 * generate initial movies
 	 */
+	
 	public void generateMovie() throws URISyntaxException {
 		List<String> cast1=new LinkedList<String>();
 		cast1.add("Christopher Nolan");
@@ -127,7 +130,7 @@ public class DB {
 		String description1 = ("When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.");
 		URI uri1a = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		URI uri1b = new URI("https://www.imdb.com/video/vi324468761?playlistId=tt0468569");
-		session.save(new Movie("The Dark Knight","האביר האפל",2008,cast1s,152,13,description1, uri1a, uri1b));
+		session.save(new Movie("The Dark Knight","????? ????",2008,cast1s,152,13,description1, uri1a, uri1b));
 		List<String> cast2=new LinkedList<String>();
 		cast2.add("Christopher Nolan");
 		cast2.add("Leonardo DiCaprio");
@@ -137,7 +140,7 @@ public class DB {
 		String description2 = ("A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.");
 		URI uri2a = new URI("https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri2b = new URI("https://www.imdb.com/video/vi2959588889?playlistId=tt1375666");
-		session.save(new Movie("Inception","התחלה",2010,cast2s,148,13,description2,uri2a, uri2b));
+		session.save(new Movie("Inception","?????",2010,cast2s,148,13,description2,uri2a, uri2b));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");
@@ -147,7 +150,7 @@ public class DB {
 		String description3 = ("A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.");
 		URI uri3a = new URI("https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri3b = new URI("https://www.imdb.com/video/vi1586278169?playlistId=tt0816692");
-		session.save(new Movie("Interstellar","בין כוכבים",2014,cast3s,169,13,description3, uri3a, uri3b));
+		session.save(new Movie("Interstellar","??? ??????",2014,cast3s,169,13,description3, uri3a, uri3b));
 		List<String> cast4=new LinkedList<String>();
 		cast4.add("Antoine Fuqua");
 		cast4.add("Denzel Washington");
@@ -157,7 +160,7 @@ public class DB {
 		String description4 = ("A rookie cop spends his first day as a Los Angeles narcotics officer with a rogue detective who isn't what he appears to be.");
 		URI uri4a = new URI("https://m.media-amazon.com/images/M/MV5BMDZkMTUxYWEtMDY5NS00ZTA5LTg3MTItNTlkZWE1YWRjYjMwL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri4b = new URI("https://www.imdb.com/video/vi671023385?playlistId=tt0139654");
-		session.save(new Movie("Training Day","יום אימונים מסוכן",2001,cast4s,122,0,description4, uri4a, uri4b));
+		session.save(new Movie("Training Day","??? ??????? ?????",2001,cast4s,122,0,description4, uri4a, uri4b));
 		List<String> cast5=new LinkedList<String>();
 		cast5.add("Jon Favreau");
 		cast5.add("Donald Glover");
@@ -167,7 +170,7 @@ public class DB {
 		String description5 = ("After the murder of his father, a young lion prince flees his kingdom only to learn the true meaning of responsibility and bravery.");
 		URI uri5a = new URI("https://m.media-amazon.com/images/M/MV5BMjIwMjE1Nzc4NV5BMl5BanBnXkFtZTgwNDg4OTA1NzM@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri5b = new URI("https://www.imdb.com/video/vi3509369881?playlistId=tt6105098");
-		session.save(new Movie("The Lion King","מלך האריות",2019,cast5s,118,0,description5, uri5a, uri5b));
+		session.save(new Movie("The Lion King","??? ??????",2019,cast5s,118,0,description5, uri5a, uri5b));
 		List<String> cast6=new LinkedList<String>();
 		cast6.add("Gabriele Muccino");
 		cast6.add("Will Smith");
@@ -177,7 +180,7 @@ public class DB {
 		String description6 = ("A struggling salesman takes custody of his son as he's poised to begin a life-changing professional career.");
 		URI uri6a = new URI("https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri6b = new URI("https://www.imdb.com/video/vi1413719065?playlistId=tt0454921");
-		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast5s,117,13,description6, uri6a, uri6b));
+		session.save(new Movie("The Pursuit of Happyness","????? ?????",2006,cast6s,117,13,description6, uri6a, uri6b));
 		session.flush();
 	}
 
@@ -232,10 +235,24 @@ public class DB {
 	/**
 	 * generate initial theaters
 	 */
-	public void generateTheater(){
-		session.save(new Theater("Haifa", 18));
-		session.save(new Theater("Tel-Aviv", 32));
-		session.save(new Theater("Netanya", 8));
+	public void generatePurpleBage() {
+		session.save(PurpleBadge.getInstance());
+		session.flush();
+	}
+	public void generateCinemaandTheaters() throws Exception{
+		List<Employee> emps=getAllEmployee();
+		Cinema c1 = new Cinema("Haifa","Lev Hamifrats",emps.get(0));
+		Cinema c2 = new Cinema("Tel Aviv","Glilot",emps.get(1));
+
+		Theater t1 = new Theater("Haifa", 18,c1),t2 = new Theater("Tel-Aviv", 32,c2),t3 = new Theater("Netanya", 8,c1);
+		c1.addTheater(t1);
+		c2.addTheater(t2);
+		c1.addTheater(t3);
+		session.save(c1);
+		session.save(c2);
+		session.save(t1);
+		session.save(t2);
+		session.save(t3);		
 		session.flush();
 	}
 
@@ -277,7 +294,22 @@ public class DB {
 		return data;
 
 	}
+	public List<Employee> getAllEmployee() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        query.from(Employee.class);
+        List<Employee> data = session.createQuery(query).getResultList();
+        return data;
 
+    }
+	public List<Cinema> getAllCinemas() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);
+        query.from(Cinema.class);
+        List<Cinema> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
 	/**
 	 * Updates the databse according to the given screening list for a specific movie.
 	 * @param screeningList New list of screenings for a movie.

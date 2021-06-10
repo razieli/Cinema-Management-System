@@ -1,6 +1,5 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllMoviesRequest;
@@ -9,12 +8,9 @@ import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Extension of the OCSF AbstractClient class.
@@ -54,7 +50,7 @@ public class OCSFClient extends AbstractClient {
      */
     private void handleResponse(AbstractResponse response) {
         if(response instanceof ListAllMoviesResponse) {
-            ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.

@@ -21,8 +21,8 @@ public class CancelTicketController implements Initializable {
     private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
     private  ArrayList<Customer> customerList= new ArrayList<Customer>();
     private  ArrayList<Movie> movieList= new ArrayList<Movie>();
-    private Theater theater1 = new Theater("place1",50);
-    private Theater theater2 = new Theater("place2",80);
+    private Theater theater1 = new Theater("place1",50,null);
+    private Theater theater2 = new Theater("place2",80, null);
     private GregorianCalendar time1 = new GregorianCalendar(2021, 8, 20, 16, 16, 47);
     private GregorianCalendar time2 = new GregorianCalendar(2021, 6, 27, 8, 00, 00);
 
@@ -32,8 +32,8 @@ public class CancelTicketController implements Initializable {
     private Screening screen1 = new Screening(movie1,theater1,time1);
     private Screening screen2 = new Screening(movie2,theater2,time2);
 
-    private Customer cus1 = new Customer("Customer1", "Customer1");
-    private Customer cus2 = new Customer("Customer2", "Customer2");
+    private Customer cus1 = new Customer("Customer1", "Customer1",null,null);
+    private Customer cus2 = new Customer("Customer2", "Customer2",null,null);
 
 
     private Ticket ticket1 = new Ticket(cus1,screen1,8);
