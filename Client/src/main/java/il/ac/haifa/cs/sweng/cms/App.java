@@ -28,7 +28,7 @@ public class App extends Application {
         ocsfClient = new OCSFClient("localhost", 8080);
         ocsfClient.openConnection();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PurchaseCancel.fxml"));//FXML to load
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewMovies.fxml"));//FXML to load
         Parent root = (Parent)loader.load();
 
         scene = new Scene(root, 640, 480);//new sean to load

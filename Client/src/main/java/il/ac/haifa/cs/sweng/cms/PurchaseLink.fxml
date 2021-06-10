@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.PurchaseLinkController">
+   <children>
+      <AnchorPane layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
+                     <children>
+                        <MenuBar layoutX="3.0" layoutY="3.0" prefHeight="32.0" prefWidth="680.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="2.0" />
+                        <AnchorPane />
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Text fx:id="inputEngTitle" fill="ORANGE" layoutX="226.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Purchase Link" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="231.33331274986267" AnchorPane.bottomAnchor="12.0" AnchorPane.topAnchor="7.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </top>
+               <bottom>
+                  <AnchorPane prefHeight="35.0" prefWidth="671.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+                     <children>
+                        <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <buttons>
+                              <Button fx:id="paymentButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handheldsPayment" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: orange;" text="Payment" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </buttons>
+                        </ButtonBar>
+                     </children>
+                  </AnchorPane>
+               </bottom>
+               <center>
+                  <AnchorPane style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label fx:id="messageTitle" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets bottom="100.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="397.0">
+                                 <buttons>
+                                    <Button fx:id="addTimeButton" minWidth="49.0" mnemonicParsing="false" onAction="#handheldsAddTimeButton" prefHeight="25.0" style="-fx-background-color: orange;" text="Yes! that date" />
+                                    <ComboBox fx:id="hourComboBox" promptText="Hour" />
+                                    <DatePicker fx:id="datePicker" promptText="Date" />
+                                 </buttons>
+                                 <opaqueInsets>
+                                    <Insets bottom="100.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets bottom="100.0" left="50.0" />
+                                 </VBox.margin>
+                              </ButtonBar>
+                              <Text fx:id="dateConfirmation" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
