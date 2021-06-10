@@ -15,14 +15,16 @@ public class Screening implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
-	@ManyToOne
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="movie")
 	private Movie movie;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="theater_id")
 	private Theater theater;
 	private GregorianCalendar date;
-	@OneToMany(mappedBy = "screening")
+	@OneToMany(targetEntity = Ticket.class, mappedBy = "screening",fetch = FetchType.LAZY)
 	private List<Ticket> tickets;
 
 	/**
@@ -40,6 +42,7 @@ public class Screening implements Serializable {
 		this();
 		this.movie = movie;
 		this.theater = theater;
+		this.theater.setRealSeatsCapacity();
 		this.date = gregorianCalendar;
 //		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
 //		for(int i=0;i<this.theater.getSeatsCapacity();i++)
@@ -63,7 +66,7 @@ public class Screening implements Serializable {
 	 * Theater getter and setter.
 	 */
 	public Theater getTheater() { return theater; }
-	public void setTheater(Theater theater) { this.theater = theater; }
+	public void setTheater(Theater theater) { this.theater = theater; this.theater.setRealSeatsCapacity(); }
 
 	/**
 	 * Date getter and setter.

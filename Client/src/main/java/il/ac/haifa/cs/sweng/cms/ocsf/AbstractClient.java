@@ -124,12 +124,12 @@ public abstract class AbstractClient implements Runnable
    *
    * @exception IOException if an I/O error occurs when opening.
    */
-  final public void openConnection() throws IOException
+  final public int openConnection() throws IOException
   {
     // Do not do anything if the connection is already open
-    if(isConnected())
-      return;
-
+    if ( isConnected() ) {
+      return -2;
+    }
     //Create the sockets and the data streams
     try
     {
@@ -144,6 +144,7 @@ public abstract class AbstractClient implements Runnable
       try
       {
         closeAll();
+        return -1;
       }
       catch (Exception exc) { }
 
@@ -153,6 +154,7 @@ public abstract class AbstractClient implements Runnable
     clientReader = new Thread(this);  //Create the data reader thread
     readyToStop = false;
     clientReader.start();  //Start the thread
+    return 1;
   }
 
   /**

@@ -12,16 +12,20 @@ public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+    private String userName;
+    private String password;
 	private String firstName;
 	private String lastName;
 
 	/**
 	 *constructors
 	 */
-	public User(String firstName, String lastName){
+	public User(String firstName, String lastName, String password, String userName){
 		this();
+		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.password = password;
 	}
 	
 	public User() {
@@ -50,4 +54,19 @@ public abstract class User implements Serializable {
 	public void setLastName(String lastName) { this.lastName = lastName; }
 
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
