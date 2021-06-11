@@ -5,6 +5,7 @@ module Client {
 	requires Common;
 	requires java.desktop;
 	requires java.logging;
+	requires jbcrypt;
 
 	exports il.ac.haifa.cs.sweng.cms;
 	opens il.ac.haifa.cs.sweng.cms;

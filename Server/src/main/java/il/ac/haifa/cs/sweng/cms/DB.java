@@ -101,8 +101,9 @@ public class DB {
 	 */
 	public void generateEmployee(){
 		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
-		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",0));
-		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",1));
+		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",2));
+		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",3));
+		session.save(new Employee("Dani","Keren",hash("ds348ds"), "DaniKeren",4));
 		session.flush();
 	}
 
@@ -110,8 +111,8 @@ public class DB {
 	 * generate initial customers
 	 */
 	public void generateCustomer(){
-		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal"));
-		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon"));
+		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal", 0));
+		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
 		session.flush();
 	}
 
@@ -122,8 +123,6 @@ public class DB {
 	}
 
 	public static int passMatches(String candidate, String hashed) {
-		// Check that an unencrypted password matches one that has
-		// previously been hashed
 		if (BCrypt.checkpw(candidate, hashed))	//It matches
 			return 1;
 		else	//It does not match
@@ -396,5 +395,21 @@ public class DB {
 			{
 				return null;
 			}
+	}
+
+	public int getPermission(String username) {
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+		Query<User> query = session.createQuery(criteriaQuery);
+		try
+		{
+			return query.getSingleResult().getPermission();
+		}
+		catch (NoResultException e)
+		{
+			return 0;
+		}
 	}
 }

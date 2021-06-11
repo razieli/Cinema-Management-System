@@ -1,7 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
@@ -12,11 +11,9 @@ import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsRespon
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Extension of the OCSF AbstractClient class.
@@ -62,33 +59,47 @@ public class OCSFClient extends AbstractClient {
             // TODO: Update GUI with screenings.
         }
         if (response instanceof LoginResponse) {
-            if (response.getStatus() == ResponseStatus.Acknowledged) {
-                String userType = App.getUserType();
-                if (userType == "Customer") {
-                    try {
-                        App.setRoot("CustomerHome.fxml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else if (userType == "Employee") {
-                    try {
-                        App.setRoot("EmployeeHome.fxml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            else
-            {
+            if (response.getStatus() == ResponseStatus.Declined) {
+                App.setUserPermission(-1);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(null);
                 alert.setHeaderText(null);
                 alert.setContentText("Wrong Login!");
                 alert.showAndWait();
             }
+            else if (response.getStatus() == ResponseStatus.Customer) {
+                App.setUserPermission(0);
+            }
+            else if (response.getStatus() == ResponseStatus.CustomerService) {
+                App.setUserPermission(1);
+            }
+            else if (response.getStatus() == ResponseStatus.ContentManager) {
+                App.setUserPermission(2);
+            }
+            else if (response.getStatus() == ResponseStatus.BranchManager) {
+                App.setUserPermission(3);
+            }
+            else if (response.getStatus() == ResponseStatus.Administrator) {
+                App.setUserPermission(4);
+            }
+            int permission = App.getUserPermission();
+            if(permission > 0){
+                try {
+                    App.setRoot("EmployeeHome.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (permission == 0) {
+                try {
+                    App.setRoot("CustomerHome.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            }
             // TODO: Show "Unidentified response".
         }
-    }
 
     /**
      * Sends a request to the server to get the list of all movies.

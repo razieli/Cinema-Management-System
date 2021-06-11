@@ -88,9 +88,29 @@ public class OCSFServer extends AbstractServer {
             String username = ((LoginRequest) request).getUsername();
             String password = ((LoginRequest) request).getPassword();
             String pwFromDB = db.getPassword(username);
-            LoginResponse loginResponse;
+            int perFromDB = db.getPermission(username);
+            LoginResponse loginResponse = null;
             if(DB.passMatches(password, pwFromDB) == 1) {
-                loginResponse = new LoginResponse(ResponseStatus.Acknowledged);
+                if (perFromDB == 0)
+                {
+                    loginResponse = new LoginResponse(ResponseStatus.Customer);
+                }
+                else if (perFromDB == 1)
+                {
+                    loginResponse = new LoginResponse(ResponseStatus.CustomerService);
+                }
+                else if (perFromDB == 2)
+                {
+                    loginResponse = new LoginResponse(ResponseStatus.ContentManager);
+                }
+                else if (perFromDB == 3)
+                {
+                    loginResponse = new LoginResponse(ResponseStatus.BranchManager);
+                }
+                else if (perFromDB == 4)
+                {
+                    loginResponse = new LoginResponse(ResponseStatus.Administrator);
+                }
             } else {
                 loginResponse = new LoginResponse(ResponseStatus.Declined);
             }

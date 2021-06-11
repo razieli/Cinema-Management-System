@@ -24,9 +24,9 @@ public class Customer extends User implements Serializable {
 	 * constructors
 	 */
 	public Customer(){super();}
-	public Customer(String firstName, String lastName, String password, String userName)
+	public Customer(String firstName, String lastName, String password, String userName, int permission)
 	{
-		super(firstName,lastName, password, userName);
+		super(firstName,lastName, password, userName, permission);
 	}
 
 	/**

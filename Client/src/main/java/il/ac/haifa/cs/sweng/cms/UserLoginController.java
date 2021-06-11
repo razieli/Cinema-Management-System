@@ -39,18 +39,6 @@ public class UserLoginController implements Initializable {
     private Button networkBtn;
 
     @FXML
-    private Button registerBtn;
-
-    @FXML
-    void switchToRegisterScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
-    }
-
-    @FXML
     void switchToConnectionSet(ActionEvent event) {
         try {
             App.setRoot("ConnectionSettings.fxml");
