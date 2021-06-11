@@ -95,7 +95,7 @@ public class OCSFServer extends AbstractServer {
         }
 
         if (request instanceof UpdateTicketsRequest) {
-            // Save new screening list in DB.
+            // Save new tickets list in DB.
             List<Ticket> ticketList = ((UpdateTicketsRequest) request).getTicketsList();
             db.setTickets(ticketList);
             return new UpdateTicketsResponse(ResponseStatus.Acknowledged);
