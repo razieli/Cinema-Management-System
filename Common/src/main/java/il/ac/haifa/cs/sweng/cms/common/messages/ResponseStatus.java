@@ -9,8 +9,8 @@ public enum ResponseStatus {
     Acknowledged,
     Declined,  // permission = -1
     Customer, // permission = 0
-    ContentManager, // permission = 1
-    CustomerService, // permission = 2
+    CustomerService, // permission = 1
+    ContentManager, // permission = 2
     BranchManager, // permission = 3
     Administrator  // permission = 4
 }
