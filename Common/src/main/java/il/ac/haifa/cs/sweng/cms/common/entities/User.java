@@ -16,16 +16,18 @@ public abstract class User implements Serializable {
     private String password;
 	private String firstName;
 	private String lastName;
+	private int permission;
 
 	/**
 	 *constructors
 	 */
-	public User(String firstName, String lastName, String password, String userName){
+	public User(String firstName, String lastName, String password, String userName, int permission){
 		this();
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
+		this.permission = permission;
 	}
 	
 	public User() {
@@ -69,4 +71,15 @@ public abstract class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	/**
+	 * @return Permission
+	 */
+	public int getPermission() {return permission;}
+
+	/**
+	 * setting Permission
+	 * @param permission
+	 */
+	public void setPermission(int permission) {this.permission = permission;}
 }

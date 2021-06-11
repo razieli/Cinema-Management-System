@@ -39,18 +39,6 @@ public class UserLoginController implements Initializable {
     private Button networkBtn;
 
     @FXML
-    private Button registerBtn;
-
-    @FXML
-    void switchToRegisterScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
-    }
-
-    @FXML
     void switchToConnectionSet(ActionEvent event) {
         try {
             App.setRoot("ConnectionSettings.fxml");
@@ -63,24 +51,11 @@ public class UserLoginController implements Initializable {
     void tryToConnect(ActionEvent event) throws IOException {
         App.setUser(userText.getText());
         App.setPass(passText.getText());
-        int val = App.connectToServer();
-        if (val == 1) {
-            String userType = App.getUserType();
-            if (userType == "Customer") {
-                try {
-                    App.setRoot("CustomerHome.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (userType == "Employee") {
-            try {
-                App.setRoot("EmployeeHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            }
+        int val_connection = App.connectToServer();
+        if (val_connection == 1) {
+            App.checkLogin();
         }
-        else if (val == -2) {
+        else if (val_connection == -2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(null);
             alert.setHeaderText(null);

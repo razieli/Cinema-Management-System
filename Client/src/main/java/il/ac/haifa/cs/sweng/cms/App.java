@@ -1,13 +1,18 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.User;
+import il.ac.haifa.cs.sweng.cms.common.messages.requests.LoginRequest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 
 
@@ -19,10 +24,7 @@ public class App extends Application {
     private static OCSFClient ocsfClient;
     private static String host = "localhost";
     private static Integer port = 8080;
-    // FIXME: Temporarily select the user type manually
-    // FIXME: "Customer" or "Employee"
-    private static String userType = "Employee";
-    private static String firstName = "David";
+    private static int userPermission = 0; // Default - Customer
     private static String username = "david_1990";
     private static String pass = "123";
 
@@ -35,14 +37,15 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("UserLogin.fxml"));
         Parent root = (Parent)loader.load();
-//        connectToServer();
+
         scene = new Scene(root, 640, 480);//new scene to load
         stage.setScene(scene);//set scene
-        stage.setTitle("Cinema Managment System");
-        stage.getIcons().add(new Image(App.class.getResourceAsStream("icon.png")));
+        Image img = new Image(new FileInputStream("Client/src/main/resourses/icon.png"));
+        stage.getIcons().add(img);
+
 
         stage.show();//show stage
-        
+
 
     }
 
@@ -55,13 +58,15 @@ public class App extends Application {
         //  1 - Succeed
         // else - Failure
         int status = ocsfClient.openConnection();
-        // TODO: login request from server
-//        LoginRequest.tryLogin(user, password);
         return status;
     }
 
     public static void disconnect() throws IOException {
         ocsfClient.closeConnection();
+    }
+
+    public static void checkLogin(){
+        ocsfClient.tryLogin(username, pass);
     }
 
 
@@ -81,8 +86,12 @@ public class App extends Application {
         host = h;
     }
 
-    static public String getUserType() {
-        return userType;
+    public static int getUserPermission() {
+        return userPermission;
+    }
+
+    static public void setUserPermission(int permission) {
+        userPermission = permission;
     }
 
     static public void setUser(String user) {
@@ -93,8 +102,12 @@ public class App extends Application {
         pass = password;
     }
 
-    public static String getName() {
-        return firstName;
+    public static String getUserName() {
+        return username;
+    }
+
+    public static String hash(String pass){
+        return BCrypt.hashpw(pass, BCrypt.gensalt());
     }
 
     /**
