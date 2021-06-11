@@ -1,7 +1,5 @@
 il\ac\haifa\cs\sweng\cms\ocsf\server\ConnectionToClient.class
 il\ac\haifa\cs\sweng\cms\ServerMain.class
-il\ac\haifa\cs\sweng\cms\DB.class
-il\ac\haifa\cs\sweng\cms\ocsf\server\OriginatorMessage.class
 il\ac\haifa\cs\sweng\cms\ocsf\server\ObservableOriginatorServer.class
 il\ac\haifa\cs\sweng\cms\ocsf\server\AbstractServer.class
 il\ac\haifa\cs\sweng\cms\OCSFServer.class

@@ -15,7 +15,7 @@ public class EmployeeHomeController  implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        helloUserName.setText("Hello " + App.getName() + " !");
+        helloUserName.setText("Hello " + App.getUserName() + " !");
     }
 
     @FXML

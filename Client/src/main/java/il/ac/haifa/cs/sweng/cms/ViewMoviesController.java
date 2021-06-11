@@ -40,7 +40,7 @@ public class ViewMoviesController implements Initializable {
     List<Movie> movies= new ArrayList<Movie>();
     HBox hb = new HBox();
 
-    private String userType= App.getUserType();
+    private int permission= App.getUserPermission();
 
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
@@ -100,11 +100,11 @@ public class ViewMoviesController implements Initializable {
 //            backButtonIm.setFitWidth(backButton.getPrefWidth());
 //            backButton.setGraphic(backButtonIm);
 
-            if (userType == "Employee") { //Manager
+            if ( permission == 2 || permission == 3 || permission == 4) { //Manager
                 Button addMovieButton = new Button("+");
                 addMovieButton.setPrefSize(30,30);
 
-                addMovieButton.setStyle("-fx-background-color: orange; -fx-font-size: 14; -fx-font-size: 16; ");
+                addMovieButton.setStyle("-fx-background-color: orange; -fx-font-size: 14; -fx-font-size: 15; ");
                 addButtonAnchor.getChildren().add(addMovieButton);
 
 
@@ -195,7 +195,7 @@ public class ViewMoviesController implements Initializable {
 /*on action functionality, go into edit screen of the chosen movie*/
         vb.setOnMouseClicked(e -> {
 
-           if (userType == "Employee") { //Manager
+           if (permission == 2 || permission == 3 || permission == 4) { //Manager
                try {
                    // todo: what screen the press lead to
                    // storing the selected film to customise the newly created scene
@@ -206,14 +206,24 @@ public class ViewMoviesController implements Initializable {
                }
            }
 
-           else if (userType == "Customer") { //Costumer
-               try {
-                   // todo: what screen the press lead to
-                   // storing the selected film to customise the newly created scene
-                   MovieOverviewController.setMovie(movie);
-                   App.setRoot("MovieOverview.fxml");//load edit movie screen
-               } catch (IOException ex) {
-                   ex.printStackTrace();
+           else if (permission == 0 || permission == 1) { //Costumer
+               if (permission == 1){
+                   Alert alert = new Alert(Alert.AlertType.WARNING);
+                   alert.setTitle(null);
+                   alert.setHeaderText(null);
+                   alert.setContentText("You do not have the required permissions.");
+                   alert.showAndWait();
+               }
+
+               else{
+                   try {
+                       // todo: what screen the press lead to
+                       // storing the selected film to customise the newly created scene
+                       MovieOverviewController.setMovie(movie);
+                       App.setRoot("MovieOverview.fxml");//load edit movie screen
+                   } catch (IOException ex) {
+                       ex.printStackTrace();
+                   }
                }
            }
            });
@@ -226,7 +236,7 @@ public class ViewMoviesController implements Initializable {
      */
     @FXML
     void handheldsBackButton(ActionEvent event) {
-        if (userType == "Customer"){
+        if (permission == 0){//customer
             try {
                 // todo: what screen the press lead to
                 App.setRoot("CustomerHome.fxml");//load edit movie screen
@@ -235,7 +245,7 @@ public class ViewMoviesController implements Initializable {
             }
         }
 
-        else if (userType == "Employee"){
+        else if (permission == 1 || permission == 2 || permission == 3 || permission == 4){//manager
             try {
                 App.setRoot("EmployeeHome.fxml");//load edit movie screen
             } catch (IOException ex) {
