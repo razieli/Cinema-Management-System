@@ -1,13 +1,20 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.User;
+import il.ac.haifa.cs.sweng.cms.common.messages.requests.LoginRequest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+
 
 /**
  * JavaFX App
@@ -15,28 +22,92 @@ import java.io.IOException;
 public class App extends Application {
     private static Scene scene;
     private static OCSFClient ocsfClient;
-//    private static Movie selectedFilmTitle ;
+    private static String host = "localhost";
+    private static Integer port = 8080;
+    private static int userPermission = 0; // Default - Customer
+    private static String username = "david_1990";
+    private static String pass = "123";
 
     /**
-     * main method that lode new scene to stage
+     * main method that load new scene to stage
      * @param stage
      * @throws IOException
      */
     @Override
     public void start(Stage stage) throws IOException {
-        /*open communication withe the server*/
-        ocsfClient = new OCSFClient("localhost", 8080);
-        ocsfClient.openConnection();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CancelTicket.fxml"));//FXML to load
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("PurchaseCancel.fxml"));//FXML to load
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("ManagerViewMovies.fxml"));//FXML to load
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserLogin.fxml"));
         Parent root = (Parent)loader.load();
 
-        scene = new Scene(root, 640, 480);//new sean to load
+        scene = new Scene(root, 640, 480);//new scene to load
         stage.setScene(scene);//set scene
+        Image img = new Image(new FileInputStream("Client/src/main/resourses/icon.png"));
+        stage.getIcons().add(img);
+
+
         stage.show();//show stage
 
+
+    }
+
+    public static int connectToServer() throws IOException {
+        String hostToConnect = getHost();
+        Integer portToConnect = getPort();
+        ocsfClient = new OCSFClient(hostToConnect, portToConnect);
+        // status:
+        //  0 - Already connected
+        //  1 - Succeed
+        // else - Failure
+        int status = ocsfClient.openConnection();
+        return status;
+    }
+
+    public static void disconnect() throws IOException {
+        ocsfClient.closeConnection();
+    }
+
+    public static void checkLogin(){
+        ocsfClient.tryLogin(username, pass);
+    }
+
+
+    static public Integer getPort() {
+        return port;
+    }
+
+    static public void setPort(int p) {
+        port = p;
+    }
+
+    static public String getHost() {
+        return host;
+    }
+
+    static public void setHost(String h) {
+        host = h;
+    }
+
+    public static int getUserPermission() {
+        return userPermission;
+    }
+
+    static public void setUserPermission(int permission) {
+        userPermission = permission;
+    }
+
+    static public void setUser(String user) {
+        username = user;
+    }
+
+    static public void setPass(String password) {
+        pass = password;
+    }
+
+    public static String getUserName() {
+        return username;
+    }
+
+    public static String hash(String pass){
+        return BCrypt.hashpw(pass, BCrypt.gensalt());
     }
 
     /**
