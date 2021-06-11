@@ -4,7 +4,9 @@ import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.ComplaintFileResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
@@ -54,16 +56,18 @@ public class OCSFClient extends AbstractClient {
      * @param response Response to handle.
      */
     private void handleResponse(AbstractResponse response) {
-        if(response instanceof ListAllMoviesResponse) {
+        if (response instanceof ListAllMoviesResponse) {
             ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
-        if(response instanceof UpdateScreeningsResponse) {
+        if (response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
-        if(response instanceof LoginResponse) {
-            // TODO Yaniv: check response and update gui.
+        if (response instanceof LoginResponse) {
+            handleLoginResponse((LoginResponse) response);
         }
-        // TODO: Show "Unidentified response".
+        if (response instanceof ComplaintFileResponse) {
+            ((ComplaintAddController) controller).updateComplaintList();
+        }
     }
 
     /**
@@ -103,6 +107,34 @@ public class OCSFClient extends AbstractClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleLoginResponse(LoginResponse response) {
+        if (response.getStatus() == ResponseStatus.Acknowledged) {
+            String userType = App.getUserType();
+            if (userType == "Customer") {
+                try {
+                    App.setRoot("CustomerHome.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (userType == "Employee") {
+                try {
+                    App.setRoot("EmployeeHome.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Wrong Login!");
+            alert.showAndWait();
+        }
+        // TODO: Show "Unidentified response".
     }
 
     /**

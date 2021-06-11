@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User Entity
@@ -16,6 +17,8 @@ public abstract class User implements Serializable {
     private String password;
 	private String firstName;
 	private String lastName;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="user")
+	private List<Complaint> complaints;
 
 	/**
 	 *constructors
@@ -68,5 +71,13 @@ public abstract class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(List<Complaint> complaints) {
+		this.complaints = complaints;
 	}
 }

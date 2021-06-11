@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -58,15 +59,15 @@ public class App extends Application {
         //  1 - Succeed
         // else - Failure
         int status = ocsfClient.openConnection();
-        // TODO: login request from server
-        if(status == 1) {
-            ocsfClient.tryLogin(username, pass);
-        }
         return status;
     }
 
     public static void disconnect() throws IOException {
         ocsfClient.closeConnection();
+    }
+
+    public static void checkLogin(){
+        ocsfClient.tryLogin(username, pass);
     }
 
 

@@ -1,7 +1,10 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.User;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.ComplaintFileResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
@@ -88,12 +91,17 @@ public class OCSFServer extends AbstractServer {
             String password = ((LoginRequest) request).getPassword();
             String pwFromDB = db.getPassword(username);
             LoginResponse loginResponse;
-            if(password == pwFromDB) {
+            if(DB.passMatches(password, pwFromDB) == 1) {
                 loginResponse = new LoginResponse(ResponseStatus.Acknowledged);
             } else {
                 loginResponse = new LoginResponse(ResponseStatus.Declined);
             }
             return loginResponse;
+        }
+        if(request instanceof ComplaintFileRequest) {
+            Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
+            db.setComplaint(complaint);
+            return new ComplaintFileResponse(ResponseStatus.Acknowledged);
         }
         Log.w(TAG, "Unidentified request.");
         return null;

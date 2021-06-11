@@ -3,6 +3,7 @@ package il.ac.haifa.cs.sweng.cms;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -18,21 +19,36 @@ public class ComplaintAddController implements Initializable {
     private Text name;
 
     @FXML
-    private Text subject;
+    private ComboBox<String> subject;
 
     @FXML
     private Text body;
+
+    @FXML
+    private Text complaintListSubject;
+
+    @FXML
+    private Text complaintListStatus;
+
+    @FXML
+    private Text complaintListDate;
+
+    @FXML
+    private Text complaintListTtr;
+
+    private Date date;
 
     /**
      * Sends the complaint the user entered to the server.
      * Shows an error if any of the fields did not pass verification.
      */
+    @FXML
     protected void addComplaint() {
         if(!verifyInput()) {
             // TODO: show error in GUI.
         } else {
-            Date date = new Date();
-            Complaint complaint = new Complaint(date, name.getText(), subject.getText(), body.getText());
+            this.date = new Date();
+            Complaint complaint = new Complaint(date, name.getText(), subject.getSelectionModel().getSelectedItem(), body.getText());
             App.getOcsfClient(this).fileComplaint(complaint);
         }
     }
@@ -46,7 +62,7 @@ public class ComplaintAddController implements Initializable {
             return false;
         }
 
-        if(subject.getText().isEmpty()) {
+        if(subject.getSelectionModel().getSelectedItem().isEmpty()) {
             return false;
         }
 
@@ -58,6 +74,18 @@ public class ComplaintAddController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        subject.getItems().addAll(
+                "Technical issue",
+                "Noise",
+                "Cleanliness",
+                "Customer service"
+        );
+    }
 
+    public void updateComplaintList() {
+        this.complaintListSubject.setText(subject.getSelectionModel().getSelectedItem());
+        this.complaintListStatus.setText("Waiting");
+        this.complaintListDate.setText(date.toString());
+        this.complaintListTtr.setText("24:00");
     }
 }

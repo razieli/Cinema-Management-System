@@ -2,17 +2,10 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.*;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
@@ -21,9 +14,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.jdbc.Work;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 
 /**
  * DataBase class to configure and set the original DB
@@ -85,6 +80,7 @@ public class DB {
 			generateMovie();
 			generateScreening();
 			generateTicket();
+			generateComplaint();
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
@@ -102,9 +98,9 @@ public class DB {
 	 * generate initial employees
 	 */
 	public void generateEmployee(){
-		session.save(new Employee("Haim","Cohen","asdfg", "HaimCohen",1));
-		session.save(new Employee("Eyal","Shani","poiuyt", "EyalShani",0));
-		session.save(new Employee("Ilan","Newman","q2w34e", "IlanNewman",1));
+		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
+		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",0));
+		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",1));
 		session.flush();
 	}
 
@@ -112,10 +108,26 @@ public class DB {
 	 * generate initial customers
 	 */
 	public void generateCustomer(){
-		session.save(new Customer("Gal","Galgal", "182fde", "GalGalGal"));
-		session.save(new Customer("Ron","Bonbon", "df38jed", "RonBonbon"));
+		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal"));
+		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon"));
 		session.flush();
 	}
+
+	public String hash(String pass){
+		// gensalt's log_rounds parameter determines the complexity
+		// the work factor is 2**log_rounds, and the default is 10
+		return BCrypt.hashpw(pass, BCrypt.gensalt());
+	}
+
+	public static int passMatches(String candidate, String hashed) {
+		// Check that an unencrypted password matches one that has
+		// previously been hashed
+		if (BCrypt.checkpw(candidate, hashed))	//It matches
+			return 1;
+		else	//It does not match
+			return 0;
+	}
+
 
 	/**
 	 * generate initial movies
@@ -233,6 +245,19 @@ public class DB {
 
 	}
 
+	public void generateComplaint() throws Exception {
+		List<User> users = getAllUsers();
+		for(User user: users){
+			ArrayList<Complaint> complaints= new ArrayList<>();
+			Complaint complaint = new Complaint(new Date(), user.getUserName(), "Noise", "complaint body.");
+			complaints.add(complaint);
+			session.save(complaints);
+			user.setComplaints(complaints);
+			session.save(user);
+		}
+		session.flush();
+	}
+
 	/**
 	 * generate initial theaters
 	 */
@@ -303,6 +328,15 @@ public class DB {
         return data;
 
     }
+
+	public List<User> getAllUsers() throws Exception {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<User> query = builder.createQuery(User.class);
+		query.from(User.class);
+		return session.createQuery(query).getResultList();
+
+	}
+
 	public List<Cinema> getAllCinemas() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);
@@ -367,13 +401,29 @@ public class DB {
 		return deleteList;
 	}
 
-	public List<User> getPassword(String username) {
-/*
-		String hql = "FROM User userName WHERE " + username + ".password = 10";
-		Query query = session.createQuery(hql);
-		List results = query.list();
-		return data;
-
- */
+	public String getPassword(String username) {
+//			String sql = "SELECT password FROM cinema.user WHERE userName='" + username + "'";
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+			Query<User> query = session.createQuery(criteriaQuery);
+			try
+			{
+				return query.getSingleResult().getPassword();
+			}
+			catch (NoResultException e)
+			{
+				return null;
+			}
 	}
+
+    public void setComplaint(Complaint complaint) {
+		session.beginTransaction();
+		session.save(complaint);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+    }
 }
