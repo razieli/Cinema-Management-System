@@ -2,17 +2,13 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.*;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
@@ -21,8 +17,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.jdbc.Work;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 
 /**
  * DataBase class to configure and set the original DB
@@ -44,6 +43,8 @@ public class DB {
 		configuration.addAnnotatedClass(Ticket.class);
 		configuration.addAnnotatedClass(User.class);
 		configuration.addAnnotatedClass(Employee.class);
+		configuration.addAnnotatedClass(Cinema.class);
+		configuration.addAnnotatedClass(PurpleBadge.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -55,7 +56,6 @@ public class DB {
 		try {
 			sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
-
 			// If there are no movies in the DB initialize it with init movies.
 			List<Movie> movies = getAllMovies();
 			if(movies.isEmpty()) {
@@ -76,10 +76,11 @@ public class DB {
 	protected void init() {
 		session.beginTransaction();
 		try {
-			generateMovie();
 			generateCustomer();
 			generateEmployee();
-			generateTheater();
+			generatePurpleBage();
+			generateCinemaandTheaters();
+			generateMovie();
 			generateScreening();
 			generateTicket();
 		} catch (URISyntaxException e) {
@@ -99,9 +100,10 @@ public class DB {
 	 * generate initial employees
 	 */
 	public void generateEmployee(){
-		session.save(new Employee("Haim","Cohen","asdfg",1));
-		session.save(new Employee("Eyal","Shani","poiuyt",0));
-		session.save(new Employee("Ilan","Newman","q2w34e",1));
+		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
+		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",2));
+		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",3));
+		session.save(new Employee("Dani","Keren",hash("ds348ds"), "DaniKeren",4));
 		session.flush();
 	}
 
@@ -109,14 +111,29 @@ public class DB {
 	 * generate initial customers
 	 */
 	public void generateCustomer(){
-		session.save(new Customer("Gal","Galgal"));
-		session.save(new Customer("Ron","Bonbon"));
+		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal", 0));
+		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
 		session.flush();
 	}
+
+	public String hash(String pass){
+		// gensalt's log_rounds parameter determines the complexity
+		// the work factor is 2**log_rounds, and the default is 10
+		return BCrypt.hashpw(pass, BCrypt.gensalt());
+	}
+
+	public static int passMatches(String candidate, String hashed) {
+		if (BCrypt.checkpw(candidate, hashed))	//It matches
+			return 1;
+		else	//It does not match
+			return 0;
+	}
+
 
 	/**
 	 * generate initial movies
 	 */
+	
 	public void generateMovie() throws URISyntaxException {
 		List<String> cast1=new LinkedList<String>();
 		cast1.add("Christopher Nolan");
@@ -177,7 +194,7 @@ public class DB {
 		String description6 = ("A struggling salesman takes custody of his son as he's poised to begin a life-changing professional career.");
 		URI uri6a = new URI("https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri6b = new URI("https://www.imdb.com/video/vi1413719065?playlistId=tt0454921");
-		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast5s,117,13,description6, uri6a, uri6b));
+		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast6s,117,13,description6, uri6a, uri6b));
 		session.flush();
 	}
 
@@ -186,11 +203,9 @@ public class DB {
 	 */
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
-		List<Customer> customers = getAllCustomers();
-
 		for(Screening s:screenings) {
 			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-				session.save(new Ticket(customers.get(i%2),s,i ));
+				session.save(new Ticket(s,i));
 		}
 		session.flush();
 	}
@@ -234,10 +249,24 @@ public class DB {
 	/**
 	 * generate initial theaters
 	 */
-	public void generateTheater(){
-		session.save(new Theater("Haifa", 18));
-		session.save(new Theater("Tel-Aviv", 32));
-		session.save(new Theater("Netanya", 8));
+	public void generatePurpleBage() {
+		session.save(PurpleBadge.getInstance());
+		session.flush();
+	}
+	public void generateCinemaandTheaters() throws Exception{
+		List<Employee> emps=getAllEmployee();
+		Cinema c1 = new Cinema("Haifa","Lev Hamifrats",emps.get(0));
+		Cinema c2 = new Cinema("Tel Aviv","Glilot",emps.get(1));
+
+		Theater t1 = new Theater("Haifa", 18,c1),t2 = new Theater("Tel-Aviv", 32,c2),t3 = new Theater("Netanya", 8,c1);
+		c1.addTheater(t1);
+		c2.addTheater(t2);
+		c1.addTheater(t3);
+		session.save(c1);
+		session.save(c2);
+		session.save(t1);
+		session.save(t2);
+		session.save(t3);		
 		session.flush();
 	}
 
@@ -277,8 +306,24 @@ public class DB {
 		query.from(Screening.class);
 		List<Screening> data = session.createQuery(query).getResultList();
 		return data;
-	}
 
+	}
+	public List<Employee> getAllEmployee() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        query.from(Employee.class);
+        List<Employee> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
+	public List<Cinema> getAllCinemas() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);
+        query.from(Cinema.class);
+        List<Cinema> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
 	/**
 	 * Updates the databse according to the given screening list for a specific movie.
 	 * @param screeningList New list of screenings for a movie.
@@ -335,84 +380,36 @@ public class DB {
 		return deleteList;
 	}
 
-	/**
-	 * Gets list of all tickets from the database.
-	 * @return list of database tickets
-	 */
-	public List<Ticket> getAllTickets() {
-		CriteriaBuilder builder = session.getCriteriaBuilder();
-		CriteriaQuery<Ticket> query = builder.createQuery(Ticket.class);
-		query.from(Ticket.class);
-		List<Ticket> data = session.createQuery(query).getResultList();
-		return data;
-	}
-
-	/**
-	 * Gets list of all customers from the database.
-	 * @return list of database customers
-	 */
-	public List<Customer> getAllCustomers() {
-		CriteriaBuilder builder = session.getCriteriaBuilder();
-		CriteriaQuery<Customer> query = builder.createQuery(Customer.class);
-		query.from(Customer.class);
-		List<Customer> data = session.createQuery(query).getResultList();
-		return data;
-	}
-
-
-	/**
-	 * Updates the database according to the given ticket list for a specific movie.
-	 * @param ticketList New list of tickets for a movie.
-	 */
-	protected void setTickets(List<Ticket> ticketList) {
-		List<Ticket> allTickets = getAllTickets();
-		List<Ticket> deleteList = findDeletedTickets(allTickets, ticketList);
-		session.beginTransaction();
-		for(Ticket ticket : ticketList) {
-			int ticketId = ticket.getId();
-			Ticket persistentTicket = (Ticket) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Ticket", ticketId);
-			Ticket ticketToUpdate;
-			if(persistentTicket != null) {
-				ticketToUpdate = persistentTicket;
-			} else {
-				ticketToUpdate = ticket;
+	public String getPassword(String username) {
+//			String sql = "SELECT password FROM cinema.user WHERE userName='" + username + "'";
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+			Query<User> query = session.createQuery(criteriaQuery);
+			try
+			{
+				return query.getSingleResult().getPassword();
 			}
-			session.saveOrUpdate(ticketToUpdate);
-		}
-		for(Ticket ticket : deleteList) {
-			session.delete(ticket);
-		}
-		session.flush();
-		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+			catch (NoResultException e)
+			{
+				return null;
+			}
 	}
 
-	/**
-	 * Finds if there are tickets to be deleted according to the new tickets list.
-	 * @param allTickets List of current tickets.
-	 * @param TicketUpdateList New list of tickets.
-	 * @return List of tickets to be deleted.
-	 */
-	private List<Ticket> findDeletedTickets(List<Ticket> allTickets, List<Ticket> TicketUpdateList) {
-		List<Ticket> deleteList = new ArrayList<>();
-		int movieId = TicketUpdateList.get(0).getScreening().getMovie().getId();
-		for(Ticket ticket : allTickets) {
-			if(ticket.getScreening().getMovie().getId() == movieId) {
-				int ticketId = ticket.getId();
-				boolean found = false;
-				for(Ticket updatedTicket : TicketUpdateList) {
-					int updatedTicketId = updatedTicket.getId();
-					if(ticketId == updatedTicketId) {
-						found = true;
-						break;
-					}
-				}
-				if(!found) {
-					deleteList.add(ticket);
-				}
-			}
+	public int getPermission(String username) {
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+		Query<User> query = session.createQuery(criteriaQuery);
+		try
+		{
+			return query.getSingleResult().getPermission();
 		}
-		return deleteList;
+		catch (NoResultException e)
+		{
+			return 0;
+		}
 	}
 }

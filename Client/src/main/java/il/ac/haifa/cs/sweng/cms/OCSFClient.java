@@ -1,24 +1,19 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllMoviesRequest;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.ListAllTicketsRequest;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.UpdateScreeningsRequest;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.UpdateTicketsRequest;
+import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
+import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllTicketsResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateTicketsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
-
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.util.List;
-
 
 /**
  * Extension of the OCSF AbstractClient class.
@@ -57,20 +52,54 @@ public class OCSFClient extends AbstractClient {
      * @param response Response to handle.
      */
     private void handleResponse(AbstractResponse response) {
-        if(response instanceof ListAllMoviesResponse) {
-            ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+        if (response instanceof ListAllMoviesResponse) {
+            ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
-        if(response instanceof ListAllTicketsResponse) {
-            ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
-        }
-        if(response instanceof UpdateScreeningsResponse) {
+        if (response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
-        if(response instanceof UpdateTicketsResponse) {
-         // TODO: Show "Unidentified response".
-              }
-
-    }
+        if (response instanceof LoginResponse) {
+            if (response.getStatus() == ResponseStatus.Declined) {
+                App.setUserPermission(-1);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle(null);
+                alert.setHeaderText(null);
+                alert.setContentText("Wrong Login!");
+                alert.showAndWait();
+            }
+            else if (response.getStatus() == ResponseStatus.Customer) {
+                App.setUserPermission(0);
+            }
+            else if (response.getStatus() == ResponseStatus.CustomerService) {
+                App.setUserPermission(1);
+            }
+            else if (response.getStatus() == ResponseStatus.ContentManager) {
+                App.setUserPermission(2);
+            }
+            else if (response.getStatus() == ResponseStatus.BranchManager) {
+                App.setUserPermission(3);
+            }
+            else if (response.getStatus() == ResponseStatus.Administrator) {
+                App.setUserPermission(4);
+            }
+            int permission = App.getUserPermission();
+            if(permission > 0){
+                try {
+                    App.setRoot("EmployeeHome.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (permission == 0) {
+                try {
+                    App.setRoot("CustomerHome.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            }
+            // TODO: Show "Unidentified response".
+        }
 
     /**
      * Sends a request to the server to get the list of all movies.
@@ -82,19 +111,6 @@ public class OCSFClient extends AbstractClient {
             // TODO: Show "IO exception while sending request to server."
         }
     }
-
-
-    /**
-     * Sends a request to the server to get the list of all tickets.
-     */
-    protected void getListOfTickets() {
-        try {
-            sendToServer(new ListAllTicketsRequest());
-        } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server."
-        }
-    }
-
 
     /**
      * Sends a request to the server to update a list of screenings.
@@ -108,50 +124,44 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
-
-    /**
-     * Sends a request to the server to update a list of tickets.
-     * @param ticketsList New list of screenings.
-     */
-    protected void updateTickets(List<Ticket> ticketsList) {
-        try {
-            sendToServer(new UpdateTicketsRequest(ticketsList));
-        } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server."
-        }
-    }
-
-
-//    /**
-//     * Sends a request to the server to file a complaint.
-//     * @param complaint Complaint to file.
-//     */
-//    protected void fileComplaint(Complaint complaint) {
-//        try {
-//            sendToServer(new ComplaintFileRequest(complaint));
-//        } catch (IOException e) {
-//            // TODO: Show "IO exception while sending request to server."
-//        }
-//    }
-//
-//    /**
-//     * Sends a request to the server to reply to a complaint.
-//     * @param complaint Complaint to reply to.
-//     */
-//    protected void replyToComplaint(Complaint complaint) {
-//        try {
-//            sendToServer(new ComplaintReplyRequest(complaint));
-//        } catch (IOException e) {
-//            // TODO: Show "IO exception while sending request to server."
-//        }
-//    }
-
     /**
      * Sets the calling controller.
      * @param controller Controller which called the OCSFClient.
      */
     protected void setController(Initializable controller) {
         this.controller = controller;
+    }
+
+    protected void tryLogin(String userName, String password) {
+        try {
+            sendToServer(new LoginRequest(userName, password));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends a request to the server to file a complaint.
+     * @param complaint Complaint to file.
+     */
+    protected void fileComplaint(Complaint complaint) {
+        try {
+            sendToServer(new ComplaintFileRequest(complaint));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
+     * Sends a request to the server to reply to a complaint.
+     * @param complaint Complaint to reply to.
+     */
+    protected void replyToComplaint(Complaint complaint) {
+        try {
+            sendToServer(new ComplaintReplyRequest(complaint));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
     }
 
 }

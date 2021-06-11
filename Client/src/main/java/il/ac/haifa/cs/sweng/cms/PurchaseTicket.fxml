@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.PurchaseTicketController">
+   <children>
+      <AnchorPane layoutX="30.0" layoutY="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
+                     <children>
+                        <MenuBar layoutX="3.0" layoutY="3.0" prefHeight="32.0" prefWidth="680.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="2.0" />
+                        <AnchorPane />
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Text fx:id="inputEngTitle" fill="ORANGE" layoutX="226.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Purchase Ticket" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="231.33331274986267" AnchorPane.bottomAnchor="12.0" AnchorPane.topAnchor="7.0">
+                           <font>
+                              <Font name="Aharoni Bold" size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </top>
+               <bottom>
+                  <AnchorPane prefHeight="35.0" prefWidth="671.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+                     <children>
+                        <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <buttons>
+                              <Button fx:id="paymentButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handheldsPayment" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: orange;" text="Payment" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </buttons>
+                        </ButtonBar>
+                     </children>
+                  </AnchorPane>
+               </bottom>
+               <center>
+                  <AnchorPane style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Accordion layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <panes>
+                            <TitledPane animated="false" style="-fx-background-color: black;" text="Select Screening Time">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: black;">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label fx:id="messageTitle" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </Label>
+                                                <ButtonBar fx:id="screeningButtonBar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
+                                                  <buttons>
+                                                      <Button fx:id="addScreeningButton" minWidth="49.0" mnemonicParsing="false" onAction="#handheldsAddScreeningButton" prefHeight="25.0" style="-fx-background-color: orange;" text="Yes! that date" />
+                                                      <ChoiceBox fx:id="theaterChoiceBox" prefWidth="150.0" />
+                                                  </buttons>
+                                                </ButtonBar>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" style="-fx-background-color: black;" text="Select Sets">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: black;">
+                                       <children>
+                                          <BorderPane>
+                                             <top>
+                                                <AnchorPane BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <ButtonBar layoutX="0.800000011920929" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <buttons>
+                                                            <ChoiceBox fx:id="seatChoiceBox" prefWidth="150.0" />
+                                                            <Label prefHeight="18.0" text="How many seats?" textFill="WHITE" />
+                                                         </buttons>
+                                                      </ButtonBar>
+                                                   </children>
+                                                </AnchorPane>
+                                             </top>
+                                             <center>
+                                                <AnchorPane prefHeight="208.0" prefWidth="683.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <GridPane fx:id="seatGridPane" prefHeight="30.0" prefWidth="683.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                      </GridPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </center>
+                                          </BorderPane>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Overview">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: black;">
+                                       <children>
+                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="Your show details:" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox prefHeight="20.0" prefWidth="136.0">
+                                                   <children>
+                                                      <Label text="Theater:" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Text fx:id="pickedTheater" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="104.47088813781738">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Label text="Hall:" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Text fx:id="pickedHall" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="59.67091369628906">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Label text="Time:" textFill="#fcf6f6">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Text fx:id="pickedTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="164.47096824645996">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Label text="Chairs:" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
