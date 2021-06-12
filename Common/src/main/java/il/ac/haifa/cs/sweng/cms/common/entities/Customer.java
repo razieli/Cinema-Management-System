@@ -14,11 +14,16 @@ import javax.persistence.*;
 public class Customer extends User implements Serializable {
 	private boolean has_link=false;
 	private boolean has_package=false;
-	//TODO:
+	//TODO: things
+
+	@OneToMany(targetEntity = Ticket.class, fetch = FetchType.LAZY, mappedBy = "customer")
+	private List<Ticket> ticket;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-	private List<Ticket> ticket=null;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-	private List<Ticket> packageList=null;
+	private List<Ticket> packageList;
+
+	@OneToMany(targetEntity = Complaint.class, mappedBy="customer", fetch = FetchType.LAZY)
+	private List<Complaint> complaints;
 
 	/**
 	 * constructors
@@ -103,5 +108,13 @@ public class Customer extends User implements Serializable {
 	 */
 	public void setPackageList(List<Ticket> packageList) {
 		this.packageList = packageList;
+	}
+
+	public List<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(List<Complaint> complaints) {
+		this.complaints = complaints;
 	}
 }

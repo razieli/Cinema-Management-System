@@ -8,9 +8,9 @@ public class Ticket {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@OneToOne(mappedBy = "customer")
+
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="customer")
+	@JoinColumn(name="customer_id")
 	private Customer customer;
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="screening")

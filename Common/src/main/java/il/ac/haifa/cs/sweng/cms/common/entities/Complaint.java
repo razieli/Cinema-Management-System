@@ -1,11 +1,14 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "complaints")
-public class Complaint {
+public class Complaint implements Serializable {
+
+
 
     private enum Status {
         FILED,
@@ -16,11 +19,12 @@ public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userName")
-    private User user;
+    @JoinColumn(name="complaint_id")
+    private Customer customer;
+
     private Date filingDate;
-    private String name;
     private String subject;
     private String body;
     private Date closingDate;
@@ -28,16 +32,18 @@ public class Complaint {
     private String response;
     private double compensation;
 
-    public Complaint(Date filingDate, String name, String subject, String body) {
+    public Complaint(Date filingDate,  String subject, String body, Customer customer) {
         this.filingDate = filingDate;
-        this.name = name;
+
         this.subject = subject;
         this.body = body;
         this.status = Status.FILED;
         this.response = "";
         this.compensation = 0;
+        this.customer = customer;
     }
-
+    public Complaint() {
+    }
     public int getId() {
         return id;
     }
@@ -52,14 +58,6 @@ public class Complaint {
 
     public void setFilingDate(Date filingDate) {
         this.filingDate = filingDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSubject() {
@@ -119,5 +117,13 @@ public class Complaint {
         } else {
             setStatus(Status.CLOSED_WITH_COMP);
         }
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

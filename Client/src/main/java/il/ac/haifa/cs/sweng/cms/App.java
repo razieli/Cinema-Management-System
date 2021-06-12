@@ -24,10 +24,12 @@ public class App extends Application {
     private static Integer port = 8080;
     // FIXME: Temporarily select the user type manually
     // FIXME: "Customer" or "Employee"
+    private static int userPermission = 0; // Default - Customer
     private static String userType = "Employee";
     private static String firstName = "David";
     private static String username = "david_1990";
     private static String pass = "123";
+
 
     /**
      * main method that load new scene to stage
@@ -129,6 +131,18 @@ public class App extends Application {
     protected static OCSFClient getOcsfClient(Initializable controller) {
         ocsfClient.setController(controller);
         return ocsfClient;
+    }
+
+    public static int getUserPermission() {
+        return userPermission;
+    }
+
+    static public void setUserPermission(int permission) {
+        userPermission = permission;
+    }
+
+    public static String getUserName() {
+        return username;
     }
 
 }

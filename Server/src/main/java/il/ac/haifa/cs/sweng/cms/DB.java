@@ -6,10 +6,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
@@ -49,6 +46,7 @@ public class DB {
 		configuration.addAnnotatedClass(Employee.class);
 		configuration.addAnnotatedClass(Cinema.class);
 		configuration.addAnnotatedClass(PurpleBadge.class);
+		configuration.addAnnotatedClass(Complaint.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -313,7 +311,6 @@ public class DB {
 		query.from(Screening.class);
 		List<Screening> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 	public List<Employee> getAllEmployee() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -329,15 +326,6 @@ public class DB {
         query.from(Cinema.class);
         List<Cinema> data = session.createQuery(query).getResultList();
         return data;
-
-    }
-	public List<Employee> getAllEmployee() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
-        query.from(Employee.class);
-        List<Employee> data = session.createQuery(query).getResultList();
-        return data;
-
     }
 
 	public List<User> getAllUsers() throws Exception {
@@ -348,14 +336,6 @@ public class DB {
 
 	}
 
-	public List<Cinema> getAllCinemas() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);
-        query.from(Cinema.class);
-        List<Cinema> data = session.createQuery(query).getResultList();
-        return data;
-
-    }
 	/**
 	 * Updates the databse according to the given screening list for a specific movie.
 	 * @param screeningList New list of screenings for a movie.
@@ -443,5 +423,34 @@ public class DB {
 		{
 			return 0;
 		}
+	}
+
+	public void generateComplaint() throws Exception {
+		List<Customer> customers = getAllCustomer();
+		for(Customer customer: customers){
+			ArrayList<Complaint> complaints= new ArrayList<>();
+			Complaint complaint = new Complaint(new Date(), "Noise", "complaint body.",customer);
+			complaints.add(complaint);
+			session.save(complaints);
+			customer.setComplaints(complaints);
+			session.save(customer);
+		}
+		session.flush();
+	}
+
+	private List<Customer> getAllCustomer() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Customer> query = builder.createQuery(Customer.class);
+		query.from(Customer.class);
+			return session.createQuery(query).getResultList();
+	}
+
+	public void setComplaint(Complaint complaint) {
+		session.beginTransaction();
+		session.save(complaint);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
 	}
 }

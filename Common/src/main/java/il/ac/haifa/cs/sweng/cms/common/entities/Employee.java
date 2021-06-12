@@ -19,8 +19,6 @@ public class Employee extends User implements Serializable {
 	}
 	public Employee(String firstName, String lastName, String password, String userName, int permission) {
 		super(firstName,lastName, password, userName, permission);
-	public Employee(String firstName, String lastName, String password, String userName, int permission) {
-		super(firstName,lastName, password, userName);
 		this.permission=permission;
 	}
 	/**

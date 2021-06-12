@@ -23,6 +23,7 @@ public class Screening implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="theater_id")
 	private Theater theater;
+
 	private GregorianCalendar date;
 	@OneToMany(targetEntity = Ticket.class, mappedBy = "screening",fetch = FetchType.LAZY)
 	private List<Ticket> tickets;

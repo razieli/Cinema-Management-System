@@ -19,8 +19,10 @@ public class Theater implements Serializable {
     private String placeName;
 	private int seatsCapacity;
 	private int realSeatsCapacity;
+
 	@OneToMany(targetEntity = Screening.class ,mappedBy="theater", fetch = FetchType.LAZY)
 	private List<Screening> screeningList;
+
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="cinema_id")
 	private Cinema cinema;
@@ -29,7 +31,7 @@ public class Theater implements Serializable {
 	/**
 	 * constructors
 	 */
-	public Theater(String placeName, int seatsCapacity)
+	public Theater(String placeName, int seatsCapacity, Cinema cinema)
 	{
 		this();
 		this.placeName = placeName;

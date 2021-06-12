@@ -48,7 +48,8 @@ public class ComplaintAddController implements Initializable {
             // TODO: show error in GUI.
         } else {
             this.date = new Date();
-            Complaint complaint = new Complaint(date, name.getText(), subject.getSelectionModel().getSelectedItem(), body.getText());
+
+            Complaint complaint = new Complaint(date, subject.getSelectionModel().getSelectedItem(), body.getText(),null);
             App.getOcsfClient(this).fileComplaint(complaint);
         }
     }

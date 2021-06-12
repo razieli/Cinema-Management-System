@@ -18,8 +18,8 @@ public abstract class User implements Serializable {
 	private String firstName;
 	private String lastName;
 	private int permission;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="user")
-	private List<Complaint> complaints;
+
+
 
 	/**
 	 *constructors
@@ -85,12 +85,6 @@ public abstract class User implements Serializable {
 	 * @param permission
 	 */
 	public void setPermission(int permission) {this.permission = permission;}
-}
-	public List<Complaint> getComplaints() {
-		return complaints;
-	}
 
-	public void setComplaints(List<Complaint> complaints) {
-		this.complaints = complaints;
-	}
+
 }
