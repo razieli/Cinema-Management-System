@@ -146,7 +146,7 @@ public class App extends Application {
         return username;
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 
