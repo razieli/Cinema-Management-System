@@ -1,12 +1,11 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.LoginRequest;
+import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -29,6 +28,7 @@ public class App extends Application {
     private static String firstName = "David";
     private static String username = "david_1990";
     private static String pass = "123";
+    private static User user;
 
 
     /**
@@ -38,7 +38,7 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserLogin.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/UserLogin.fxml"));
         Parent root = (Parent)loader.load();
 
         scene = new Scene(root, 640, 480);//new scene to load
@@ -55,6 +55,7 @@ public class App extends Application {
     public static int connectToServer() throws IOException {
         String hostToConnect = getHost();
         Integer portToConnect = getPort();
+
         ocsfClient = new OCSFClient(hostToConnect, portToConnect);
         // status:
         //  0 - Already connected
@@ -111,7 +112,7 @@ public class App extends Application {
      * @throws IOException
      */
     static void setRoot(String fxml) throws  IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml));//FXML to load
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("fxmls/"+fxml));//FXML to load
         Parent root = (Parent)loader.load(); //load FXML to root object
         scene.setRoot(root);//set new root to scene
     }
@@ -145,4 +146,11 @@ public class App extends Application {
         return username;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public static void setUser(User usr) {
+        user = usr;
+    }
 }

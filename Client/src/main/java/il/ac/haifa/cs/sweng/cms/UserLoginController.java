@@ -1,4 +1,5 @@
 package il.ac.haifa.cs.sweng.cms;
+import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

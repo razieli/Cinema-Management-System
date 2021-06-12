@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

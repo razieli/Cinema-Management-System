@@ -5,7 +5,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
-import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -3,6 +3,7 @@ package il.ac.haifa.cs.sweng.cms;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ComplaintFileResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
@@ -86,36 +87,8 @@ public class OCSFServer extends AbstractServer {
             return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof LoginRequest) {
-            String username = ((LoginRequest) request).getUsername();
-            String password = ((LoginRequest) request).getPassword();
-            String pwFromDB = db.getPassword(username);
-            int perFromDB = db.getPermission(username);
-            LoginResponse loginResponse = null;
-            if(DB.passMatches(password, pwFromDB) == 1) {
-                if (perFromDB == 0)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.Customer);
-                }
-                else if (perFromDB == 1)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.CustomerService);
-                }
-                else if (perFromDB == 2)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.ContentManager);
-                }
-                else if (perFromDB == 3)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.BranchManager);
-                }
-                else if (perFromDB == 4)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.Administrator);
-                }
-            } else {
-                loginResponse = new LoginResponse(ResponseStatus.Declined);
-            }
-            return loginResponse;
+            return handleLoginRequest((LoginRequest) request);
+
         }
         if(request instanceof ComplaintFileRequest) {
             Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
@@ -125,4 +98,37 @@ public class OCSFServer extends AbstractServer {
         Log.w(TAG, "Unidentified request.");
         return null;
     }
+    private LoginResponse handleLoginRequest(LoginRequest request) {
+        String username = ((LoginRequest) request).getUsername();
+        String password = ((LoginRequest) request).getPassword();
+        String pwFromDB = db.getPassword(username);
+        int perFromDB = db.getPermission(username);
+        LoginResponse loginResponse = null;
+
+        if (DB.passMatches(password, pwFromDB) == 1) {
+            User user = null;
+            try {
+                user = db.getLoggedUser(username);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (perFromDB == 0) {
+                loginResponse = new LoginResponse(ResponseStatus.Customer, user);
+            } else if (perFromDB == 1) {
+                loginResponse = new LoginResponse(ResponseStatus.CustomerService,user);
+            } else if (perFromDB == 2) {
+                loginResponse = new LoginResponse(ResponseStatus.ContentManager,user);
+            } else if (perFromDB == 3) {
+                loginResponse = new LoginResponse(ResponseStatus.BranchManager,user);
+            } else if (perFromDB == 4) {
+                loginResponse = new LoginResponse(ResponseStatus.Administrator,user);
+            }
+        } else {
+            loginResponse = new LoginResponse(ResponseStatus.Declined, null);
+        }
+        return loginResponse;
+    }
 }
+
+
+

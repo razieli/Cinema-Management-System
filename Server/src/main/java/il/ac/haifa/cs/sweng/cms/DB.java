@@ -428,10 +428,10 @@ public class DB {
 	public void generateComplaint() throws Exception {
 		List<Customer> customers = getAllCustomer();
 		for(Customer customer: customers){
-			ArrayList<Complaint> complaints= new ArrayList<>();
+			List<Complaint> complaints= new ArrayList<>();
 			Complaint complaint = new Complaint(new Date(), "Noise", "complaint body.",customer);
 			complaints.add(complaint);
-			session.save(complaints);
+			session.save(complaint);
 			customer.setComplaints(complaints);
 			session.save(customer);
 		}
@@ -452,5 +452,15 @@ public class DB {
 		session.getTransaction().commit();
 		session.close();
 		session = sessionFactory.openSession();
+	}
+
+	public User getLoggedUser(String userName) throws Exception {
+		List<User> users = getAllUsers();
+		for(User user: users){
+			if(user.getUserName().equals(userName)){
+				return user;
+			}
+		}
+		return null;
 	}
 }

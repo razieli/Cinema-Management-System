@@ -1,4 +1,5 @@
 package il.ac.haifa.cs.sweng.cms;
+import il.ac.haifa.cs.sweng.cms.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
