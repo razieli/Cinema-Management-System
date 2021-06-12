@@ -50,7 +50,7 @@
                <children>
                   <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
-                        <Button fx:id="sendReplyButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#handheldsComplaintsUpdate" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="270.0" text="Send reply" textAlignment="CENTER">
+                        <Button fx:id="sendReplyButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#handheldsComplaintsUpdate" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #ffa500;" text="Send reply" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -181,20 +181,26 @@
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="status" fill="ORANGE" layoutX="12.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="statusComplaint" fill="ORANGE" layoutX="12.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                                 <Label layoutX="9.0" layoutY="226.0" text=" Date:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="date" fill="ORANGE" layoutX="12.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="dateComplaint" fill="ORANGE" layoutX="12.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                                 <Label layoutX="14.0" layoutY="137.0" text="Subject" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="subject" fill="ORANGE" layoutX="12.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="subjectComplaint" fill="ORANGE" layoutX="12.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                                 <ListView fx:id="complaintsList" layoutX="9.0" layoutY="-4.0" prefHeight="137.0" prefWidth="200.0" />
+                                                <Label layoutX="8.0" layoutY="274.0" text="Time to respond" textFill="ORANGE" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <Text fx:id="timetorespond" fill="ORANGE" layoutX="17.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="03:22 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane>

@@ -2,6 +2,10 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -56,6 +60,7 @@ public class DB {
 		try {
 			sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
+
 			// If there are no movies in the DB initialize it with init movies.
 			List<Movie> movies = getAllMovies();
 			if(movies.isEmpty()) {
@@ -76,6 +81,7 @@ public class DB {
 	protected void init() {
 		session.beginTransaction();
 		try {
+			generateMovie();
 			generateCustomer();
 			generateEmployee();
 			generatePurpleBage();
@@ -83,6 +89,7 @@ public class DB {
 			generateMovie();
 			generateScreening();
 			generateTicket();
+			generateComplaint();
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
@@ -133,7 +140,7 @@ public class DB {
 	/**
 	 * generate initial movies
 	 */
-	
+
 	public void generateMovie() throws URISyntaxException {
 		List<String> cast1=new LinkedList<String>();
 		cast1.add("Christopher Nolan");
@@ -194,7 +201,7 @@ public class DB {
 		String description6 = ("A struggling salesman takes custody of his son as he's poised to begin a life-changing professional career.");
 		URI uri6a = new URI("https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri6b = new URI("https://www.imdb.com/video/vi1413719065?playlistId=tt0454921");
-		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast6s,117,13,description6, uri6a, uri6b));
+		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast5s,117,13,description6, uri6a, uri6b));
 		session.flush();
 	}
 
@@ -266,7 +273,7 @@ public class DB {
 		session.save(c2);
 		session.save(t1);
 		session.save(t2);
-		session.save(t3);		
+		session.save(t3);
 		session.flush();
 	}
 
@@ -316,6 +323,31 @@ public class DB {
         return data;
 
     }
+	public List<Cinema> getAllCinemas() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);
+        query.from(Cinema.class);
+        List<Cinema> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
+	public List<Employee> getAllEmployee() throws Exception {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        query.from(Employee.class);
+        List<Employee> data = session.createQuery(query).getResultList();
+        return data;
+
+    }
+
+	public List<User> getAllUsers() throws Exception {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<User> query = builder.createQuery(User.class);
+		query.from(User.class);
+		return session.createQuery(query).getResultList();
+
+	}
+
 	public List<Cinema> getAllCinemas() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Cinema> query = builder.createQuery(Cinema.class);

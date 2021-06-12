@@ -36,6 +36,7 @@ public class ComplaintHandlingController implements Initializable {
         } else {
             Date date = new Date();
             Complaint complaint = complaintListView.getSelectionModel().getSelectedItem();
+            complaint.closeComplaint(date, reply.getText(), Double.parseDouble(compensation.getText()));
             App.getOcsfClient(this).replyToComplaint(complaint);
         }
     }

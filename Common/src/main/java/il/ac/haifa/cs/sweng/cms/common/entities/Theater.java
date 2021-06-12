@@ -24,12 +24,12 @@ public class Theater implements Serializable {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="cinema_id")
 	private Cinema cinema;
-	
-	
+
+
 	/**
 	 * constructors
 	 */
-	public Theater(String placeName, int seatsCapacity, Cinema cinema)
+	public Theater(String placeName, int seatsCapacity)
 	{
 		this();
 		this.placeName = placeName;
@@ -95,7 +95,7 @@ public class Theater implements Serializable {
 		else
 			this.realSeatsCapacity = this.seatsCapacity;
 	}
-	
+
 	public List<Customer> coronaCheck(PurpleBadge pb){
 		List<Customer> cancel = new LinkedList<Customer>();
 		for (Screening s: this.screeningList){
@@ -111,7 +111,7 @@ public class Theater implements Serializable {
 		}
 		return cancel;
 	}
-	
+
 	public void setPurpleBadge() {
 		this.setRealSeatsCapacity();
 	}

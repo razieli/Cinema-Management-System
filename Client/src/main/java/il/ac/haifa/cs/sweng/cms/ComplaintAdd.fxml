@@ -4,12 +4,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,19 +22,19 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.EditMovieScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintAddController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
                <children>
                   <MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0" prefWidth="681.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
-                  <Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375" strokeType="OUTSIDE" strokeWidth="0.0" text="Complaint Add" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+                  <Text fill="ORANGE" layoutX="22.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File Complaint" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.topAnchor="5.0">
                      <font>
                         <Font name="Aharoni Bold" size="30.0" />
                      </font>
                   </Text>
-                  <Button fx:id="backButton" layoutY="7.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="34.0" prefWidth="31.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="backButton" layoutY="7.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="31.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="Aharoni Bold" size="14.0" />
                      </font>
@@ -49,7 +47,7 @@
                <children>
                   <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
-                        <Button fx:id="saveChangesButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#handheldsMovieUpdate" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="270.0" text="Add Complaint" textAlignment="CENTER">
+                        <Button fx:id="addComplaintButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#addComplaint" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #ffa500;" text="Add Complaint" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -93,30 +91,22 @@
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <TextField fx:id="costumerName" prefHeight="14.0" prefWidth="331.0" promptText="Name in Hebrew">
-                                                         <VBox.margin>
-                                                            <Insets bottom="3.0" top="3.0" />
-                                                         </VBox.margin>
-                                                      </TextField>
-                                                   </children>
-                                                </VBox>
+                                                <Label fx:id="name" prefHeight="19.0" prefWidth="72.0" text="user" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
                                                 <Label text="Subject:" textFill="ORANGE" underline="true" GridPane.rowIndex="2">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <TextArea fx:id="subjectBox" prefHeight="28.0" prefWidth="349.0" promptText="Whats the complaint about.." wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="SOMETIMES">
-                                                   <GridPane.margin>
-                                                      <Insets bottom="3.0" top="3.0" />
-                                                   </GridPane.margin></TextArea>
                                                 <Label text="Body:" textFill="ORANGE" underline="true" GridPane.rowIndex="3">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField fx:id="bodyBox" prefHeight="200.0" prefWidth="361.0" promptText="Explanation of the complaint" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <TextField fx:id="body" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="134.0" prefWidth="222.0" promptText="Explanation of the complaint" translateY="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="3.0" top="3.0" />
                                                    </GridPane.margin></TextField>
@@ -124,6 +114,7 @@
                                                    <GridPane.margin>
                                                       <Insets bottom="3.0" top="3.0" />
                                                    </GridPane.margin></FlowPane>
+                                                <ComboBox fx:id="subject" prefHeight="25.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets />
@@ -132,17 +123,6 @@
                                                 <Insets right="5.0" />
                                              </padding>
                                           </GridPane>
-                                          <AnchorPane prefWidth="438.0">
-                                             <children>
-                                                <ButtonBar layoutX="0.800000011920929" prefHeight="25.0" prefWidth="397.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
-                                                   <buttons>
-                                                      <DatePicker fx:id="datePicker" prefHeight="25.0" promptText="Date" />
-                                                      <ComboBox fx:id="hourComboBox" prefHeight="25.0" prefWidth="150.0" promptText="Hour" />
-                                                      <Button fx:id="addScreeningButton" minWidth="49.0" mnemonicParsing="false" onAction="#handheldsAddScreeningButton" prefHeight="25.0" style="-fx-background-color: orange;" text="Add" />
-                                                   </buttons>
-                                                </ButtonBar>
-                                             </children>
-                                          </AnchorPane>
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -174,7 +154,7 @@
                                                 <Insets bottom="5.0" />
                                              </opaqueInsets>
                                           </AnchorPane>
-                                          <AnchorPane>
+                                          <AnchorPane prefHeight="320.0" prefWidth="367.0">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
@@ -185,19 +165,25 @@
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="status" fill="ORANGE" layoutX="9.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="9.0" layoutY="114.0" text=" Date:" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListStatus" fill="ORANGE" layoutX="9.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="6.0" layoutY="113.0" text=" Date:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="date" fill="ORANGE" layoutX="9.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="9.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                                 <Label layoutX="9.0" layoutY="22.0" text="Subject" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="subject" fill="ORANGE" layoutX="9.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="complaintListSubject" fill="ORANGE" layoutX="9.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="6.0" layoutY="157.0" text=" Time to respond:" textFill="ORANGE" underline="true">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="12.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane>

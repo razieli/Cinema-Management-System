@@ -21,4 +21,7 @@ public class LoginRequest extends AbstractRequest {
     public String getPassword() { return password; }
 
     public int getPermission() { return permission; }
+    public String getPassword() {
+        return password;
+    }
 }
