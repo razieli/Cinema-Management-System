@@ -1,13 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.User;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ComplaintFileResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
@@ -80,6 +74,13 @@ public class OCSFServer extends AbstractServer {
             List<Movie> movieList = db.getAllMovies();
             return new ListAllMoviesResponse(movieList);
         }
+
+        if(request instanceof ListAllTicketsRequest) {
+            // Get list of tickets from DB.
+            List<Ticket> ticketList = db.getAllTickets();
+            return new ListAllTicketsResponse(ticketList);
+        }
+
         if(request instanceof UpdateScreeningsRequest) {
             // Save new screening list in DB.
             List<Screening> screeningList = ((UpdateScreeningsRequest) request).getScreeningList();
@@ -98,6 +99,7 @@ public class OCSFServer extends AbstractServer {
         Log.w(TAG, "Unidentified request.");
         return null;
     }
+
     private LoginResponse handleLoginRequest(LoginRequest request) {
         String username = ((LoginRequest) request).getUsername();
         String password = ((LoginRequest) request).getPassword();

@@ -4,6 +4,6 @@ import il.ac.haifa.cs.sweng.cms.common.messages.AbstractRequest;
 
 public class ListAllTicketsRequest extends AbstractRequest {
 
-    public ListAllTicketsRequest() { }
+    public ListAllTicketsRequest() {}
 
 }

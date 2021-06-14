@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Response for the ListAllTicketsRequest request.
  *
-
  */
 public class ListAllTicketsResponse extends AbstractResponse {
 

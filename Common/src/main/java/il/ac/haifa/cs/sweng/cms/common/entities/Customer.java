@@ -25,6 +25,9 @@ public class Customer extends User implements Serializable {
 	@OneToMany(targetEntity = Complaint.class, mappedBy="customer", fetch = FetchType.LAZY)
 	private List<Complaint> complaints;
 
+	@OneToMany(targetEntity = Link.class, fetch = FetchType.LAZY, mappedBy = "customer")
+	private List<Link> links;
+
 	/**
 	 * constructors
 	 */
@@ -116,5 +119,36 @@ public class Customer extends User implements Serializable {
 
 	public void setComplaints(List<Complaint> complaints) {
 		this.complaints = complaints;
+	}
+
+	public List<Link> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+
+	/**
+	 * adding link to customer
+	 * @param link
+
+	 */
+	public void addLink(Link link) {
+		if (links == null)
+				this.links = new ArrayList<Link>();
+		this.links.add(link);
+		setHas_link(true);
+	}
+
+	/**
+	 * adding ticket from customer
+	 * @param link
+	 */
+	public void removeLink(Link link) {
+		links.remove(link);
+		if(links.isEmpty()){
+			setHas_link(false);
+		}
 	}
 }

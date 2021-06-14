@@ -1,7 +1,3 @@
-/**
- * Sample Skeleton for 'PurchaseLink.fxml' Controller Class
- */
-
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
@@ -71,7 +67,7 @@ public class PurchaseLinkController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
+            App.setRoot("PurchaseCancel.fxml"); //set the screan to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }

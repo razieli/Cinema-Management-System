@@ -2,10 +2,12 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllTicketsResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
@@ -55,6 +57,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ListAllMoviesResponse) {
             ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
+        if (response instanceof ListAllTicketsResponse) {
+            ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
+        }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
@@ -76,13 +81,36 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
+     * Sends a request to the server to get the list of all tickets.
+     */
+    protected void getListOfTickets() {
+        try {
+            sendToServer(new ListAllTicketsRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
      * Sends a request to the server to update a list of screenings.
      * @param screeningList New list of screenings.
      */
     protected void updateScreenings(List<Screening> screeningList) {
         try {
             sendToServer(new UpdateScreeningsRequest(screeningList));
-            sendToServer(new UpdateScreeningsRequest(screeningList));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
+     * Sends a request to the server to update a list of tickets.
+     * @param TicketList New list of screenings.
+     */
+
+    protected void updateTickets(List<Ticket> TicketList) {
+        try {
+            sendToServer(new UpdateTicketsRequest(TicketList));
+
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

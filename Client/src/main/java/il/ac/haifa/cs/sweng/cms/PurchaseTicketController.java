@@ -86,7 +86,7 @@ public class PurchaseTicketController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
+            App.setRoot("PurchaseCancel.fxml"); //set the scean to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }

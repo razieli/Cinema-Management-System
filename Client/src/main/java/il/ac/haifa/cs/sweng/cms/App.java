@@ -39,6 +39,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/UserLogin.fxml"));
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/PurchaseCancel.fxml"));
         Parent root = (Parent)loader.load();
 
         scene = new Scene(root, 640, 480);//new scene to load
@@ -146,7 +147,7 @@ public class App extends Application {
         return username;
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 

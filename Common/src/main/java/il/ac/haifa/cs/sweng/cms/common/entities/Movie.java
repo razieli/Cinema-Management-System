@@ -31,6 +31,9 @@ public class Movie implements Serializable {
 	private URI posterUrl;
 	private URI trailerUrl;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
+	private List<Link> links;
+
 	/**
 	 * constructors
 	 */
@@ -123,12 +126,8 @@ public class Movie implements Serializable {
 	/**
 	 * screening list set/get
 	 */
-	public List<Screening> getScreening() {
-		return screening;
-	}
-	public void setScreening(List<Screening> screening) {
-		this.screening = screening;
-	}
+	public List<Screening> getScreening() { return screening; }
+	public void setScreening(List<Screening> screening) { this.screening = screening; }
 
 	/**
 	 * Description list set/get
@@ -139,4 +138,10 @@ public class Movie implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	/**
+	 * links list set/get
+	 */
+	public List<Link> getLinks() { return links; }
+	public void setLinks(List<Link> links) { this.links = links; }
 }

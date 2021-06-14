@@ -2,10 +2,6 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 import javax.persistence.NoResultException;
@@ -47,6 +43,7 @@ public class DB {
 		configuration.addAnnotatedClass(Cinema.class);
 		configuration.addAnnotatedClass(PurpleBadge.class);
 		configuration.addAnnotatedClass(Complaint.class);
+		configuration.addAnnotatedClass(Link.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -83,11 +80,12 @@ public class DB {
 			generateCustomer();
 			generateEmployee();
 			generatePurpleBage();
-			generateCinemaandTheaters();
-			generateMovie();
+			generateCinemAandTheaters();
 			generateScreening();
 			generateTicket();
 			generateComplaint();
+			generateLinks();
+
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
@@ -258,7 +256,7 @@ public class DB {
 		session.save(PurpleBadge.getInstance());
 		session.flush();
 	}
-	public void generateCinemaandTheaters() throws Exception{
+	public void generateCinemAandTheaters() throws Exception{
 		List<Employee> emps=getAllEmployee();
 		Cinema c1 = new Cinema("Haifa","Lev Hamifrats",emps.get(0));
 		Cinema c2 = new Cinema("Tel Aviv","Glilot",emps.get(1));
@@ -275,6 +273,20 @@ public class DB {
 		session.flush();
 	}
 
+	public void generateLinks() throws Exception{
+		List<Movie> movies=getAllMovies();
+		List<Customer> customers = getAllCustomer();
+		Link l1= new Link(customers.get(0),new GregorianCalendar( 2021,  7,  15,  8,  00), movies.get(0));
+		Link l2= new Link(customers.get(1),new GregorianCalendar( 2021,  8,  20,  15,  15), movies.get(1));
+		Link l3= new Link(customers.get(0),new GregorianCalendar( 2021,  9,  1,  20,  20), movies.get(2));
+		Link l4= new Link(customers.get(1),new GregorianCalendar( 2021,  10,  8,  10,  45), movies.get(3));
+		session.save(l1);
+		session.save(l2);
+		session.save(l3);
+		session.save(l4);
+		session.flush();
+	}
+
 	/**
 	 * Gets list of all movies from the database.
 	 * @return list of database movies
@@ -285,7 +297,6 @@ public class DB {
 		query.from(Movie.class);
 		List<Movie> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 
 	/**
@@ -334,6 +345,14 @@ public class DB {
 		query.from(User.class);
 		return session.createQuery(query).getResultList();
 
+	}
+
+	public List<Ticket> getAllTickets() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Ticket> query = builder.createQuery(Ticket.class);
+		query.from(Ticket.class);
+		List<Ticket> data = session.createQuery(query).getResultList();
+		return data;
 	}
 
 	/**
