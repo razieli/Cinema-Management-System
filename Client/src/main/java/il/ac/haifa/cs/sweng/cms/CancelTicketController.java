@@ -18,12 +18,12 @@ import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
-import static java.lang.Thread.sleep;
+
 
 
 public class CancelTicketController implements Initializable {
 
-    //test DB
+
     public List<Ticket> ticketList = new ArrayList<Ticket>();
     private List<Screening> screeningList= new ArrayList<Screening>();
     private List<Customer> customerList= new ArrayList<Customer>();
@@ -156,14 +156,16 @@ public class CancelTicketController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //initializing TicketsCoboBox
         try{
-            User customer = App.getUser();
+            Customer customer = (Customer) App.getUser();
             App.getOcsfClient(this).getListOfTickets();
             while(ticketList.isEmpty()) { Thread.yield(); }
+            List <Ticket> ticks = new ArrayList<Ticket>();
             for (Ticket ticket : ticketList) {
-                if(ticket.getCustomer().getUserName() != customer.getUserName()){
-                    ticketList.remove(ticket);
+                if(ticket.getCustomer().getUserName().equals(customer.getUserName())){
+                    ticks.add(ticket);
                 }
             }
+            ticketList = ticks;
             updateScreen();
         }
         catch(Exception e){

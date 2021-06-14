@@ -24,6 +24,7 @@ public class Link implements Serializable {
     public Link() {
         this.customer=null;
         this.movie=null;
+        this.date = new GregorianCalendar();
     }
 
 
@@ -60,4 +61,10 @@ public class Link implements Serializable {
     public String toString() {
         return this.getMovie().getEngName();
     }
+
+    /**
+     * date set/get
+     */
+    public GregorianCalendar getDate() { return date; }
+    public void setDate(GregorianCalendar date) { this.date = date; }
 }

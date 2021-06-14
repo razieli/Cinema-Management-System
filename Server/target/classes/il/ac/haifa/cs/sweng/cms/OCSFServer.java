@@ -81,10 +81,30 @@ public class OCSFServer extends AbstractServer {
             return new ListAllTicketsResponse(ticketList);
         }
 
+        if(request instanceof ListAllLinksRequest) {
+            // Get list of tickets from DB.
+            List<Link> linkList = db.getAllLinks();
+            return new ListAllLinksResponse(linkList);
+        }
+
         if(request instanceof UpdateScreeningsRequest) {
             // Save new screening list in DB.
             List<Screening> screeningList = ((UpdateScreeningsRequest) request).getScreeningList();
             db.setScreenings(screeningList);
+            return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
+        }
+
+        if(request instanceof UpdateTicketsRequest) {
+            // Save new screening list in DB.
+            List<Ticket> ticketList = ((UpdateTicketsRequest) request).getTicketsList();
+            db.setTickets(ticketList);
+            return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
+        }
+
+        if(request instanceof UpdateLinksRequest) {
+            // Save new screening list in DB.
+            List<Link> linkList = ((UpdateLinksRequest) request).getLinksList();
+            db.setLinks(linkList);
             return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof LoginRequest) {

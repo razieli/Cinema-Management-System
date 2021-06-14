@@ -1,15 +1,13 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
+import il.ac.haifa.cs.sweng.cms.common.entities.Link;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllTicketsResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -60,6 +58,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ListAllTicketsResponse) {
             ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
         }
+        if (response instanceof ListAllLinksResponse) {
+            ((CancelLinkController) controller).setLinks(((ListAllLinksResponse) response).getLinksList());
+        }
         if(response instanceof UpdateScreeningsResponse) {
             // TODO: Update GUI with screenings.
         }
@@ -90,6 +91,18 @@ public class OCSFClient extends AbstractClient {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Sends a request to the server to get the list of all links.
+     */
+    protected void getListOfLinks() {
+        try {
+            sendToServer(new ListAllLinksRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sends a request to the server to update a list of screenings.
      * @param screeningList New list of screenings.
@@ -110,7 +123,14 @@ public class OCSFClient extends AbstractClient {
     protected void updateTickets(List<Ticket> TicketList) {
         try {
             sendToServer(new UpdateTicketsRequest(TicketList));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
 
+    protected void updateLinks(List<Link> LinktList) {
+        try {
+            sendToServer(new UpdateLinksRequest(LinktList));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

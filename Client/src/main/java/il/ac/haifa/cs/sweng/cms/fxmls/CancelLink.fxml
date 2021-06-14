@@ -52,7 +52,7 @@
                             </font>
                         </Text>
                         <TextField id="movieName" fx:id="movieName" layoutX="180.0" layoutY="70.0" text="name" />
-                        <TextField fx:id="screeningTime" layoutX="180.0" layoutY="250.0" text="time" />
+                        <TextField fx:id="Time" layoutX="180.0" layoutY="250.0" text="time" />
                         <Button id="CancelLink" fx:id="CancelLink" layoutX="111.0" layoutY="368.0" mnemonicParsing="false" onAction="#handheldsCancelLink" style="-fx-background-color: ORANGE;" text="Cancel Link">
                             <font>
                                 <Font name="System Bold" size="24.0" />

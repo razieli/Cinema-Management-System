@@ -206,9 +206,10 @@ public class DB {
 	 */
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
+		List<Customer> customers=getAllCustomer();
 		for(Screening s:screenings) {
 			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-				session.save(new Ticket(s,i));
+				session.save(new Ticket(customers.get(i%2),s,i));
 		}
 		session.flush();
 	}
@@ -411,6 +412,62 @@ public class DB {
 		return deleteList;
 	}
 
+	/**
+	 * Updates the database according to the given ticket list for a specific movie.
+	 * @param ticketList New list of tickets for a movie.
+	 */
+	protected void setTickets(List<Ticket> ticketList) {
+		List<Ticket> allTickets = getAllTickets();
+		List<Ticket> deleteList = findDeletedTickets(allTickets, ticketList);
+		session.beginTransaction();
+		for(Ticket ticket : ticketList) {
+			int ticketId = ticket.getId();
+			Ticket persistentTicket = (Ticket) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Ticket", ticketId);
+			Ticket ticketToUpdate;
+			if(persistentTicket != null) {
+				ticketToUpdate = persistentTicket;
+			} else {
+				ticketToUpdate = ticket;
+			}
+			session.saveOrUpdate(ticketToUpdate);
+		}
+		for(Ticket ticket : deleteList) {
+			session.delete(ticket);
+		}
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Finds if there are tickets to be deleted according to the new tickets list.
+	 * @param allTickets List of current tickets.
+	 * @param TicketUpdateList New list of tickets.
+	 * @return List of tickets to be deleted.
+	 */
+	private List<Ticket> findDeletedTickets(List<Ticket> allTickets, List<Ticket> TicketUpdateList) {
+		List<Ticket> deleteList = new ArrayList<>();
+		int movieId = TicketUpdateList.get(0).getScreening().getMovie().getId();
+		for(Ticket ticket : allTickets) {
+			if(ticket.getScreening().getMovie().getId() == movieId) {
+				int ticketId = ticket.getId();
+				boolean found = false;
+				for(Ticket updatedTicket : TicketUpdateList) {
+					int updatedTicketId = updatedTicket.getId();
+					if(ticketId == updatedTicketId) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					deleteList.add(ticket);
+				}
+			}
+		}
+		return deleteList;
+	}
+
 	public String getPassword(String username) {
 //			String sql = "SELECT password FROM cinema.user WHERE userName='" + username + "'";
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -426,6 +483,62 @@ public class DB {
 			{
 				return null;
 			}
+	}
+
+	/**
+	 * Updates the database according to the given ticket list for a specific movie.
+	 * @param linktList New list of tickets for a movie.
+	 */
+	protected void setLinks(List<Link> linktList) {
+		List<Link> allLinks = getAllLinks();
+		List<Link> deleteList = findDeletedLinks(allLinks, linktList);
+		session.beginTransaction();
+		for(Link link : linktList) {
+			int linkId = link.getId();
+			Link persistentTicket = (Link) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Link", linkId);
+			Link linkToUpdate;
+			if(persistentTicket != null) {
+				linkToUpdate = persistentTicket;
+			} else {
+				linkToUpdate = link;
+			}
+			session.saveOrUpdate(linkToUpdate);
+		}
+		for(Link ticket : deleteList) {
+			session.delete(ticket);
+		}
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Finds if there are Links to be deleted according to the new Links list.
+	 * @param allLinks List of current Links.
+	 * @param LinkUpdateList New list of Links.
+	 * @return List of tickets to be deleted.
+	 */
+	private List<Link> findDeletedLinks(List<Link> allLinks, List<Link> LinkUpdateList) {
+		List<Link> deleteList = new ArrayList<>();
+		int movieId = LinkUpdateList.get(0).getMovie().getId();
+		for(Link link : allLinks) {
+			if(link.getMovie().getId() == movieId) {
+				int linkId = link.getId();
+				boolean found = false;
+				for(Link updatedTicket : LinkUpdateList) {
+					int updatedTicketId = updatedTicket.getId();
+					if(linkId == updatedTicketId) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					deleteList.add(link);
+				}
+			}
+		}
+		return deleteList;
 	}
 
 	public int getPermission(String username) {
@@ -457,11 +570,18 @@ public class DB {
 		session.flush();
 	}
 
-	private List<Customer> getAllCustomer() {
+	public List<Customer> getAllCustomer() {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Customer> query = builder.createQuery(Customer.class);
 		query.from(Customer.class);
 			return session.createQuery(query).getResultList();
+	}
+
+	public List<Link> getAllLinks() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Link> query = builder.createQuery(Link.class);
+		query.from(Link.class);
+		return session.createQuery(query).getResultList();
 	}
 
 	public void setComplaint(Complaint complaint) {
