@@ -2,9 +2,11 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
+import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -17,13 +19,10 @@ import java.util.ResourceBundle;
 public class ComplaintAddController implements Initializable {
 
     @FXML
-    private Text name;
-
-    @FXML
     private ComboBox<String> subject;
 
     @FXML
-    private Text body;
+    private TextField body;
 
     @FXML
     private Text complaintListSubject;
@@ -50,7 +49,7 @@ public class ComplaintAddController implements Initializable {
         } else {
             this.date = new Date();
 
-            Complaint complaint = new Complaint(date, subject.getSelectionModel().getSelectedItem(), body.getText(),null);
+            Complaint complaint = new Complaint(date, subject.getSelectionModel().getSelectedItem(), body.getText(), (Customer) App.getUser());
             App.getOcsfClient(this).fileComplaint(complaint);
         }
     }
@@ -60,10 +59,6 @@ public class ComplaintAddController implements Initializable {
      * @return True if data is verified, false otherwise.
      */
     private boolean verifyInput() {
-        if(name.getText().isEmpty()) {
-            return false;
-        }
-
         if(subject.getSelectionModel().getSelectedItem().isEmpty()) {
             return false;
         }
