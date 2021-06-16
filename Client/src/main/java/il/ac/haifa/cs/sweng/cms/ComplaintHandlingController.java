@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -28,6 +29,8 @@ public class ComplaintHandlingController implements Initializable {
 
     @FXML
     private Text reply;
+
+    private List<Complaint> complaints;
 
     /**
      * Sends the complaint reply to the server.
@@ -80,7 +83,18 @@ public class ComplaintHandlingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        App.getOcsfClient(this).getListOfComplaints(null);
+        while(complaints == null) {
+            Thread.yield();
+        }
+        updateComplaintList();
     }
 
+    private void updateComplaintList() {
+        this.complaintListView.getItems().addAll(complaints);
+    }
+
+    public void setComplaints(List<Complaint> complaints) {
+        this.complaints = complaints;
+    }
 }

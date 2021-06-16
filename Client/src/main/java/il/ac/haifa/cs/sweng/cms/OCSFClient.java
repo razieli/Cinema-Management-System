@@ -68,7 +68,11 @@ public class OCSFClient extends AbstractClient {
             ((ComplaintAddController) controller).updateComplaintList();
         }
         if (response instanceof ListAllComplaintsResponse) {
-            ((ComplaintAddController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+            if(controller instanceof ComplaintAddController) {
+                ((ComplaintAddController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+            } else if(controller instanceof ComplaintHandlingController) {
+                ((ComplaintHandlingController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+            }
         }
             // TODO: Show "Unidentified response".
         }

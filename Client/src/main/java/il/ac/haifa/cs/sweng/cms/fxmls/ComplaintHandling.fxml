@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.EditMovieScreenController">
+<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintHandlingController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -34,7 +34,7 @@
                         <Font name="Aharoni Bold" size="30.0" />
                      </font>
                   </Text>
-                  <Button fx:id="backButton" layoutX="594.0" layoutY="6.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: WHITE;" text="back" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="backButton" layoutX="594.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: WHITE;" text="back" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="Aharoni Bold" size="14.0" />
                      </font>
@@ -47,7 +47,7 @@
                <children>
                   <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
-                        <Button fx:id="sendReplyButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#handheldsComplaintsUpdate" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #ffa500;" text="Send reply" textAlignment="CENTER">
+                        <Button fx:id="sendReplyButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #ffa500;" text="Send reply" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -131,7 +131,7 @@
                                                    <buttons>
                                                       <DatePicker fx:id="datePicker" prefHeight="25.0" promptText="Date" />
                                                       <ComboBox fx:id="hourComboBox" prefHeight="25.0" prefWidth="150.0" promptText="Hour" />
-                                                      <Button fx:id="addScreeningButton" minWidth="49.0" mnemonicParsing="false" onAction="#handheldsAddScreeningButton" prefHeight="25.0" style="-fx-background-color: orange;" text="Add" />
+                                                      <Button fx:id="addScreeningButton" minWidth="49.0" mnemonicParsing="false" prefHeight="25.0" style="-fx-background-color: orange;" text="Add" />
                                                    </buttons>
                                                 </ButtonBar>
                                              </children>
@@ -177,7 +177,7 @@
                                                    </font>
                                                 </Label>
                                                 <Text fx:id="subjectComplaint" fill="ORANGE" layoutX="12.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <ListView fx:id="complaintsList" layoutX="9.0" layoutY="-4.0" prefHeight="137.0" prefWidth="200.0" />
+                                                <ListView fx:id="complaintListView" layoutX="9.0" layoutY="-4.0" prefHeight="137.0" prefWidth="200.0" />
                                                 <Label layoutX="8.0" layoutY="274.0" text="Time to respond" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
