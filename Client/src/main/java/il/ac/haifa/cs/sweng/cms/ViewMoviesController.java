@@ -7,6 +7,7 @@ package il.ac.haifa.cs.sweng.cms;
 import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ public class ViewMoviesController implements Initializable {
     Scene scene;
     ArrayList<File> fileList = new ArrayList<File>();
     List<Movie> movies= new ArrayList<Movie>();
+    List<Movie> allMovies= new ArrayList<Movie>();
     static List<Cinema>cinemas=new ArrayList<Cinema>();
     private Cinema pickedCinema = null;
     private GregorianCalendar pickedDate = null;
@@ -98,7 +100,6 @@ public class ViewMoviesController implements Initializable {
 
                 addMovieButton.setOnAction(e -> {
                     try {
-                        // todo: what screen the press lead to
                         // storing the selected film to customise the newly created scene
                         pickedDate=null;//reset pickedDate if go to another screen
                         App.setRoot("EditMovieScreen.fxml");//load edit movie screen
@@ -120,18 +121,14 @@ public class ViewMoviesController implements Initializable {
                 flow.prefHeightProperty().bind(scrollPane.heightProperty());
             });
 
-            /*load movie component*/
-            while(movies.isEmpty()) { Thread.yield(); }
-                        for (Movie movie : movies) {
-
-                                    addImage(movie);
-                                }
-
-//            while(cinemas.isEmpty()) { Thread.yield(); }
-//            for (Cinema cinema : cinemas) {
-//
-//                addImage(cinema);
+//            while(allMovies.isEmpty()) { Thread.yield(); }
+//            for (Movie movie : allMovies) {
+//                addImage(movie);
 //            }
+
+            while(cinemas.isEmpty()) { Thread.yield(); }
+            movies=allMovies;
+            updateScreen();
                     }
 
         catch(Exception e){
@@ -139,6 +136,17 @@ public class ViewMoviesController implements Initializable {
     }
 
 }
+
+    private void updateScreen (){
+        flow.getChildren().clear();
+
+        /*load movie component*/
+        while(cinemas.isEmpty()) { Thread.yield(); }
+        for (Movie movie : movies) {
+            addImage(movie);
+        }
+
+    }
 
     /**
      * method to add new movie component to the screen
@@ -213,7 +221,6 @@ public class ViewMoviesController implements Initializable {
 
                else{
                    try {
-                       // todo: what screen the press lead to
                        // storing the selected film to customise the newly created scene
                        pickedDate=null;//reset pickedDate if go to another screen
                        MovieOverviewController.setMovie(movie);
@@ -256,18 +263,37 @@ public class ViewMoviesController implements Initializable {
     @FXML
     void handelCinemaPicked(ActionEvent event) {
         ComboBox<Cinema> cinemaFilter= new ComboBox<Cinema>();
-        cinemaFilter.getItems().add(new Cinema("All",null,null));
+        Cinema allCinemas = new Cinema("All",null,null);
+        cinemaFilter.getItems().add(allCinemas);
         for(Cinema cinema : cinemas){
             cinemaFilter.getItems().add(cinema);
         }
         cinemaFilter.setPromptText("Cinema");
+        cinemaFilter.setValue(allCinemas);
 
         cinemaFilter.setOnAction(e ->{
             pickedCinema = cinemaFilter.getValue();
 
+            if(pickedCinema.getName() == "ALL"){
+//                while(cinemas.isEmpty()) { Thread.yield(); }
+                movies=allMovies;
+            }
 
+            else{
+                movies.clear();
+                while(cinemas.isEmpty()) { Thread.yield(); }
+                for (Theater t: pickedCinema.getTheaters()){
+                    for(Screening s:  t.getScreeningList()){
+                        if(!movies.contains(s.getMovie())){
+                            movies.add(s.getMovie());
+                        }
+                    }
+                }
+            }
 
             //todo: load movies from this cinema only
+            updateScreen();
+
         });
 
         pickedFilter.getChildren().clear();
@@ -299,7 +325,19 @@ public class ViewMoviesController implements Initializable {
 
             }
             else {
+                movies.clear();
+                while(cinemas.isEmpty()) { Thread.yield(); }
+                for(Cinema c: cinemas) {
+                    for (Theater t : c.getTheaters()) {
+                        for (Screening s : t.getScreeningList()) {
+                            if (!movies.contains(s.getMovie()) && pickedDate.getTime().before(s.getDate().getTime())) {
+                                movies.add(s.getMovie());
+                            }
+                        }
+                    }
+                }
                 //todo: load movies from this cinema only
+                updateScreen();
             }
             }
         });
@@ -320,10 +358,10 @@ public class ViewMoviesController implements Initializable {
 
     /**
      * set movie list
-     * @param movies List
+     * @param allMovies List
      */
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setMovies(List<Movie> allMovies) {
+        this.allMovies = allMovies;
     }
 
     public static List<Cinema> getCinemas() {
