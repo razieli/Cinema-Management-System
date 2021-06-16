@@ -595,4 +595,15 @@ public class DB {
 		}
 		return null;
 	}
+
+	public List<Complaint> getAllComplaints(User user) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Complaint> query = builder.createQuery(Complaint.class);
+		query.from(Complaint.class);
+		List<Complaint> complaints = session.createQuery(query).getResultList();
+		if(user != null) {
+			complaints.removeIf(complaint -> complaint.getCustomer().getId() != user.getId());
+		}
+		return complaints;
+	}
 }

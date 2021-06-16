@@ -64,6 +64,12 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof LoginResponse) {
             handleLoginResponse((LoginResponse) response);
         }
+        if (response instanceof ComplaintFileResponse) {
+            ((ComplaintAddController) controller).updateComplaintList();
+        }
+        if (response instanceof ListAllComplaintsResponse) {
+            ((ComplaintAddController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+        }
             // TODO: Show "Unidentified response".
         }
 
@@ -95,6 +101,14 @@ public class OCSFClient extends AbstractClient {
     protected void getListOfLinks() {
         try {
             sendToServer(new ListAllLinksRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void getListOfComplaints(User user) {
+        try {
+            sendToServer(new ListAllComplaintsRequest(user));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -217,6 +231,5 @@ public class OCSFClient extends AbstractClient {
         }
         // TODO: Show "Unidentified response".
     }
-
 
 }

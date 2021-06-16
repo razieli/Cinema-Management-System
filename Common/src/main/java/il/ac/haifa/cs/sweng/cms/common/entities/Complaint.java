@@ -10,7 +10,7 @@ public class Complaint implements Serializable {
 
 
 
-    private enum Status {
+    public enum Status {
         FILED,
         CLOSED_WITH_COMP,
         CLOSED_WITHOUT_COMP
