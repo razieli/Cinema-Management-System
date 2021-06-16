@@ -5,6 +5,7 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
 import javafx.event.ActionEvent;
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
 
 public class MovieOverviewController implements Initializable {
     private static Movie movie;
-    private static Theater theater = null;
+    private static Cinema pickedCinema = null;
 
     @FXML // fx:id="inputEngTitle"
     private Text inputEngTitle; // Value injected by FXMLLoader
@@ -90,20 +91,21 @@ public class MovieOverviewController implements Initializable {
     }
 
     /**
-     * get theater object
-     * @return theater
+     *
+     * @return
      */
-    public static Theater getTheater() {
-        return theater;
+    public static Cinema getPickedCinema() {
+        return pickedCinema;
     }
 
     /**
-     * set theater object
-     * @param theater
+     *
+     * @param pickedCinema
      */
-    public static void setTheater(Theater theater) {
-        MovieOverviewController.theater = theater;
+    public static void setPickedCinema(Cinema pickedCinema) {
+        MovieOverviewController.pickedCinema = pickedCinema;
     }
+
 
     /**
      * back button functionality
@@ -139,9 +141,9 @@ public class MovieOverviewController implements Initializable {
         //todo: add FXML to move to the tickets
 
         try {
-            if (theater!=null){
-                PurchaseTicketController.setTheater(theater);
-            }
+//            if (pickedCinema!=null){
+//                PurchaseTicketController.setCinema(pickedCinema);
+//            }
 
             PurchaseTicketController.setMovie(movie);
             App.setRoot("PurchaseTicket.fxml"); //set the scean to the last page.

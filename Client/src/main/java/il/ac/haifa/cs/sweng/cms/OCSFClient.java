@@ -52,6 +52,9 @@ public class OCSFClient extends AbstractClient {
      * @param response Response to handle.
      */
     private void handleResponse(AbstractResponse response) {
+        if (response instanceof ListAllCinemasResponse) {
+            ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+        }
         if (response instanceof ListAllMoviesResponse) {
             ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
         }
@@ -69,6 +72,17 @@ public class OCSFClient extends AbstractClient {
             }
             // TODO: Show "Unidentified response".
         }
+
+    /**
+     * Sends a request to the server to get the list of all movies.
+     */
+    protected void getListOfCinemas() {
+        try {
+            sendToServer(new ListAllCinemasRequest());
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
 
     /**
      * Sends a request to the server to get the list of all movies.

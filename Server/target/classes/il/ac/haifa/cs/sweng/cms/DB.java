@@ -262,7 +262,7 @@ public class DB {
 		Cinema c1 = new Cinema("Haifa","Lev Hamifrats",emps.get(0));
 		Cinema c2 = new Cinema("Tel Aviv","Glilot",emps.get(1));
 
-		Theater t1 = new Theater("Haifa", 18,c1),t2 = new Theater("Tel-Aviv", 32,c2),t3 = new Theater("Netanya", 8,c1);
+		Theater t1 = new Theater("Theater 1", 18,c1),t2 = new Theater("Theater 2", 32,c2),t3 = new Theater("Theater 3", 8,c1);
 		c1.addTheater(t1);
 		c2.addTheater(t2);
 		c1.addTheater(t3);

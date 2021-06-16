@@ -67,7 +67,7 @@ public class PurchaseLinkController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("PurchaseCancel.fxml"); //set the screan to the last page.
+            App.setRoot("MovieOverview.fxml"); //set the screan to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }

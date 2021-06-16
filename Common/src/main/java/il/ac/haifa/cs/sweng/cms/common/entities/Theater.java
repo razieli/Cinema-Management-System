@@ -16,7 +16,7 @@ public class Theater implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-    private String placeName;
+    private String placeName; //todo: uneccecery
 	private int seatsCapacity;
 	private int realSeatsCapacity;
 
@@ -31,6 +31,14 @@ public class Theater implements Serializable {
 	/**
 	 * constructors
 	 */
+//	public Theater(String placeName, int seatsCapacity, Cinema cinema)
+//	{
+//		this();
+//		this.placeName = placeName;
+//		this.seatsCapacity = seatsCapacity;
+//		this.cinema=cinema;
+//		this.setRealSeatsCapacity();
+//	}
 	public Theater(String placeName, int seatsCapacity, Cinema cinema)
 	{
 		this();
@@ -128,6 +136,13 @@ public class Theater implements Serializable {
 	 */
 	public void setCinema(Cinema cinema) {
 		this.cinema = cinema;
+	}
+
+	public String getName(){return placeName;}
+
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }

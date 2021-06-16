@@ -4,9 +4,8 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,19 +28,25 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditMovieScreenController implements Initializable  {
 
     private static Movie movie =null;
+//    private List<Cinema>cinemas= new ArrayList<Cinema>();
+    private List<Cinema>cinemas= ViewMoviesController.getCinemas();
     private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
-    private String date ="";
-    private String hour="";
+    private LocalDate date = null;
+    private LocalTime hour= null;
     URI backButtonUri = null;
+    Cinema pickedCinema = null;
+    Theater pickedTheater = null;
 
     @FXML // fx:id="titleText"
     private Text titleText; // Value injected by FXMLLoader
@@ -139,8 +144,11 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="hourComboBox"
     private ComboBox<LocalTime> hourComboBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="theaterChoiceBox"
-    private ChoiceBox<Theater> theaterChoiceBox; // Value injected by FXMLLoader
+    @FXML // fx:id="cinemaComboBox"
+    private ComboBox<Cinema> cinemaComboBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="theaterComboBox"
+    private ComboBox<Theater> theaterComboBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="addScreeningButton"
     private Button addScreeningButton; // Value injected by FXMLLoader
@@ -347,6 +355,7 @@ public class EditMovieScreenController implements Initializable  {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        App.getOcsfClient(this).getListOfCinemas();
         updateScreen(); //call to refresh screen component
 
         /*set Combobox*/
@@ -355,21 +364,48 @@ public class EditMovieScreenController implements Initializable  {
 
         /*set Combobox options*/
         //hour
-        for(int i=0;i<=23;i++) {
-            for (int j = 0; j < 60; j=j+15) {
-                hourComboBox.getItems().add(LocalTime.of(i,j,0,0));
+        for (int i = 0; i <= 23; i++) {
+            for (int j = 0; j < 60; j = j + 15) {
+                hourComboBox.getItems().add(LocalTime.of(i, j, 0, 0));
             }
         }
+
+        /*set Combobox options*/
+        //Cinema
+        cinemaComboBox.setItems(FXCollections.observableArrayList(cinemas));
 
         /*on action listener for comboBox*/
         //date
         datePicker.setOnAction((event) -> {
-            date = String.valueOf(datePicker.getValue());
+            date = datePicker.getValue();
         });
 
         //hour
         hourComboBox.setOnAction((event) -> {
-            hour = String.valueOf(hourComboBox.getValue());
+            hour = hourComboBox.getValue();
+        });
+
+        //cinema
+        cinemaComboBox.setOnAction((event) -> {
+            pickedCinema = cinemaComboBox.getValue();
+            theaterComboBox.getItems().clear(); //clear choiceBox
+
+            //init theaterComboBox from picked cinema
+            if (pickedCinema!=null) {
+                while (cinemas.isEmpty()) {
+                    Thread.yield();
+                }
+                List<Theater> theaters = new ArrayList<Theater>();
+                for (Theater theater : pickedCinema.getTheaters()) {
+                    theaters.add(theater);
+                }
+
+                theaterComboBox.setItems(FXCollections.observableArrayList(theaters));
+            }
+        });
+
+        theaterComboBox.setOnAction((event) -> {
+            pickedTheater = theaterComboBox.getValue();
         });
     }
 
@@ -378,21 +414,18 @@ public class EditMovieScreenController implements Initializable  {
      */
     @FXML
     void handheldsAddScreeningButton(ActionEvent event) {
-        if(date.isEmpty() ||  hour.isEmpty()) {
+        if(date==null ||  hour==null || pickedCinema==null || pickedTheater==null) {
             //set a conformation alert
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle(null);
             errorAlert.setHeaderText(null);
             errorAlert.setContentText("One or more sections is empty. Please make sure to fill the date and time.");
             errorAlert.showAndWait();
-
         }
 
         else{
             //add to screeningList
-            String[] dateSplit = date.split("-", 3);//split the date string to year,mount and day
-            String[] hourMin = hour.split(":", 2);//split the date string to hour and minuets
-            GregorianCalendar gregorianCalendar = new GregorianCalendar(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]) - 1, Integer.parseInt(dateSplit[2]), Integer.parseInt(hourMin[0]), Integer.parseInt(hourMin[1]));
+            GregorianCalendar gregorianCalendar = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth(), hour.getHour(),hour.getMinute());
 
 
             if (gregorianCalendar.getTime().before(GregorianCalendar.getInstance().getTime())) {
@@ -402,14 +435,17 @@ public class EditMovieScreenController implements Initializable  {
                 errorAlert.setHeaderText(null);
                 errorAlert.setContentText("This date have passed please pick another date.");
                 errorAlert.showAndWait();
-
             }
             else {
+                //init screening
+                addScreening(gregorianCalendar, pickedTheater);
+                //reset Boxes display and value.
                 datePicker.setValue(null);
                 hourComboBox.setValue(null);
-                date = "";
-                hour = "";
-                addScreening(gregorianCalendar);
+                cinemaComboBox.setValue(null);
+                theaterComboBox.setValue(null);
+                cinemaComboBox.setPromptText("Cinema");
+                theaterComboBox.setPromptText("Theater");
             }
         }
 
@@ -420,10 +456,9 @@ public class EditMovieScreenController implements Initializable  {
      * method that sat up new screening button and add new screening to screeningList
      * @param gregorianCalendar - GregorianCalendar value that for the wanted date
      */
-    protected void addScreening(GregorianCalendar gregorianCalendar){
-
+    protected void addScreening(GregorianCalendar gregorianCalendar, Theater theater){
             //add to screeningList
-            Screening screening = new Screening(movie, null, gregorianCalendar); //create new screening object
+            Screening screening = new Screening(movie, theater, gregorianCalendar); //create new screening object
 
             screeningList.add(screening); //add the screening object to the screeningList
 
@@ -471,5 +506,12 @@ public class EditMovieScreenController implements Initializable  {
                     screeningFlow.getChildren().remove(screeningButton);
             });
         }
+    }
+    public List<Cinema> getCinemas() {
+        return cinemas;
+    }
+
+    public void setCinemas(List<Cinema> cinemas) {
+        this.cinemas = cinemas;
     }
 }
