@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Link;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -171,9 +172,15 @@ public class PurchaseLinkController implements Initializable {
                 alert.getButtonTypes().clear();
                 alert.getButtonTypes().addAll(ButtonType.OK);
                 alert.showAndWait();
+                if (alert.getResult() == ButtonType.OK) {
+                    Link link = new Link(null , gregorianCalendar, movie);
 
-                //todo: repalce with paymant screen when ready
-                App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
+                    //todo: repalce with paymant screen when ready
+//                    PaymentScreenController.getLink(link);
+                    App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
+//                    App.setRoot("PaymentScreen.fxml"); //set the scean to the last page.
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

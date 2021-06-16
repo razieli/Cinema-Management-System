@@ -145,6 +145,9 @@ public class MovieOverviewController implements Initializable {
 //                PurchaseTicketController.setCinema(pickedCinema);
 //            }
 
+            if(pickedCinema != null)
+                PurchaseTicketController.setPickedCinema(pickedCinema);
+
             PurchaseTicketController.setMovie(movie);
             App.setRoot("PurchaseTicket.fxml"); //set the scean to the last page.
         } catch (IOException e) {

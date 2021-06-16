@@ -39,8 +39,8 @@ public class ViewMoviesController implements Initializable {
 
     Scene scene;
     ArrayList<File> fileList = new ArrayList<File>();
-    List<Movie> movies= new ArrayList<Movie>();
     List<Movie> allMovies= new ArrayList<Movie>();
+    List<Movie> movies= new ArrayList<Movie>();
     static List<Cinema>cinemas=new ArrayList<Cinema>();
     private Cinema pickedCinema = null;
     private GregorianCalendar pickedDate = null;
@@ -200,7 +200,7 @@ public class ViewMoviesController implements Initializable {
 
            if (permission == 2 || permission == 3 || permission == 4) { //Manager
                try {
-                   // todo: what screen the press lead to
+
                    // storing the selected film to customise the newly created scene
                    pickedDate=null;//reset pickedDate if go to another screen
                 EditMovieScreenController.setSelectedFilmTitle(movie);//pass the movie to  the next screen
@@ -224,6 +224,8 @@ public class ViewMoviesController implements Initializable {
                        // storing the selected film to customise the newly created scene
                        pickedDate=null;//reset pickedDate if go to another screen
                        MovieOverviewController.setMovie(movie);
+                       if(pickedCinema!=null)
+                           MovieOverviewController.setPickedCinema(pickedCinema);
                        App.setRoot("MovieOverview.fxml");//load edit movie screen
                    } catch (IOException ex) {
                        ex.printStackTrace();
