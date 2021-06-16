@@ -4,17 +4,17 @@ import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 
 /**
- * Response for the UpdateScreeningsRequest request.
+ * Response for the UpdateMovieRequest request.
  *
  * @author Yuval Razieli
  */
-public class UpdateScreeningsResponse extends AbstractResponse {
+public class UpdateMovieResponse extends AbstractResponse {
 
     /**
-     * Constructs an UpdateScreeningsResponse instance with the given status.
+     * Constructs an UpdateMovieResponse instance with the given status.
      * @param status Whether the screenings were updated or not.
      */
-    public UpdateScreeningsResponse(ResponseStatus status) {
+    public UpdateMovieResponse(ResponseStatus status) {
         super(status);
     }
 

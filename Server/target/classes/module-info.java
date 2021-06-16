@@ -6,6 +6,7 @@ module Server {
     requires java.sql;
     requires java.persistence;
     requires jbcrypt;
+
     exports il.ac.haifa.cs.sweng.cms;
     exports il.ac.haifa.cs.sweng.cms.ocsf.server;
 }

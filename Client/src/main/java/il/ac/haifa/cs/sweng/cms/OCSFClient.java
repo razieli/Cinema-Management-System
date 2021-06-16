@@ -1,9 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
-import il.ac.haifa.cs.sweng.cms.common.entities.Link;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
@@ -61,12 +58,12 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ListAllLinksResponse) {
             ((CancelLinkController) controller).setLinks(((ListAllLinksResponse) response).getLinksList());
         }
-        if(response instanceof UpdateScreeningsResponse) {
+        if(response instanceof UpdateMovieResponse) {
             // TODO: Update GUI with screenings.
         }
         if (response instanceof LoginResponse) {
             handleLoginResponse((LoginResponse) response);
-            }
+        }
             // TODO: Show "Unidentified response".
         }
 
@@ -104,12 +101,12 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
-     * Sends a request to the server to update a list of screenings.
-     * @param screeningList New list of screenings.
+     * Sends a request to the server to update a movie.
+     * @param movie Movie to update.
      */
-    protected void updateScreenings(List<Screening> screeningList) {
+    protected void updateMovie(Movie movie) {
         try {
-            sendToServer(new UpdateScreeningsRequest(screeningList));
+            sendToServer(new UpdateMovieRequest(movie));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
