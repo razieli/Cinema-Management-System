@@ -28,7 +28,7 @@
                         <Font name="Aharoni Bold" size="30.0" />
                      </font>
                   </Text>
-                  <Button fx:id="backButton" layoutY="7.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="31.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="backButton" layoutX="489.0" layoutY="6.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="27.0" prefWidth="57.0" style="-fx-background-color: WHITE;" text="back" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="137.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="Aharoni Bold" size="14.0" />
                      </font>

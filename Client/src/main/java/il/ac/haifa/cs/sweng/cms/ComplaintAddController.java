@@ -3,6 +3,7 @@ package il.ac.haifa.cs.sweng.cms;
 import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -64,7 +66,14 @@ public class ComplaintAddController implements Initializable {
             complaints.add(complaint);
         }
     }
-
+    @FXML
+    void handheldsBackButton(ActionEvent event) {
+        try {
+            App.setRoot("CustomerHome.fxml.fxml"); //set the scean to the last page.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Verifies the complaint data the user has entered.
      * @return True if data is verified, false otherwise.
