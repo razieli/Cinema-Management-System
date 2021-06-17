@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ComplaintAddController implements Initializable {
 
-    private static final long TIME_TO_RESPOND = 24;
+    protected static final long TIME_TO_RESPOND = 24;
 
     @FXML
     private ListView<Complaint> complaintListView;

@@ -130,4 +130,15 @@ public class Complaint implements Serializable {
     public String toString() {
         return this.customer.getUserName() + ", " + this.subject + ", " + this.filingDate;
     }
+
+    public void copyFrom(Complaint complaint) {
+        this.customer = complaint.customer;
+        this.filingDate = complaint.filingDate;
+        this.subject = complaint.subject;
+        this.body = complaint.body;
+        this.closingDate = complaint.closingDate;
+        this.status = complaint.status;
+        this.response = complaint.response;
+        this.compensation = complaint.compensation;;
+    }
 }

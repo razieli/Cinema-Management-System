@@ -131,6 +131,10 @@ public class OCSFServer extends AbstractServer {
             List<Complaint> complaints = db.getAllComplaints(((ListAllComplaintsRequest) request).getUser());
             return new ListAllComplaintsResponse(complaints);
         }
+        if(request instanceof ComplaintReplyRequest) {
+            db.setComplaint(((ComplaintReplyRequest) request).getComplaint());
+            return new ComplaintReplyResponse(ResponseStatus.Acknowledged);
+        }
         Log.w(TAG, "Unidentified request.");
         return null;
     }

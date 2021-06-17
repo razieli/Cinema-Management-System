@@ -578,8 +578,12 @@ public class DB {
 	}
 
 	public void setComplaint(Complaint complaint) {
+		Complaint existingComplaint;
+		List<Complaint> complaints = getAllComplaints(null);
+		existingComplaint = complaints.stream().filter(c -> c.getId() == complaint.getId()).findFirst().orElse(complaint);
+		existingComplaint.copyFrom(complaint);
 		session.beginTransaction();
-		session.save(complaint);
+		session.saveOrUpdate(existingComplaint);
 		session.flush();
 		session.getTransaction().commit();
 		session.close();
