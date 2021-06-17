@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
@@ -98,30 +99,31 @@
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
                                              <children>
-                                                <Label layoutX="9.0" layoutY="52.0" text="Status:" textFill="ORANGE" underline="true">
+                                                <Label layoutX="14.0" layoutY="196.0" text="Status:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListStatus" fill="ORANGE" layoutX="9.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="6.0" layoutY="106.0" text=" Date:" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListStatus" fill="ORANGE" layoutX="14.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="11.0" layoutY="250.0" text=" Date:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="9.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="9.0" layoutY="7.0" text="Subject" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="14.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="14.0" layoutY="151.0" text="Subject" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListSubject" fill="ORANGE" layoutX="8.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="6.0" layoutY="179.0" text=" Time to respond:" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListSubject" fill="ORANGE" layoutX="13.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="6.0" layoutY="296.0" text=" Time to respond:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="12.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="12.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <ListView fx:id="complaintListView" layoutX="15.0" layoutY="-8.0" prefHeight="159.0" prefWidth="280.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>
