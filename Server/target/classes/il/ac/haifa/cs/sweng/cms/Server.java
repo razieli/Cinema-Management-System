@@ -2,7 +2,7 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateMovieResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
@@ -72,9 +72,9 @@ public class Server extends AbstractServer {
             List<Movie> movieList = null;
             return new ListAllMoviesResponse(movieList);
         }
-        if(request instanceof UpdateMovieRequest) {
+        if(request instanceof UpdateScreeningsRequest) {
             // TODO: send new screenings to DB.
-            return new UpdateMovieResponse(ResponseStatus.Acknowledged);
+            return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
         }
         Log.w(TAG, "Unidentified request.");
         return null;

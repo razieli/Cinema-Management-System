@@ -230,8 +230,9 @@ public class EditMovieScreenController implements Initializable  {
                 movie.setTrailerUrl(new URI(trailerBox.getText()));
                 movie.setScreening(screeningList);
 
-                //update movie on database
-                App.getOcsfClient(this).updateMovie(movie);
+                //update move on database
+                // TODO: update entire movie data.
+                App.getOcsfClient(this).updateScreenings(screeningList);
 
                 updateScreen();
             }

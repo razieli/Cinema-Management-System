@@ -10,7 +10,7 @@ public class Complaint implements Serializable {
 
 
 
-    public enum Status {
+    private enum Status {
         FILED,
         CLOSED_WITH_COMP,
         CLOSED_WITHOUT_COMP
@@ -125,9 +125,5 @@ public class Complaint implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public String toString() {
-        return this.customer.getUserName() + ", " + this.subject + ", " + this.filingDate;
     }
 }

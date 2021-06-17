@@ -2,16 +2,13 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -30,8 +27,6 @@ public class ComplaintHandlingController implements Initializable {
     @FXML
     private Text reply;
 
-    private List<Complaint> complaints;
-
     /**
      * Sends the complaint reply to the server.
      * Shows an error if any of the fields did not pass verification.
@@ -46,14 +41,7 @@ public class ComplaintHandlingController implements Initializable {
             App.getOcsfClient(this).replyToComplaint(complaint);
         }
     }
-    @FXML
-    void handheldsBackButton(ActionEvent event) {
-        try {
-            App.setRoot("UserLogin.fxml"); //set the screen to the last page.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
     /**
      * Verifies the complaint reply data the user has entered.
      * @return True if data is verified, false otherwise.
@@ -83,18 +71,7 @@ public class ComplaintHandlingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getOcsfClient(this).getListOfComplaints(null);
-        while(complaints == null) {
-            Thread.yield();
-        }
-        updateComplaintList();
+
     }
 
-    private void updateComplaintList() {
-        this.complaintListView.getItems().addAll(complaints);
-    }
-
-    public void setComplaints(List<Complaint> complaints) {
-        this.complaints = complaints;
-    }
 }
