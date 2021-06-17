@@ -49,7 +49,7 @@ public class ComplaintHandlingController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("CustomerHome.fxml"); //set the scean to the last page.
+            App.setRoot("UserLogin.fxml"); //set the screen to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }

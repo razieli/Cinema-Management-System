@@ -29,7 +29,7 @@
                         <Font name="Aharoni Bold" size="30.0" />
                      </font>
                   </Text>
-                  <Button fx:id="backButton" layoutX="489.0" layoutY="6.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="27.0" prefWidth="57.0" style="-fx-background-color: WHITE;" text="back" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="137.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="backButton" layoutX="489.0" layoutY="6.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="27.0" prefWidth="57.0" style="-fx-background-color: orange;" text="back" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="137.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="Aharoni Bold" size="14.0" />
                      </font>
@@ -105,24 +105,24 @@
                                                    </font>
                                                 </Label>
                                                 <Text fx:id="complaintListStatus" fill="ORANGE" layoutX="14.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="11.0" layoutY="250.0" text=" Date:" textFill="ORANGE" underline="true">
+                                                <Label layoutX="10.0" layoutY="240.0" text=" Date:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="14.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="14.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                                 <Label layoutX="14.0" layoutY="151.0" text="Subject" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <Text fx:id="complaintListSubject" fill="ORANGE" layoutX="13.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="6.0" layoutY="296.0" text=" Time to respond:" textFill="ORANGE" underline="true">
+                                                <Label layoutX="11.0" layoutY="288.0" text=" Time to respond:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="12.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="16.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
                                                 <ListView fx:id="complaintListView" layoutX="15.0" layoutY="-8.0" prefHeight="159.0" prefWidth="280.0" />
                                              </children>
                                           </AnchorPane>

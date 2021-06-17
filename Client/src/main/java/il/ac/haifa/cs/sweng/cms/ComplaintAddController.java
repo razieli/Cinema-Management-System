@@ -60,7 +60,7 @@ public class ComplaintAddController implements Initializable {
      */
     @FXML
     protected void addComplaint() {
-        if(!verifyInput()) {
+        if (!verifyInput()) {
             // TODO: show error in GUI.
         } else {
             this.date = new Date();
@@ -70,6 +70,7 @@ public class ComplaintAddController implements Initializable {
             complaints.add(complaint);
         }
     }
+
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
@@ -78,16 +79,18 @@ public class ComplaintAddController implements Initializable {
             e.printStackTrace();
         }
     }
+
     /**
      * Verifies the complaint data the user has entered.
+     *
      * @return True if data is verified, false otherwise.
      */
     private boolean verifyInput() {
-        if(subject.getSelectionModel().getSelectedItem().isEmpty()) {
+        if (subject.getSelectionModel().getSelectedItem().isEmpty()) {
             return false;
         }
 
-        if(body.getText().isEmpty()) {
+        if (body.getText().isEmpty()) {
             return false;
         }
         return true;
@@ -95,6 +98,11 @@ public class ComplaintAddController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        App.getOcsfClient(this).getListOfComplaints(null);
+        while (complaints == null) {
+            Thread.yield();
+        }
+        updateComplaintList();
         name.setText(App.getUser().getUserName());
         subject.getItems().addAll(
                 "Technical issue",
@@ -103,13 +111,15 @@ public class ComplaintAddController implements Initializable {
                 "Customer service"
         );
         App.getOcsfClient(this).getListOfComplaints(App.getUser());
-        while(complaints == null) {
+        while (complaints == null) {
             Thread.yield();
         }
         updateComplaintList();
     }
 
     public void updateComplaintList() {
+
+        this.complaintListView.getItems().addAll(complaints);
         this.complaintListSubject.setText(complaints.get(complaints.size() - 1).getSubject());
         Complaint.Status status = complaints.get(complaints.size() - 1).getStatus();
         switch (status) {
