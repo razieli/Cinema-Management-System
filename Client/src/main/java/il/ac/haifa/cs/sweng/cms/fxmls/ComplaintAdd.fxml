@@ -5,28 +5,23 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintAddController">
+<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintAddController">
    <children>
-      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
                <children>
                   <MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0" prefWidth="681.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
                   <Text fill="ORANGE" layoutX="22.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File Complaint" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.topAnchor="5.0">
@@ -34,7 +29,7 @@
                         <Font name="Aharoni Bold" size="30.0" />
                      </font>
                   </Text>
-                  <Button fx:id="backButton" layoutY="7.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="31.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="backButton" layoutX="489.0" layoutY="6.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="27.0" prefWidth="57.0" style="-fx-background-color: orange;" text="back" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="137.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="Aharoni Bold" size="14.0" />
                      </font>
@@ -64,73 +59,31 @@
                      <items>
                         <ScrollPane fx:id="scrollPaneLeft" hbarPolicy="NEVER" prefHeight="357.0" prefWidth="454.0" style="-fx-background-color: BLACK;">
                            <content>
-                              <AnchorPane fx:id="anchorPaneLeft" style="-fx-background-color: black;">
+                              <AnchorPane fx:id="anchorPaneLeft" maxHeight="9000000.0" maxWidth="9000000.0" minHeight="9000000.0" minWidth="900000.0" prefHeight="9000000.0" prefWidth="9000000.0" style="-fx-background-color: black;">
                                  <children>
-                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="491.0" prefWidth="441.0" style="-fx-background-color: BLACK;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="0.0">
-                                       <children>
-                                          <GridPane fx:id="gridPaneLeft" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="558.0" prefWidth="450.0" style="-fx-background-color: black;" vgap="5.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="75.99998982747395" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="361.3333435058594" minWidth="10.0" prefWidth="361.3333435058594" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="66.0" minHeight="0.0" prefHeight="0.0" vgrow="ALWAYS" />
-                                                <RowConstraints maxHeight="61.0" minHeight="0.0" prefHeight="51.333333333333336" vgrow="ALWAYS" />
-                                                <RowConstraints maxHeight="117.0" minHeight="0.0" prefHeight="45.600012207031256" vgrow="ALWAYS" />
-                                                <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
-                                                <RowConstraints maxHeight="99.0" minHeight="0.0" prefHeight="27.19999999999999" vgrow="ALWAYS" />
-                                                <RowConstraints maxHeight="106.6666717529297" minHeight="10.0" prefHeight="27.19999999999999" vgrow="ALWAYS" />
-                                                <RowConstraints fillHeight="false" maxHeight="105.33333333333334" minHeight="10.0" prefHeight="62.39997558593751" vgrow="ALWAYS" />
-                                                <RowConstraints fillHeight="false" maxHeight="101.3333435058594" minHeight="0.0" prefHeight="39.19998779296873" vgrow="ALWAYS" />
-                                                <RowConstraints fillHeight="false" maxHeight="115.0" minHeight="0.0" prefHeight="67.20001220703125" vgrow="ALWAYS" />
-                                                <RowConstraints fillHeight="false" maxHeight="147.00000000000003" minHeight="7.333363850911468" prefHeight="74.40003662109376" vgrow="ALWAYS" />
-                                             </rowConstraints>
-                                             <children>
-                                                <Label prefHeight="19.0" prefWidth="72.0" text="Name:" textFill="ORANGE" underline="true" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="name" prefHeight="19.0" prefWidth="72.0" text="user" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="Subject:" textFill="ORANGE" underline="true" GridPane.rowIndex="2">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="Body:" textFill="ORANGE" underline="true" GridPane.rowIndex="3">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="body" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="134.0" prefWidth="222.0" promptText="Explanation of the complaint" translateY="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                   <GridPane.margin>
-                                                      <Insets bottom="3.0" top="3.0" />
-                                                   </GridPane.margin></TextField>
-                                                <FlowPane fx:id="screeningFlow" prefHeight="89.0" prefWidth="362.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                                   <GridPane.margin>
-                                                      <Insets bottom="3.0" top="3.0" />
-                                                   </GridPane.margin></FlowPane>
-                                                <ComboBox fx:id="subject" prefHeight="25.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <padding>
-                                                <Insets right="5.0" />
-                                             </padding>
-                                          </GridPane>
-                                       </children>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                       <padding>
-                                          <Insets top="1.0" />
-                                       </padding>
-                                    </VBox>
+                                    <Label layoutX="5.0" layoutY="36.0" prefHeight="19.0" prefWidth="72.0" text="Name:" textFill="ORANGE" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="name" layoutX="88.0" layoutY="36.0" prefHeight="19.0" prefWidth="72.0" text="user" textFill="ORANGE">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="5.0" layoutY="100.0" text="Subject:" textFill="ORANGE" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="5.0" layoutY="150.0" text="Body:" textFill="ORANGE" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="body" alignment="TOP_LEFT" layoutX="88.0" layoutY="91.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="134.0" prefWidth="222.0" promptText="Explanation of the complaint" translateY="60.0" />
+                                    <FlowPane fx:id="screeningFlow" layoutX="88.0" layoutY="479.0" prefHeight="89.0" prefWidth="362.0" />
+                                    <ComboBox fx:id="subject" layoutX="88.0" layoutY="96.0" prefHeight="25.0" prefWidth="234.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -139,68 +92,40 @@
                            <content>
                               <AnchorPane fx:id="anchorPaneRight" cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: black;">
                                  <children>
-                                    <VBox layoutX="1.0" layoutY="207.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    <VBox layoutX="1.0" layoutY="207.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                        <children>
-                                          <AnchorPane>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                          </AnchorPane>
-                                          <AnchorPane>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                             <opaqueInsets>
-                                                <Insets bottom="5.0" />
-                                             </opaqueInsets>
-                                          </AnchorPane>
-                                          <AnchorPane prefHeight="320.0" prefWidth="367.0">
+                                          <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="900000.0" prefWidth="900000.0" style="-fx-background-color: black;">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
                                              <children>
-                                                <ImageView fx:id="inputImage" fitHeight="300.0" fitWidth="200.0" layoutX="19.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-54.0" AnchorPane.topAnchor="0.0" />
-                                                <Label layoutX="9.0" layoutY="70.0" text="Status:" textFill="ORANGE" underline="true">
+                                                <Label layoutX="14.0" layoutY="196.0" text="Status:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListStatus" fill="ORANGE" layoutX="9.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="6.0" layoutY="113.0" text=" Date:" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListStatus" fill="ORANGE" layoutX="14.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed /  Waiting" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="10.0" layoutY="240.0" text=" Date:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="9.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="9.0" layoutY="22.0" text="Subject" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListDate" fill="ORANGE" layoutX="14.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012.5.15 19:30 etc." textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="14.0" layoutY="151.0" text="Subject" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListSubject" fill="ORANGE" layoutX="9.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
-                                                <Label layoutX="6.0" layoutY="157.0" text=" Time to respond:" textFill="ORANGE" underline="true">
+                                                <Text fx:id="complaintListSubject" fill="ORANGE" layoutX="13.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="costumer service etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Label layoutX="11.0" layoutY="288.0" text=" Time to respond:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="12.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <Text fx:id="complaintListTtr" fill="ORANGE" layoutX="16.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="05:39 etc" textAlignment="JUSTIFY" wrappingWidth="120.0" />
+                                                <ListView fx:id="complaintListView" layoutX="15.0" layoutY="-8.0" prefHeight="159.0" prefWidth="280.0" />
                                              </children>
                                           </AnchorPane>
-                                          <AnchorPane>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                          </AnchorPane>
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                             <children>
-                                                <TextFlow prefHeight="0.0" prefWidth="205.0" />
-                                             </children>
-                                          </HBox>
-                                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                                          <VBox />
                                        </children>
                                        <opaqueInsets>
                                           <Insets bottom="5.0" />
