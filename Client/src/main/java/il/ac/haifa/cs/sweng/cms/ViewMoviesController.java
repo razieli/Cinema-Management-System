@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -40,12 +41,14 @@ public class ViewMoviesController implements Initializable {
     Scene scene;
     ArrayList<File> fileList = new ArrayList<File>();
     List<Movie> allMovies= new ArrayList<Movie>();
+    List<Movie> comingSoonMovies= new ArrayList<Movie>();
     List<Movie> movies= new ArrayList<Movie>();
     static List<Cinema>cinemas=new ArrayList<Cinema>();
     private Cinema pickedCinema = null;
     private GregorianCalendar pickedDate = null;
 
-    HBox hb = new HBox();
+    HBox comingSoonHBox = new HBox();
+
 
     private int permission= App.getUserPermission();
 
@@ -64,6 +67,8 @@ public class ViewMoviesController implements Initializable {
     @FXML // fx:id="pickedFilter"
     private Pane pickedFilter; // Value injected by FXMLLoader
 
+    @FXML // fx:id="soonAnchorPane"
+    private AnchorPane soonAnchorPane; // Value injected by FXMLLoader
 
     @FXML // fx:id="addButtonAnchor"
     private AnchorPane addButtonAnchor; // Value injected by FXMLLoader
@@ -89,12 +94,23 @@ public class ViewMoviesController implements Initializable {
             App.getOcsfClient(this).getListOfMovies();
             App.getOcsfClient(this).getListOfCinemas();
 
+            /*init comingSoonMovies movie list*/
+            for(Movie m: allMovies)
+                if (m.getScreening().isEmpty()) {
+                    comingSoonMovies.add(m);
+                    if (soonAnchorPane.getChildren().isEmpty()) {
+                        comingSoonHBox.setSpacing(5);
+                        comingSoonHBox.setAlignment(Pos.CENTER);
+                        soonAnchorPane.getChildren().add(comingSoonHBox);
+                    }
+                }
+
             /*add an add button for authorized employees */
             if ( permission == 2 || permission == 3 || permission == 4) { //Manager
                 Button addMovieButton = new Button("+");
                 addMovieButton.setPrefSize(30,30);
 
-                addMovieButton.setStyle("-fx-background-color: orange; -fx-font-size: 14; -fx-font-size: 14; ");
+                addMovieButton.setStyle("-fx-background-color: orange; -fx-font-size: 14; ");
                 addButtonAnchor.getChildren().add(addMovieButton);
 
 
@@ -112,7 +128,19 @@ public class ViewMoviesController implements Initializable {
 
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);//remove the bottom bar
 
+
+
             /*set components size to adapt window size*/
+            //coming soon
+            soonAnchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+                comingSoonHBox.prefWidthProperty().bind(soonAnchorPane.widthProperty());
+            });
+
+            soonAnchorPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+                comingSoonHBox.prefHeightProperty().bind(soonAnchorPane.heightProperty());
+            });
+
+            //movies on theater
             scrollPane.widthProperty().addListener((obs, oldVal, newVal) -> {
                 flow.prefWidthProperty().bind(scrollPane.widthProperty());
             });
@@ -138,14 +166,17 @@ public class ViewMoviesController implements Initializable {
 }
 
     private void updateScreen (){
+        comingSoonHBox.getChildren().clear();
         flow.getChildren().clear();
+
+
 
         /*load movie component*/
         while(cinemas.isEmpty()) { Thread.yield(); }
+
         for (Movie movie : movies) {
             addImage(movie);
         }
-
     }
 
     /**
@@ -167,73 +198,78 @@ public class ViewMoviesController implements Initializable {
         textEngName.setFill(Color.ORANGE);//format title text
         textEngName.setFont(Font.font(null, FontWeight.BOLD, 12));
 
-        GridPane gridPane = new GridPane();
+        if (movie.getScreening().isEmpty()){ // case of coming soon Movie
+            Text textComingSoon = new Text("Coming Soon!");
+            textComingSoon.setFill(Color.WHITESMOKE);
+            textComingSoon.setStyle(" -fx-font-size: 14; ");
+            VBox vb = new VBox(4, pic, textHebName, textEngName, textComingSoon); //create new VBox component to hold all the movie data
 
-        /*add screening times*/
-        SimpleDateFormat format= new SimpleDateFormat ("YY.MM.dd E HH:mm; ");//set a date format
-        String screenTime="";
-        int i=0,j=0;
-        for(Screening screen:movie.getScreening()){
-            screenTime= format.format(screen.getDate().getTime()).toString() ;
-            Text textScreenTime = new Text(screenTime);
-            textScreenTime.setFill(Color.ORANGE);
-            gridPane.add(textScreenTime,i,j);//add screening time to grid
-
-            //set location in the grid
-            i++;
-            if (i % 2 == 0) {
-                j++;
-                i=0;
-            }
-
+            comingSoonHBox.getChildren().add(vb);
         }
 
+         else{ // case of a Movie in the thearers
+            GridPane gridPane = new GridPane();
 
-        VBox vb = new VBox(4, pic, textHebName, textEngName, gridPane); //create new VBox component to hold all the movie data
+            /*add screening times*/
+            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm; ");//set a date format
+            String screenTime = "";
+            int i = 0, j = 0;
+            for (Screening screen : movie.getScreening()) {
+                screenTime = format.format(screen.getDate().getTime()).toString();
+                Text textScreenTime = new Text(screenTime);
+                textScreenTime.setFill(Color.ORANGE);
+                gridPane.add(textScreenTime, i, j);//add screening time to grid
 
-        /*add new component to the scene*/
-        flow.getChildren().add(vb);
-        FlowPane.setMargin(vb, new Insets(5,30,5,10));
+                //set location in the grid
+                i++;
+                if (i % 2 == 0) {
+                    j++;
+                    i = 0;
+                }
 
-/*on action functionality, go into edit screen of the chosen movie*/
-        vb.setOnMouseClicked(e -> {
+            }
 
-           if (permission == 2 || permission == 3 || permission == 4) { //Manager
-               try {
+            VBox vb = new VBox(4, pic, textHebName, textEngName, gridPane); //create new VBox component to hold all the movie data
 
-                   // storing the selected film to customise the newly created scene
-                   pickedDate=null;//reset pickedDate if go to another screen
-                EditMovieScreenController.setSelectedFilmTitle(movie);//pass the movie to  the next screen
-                App.setRoot("EditMovieScreen.fxml");//load edit movie screen
-               } catch (IOException ex) {
-                   ex.printStackTrace();
-               }
-           }
+            /*add new component to the scene*/
+            flow.getChildren().add(vb);
+            FlowPane.setMargin(vb, new Insets(5, 30, 5, 10));
 
-           else if (permission == 0 || permission == 1) { //Costumer
-               if (permission == 1){
-                   Alert alert = new Alert(Alert.AlertType.WARNING);
-                   alert.setTitle(null);
-                   alert.setHeaderText(null);
-                   alert.setContentText("You do not have the required permissions.");
-                   alert.showAndWait();
-               }
+            /*on action functionality, go into edit screen of the chosen movie*/
+            vb.setOnMouseClicked(e -> {
 
-               else{
-                   try {
-                       // storing the selected film to customise the newly created scene
-                       pickedDate=null;//reset pickedDate if go to another screen
-                       MovieOverviewController.setMovie(movie);
-                       if(pickedCinema!=null)
-                           MovieOverviewController.setPickedCinema(pickedCinema);
-                       App.setRoot("MovieOverview.fxml");//load edit movie screen
-                   } catch (IOException ex) {
-                       ex.printStackTrace();
-                   }
-               }
-           }
-           });
+                if (permission == 2 || permission == 3 || permission == 4) { //Manager
+                    try {
 
+                        // storing the selected film to customise the newly created scene
+                        pickedDate = null;//reset pickedDate if go to another screen
+                        EditMovieScreenController.setSelectedFilmTitle(movie);//pass the movie to  the next screen
+                        App.setRoot("EditMovieScreen.fxml");//load edit movie screen
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (permission == 0 || permission == 1) { //Costumer
+                    if (permission == 1) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle(null);
+                        alert.setHeaderText(null);
+                        alert.setContentText("You do not have the required permissions.");
+                        alert.showAndWait();
+                    } else {
+                        try {
+                            // storing the selected film to customise the newly created scene
+                            pickedDate = null;//reset pickedDate if go to another screen
+                            MovieOverviewController.setMovie(movie);
+                            if (pickedCinema != null)
+                                MovieOverviewController.setPickedCinema(pickedCinema);
+                            App.setRoot("MovieOverview.fxml");//load edit movie screen
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
 
     }
 
@@ -262,6 +298,10 @@ public class ViewMoviesController implements Initializable {
         }
     }
 
+    /**
+     * Filter by cinema handler
+     * @param event
+     */
     @FXML
     void handelCinemaPicked(ActionEvent event) {
         ComboBox<Cinema> cinemaFilter= new ComboBox<Cinema>();
@@ -283,6 +323,7 @@ public class ViewMoviesController implements Initializable {
 
             else{
                 movies.clear();
+                movies=comingSoonMovies;
                 while(cinemas.isEmpty()) { Thread.yield(); }
                 for (Theater t: pickedCinema.getTheaters()){
                     for(Screening s:  t.getScreeningList()){
@@ -302,6 +343,10 @@ public class ViewMoviesController implements Initializable {
         pickedFilter.getChildren().add(cinemaFilter);
     }
 
+    /**
+     * Filter by date handler
+     * @param event
+     */
     @FXML
     void handelDatePicked(ActionEvent event) {
         DatePicker dateFilter = new DatePicker();
@@ -328,6 +373,7 @@ public class ViewMoviesController implements Initializable {
             }
             else {
                 movies.clear();
+                movies=comingSoonMovies;
                 while(cinemas.isEmpty()) { Thread.yield(); }
                 for(Cinema c: cinemas) {
                     for (Theater t : c.getTheaters()) {

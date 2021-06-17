@@ -39,7 +39,7 @@
                            </children>
                         </AnchorPane>
                      </top>
-                     <bottom>
+                     <center>
                         <AnchorPane BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets />
@@ -61,6 +61,9 @@
                               </HBox>
                            </children>
                         </AnchorPane>
+                     </center>
+                     <bottom>
+                        <AnchorPane fx:id="soonAnchorPane" BorderPane.alignment="CENTER" />
                      </bottom>
                   </BorderPane>
                </children>
