@@ -357,27 +357,20 @@ public class DB {
 	}
 
 	/**
-	 * Updates the databse according to the given screening list for a specific movie.
-	 * @param screeningList New list of screenings for a movie.
+	 * Updates the database with the given movie.
+	 * @param movie Movie to update.
 	 */
-	protected void setScreenings(List<Screening> screeningList) {
-		List<Screening> allScreenings = getAllScreening();
-		List<Screening> deleteList = findDeletedScreenings(allScreenings, screeningList);
-		session.beginTransaction();
-		for(Screening screening : screeningList) {
-			int screeningId = screening.getId();
-			Screening persistentScreening = (Screening) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Screening", screeningId);
-			Screening screeningToUpdate;
-			if(persistentScreening != null) {
-				screeningToUpdate = persistentScreening;
-			} else {
-				screeningToUpdate = screening;
+	protected void setMovie(Movie movie) {
+		List<Movie> movieList = getAllMovies();
+		for(Movie existingMovie : movieList) {
+			if(existingMovie.getId() == movie.getId()) {
+				existingMovie.copyFrom(movie);
+				movie = existingMovie;
+				break;
 			}
-			session.saveOrUpdate(screeningToUpdate);
 		}
-		for(Screening screening : deleteList) {
-			session.delete(screening);
-		}
+		session.beginTransaction();
+		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
 		session.close();
@@ -601,5 +594,16 @@ public class DB {
 			}
 		}
 		return null;
+	}
+
+	public List<Complaint> getAllComplaints(User user) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Complaint> query = builder.createQuery(Complaint.class);
+		query.from(Complaint.class);
+		List<Complaint> complaints = session.createQuery(query).getResultList();
+		if(user != null) {
+			complaints.removeIf(complaint -> complaint.getCustomer().getId() != user.getId());
+		}
+		return complaints;
 	}
 }

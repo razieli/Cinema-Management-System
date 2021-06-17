@@ -144,4 +144,18 @@ public class Movie implements Serializable {
 	 */
 	public List<Link> getLinks() { return links; }
 	public void setLinks(List<Link> links) { this.links = links; }
+
+    public void copyFrom(Movie movie) {
+		this.engName = movie.engName;
+		this.hebName = movie.hebName;
+		this.year = movie.year;
+		this.castList = movie.castList;
+		this.screening = movie.screening;
+		this.length = movie.length;
+		this.ageRestriction = movie.ageRestriction;
+		this.description = movie.description;
+		this.posterUrl = movie.posterUrl;
+		this.trailerUrl = movie.trailerUrl;
+		this.links = movie.links;
+    }
 }
