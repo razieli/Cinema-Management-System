@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -24,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 public class ComplaintAddController implements Initializable {
 
     private static final long TIME_TO_RESPOND = 24;
+
+    @FXML
+    private ListView<Complaint> complaintListView;
 
     @FXML
     private Label name;
@@ -69,7 +73,7 @@ public class ComplaintAddController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("CustomerHome.fxml.fxml"); //set the scean to the last page.
+            App.setRoot("CustomerHome.fxml"); //set the scean to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }
