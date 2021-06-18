@@ -16,19 +16,29 @@ public class Theater implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-    private String placeName;
+    private String placeName; //todo: uneccecery
 	private int seatsCapacity;
 	private int realSeatsCapacity;
+
 	@OneToMany(targetEntity = Screening.class ,mappedBy="theater", fetch = FetchType.LAZY)
 	private List<Screening> screeningList;
+
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="cinema_id")
 	private Cinema cinema;
-	
-	
+
+
 	/**
 	 * constructors
 	 */
+//	public Theater(String placeName, int seatsCapacity, Cinema cinema)
+//	{
+//		this();
+//		this.placeName = placeName;
+//		this.seatsCapacity = seatsCapacity;
+//		this.cinema=cinema;
+//		this.setRealSeatsCapacity();
+//	}
 	public Theater(String placeName, int seatsCapacity, Cinema cinema)
 	{
 		this();
@@ -95,7 +105,7 @@ public class Theater implements Serializable {
 		else
 			this.realSeatsCapacity = this.seatsCapacity;
 	}
-	
+
 	public List<Customer> coronaCheck(PurpleBadge pb){
 		List<Customer> cancel = new LinkedList<Customer>();
 		for (Screening s: this.screeningList){
@@ -111,7 +121,7 @@ public class Theater implements Serializable {
 		}
 		return cancel;
 	}
-	
+
 	public void setPurpleBadge() {
 		this.setRealSeatsCapacity();
 	}
@@ -126,6 +136,13 @@ public class Theater implements Serializable {
 	 */
 	public void setCinema(Cinema cinema) {
 		this.cinema = cinema;
+	}
+
+	public String getName(){return placeName;}
+
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }

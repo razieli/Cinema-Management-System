@@ -2,10 +2,7 @@ package il.ac.haifa.cs.sweng.cms;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
@@ -45,6 +42,8 @@ public class DB {
 		configuration.addAnnotatedClass(Employee.class);
 		configuration.addAnnotatedClass(Cinema.class);
 		configuration.addAnnotatedClass(PurpleBadge.class);
+		configuration.addAnnotatedClass(Complaint.class);
+		configuration.addAnnotatedClass(Link.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -56,6 +55,7 @@ public class DB {
 		try {
 			sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
+
 			// If there are no movies in the DB initialize it with init movies.
 			List<Movie> movies = getAllMovies();
 			if(movies.isEmpty()) {
@@ -76,13 +76,16 @@ public class DB {
 	protected void init() {
 		session.beginTransaction();
 		try {
+			generateMovie();
 			generateCustomer();
 			generateEmployee();
 			generatePurpleBage();
-			generateCinemaandTheaters();
-			generateMovie();
+			generateCinemAandTheaters();
 			generateScreening();
 			generateTicket();
+			generateComplaint();
+			generateLinks();
+
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
@@ -133,7 +136,7 @@ public class DB {
 	/**
 	 * generate initial movies
 	 */
-	
+
 	public void generateMovie() throws URISyntaxException {
 		List<String> cast1=new LinkedList<String>();
 		cast1.add("Christopher Nolan");
@@ -194,7 +197,7 @@ public class DB {
 		String description6 = ("A struggling salesman takes custody of his son as he's poised to begin a life-changing professional career.");
 		URI uri6a = new URI("https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri6b = new URI("https://www.imdb.com/video/vi1413719065?playlistId=tt0454921");
-		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast6s,117,13,description6, uri6a, uri6b));
+		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast5s,117,13,description6, uri6a, uri6b));
 		session.flush();
 	}
 
@@ -203,9 +206,10 @@ public class DB {
 	 */
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
+		List<Customer> customers=getAllCustomer();
 		for(Screening s:screenings) {
 			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-				session.save(new Ticket(s,i));
+				session.save(new Ticket(customers.get(i%2),s,i));
 		}
 		session.flush();
 	}
@@ -253,12 +257,12 @@ public class DB {
 		session.save(PurpleBadge.getInstance());
 		session.flush();
 	}
-	public void generateCinemaandTheaters() throws Exception{
+	public void generateCinemAandTheaters() throws Exception{
 		List<Employee> emps=getAllEmployee();
 		Cinema c1 = new Cinema("Haifa","Lev Hamifrats",emps.get(0));
 		Cinema c2 = new Cinema("Tel Aviv","Glilot",emps.get(1));
 
-		Theater t1 = new Theater("Haifa", 18,c1),t2 = new Theater("Tel-Aviv", 32,c2),t3 = new Theater("Netanya", 8,c1);
+		Theater t1 = new Theater("Theater 1", 18,c1),t2 = new Theater("Theater 2", 32,c2),t3 = new Theater("Theater 3", 8,c1);
 		c1.addTheater(t1);
 		c2.addTheater(t2);
 		c1.addTheater(t3);
@@ -266,7 +270,21 @@ public class DB {
 		session.save(c2);
 		session.save(t1);
 		session.save(t2);
-		session.save(t3);		
+		session.save(t3);
+		session.flush();
+	}
+
+	public void generateLinks() throws Exception{
+		List<Movie> movies=getAllMovies();
+		List<Customer> customers = getAllCustomer();
+		Link l1= new Link(customers.get(0),new GregorianCalendar( 2021,  7,  15,  8,  00), movies.get(0));
+		Link l2= new Link(customers.get(1),new GregorianCalendar( 2021,  8,  20,  15,  15), movies.get(1));
+		Link l3= new Link(customers.get(0),new GregorianCalendar( 2021,  9,  1,  20,  20), movies.get(2));
+		Link l4= new Link(customers.get(1),new GregorianCalendar( 2021,  10,  8,  10,  45), movies.get(3));
+		session.save(l1);
+		session.save(l2);
+		session.save(l3);
+		session.save(l4);
 		session.flush();
 	}
 
@@ -280,7 +298,6 @@ public class DB {
 		query.from(Movie.class);
 		List<Movie> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 
 	/**
@@ -306,7 +323,6 @@ public class DB {
 		query.from(Screening.class);
 		List<Screening> data = session.createQuery(query).getResultList();
 		return data;
-
 	}
 	public List<Employee> getAllEmployee() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -322,30 +338,39 @@ public class DB {
         query.from(Cinema.class);
         List<Cinema> data = session.createQuery(query).getResultList();
         return data;
-
     }
+
+	public List<User> getAllUsers() throws Exception {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<User> query = builder.createQuery(User.class);
+		query.from(User.class);
+		return session.createQuery(query).getResultList();
+
+	}
+
+	public List<Ticket> getAllTickets() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Ticket> query = builder.createQuery(Ticket.class);
+		query.from(Ticket.class);
+		List<Ticket> data = session.createQuery(query).getResultList();
+		return data;
+	}
+
 	/**
-	 * Updates the databse according to the given screening list for a specific movie.
-	 * @param screeningList New list of screenings for a movie.
+	 * Updates the database with the given movie.
+	 * @param movie Movie to update.
 	 */
-	protected void setScreenings(List<Screening> screeningList) {
-		List<Screening> allScreenings = getAllScreening();
-		List<Screening> deleteList = findDeletedScreenings(allScreenings, screeningList);
-		session.beginTransaction();
-		for(Screening screening : screeningList) {
-			int screeningId = screening.getId();
-			Screening persistentScreening = (Screening) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Screening", screeningId);
-			Screening screeningToUpdate;
-			if(persistentScreening != null) {
-				screeningToUpdate = persistentScreening;
-			} else {
-				screeningToUpdate = screening;
+	protected void setMovie(Movie movie) {
+		List<Movie> movieList = getAllMovies();
+		for(Movie existingMovie : movieList) {
+			if(existingMovie.getId() == movie.getId()) {
+				existingMovie.copyFrom(movie);
+				movie = existingMovie;
+				break;
 			}
-			session.saveOrUpdate(screeningToUpdate);
 		}
-		for(Screening screening : deleteList) {
-			session.delete(screening);
-		}
+		session.beginTransaction();
+		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
 		session.close();
@@ -380,6 +405,62 @@ public class DB {
 		return deleteList;
 	}
 
+	/**
+	 * Updates the database according to the given ticket list for a specific movie.
+	 * @param ticketList New list of tickets for a movie.
+	 */
+	protected void setTickets(List<Ticket> ticketList) {
+		List<Ticket> allTickets = getAllTickets();
+		List<Ticket> deleteList = findDeletedTickets(allTickets, ticketList);
+		session.beginTransaction();
+		for(Ticket ticket : ticketList) {
+			int ticketId = ticket.getId();
+			Ticket persistentTicket = (Ticket) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Ticket", ticketId);
+			Ticket ticketToUpdate;
+			if(persistentTicket != null) {
+				ticketToUpdate = persistentTicket;
+			} else {
+				ticketToUpdate = ticket;
+			}
+			session.saveOrUpdate(ticketToUpdate);
+		}
+		for(Ticket ticket : deleteList) {
+			session.delete(ticket);
+		}
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Finds if there are tickets to be deleted according to the new tickets list.
+	 * @param allTickets List of current tickets.
+	 * @param TicketUpdateList New list of tickets.
+	 * @return List of tickets to be deleted.
+	 */
+	private List<Ticket> findDeletedTickets(List<Ticket> allTickets, List<Ticket> TicketUpdateList) {
+		List<Ticket> deleteList = new ArrayList<>();
+		int movieId = TicketUpdateList.get(0).getScreening().getMovie().getId();
+		for(Ticket ticket : allTickets) {
+			if(ticket.getScreening().getMovie().getId() == movieId) {
+				int ticketId = ticket.getId();
+				boolean found = false;
+				for(Ticket updatedTicket : TicketUpdateList) {
+					int updatedTicketId = updatedTicket.getId();
+					if(ticketId == updatedTicketId) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					deleteList.add(ticket);
+				}
+			}
+		}
+		return deleteList;
+	}
+
 	public String getPassword(String username) {
 //			String sql = "SELECT password FROM cinema.user WHERE userName='" + username + "'";
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -397,6 +478,62 @@ public class DB {
 			}
 	}
 
+	/**
+	 * Updates the database according to the given ticket list for a specific movie.
+	 * @param linktList New list of tickets for a movie.
+	 */
+	protected void setLinks(List<Link> linktList) {
+		List<Link> allLinks = getAllLinks();
+		List<Link> deleteList = findDeletedLinks(allLinks, linktList);
+		session.beginTransaction();
+		for(Link link : linktList) {
+			int linkId = link.getId();
+			Link persistentTicket = (Link) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Link", linkId);
+			Link linkToUpdate;
+			if(persistentTicket != null) {
+				linkToUpdate = persistentTicket;
+			} else {
+				linkToUpdate = link;
+			}
+			session.saveOrUpdate(linkToUpdate);
+		}
+		for(Link ticket : deleteList) {
+			session.delete(ticket);
+		}
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Finds if there are Links to be deleted according to the new Links list.
+	 * @param allLinks List of current Links.
+	 * @param LinkUpdateList New list of Links.
+	 * @return List of tickets to be deleted.
+	 */
+	private List<Link> findDeletedLinks(List<Link> allLinks, List<Link> LinkUpdateList) {
+		List<Link> deleteList = new ArrayList<>();
+		int movieId = LinkUpdateList.get(0).getMovie().getId();
+		for(Link link : allLinks) {
+			if(link.getMovie().getId() == movieId) {
+				int linkId = link.getId();
+				boolean found = false;
+				for(Link updatedTicket : LinkUpdateList) {
+					int updatedTicketId = updatedTicket.getId();
+					if(linkId == updatedTicketId) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					deleteList.add(link);
+				}
+			}
+		}
+		return deleteList;
+	}
+
 	public int getPermission(String username) {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
@@ -411,5 +548,62 @@ public class DB {
 		{
 			return 0;
 		}
+	}
+
+	public void generateComplaint() throws Exception {
+		List<Customer> customers = getAllCustomer();
+		for(Customer customer: customers){
+			List<Complaint> complaints= new ArrayList<>();
+			Complaint complaint = new Complaint(new Date(), "Noise", "complaint body.",customer);
+			complaints.add(complaint);
+			session.save(complaint);
+			customer.setComplaints(complaints);
+			session.save(customer);
+		}
+		session.flush();
+	}
+
+	public List<Customer> getAllCustomer() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Customer> query = builder.createQuery(Customer.class);
+		query.from(Customer.class);
+			return session.createQuery(query).getResultList();
+	}
+
+	public List<Link> getAllLinks() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Link> query = builder.createQuery(Link.class);
+		query.from(Link.class);
+		return session.createQuery(query).getResultList();
+	}
+
+	public void setComplaint(Complaint complaint) {
+		session.beginTransaction();
+		session.save(complaint);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		session = sessionFactory.openSession();
+	}
+
+	public User getLoggedUser(String userName) throws Exception {
+		List<User> users = getAllUsers();
+		for(User user: users){
+			if(user.getUserName().equals(userName)){
+				return user;
+			}
+		}
+		return null;
+	}
+
+	public List<Complaint> getAllComplaints(User user) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Complaint> query = builder.createQuery(Complaint.class);
+		query.from(Complaint.class);
+		List<Complaint> complaints = session.createQuery(query).getResultList();
+		if(user != null) {
+			complaints.removeIf(complaint -> complaint.getCustomer().getId() != user.getId());
+		}
+		return complaints;
 	}
 }

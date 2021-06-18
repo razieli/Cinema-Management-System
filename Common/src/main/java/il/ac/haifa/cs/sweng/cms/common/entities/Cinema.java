@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cinema")
-public class Cinema {
+public class Cinema implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
@@ -66,5 +67,13 @@ public class Cinema {
 		for (Theater t: this.theaters) {
 			t.setPurpleBadge();
 		}
+	}
+
+	/**
+	 * convert Cinema to the cinema name
+	 */
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 }

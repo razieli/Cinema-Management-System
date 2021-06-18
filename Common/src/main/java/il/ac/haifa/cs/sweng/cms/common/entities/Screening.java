@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Screening implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="theater_id")
 	private Theater theater;
+
 	private GregorianCalendar date;
 	@OneToMany(targetEntity = Ticket.class, mappedBy = "screening",fetch = FetchType.LAZY)
 	private List<Ticket> tickets;
@@ -106,6 +108,14 @@ public class Screening implements Serializable {
 	 */
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
+		String date = format.format(this.getDate().getTime()).toString();
+
+		return date +", in " + this.theater.getName();
 	}
 
 }

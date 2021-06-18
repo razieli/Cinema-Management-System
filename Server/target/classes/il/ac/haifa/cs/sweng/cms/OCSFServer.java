@@ -1,11 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.User;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.sweng.cms.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
@@ -73,50 +69,103 @@ public class OCSFServer extends AbstractServer {
      * @return Response message, or null if request is unidentified.
      */
     private AbstractResponse genResponse(AbstractRequest request) {
+        if(request instanceof ListAllCinemasRequest) {
+            // Get list of tickets from DB.
+            List<Cinema> cinemaList = null;
+            try {
+                cinemaList = db.getAllCinemas();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return new ListAllCinemasResponse(cinemaList);
+        }
+
         if(request instanceof ListAllMoviesRequest) {
             // Get list of movies from DB.
             List<Movie> movieList = db.getAllMovies();
             return new ListAllMoviesResponse(movieList);
         }
-        if(request instanceof UpdateScreeningsRequest) {
-            // Save new screening list in DB.
-            List<Screening> screeningList = ((UpdateScreeningsRequest) request).getScreeningList();
-            db.setScreenings(screeningList);
-            return new UpdateScreeningsResponse(ResponseStatus.Acknowledged);
+
+        if(request instanceof ListAllTicketsRequest) {
+            // Get list of tickets from DB.
+            List<Ticket> ticketList = db.getAllTickets();
+            return new ListAllTicketsResponse(ticketList);
+        }
+
+        if(request instanceof ListAllLinksRequest) {
+            // Get list of tickets from DB.
+            List<Link> linkList = db.getAllLinks();
+            return new ListAllLinksResponse(linkList);
+        }
+
+        if(request instanceof UpdateMovieRequest) {
+            // Save updated movie in DB.
+            Movie movie = ((UpdateMovieRequest) request).getMovie();
+            db.setMovie(movie);
+            return new UpdateMovieResponse(ResponseStatus.Acknowledged);
+        }
+
+        if(request instanceof UpdateTicketsRequest) {
+            // Save tickets in DB.
+            List<Ticket> ticketList = ((UpdateTicketsRequest) request).getTicketsList();
+            db.setTickets(ticketList);
+            return new UpdateTicketsResponse(ResponseStatus.Acknowledged);
+        }
+
+        if(request instanceof UpdateLinksRequest) {
+            // Save links in DB.
+            List<Link> linkList = ((UpdateLinksRequest) request).getLinksList();
+            db.setLinks(linkList);
+            return new UpdateLinksResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof LoginRequest) {
-            String username = ((LoginRequest) request).getUsername();
-            String password = ((LoginRequest) request).getPassword();
-            String pwFromDB = db.getPassword(username);
-            int perFromDB = db.getPermission(username);
-            LoginResponse loginResponse = null;
-            if(DB.passMatches(password, pwFromDB) == 1) {
-                if (perFromDB == 0)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.Customer);
-                }
-                else if (perFromDB == 1)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.CustomerService);
-                }
-                else if (perFromDB == 2)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.ContentManager);
-                }
-                else if (perFromDB == 3)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.BranchManager);
-                }
-                else if (perFromDB == 4)
-                {
-                    loginResponse = new LoginResponse(ResponseStatus.Administrator);
-                }
-            } else {
-                loginResponse = new LoginResponse(ResponseStatus.Declined);
-            }
-            return loginResponse;
+            return handleLoginRequest((LoginRequest) request);
+
+        }
+        if(request instanceof ComplaintFileRequest) {
+            Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
+            db.setComplaint(complaint);
+            return new ComplaintFileResponse(ResponseStatus.Acknowledged);
+        }
+        if(request instanceof ListAllComplaintsRequest) {
+            List<Complaint> complaints = db.getAllComplaints(((ListAllComplaintsRequest) request).getUser());
+            return new ListAllComplaintsResponse(complaints);
         }
         Log.w(TAG, "Unidentified request.");
         return null;
     }
+
+    private LoginResponse handleLoginRequest(LoginRequest request) {
+        String username = ((LoginRequest) request).getUsername();
+        String password = ((LoginRequest) request).getPassword();
+        String pwFromDB = db.getPassword(username);
+        int perFromDB = db.getPermission(username);
+        LoginResponse loginResponse = null;
+
+        if (DB.passMatches(password, pwFromDB) == 1) {
+            User user = null;
+            try {
+                user = db.getLoggedUser(username);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (perFromDB == 0) {
+                loginResponse = new LoginResponse(ResponseStatus.Customer, user);
+            } else if (perFromDB == 1) {
+                loginResponse = new LoginResponse(ResponseStatus.CustomerService,user);
+            } else if (perFromDB == 2) {
+                loginResponse = new LoginResponse(ResponseStatus.ContentManager,user);
+            } else if (perFromDB == 3) {
+                loginResponse = new LoginResponse(ResponseStatus.BranchManager,user);
+            } else if (perFromDB == 4) {
+                loginResponse = new LoginResponse(ResponseStatus.Administrator,user);
+            }
+        } else {
+            loginResponse = new LoginResponse(ResponseStatus.Declined, null);
+        }
+        return loginResponse;
+    }
 }
+
+
+

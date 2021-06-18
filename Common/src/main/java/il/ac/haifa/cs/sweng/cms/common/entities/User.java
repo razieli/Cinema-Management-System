@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User Entity
@@ -17,6 +18,8 @@ public abstract class User implements Serializable {
 	private String firstName;
 	private String lastName;
 	private int permission;
+
+
 
 	/**
 	 *constructors
@@ -82,4 +85,6 @@ public abstract class User implements Serializable {
 	 * @param permission
 	 */
 	public void setPermission(int permission) {this.permission = permission;}
+
+
 }

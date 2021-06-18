@@ -1,16 +1,17 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "tickets")
-public class Ticket {
+public class Ticket implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@OneToOne(mappedBy = "customer")
+
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="customer")
+	@JoinColumn(name="customer_id")
 	private Customer customer;
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="screening")
