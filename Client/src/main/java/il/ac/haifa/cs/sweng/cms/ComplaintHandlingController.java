@@ -40,6 +40,9 @@ public class ComplaintHandlingController implements Initializable {
     private Text subject;
 
     @FXML
+    private TextArea body;
+
+    @FXML
     private Text status;
 
     @FXML
@@ -56,13 +59,13 @@ public class ComplaintHandlingController implements Initializable {
      */
     @FXML
     protected void replyToComplaint() {
-        if(!verifyInput()) {
-            // TODO: show error in GUI.
-        } else {
+        if(verifyInput()) {
             Date date = new Date();
             Complaint complaint = complaintListView.getSelectionModel().getSelectedItem();
             complaint.closeComplaint(date, reply.getText(), Double.parseDouble(compensation.getText()));
             App.getOcsfClient(this).replyToComplaint(complaint);
+            this.reply.setText("");
+            this.compensation.setText("");
         }
     }
     @FXML
@@ -130,6 +133,7 @@ public class ComplaintHandlingController implements Initializable {
 
     private void updateSelectedComplaint(Complaint selected) {
         this.subject.setText(selected.getSubject());
+        this.body.setText(selected.getBody());
         Complaint.Status status = selected.getStatus();
         switch (status) {
             case FILED -> this.status.setText("Waiting");
