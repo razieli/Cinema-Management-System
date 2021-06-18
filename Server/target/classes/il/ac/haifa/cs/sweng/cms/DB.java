@@ -373,8 +373,8 @@ public class DB {
 		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -429,8 +429,8 @@ public class DB {
 		}
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -502,8 +502,8 @@ public class DB {
 		}
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -586,8 +586,8 @@ public class DB {
 		session.saveOrUpdate(existingComplaint);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	public User getLoggedUser(String userName) throws Exception {
