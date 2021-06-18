@@ -3,6 +3,7 @@ package il.ac.haifa.cs.sweng.cms;
 import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -144,8 +145,8 @@ public class ComplaintAddController implements Initializable {
     }
 
     public void handleComplaintFileResponse() {
-        this.complaintListView.getItems().add(complaints.get(complaints.size() - 1));
+        Platform.runLater(() -> this.complaintListView.getItems().add(complaints.get(complaints.size() - 1)));
         this.body.setText("");
-        showAlert(Alert.AlertType.INFORMATION, "Complaint filed successfuly.", "");
+        Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Complaint filed successfully.", ""));
     }
 }
