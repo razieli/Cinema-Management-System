@@ -68,7 +68,7 @@ public class OCSFClient extends AbstractClient {
             handleLoginResponse((LoginResponse) response);
         }
         if (response instanceof ComplaintFileResponse) {
-            ((ComplaintAddController) controller).updateComplaintList();
+            ((ComplaintAddController) controller).handleComplaintFileResponse();
         }
         if (response instanceof ListAllComplaintsResponse) {
             if(controller instanceof ComplaintAddController) {
