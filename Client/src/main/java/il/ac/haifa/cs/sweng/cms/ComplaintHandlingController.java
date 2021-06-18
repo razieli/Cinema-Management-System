@@ -1,10 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,6 +41,12 @@ public class ComplaintHandlingController implements Initializable {
 
     @FXML
     private Text status;
+
+    @FXML
+    private TextArea submittedReply;
+
+    @FXML
+    private Text comp;
 
     @FXML
     private Text date;
@@ -140,6 +143,8 @@ public class ComplaintHandlingController implements Initializable {
             case CLOSED_WITH_COMP -> this.status.setText("Closed with compensation");
             case CLOSED_WITHOUT_COMP -> this.status.setText("Closed without compensation");
         }
+        this.submittedReply.setText(selected.getResponse());
+        this.comp.setText(String.valueOf(selected.getCompensation()));
         Date filingDate = selected.getFilingDate();
         this.date.setText(selected.getFilingDate().toString());
         Date currDate = new Date();

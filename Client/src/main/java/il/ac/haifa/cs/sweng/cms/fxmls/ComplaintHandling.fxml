@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="505.0" prefWidth="690.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintHandlingController">
+<AnchorPane prefHeight="619.0" prefWidth="690.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintHandlingController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -38,7 +38,7 @@
             </AnchorPane>
          </top>
          <bottom>
-            <AnchorPane prefHeight="35.0" prefWidth="671.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="35.0" prefWidth="690.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
                <children>
                   <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
@@ -73,7 +73,7 @@
                                           </Label>
                                           <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: black;">
                                              <children>
-                                                <TextArea fx:id="reply" maxWidth="280.0" promptText="Enter a reply to the customer.">
+                                                <TextArea fx:id="reply" maxWidth="280.0" promptText="Enter a reply to the customer." wrapText="true">
                                                    <VBox.margin>
                                                       <Insets bottom="4.0" top="4.0" />
                                                    </VBox.margin>
@@ -128,25 +128,37 @@
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <TextArea fx:id="body" editable="false" layoutX="7.0" layoutY="203.0" maxWidth="280.0" prefHeight="61.0" AnchorPane.leftAnchor="7.0" />
+                                                <TextArea fx:id="body" editable="false" layoutX="7.0" layoutY="203.0" maxWidth="280.0" prefHeight="61.0" wrapText="true" AnchorPane.leftAnchor="7.0" />
                                                 <Label layoutX="7.0" layoutY="211.0" text="Status:" textFill="ORANGE" translateY="55.0" underline="true" AnchorPane.leftAnchor="7.0">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <Text fx:id="status" fill="ORANGE" layoutX="7.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" translateY="55.0" wrappingWidth="247.0" AnchorPane.leftAnchor="7.0" />
-                                                <Label layoutX="7.0" layoutY="254.0" text="Date:" textFill="ORANGE" translateY="55.0" underline="true" AnchorPane.leftAnchor="7.0">
+                                                <Label layoutX="5.0" layoutY="309.0" text="Reply:" textFill="ORANGE" underline="true">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="date" fill="ORANGE" layoutX="7.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" translateY="55.0" wrappingWidth="273.0" AnchorPane.leftAnchor="7.0" />
-                                                <Label layoutX="7.0" layoutY="297.0" text="Time to respond:" textFill="ORANGE" translateY="55.0" underline="true" AnchorPane.leftAnchor="7.0">
+                                                <TextArea fx:id="submittedReply" editable="false" layoutX="7.0" layoutY="336.0" maxWidth="280.0" prefHeight="61.0" wrapText="true" AnchorPane.leftAnchor="7.0" />
+                                                <Label layoutX="7.0" layoutY="306.0" text="Compensation:" textFill="ORANGE" translateY="90.0" underline="true" AnchorPane.leftAnchor="7.0">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="ttr" fill="ORANGE" layoutX="7.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" translateY="55.0" wrappingWidth="120.0" AnchorPane.leftAnchor="7.0" />
+                                                <Text fx:id="comp" fill="ORANGE" layoutX="7.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" translateY="90.0" wrappingWidth="247.0" AnchorPane.leftAnchor="7.0" />
+                                                <Label layoutX="7.0" layoutY="254.0" text="Date:" textFill="ORANGE" translateY="190.0" underline="true" AnchorPane.leftAnchor="7.0">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <Text fx:id="date" fill="ORANGE" layoutX="7.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" translateY="190.0" wrappingWidth="273.0" AnchorPane.leftAnchor="7.0" />
+                                                <Label layoutX="7.0" layoutY="297.0" text="Time to respond:" textFill="ORANGE" translateY="190.0" underline="true" AnchorPane.leftAnchor="7.0">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <Text fx:id="ttr" fill="ORANGE" layoutX="7.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" translateY="190.0" wrappingWidth="120.0" AnchorPane.leftAnchor="7.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>

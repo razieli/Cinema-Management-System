@@ -34,13 +34,22 @@ public class ComplaintAddController implements Initializable {
     private ComboBox<String> subject;
 
     @FXML
-    private TextField body;
+    private TextArea body;
 
     @FXML
     private Text complaintListSubject;
 
     @FXML
+    private TextArea complaintListBody;
+
+    @FXML
     private Text complaintListStatus;
+
+    @FXML
+    private TextArea complaintListReply;
+
+    @FXML
+    private Text complaintListCompensation;
 
     @FXML
     private Text complaintListDate;
@@ -124,12 +133,15 @@ public class ComplaintAddController implements Initializable {
 
     private void updateSelectedComplaint(Complaint selected) {
         this.complaintListSubject.setText(selected.getSubject());
+        this.complaintListBody.setText(selected.getBody());
         Complaint.Status status = selected.getStatus();
         switch (status) {
             case FILED -> this.complaintListStatus.setText("Waiting");
             case CLOSED_WITH_COMP -> this.complaintListStatus.setText("Closed with compensation");
             case CLOSED_WITHOUT_COMP -> this.complaintListStatus.setText("Closed without compensation");
         }
+        this.complaintListReply.setText(selected.getResponse());
+        this.complaintListCompensation.setText(String.valueOf(selected.getCompensation()));
         Date filingDate = selected.getFilingDate();
         this.complaintListDate.setText(filingDate.toString());
         Date currDate = new Date();
