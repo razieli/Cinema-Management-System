@@ -42,10 +42,13 @@
                <children>
                   <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
-                        <Button fx:id="sendReplyButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#replyToComplaint" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: #ffa500;" text="Send reply" textAlignment="CENTER">
+                        <Button fx:id="sendReplyButton" alignment="CENTER" mnemonicParsing="false" onAction="#replyToComplaint" prefHeight="25.0" prefWidth="352.0" style="-fx-background-color: #ffa500;" text="Send reply" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
+                           <padding>
+                              <Insets left="40.0" right="40.0" />
+                           </padding>
                         </Button>
                      </buttons>
                   </ButtonBar>
@@ -57,7 +60,7 @@
                <children>
                   <SplitPane cache="true" dividerPositions="0.5" prefHeight="373.0" prefWidth="683.0" style="-fx-background-color: black; -fx-border-color: ORANGE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <items>
-                        <ScrollPane fx:id="scrollPaneLeft" hbarPolicy="NEVER" prefHeight="357.0" prefWidth="454.0" style="-fx-background-color: BLACK;">
+                        <ScrollPane fx:id="scrollPaneLeft" fitToHeight="true" hbarPolicy="NEVER" prefHeight="357.0" prefWidth="454.0" style="-fx-background-color: BLACK;">
                            <content>
                               <AnchorPane fx:id="anchorPaneLeft" style="-fx-background-color: black;">
                                  <children>
@@ -102,7 +105,7 @@
                               </AnchorPane>
                            </content>
                         </ScrollPane>
-                        <ScrollPane fx:id="scrollPaneRight" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="353.0" prefWidth="237.0" style="-fx-background-color: black;">
+                        <ScrollPane fx:id="scrollPaneRight" fitToHeight="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="353.0" prefWidth="237.0" style="-fx-background-color: black;">
                            <content>
                               <AnchorPane fx:id="anchorPaneRight" cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: black;">
                                  <children>
