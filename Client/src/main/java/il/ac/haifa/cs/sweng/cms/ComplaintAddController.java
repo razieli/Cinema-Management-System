@@ -77,7 +77,7 @@ public class ComplaintAddController implements Initializable {
     }
     private void showAlert(Alert.AlertType alertType, String header, String message) {
         Alert alert = new Alert(alertType);
-        alert.setTitle(alertType.name());
+        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();

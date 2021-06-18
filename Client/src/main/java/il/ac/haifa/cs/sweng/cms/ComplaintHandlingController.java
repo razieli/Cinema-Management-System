@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -81,37 +82,37 @@ public class ComplaintHandlingController implements Initializable {
         try {
             comp = Double.parseDouble(compensation.getText());
         } catch (NumberFormatException e) {
-            showAlert("Compensation must be a number.");
+            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Compensation must be a number.");
             return false;
         }
 
         if(comp < 0 || comp > MAX_COMPENSATION) {
-            showAlert("Compensation must be between 0 and " + MAX_COMPENSATION + ".");
+            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Compensation must be between 0 and " + MAX_COMPENSATION + ".");
             return false;
         }
 
         if(reply.getText().isEmpty()) {
-            showAlert("Reply body empty.");
+            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Reply body empty.");
             return false;
         }
 
         if(complaintListView.getSelectionModel().isEmpty()) {
-            showAlert("No complaint selected.");
+            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "No complaint selected.");
             return false;
         }
 
         if(complaintListView.getSelectionModel().getSelectedItem().getStatus() != Complaint.Status.FILED) {
-            showAlert("Cannot reply to an already closed complaint.");
+            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Cannot reply to an already closed complaint.");
             return false;
         }
 
         return true;
     }
 
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error while trying to send reply:");
+    private void showAlert(Alert.AlertType alertType, String header, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
+        alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -156,5 +157,6 @@ public class ComplaintHandlingController implements Initializable {
     public void onReplyReceived() {
         Complaint selected = this.complaintListView.getSelectionModel().getSelectedItem();
         updateSelectedComplaint(selected);
+        Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Reply sent successfully.", "Complaint is marked as closed."));
     }
 }
