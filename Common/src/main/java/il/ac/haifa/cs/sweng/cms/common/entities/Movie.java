@@ -1,10 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -16,7 +13,9 @@ import javax.persistence.*;
  * Movie Entity
  */
 public class Movie implements Serializable {
-    @Id
+	private static final double BASE_PRICE = 40;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String engName;
@@ -31,8 +30,11 @@ public class Movie implements Serializable {
 	private URI posterUrl;
 	private URI trailerUrl;
 
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
 	private List<Link> links;
+
+	private double price;
 
 	/**
 	 * constructors
@@ -53,6 +55,7 @@ public class Movie implements Serializable {
 		this.posterUrl = inputStream;
 		this.trailerUrl = inputStream2;
 		this.description = description;
+		this.price = BASE_PRICE;
 	}
 
 	/**
@@ -145,7 +148,13 @@ public class Movie implements Serializable {
 	public List<Link> getLinks() { return links; }
 	public void setLinks(List<Link> links) { this.links = links; }
 
-    public void copyFrom(Movie movie) {
+	/**
+	 * Price set/get
+	 */
+	public double getPrice() { return price; }
+	public void setPrice(double price) { this.price = price; }
+
+	public void copyFrom(Movie movie) {
 		this.engName = movie.engName;
 		this.hebName = movie.hebName;
 		this.year = movie.year;
@@ -157,5 +166,6 @@ public class Movie implements Serializable {
 		this.posterUrl = movie.posterUrl;
 		this.trailerUrl = movie.trailerUrl;
 		this.links = movie.links;
+		this.price = movie.price;
     }
 }
