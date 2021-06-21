@@ -68,4 +68,12 @@ public class Cinema implements Serializable {
 			t.setPurpleBadge();
 		}
 	}
+
+	/**
+	 * convert Cinema to the cinema name
+	 */
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

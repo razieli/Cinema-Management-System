@@ -262,7 +262,7 @@ public class DB {
 		Cinema c1 = new Cinema("Haifa","Lev Hamifrats",emps.get(0));
 		Cinema c2 = new Cinema("Tel Aviv","Glilot",emps.get(1));
 
-		Theater t1 = new Theater("Haifa", 18,c1),t2 = new Theater("Tel-Aviv", 32,c2),t3 = new Theater("Netanya", 8,c1);
+		Theater t1 = new Theater("Theater 1", 18,c1),t2 = new Theater("Theater 2", 32,c2),t3 = new Theater("Theater 3", 8,c1);
 		c1.addTheater(t1);
 		c2.addTheater(t2);
 		c1.addTheater(t3);
@@ -357,31 +357,24 @@ public class DB {
 	}
 
 	/**
-	 * Updates the databse according to the given screening list for a specific movie.
-	 * @param screeningList New list of screenings for a movie.
+	 * Updates the database with the given movie.
+	 * @param movie Movie to update.
 	 */
-	protected void setScreenings(List<Screening> screeningList) {
-		List<Screening> allScreenings = getAllScreening();
-		List<Screening> deleteList = findDeletedScreenings(allScreenings, screeningList);
-		session.beginTransaction();
-		for(Screening screening : screeningList) {
-			int screeningId = screening.getId();
-			Screening persistentScreening = (Screening) session.get("il.ac.haifa.cs.sweng.cms.common.entities.Screening", screeningId);
-			Screening screeningToUpdate;
-			if(persistentScreening != null) {
-				screeningToUpdate = persistentScreening;
-			} else {
-				screeningToUpdate = screening;
+	protected void setMovie(Movie movie) {
+		List<Movie> movieList = getAllMovies();
+		for(Movie existingMovie : movieList) {
+			if(existingMovie.getId() == movie.getId()) {
+				existingMovie.copyFrom(movie);
+				movie = existingMovie;
+				break;
 			}
-			session.saveOrUpdate(screeningToUpdate);
 		}
-		for(Screening screening : deleteList) {
-			session.delete(screening);
-		}
+		session.beginTransaction();
+		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -436,8 +429,8 @@ public class DB {
 		}
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -509,8 +502,8 @@ public class DB {
 		}
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -585,12 +578,16 @@ public class DB {
 	}
 
 	public void setComplaint(Complaint complaint) {
+		Complaint existingComplaint;
+		List<Complaint> complaints = getAllComplaints(null);
+		existingComplaint = complaints.stream().filter(c -> c.getId() == complaint.getId()).findFirst().orElse(complaint);
+		existingComplaint.copyFrom(complaint);
 		session.beginTransaction();
-		session.save(complaint);
+		session.saveOrUpdate(existingComplaint);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	public User getLoggedUser(String userName) throws Exception {
@@ -601,5 +598,16 @@ public class DB {
 			}
 		}
 		return null;
+	}
+
+	public List<Complaint> getAllComplaints(User user) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Complaint> query = builder.createQuery(Complaint.class);
+		query.from(Complaint.class);
+		List<Complaint> complaints = session.createQuery(query).getResultList();
+		if(user != null) {
+			complaints.removeIf(complaint -> complaint.getCustomer().getId() != user.getId());
+		}
+		return complaints;
 	}
 }

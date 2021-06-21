@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,8 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -154,4 +157,5 @@ public class App extends Application {
     public static void setUser(User usr) {
         user = usr;
     }
+
 }

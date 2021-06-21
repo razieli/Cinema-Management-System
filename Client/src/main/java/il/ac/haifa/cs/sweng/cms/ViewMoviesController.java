@@ -4,17 +4,17 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -29,7 +29,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,7 +39,12 @@ public class ViewMoviesController implements Initializable {
 
     Scene scene;
     ArrayList<File> fileList = new ArrayList<File>();
+    List<Movie> allMovies= new ArrayList<Movie>();
     List<Movie> movies= new ArrayList<Movie>();
+    static List<Cinema>cinemas=new ArrayList<Cinema>();
+    private Cinema pickedCinema = null;
+    private GregorianCalendar pickedDate = null;
+
     HBox hb = new HBox();
 
     private int permission= App.getUserPermission();
@@ -54,17 +61,13 @@ public class ViewMoviesController implements Initializable {
     @FXML // fx:id="backButton"
     private Button backButton; // Value injected by FXMLLoader
 
-    @FXML // fx:id="searchButton"
-    private Button searchButton; // Value injected by FXMLLoader
+    @FXML // fx:id="pickedFilter"
+    private Pane pickedFilter; // Value injected by FXMLLoader
 
-    @FXML // fx:id="filterMenu"
-    private MenuButton filterMenu; // Value injected by FXMLLoader
 
     @FXML // fx:id="addButtonAnchor"
     private AnchorPane addButtonAnchor; // Value injected by FXMLLoader
 
-//    @FXML
-//    private Button addMovieButton;
 
     //components and items to be added
     @FXML
@@ -84,34 +87,21 @@ public class ViewMoviesController implements Initializable {
         try {
 /* Gets list of movies from the server*/
             App.getOcsfClient(this).getListOfMovies();
+            App.getOcsfClient(this).getListOfCinemas();
 
-/*set up buttons*/
-            URI searchButtonUri = new URI("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbws1761LoKcQ68sQeqmJNXr2WhuEE5SEVY1DmKK6mka1o8FpbeEmTj_cBWfRR1ksDbAc&usqp=CAU");
-            ImageView searchButtonIm = new ImageView(searchButtonUri.toString());
-            searchButtonIm.setPreserveRatio(true);
-            searchButtonIm.setFitHeight(searchButton.getPrefHeight());
-            searchButtonIm.setFitWidth(searchButton.getPrefWidth());
-            searchButton.setGraphic(searchButtonIm);
-
-//            URI backButtonUri = new URI("https://cdn.pixabay.com/photo/2016/09/05/10/50/app-1646213_640.png");
-//            ImageView backButtonIm = new ImageView(backButtonUri.toString());
-//            backButtonIm.setPreserveRatio(true);
-//            backButtonIm.setFitHeight(backButton.getPrefHeight());
-//            backButtonIm.setFitWidth(backButton.getPrefWidth());
-//            backButton.setGraphic(backButtonIm);
-
+            /*add an add button for authorized employees */
             if ( permission == 2 || permission == 3 || permission == 4) { //Manager
                 Button addMovieButton = new Button("+");
                 addMovieButton.setPrefSize(30,30);
 
-                addMovieButton.setStyle("-fx-background-color: orange; -fx-font-size: 14; -fx-font-size: 15; ");
+                addMovieButton.setStyle("-fx-background-color: orange; -fx-font-size: 14; -fx-font-size: 14; ");
                 addButtonAnchor.getChildren().add(addMovieButton);
 
 
                 addMovieButton.setOnAction(e -> {
                     try {
-                        // todo: what screen the press lead to
                         // storing the selected film to customise the newly created scene
+                        pickedDate=null;//reset pickedDate if go to another screen
                         App.setRoot("EditMovieScreen.fxml");//load edit movie screen
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -131,12 +121,14 @@ public class ViewMoviesController implements Initializable {
                 flow.prefHeightProperty().bind(scrollPane.heightProperty());
             });
 
-            /*load movie component*/
-            while(movies.isEmpty()) { Thread.yield(); }
-                        for (Movie movie : movies) {
+//            while(allMovies.isEmpty()) { Thread.yield(); }
+//            for (Movie movie : allMovies) {
+//                addImage(movie);
+//            }
 
-                                    addImage(movie);
-                                }
+            while(cinemas.isEmpty()) { Thread.yield(); }
+            movies=allMovies;
+            updateScreen();
                     }
 
         catch(Exception e){
@@ -144,6 +136,17 @@ public class ViewMoviesController implements Initializable {
     }
 
 }
+
+    private void updateScreen (){
+        flow.getChildren().clear();
+
+        /*load movie component*/
+        while(cinemas.isEmpty()) { Thread.yield(); }
+        for (Movie movie : movies) {
+            addImage(movie);
+        }
+
+    }
 
     /**
      * method to add new movie component to the screen
@@ -197,8 +200,9 @@ public class ViewMoviesController implements Initializable {
 
            if (permission == 2 || permission == 3 || permission == 4) { //Manager
                try {
-                   // todo: what screen the press lead to
+
                    // storing the selected film to customise the newly created scene
+                   pickedDate=null;//reset pickedDate if go to another screen
                 EditMovieScreenController.setSelectedFilmTitle(movie);//pass the movie to  the next screen
                 App.setRoot("EditMovieScreen.fxml");//load edit movie screen
                } catch (IOException ex) {
@@ -217,9 +221,11 @@ public class ViewMoviesController implements Initializable {
 
                else{
                    try {
-                       // todo: what screen the press lead to
                        // storing the selected film to customise the newly created scene
+                       pickedDate=null;//reset pickedDate if go to another screen
                        MovieOverviewController.setMovie(movie);
+                       if(pickedCinema!=null)
+                           MovieOverviewController.setPickedCinema(pickedCinema);
                        App.setRoot("MovieOverview.fxml");//load edit movie screen
                    } catch (IOException ex) {
                        ex.printStackTrace();
@@ -238,7 +244,8 @@ public class ViewMoviesController implements Initializable {
     void handheldsBackButton(ActionEvent event) {
         if (permission == 0){//customer
             try {
-                // todo: what screen the press lead to
+                pickedCinema=null; //reset pickedCinema if go to another screen
+                pickedDate=null;//reset pickedDate if go to another screen
                 App.setRoot("CustomerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -247,6 +254,7 @@ public class ViewMoviesController implements Initializable {
 
         else if (permission == 1 || permission == 2 || permission == 3 || permission == 4){//manager
             try {
+                pickedDate=null;//reset pickedDate if go to another screen
                 App.setRoot("EmployeeHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -254,31 +262,93 @@ public class ViewMoviesController implements Initializable {
         }
     }
 
-    /**
-     * filter menu functionality
-     */
     @FXML
-    void handheldsFilterMenu(ActionEvent event) {
-        //set an information alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
+    void handelCinemaPicked(ActionEvent event) {
+        ComboBox<Cinema> cinemaFilter= new ComboBox<Cinema>();
+        Cinema allCinemas = new Cinema("All",null,null);
+        cinemaFilter.getItems().add(allCinemas);
+        for(Cinema cinema : cinemas){
+            cinemaFilter.getItems().add(cinema);
+        }
+        cinemaFilter.setPromptText("Cinema");
+        cinemaFilter.setValue(allCinemas);
+
+        cinemaFilter.setOnAction(e ->{
+            pickedCinema = cinemaFilter.getValue();
+
+            if(pickedCinema.getName() == "ALL"){
+//                while(cinemas.isEmpty()) { Thread.yield(); }
+                movies=allMovies;
+            }
+
+            else{
+                movies.clear();
+                while(cinemas.isEmpty()) { Thread.yield(); }
+                for (Theater t: pickedCinema.getTheaters()){
+                    for(Screening s:  t.getScreeningList()){
+                        if(!movies.contains(s.getMovie())){
+                            movies.add(s.getMovie());
+                        }
+                    }
+                }
+            }
+
+            //todo: load movies from this cinema only
+            updateScreen();
+
+        });
+
+        pickedFilter.getChildren().clear();
+        pickedFilter.getChildren().add(cinemaFilter);
     }
 
-    /**
-     * search bar functionality
-     */
     @FXML
-    void handheldsSearchButton(ActionEvent event) {
-        //set an information alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
+    void handelDatePicked(ActionEvent event) {
+        DatePicker dateFilter = new DatePicker();
+        dateFilter.setPromptText("Date");
+
+        dateFilter.setOnAction(e ->{
+            LocalDate date = dateFilter.getValue();
+
+            if(date!=null){
+            pickedDate = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth(), 23,59,59);
+
+            //set a conformation alert
+            if (pickedDate.getTime().before(GregorianCalendar.getInstance().getTime())) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle(null);
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("This date have passed please pick another date.");
+                errorAlert.showAndWait();
+                if (errorAlert.getResult() == ButtonType.OK) {
+                    dateFilter.setValue(null);
+                    pickedDate = null;
+                }
+
+            }
+            else {
+                movies.clear();
+                while(cinemas.isEmpty()) { Thread.yield(); }
+                for(Cinema c: cinemas) {
+                    for (Theater t : c.getTheaters()) {
+                        for (Screening s : t.getScreeningList()) {
+                            if (!movies.contains(s.getMovie()) && pickedDate.getTime().before(s.getDate().getTime())) {
+                                movies.add(s.getMovie());
+                            }
+                        }
+                    }
+                }
+                //todo: load movies from this cinema only
+                updateScreen();
+            }
+            }
+        });
+
+
+        pickedFilter.getChildren().clear();
+        pickedFilter.getChildren().add(dateFilter);
     }
+
 
     /**
      * @return given id ()
@@ -290,10 +360,18 @@ public class ViewMoviesController implements Initializable {
 
     /**
      * set movie list
-     * @param movies List
+     * @param allMovies List
      */
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setMovies(List<Movie> allMovies) {
+        this.allMovies = allMovies;
+    }
+
+    public static List<Cinema> getCinemas() {
+        return cinemas;
+    }
+
+    public void setCinemas(List<Cinema> cinemas) {
+        this.cinemas = cinemas;
     }
 
 }
