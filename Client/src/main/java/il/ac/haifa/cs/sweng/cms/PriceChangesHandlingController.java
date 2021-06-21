@@ -1,11 +1,13 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -18,9 +20,9 @@ import java.util.concurrent.TimeUnit;
 import static il.ac.haifa.cs.sweng.cms.ComplaintAddController.TIME_TO_RESPOND;
 
 /**
- * Controller for complaint handling.
+ * Controller for price changes handling.
  */
-public class ComplaintHandlingController implements Initializable {
+public class PriceChangesHandlingController implements Initializable {
 
     private static final double MAX_COMPENSATION = 100;
 
@@ -37,16 +39,7 @@ public class ComplaintHandlingController implements Initializable {
     private Text subject;
 
     @FXML
-    private TextArea body;
-
-    @FXML
     private Text status;
-
-    @FXML
-    private TextArea submittedReply;
-
-    @FXML
-    private Text comp;
 
     @FXML
     private Text date;
@@ -62,13 +55,13 @@ public class ComplaintHandlingController implements Initializable {
      */
     @FXML
     protected void replyToComplaint() {
-        if(verifyInput()) {
+        if(!verifyInput()) {
+            // TODO: show error in GUI.
+        } else {
             Date date = new Date();
             Complaint complaint = complaintListView.getSelectionModel().getSelectedItem();
             complaint.closeComplaint(date, reply.getText(), Double.parseDouble(compensation.getText()));
             App.getOcsfClient(this).replyToComplaint(complaint);
-            this.reply.setText("");
-            this.compensation.setText("");
         }
     }
     @FXML
@@ -88,37 +81,37 @@ public class ComplaintHandlingController implements Initializable {
         try {
             comp = Double.parseDouble(compensation.getText());
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Compensation must be a number.");
+            showAlert("Compensation must be a number.");
             return false;
         }
 
         if(comp < 0 || comp > MAX_COMPENSATION) {
-            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Compensation must be between 0 and " + MAX_COMPENSATION + ".");
+            showAlert("Compensation must be between 0 and " + MAX_COMPENSATION + ".");
             return false;
         }
 
         if(reply.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Reply body empty.");
+            showAlert("Reply body empty.");
             return false;
         }
 
         if(complaintListView.getSelectionModel().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "No complaint selected.");
+            showAlert("No complaint selected.");
             return false;
         }
 
         if(complaintListView.getSelectionModel().getSelectedItem().getStatus() != Complaint.Status.FILED) {
-            showAlert(Alert.AlertType.ERROR, "Error while trying to send reply", "Cannot reply to an already closed complaint.");
+            showAlert("Cannot reply to an already closed complaint.");
             return false;
         }
 
         return true;
     }
 
-    private void showAlert(Alert.AlertType alertType, String header, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
-        alert.setHeaderText(header);
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error while trying to send reply:");
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -136,15 +129,12 @@ public class ComplaintHandlingController implements Initializable {
 
     private void updateSelectedComplaint(Complaint selected) {
         this.subject.setText(selected.getSubject());
-        this.body.setText(selected.getBody());
         Complaint.Status status = selected.getStatus();
         switch (status) {
             case FILED -> this.status.setText("Waiting");
             case CLOSED_WITH_COMP -> this.status.setText("Closed with compensation");
             case CLOSED_WITHOUT_COMP -> this.status.setText("Closed without compensation");
         }
-        this.submittedReply.setText(selected.getResponse());
-        this.comp.setText(String.valueOf(selected.getCompensation()));
         Date filingDate = selected.getFilingDate();
         this.date.setText(selected.getFilingDate().toString());
         Date currDate = new Date();
@@ -166,6 +156,5 @@ public class ComplaintHandlingController implements Initializable {
     public void onReplyReceived() {
         Complaint selected = this.complaintListView.getSelectionModel().getSelectedItem();
         updateSelectedComplaint(selected);
-        Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Reply sent successfully.", "Complaint is marked as closed."));
     }
 }

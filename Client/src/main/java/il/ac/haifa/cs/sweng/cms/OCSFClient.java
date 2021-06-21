@@ -68,7 +68,7 @@ public class OCSFClient extends AbstractClient {
             handleLoginResponse((LoginResponse) response);
         }
         if (response instanceof ComplaintFileResponse) {
-            ((ComplaintAddController) controller).updateComplaintList();
+            ((ComplaintAddController) controller).handleComplaintFileResponse();
         }
         if (response instanceof ListAllComplaintsResponse) {
             if(controller instanceof ComplaintAddController) {
@@ -76,6 +76,9 @@ public class OCSFClient extends AbstractClient {
             } else if(controller instanceof ComplaintHandlingController) {
                 ((ComplaintHandlingController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
             }
+        }
+        if (response instanceof ComplaintReplyResponse) {
+            ((ComplaintHandlingController) controller).onReplyReceived();
         }
             // TODO: Show "Unidentified response".
         }
