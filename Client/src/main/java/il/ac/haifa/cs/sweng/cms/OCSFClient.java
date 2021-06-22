@@ -80,8 +80,15 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ComplaintReplyResponse) {
             ((ComplaintHandlingController) controller).onReplyReceived();
         }
-            // TODO: Show "Unidentified response".
+        if(response instanceof UpdatePurpleBadgeResponse) {
+            // TODO: Update GUI with screenings.
         }
+
+            // TODO: Show "Unidentified response".
+
+    }
+
+
 
     /**
      * Sends a request to the server to get the list of all movies.
@@ -151,6 +158,7 @@ public class OCSFClient extends AbstractClient {
      * Sends a request to the server to update a list of tickets.
      * @param TicketList New list of screenings.
      */
+
     protected void updateTickets(List<Ticket> TicketList) {
         try {
             sendToServer(new UpdateTicketsRequest(TicketList));
@@ -202,6 +210,18 @@ public class OCSFClient extends AbstractClient {
     public void replyToComplaint(Complaint complaint) {
         try {
             sendToServer(new ComplaintReplyRequest(complaint));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
+     * Sends a request to the server to update the purple badge.
+     * @param  seatCapacity and status status to update.
+     */
+    protected void updatePurpleBadge(int seatCapacity, boolean status) {
+        try {
+            sendToServer(new UpdatePurpleBadgeRequest(seatCapacity,status));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

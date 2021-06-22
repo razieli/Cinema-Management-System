@@ -377,6 +377,14 @@ public class DB {
 		return data;
 	}
 
+	public PurpleBadge getPurpleBadge() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<PurpleBadge> query = builder.createQuery(PurpleBadge.class);
+		query.from(PurpleBadge.class);
+		PurpleBadge data = session.createQuery(query).getSingleResult();
+		return data;
+	}
+
 	/**
 	 * Updates the database with the given movie.
 	 * @param movie Movie to update.
@@ -392,6 +400,23 @@ public class DB {
 		}
 		session.beginTransaction();
 		session.saveOrUpdate(movie);
+		session.flush();
+		session.getTransaction().commit();
+		//session.close();
+		//session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Updates the database with the given PurpleBadge.
+	 * @param pb PurpleBadge to update.
+	 */
+	protected void setPurpleBadge(PurpleBadge pb) {
+		PurpleBadge oldPb = getPurpleBadge();
+		oldPb.setY(pb.getY());
+		oldPb.setStatus(pb.getStatus());
+
+		session.beginTransaction();
+		session.saveOrUpdate(oldPb);
 		session.flush();
 		session.getTransaction().commit();
 		//session.close();

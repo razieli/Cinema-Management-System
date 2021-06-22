@@ -135,6 +135,12 @@ public class OCSFServer extends AbstractServer {
             db.setComplaint(((ComplaintReplyRequest) request).getComplaint());
             return new ComplaintReplyResponse(ResponseStatus.Acknowledged);
         }
+        if(request instanceof UpdatePurpleBadgeRequest) {
+            // Save updated PurpleBadge in DB.
+            PurpleBadge pb = new PurpleBadge(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;
+            db.setPurpleBadge(pb);
+            return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
+        }
         Log.w(TAG, "Unidentified request.");
         return null;
     }
