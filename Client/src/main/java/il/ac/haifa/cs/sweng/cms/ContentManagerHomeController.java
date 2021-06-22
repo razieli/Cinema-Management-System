@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CinemaManagerHomeController implements Initializable {
+public class ContentManagerHomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -32,9 +32,6 @@ public class CinemaManagerHomeController implements Initializable {
 
     @FXML
     private Button ComplaintHandlingBtn;
-
-    @FXML
-    private Button priceChangeHandlingBtn;
 
     @FXML
     private Button operationalBtn;
@@ -109,13 +106,12 @@ public class CinemaManagerHomeController implements Initializable {
     }
 
     @FXML
-    void switchToPriceChangeHandlingScreen(ActionEvent event) {
+    void switchToPriceChangeSubmissionScreen(ActionEvent event) {
         try {
-            App.setRoot("PriceChangeHandling.fxml");
+            App.setRoot("PriceChangeSubmission.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
 }

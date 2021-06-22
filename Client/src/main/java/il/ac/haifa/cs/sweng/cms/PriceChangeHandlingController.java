@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Controller for price changes handling.
  */
-public class PriceChangesHandlingController implements Initializable {
+public class PriceChangeHandlingController implements Initializable {
 
     @FXML
     private ListView<PriceChange> priceChangesList;

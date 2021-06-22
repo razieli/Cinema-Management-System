@@ -53,7 +53,12 @@ public class OCSFClient extends AbstractClient {
             ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
         }
         if (response instanceof ListAllMoviesResponse) {
-            ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            if(controller instanceof ViewMoviesController) {
+                ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            }
+            if(controller instanceof PriceChangeSubmissionController) {
+                ((PriceChangeSubmissionController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            }
         }
         if (response instanceof ListAllTicketsResponse) {
             ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
@@ -81,14 +86,17 @@ public class OCSFClient extends AbstractClient {
             ((ComplaintHandlingController) controller).onReplyReceived();
         }
         if (response instanceof ListAllPriceChangesResponse) {
-            if(controller instanceof ComplaintAddController) {
-
-            } else if(controller instanceof PriceChangesHandlingController) {
-                ((PriceChangesHandlingController) controller).setPriceChanges(((ListAllPriceChangesResponse) response).getPriceChanges());
+            if(controller instanceof PriceChangeSubmissionController) {
+                ((PriceChangeSubmissionController) controller).setPriceChanges(((ListAllPriceChangesResponse) response).getPriceChanges());
+            } else if(controller instanceof PriceChangeHandlingController) {
+                ((PriceChangeHandlingController) controller).setPriceChanges(((ListAllPriceChangesResponse) response).getPriceChanges());
             }
         }
+        if (response instanceof PriceChangeSubmissionResponse) {
+            ((PriceChangeSubmissionController) controller).handlePriceChangeSubmissionResponse();
+        }
         if (response instanceof PriceChangeReplyResponse) {
-            ((PriceChangesHandlingController) controller).onReplyReceived();
+            ((PriceChangeHandlingController) controller).onReplyReceived();
         }
             // TODO: Show "Unidentified response".
         }
@@ -227,6 +235,18 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
+     * Sends a request to the server to submit a price change.
+     * @param priceChange Price change to submit.
+     */
+    public void submitPriceChange(PriceChange priceChange) {
+        try {
+            sendToServer(new PriceChangeSubmissionRequest(priceChange));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
      * Sends a request to the server to reply to a price change.
      * @param priceChange Price change to reply to.
      */
@@ -269,6 +289,13 @@ public class OCSFClient extends AbstractClient {
         if(permission >= 3){
             try {
                 App.setRoot("CinemaManagerHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(permission >= 2) {
+            try {
+                App.setRoot("ContentManagerHome.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
