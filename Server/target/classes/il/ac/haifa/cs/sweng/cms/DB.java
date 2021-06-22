@@ -9,6 +9,7 @@ import javax.persistence.criteria.*;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,6 +31,7 @@ public class DB {
 
 	private Session session;
 	private SessionFactory sessionFactory;
+
 	private SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
 		// Add ALL of your entities here. You can also try adding a whole package.
@@ -126,10 +128,13 @@ public class DB {
 	}
 
 	public static int passMatches(String candidate, String hashed) {
+
+
+
 		if (BCrypt.checkpw(candidate, hashed))	//It matches
-			return 1;
-		else	//It does not match
 			return 0;
+		else	//It does not match
+			return -1;
 	}
 
 
@@ -461,12 +466,28 @@ public class DB {
 		return deleteList;
 	}
 
+	public String checkUserName(String username) {
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+		Query<User> query = session.createQuery(criteriaQuery);
+		try
+		{
+			return query.getSingleResult().getUserName();
+		}
+		catch (NoResultException e)
+		{
+			return null;
+		}
+	}
+
 	public String getPassword(String username) {
 //			String sql = "SELECT password FROM cinema.user WHERE userName='" + username + "'";
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 			Root<User> root = criteriaQuery.from(User.class);
-			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName").as(String.class), username));
 			Query<User> query = session.createQuery(criteriaQuery);
 			try
 			{
@@ -538,7 +559,7 @@ public class DB {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		Root<User> root = criteriaQuery.from(User.class);
-		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName").as(String.class), username));
 		Query<User> query = session.createQuery(criteriaQuery);
 		try
 		{

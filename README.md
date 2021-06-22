@@ -19,6 +19,6 @@
 * ...
 
 ## How can I run it?
-1.
+1. CREATE SCHEMA `cinema` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 2.
 3.

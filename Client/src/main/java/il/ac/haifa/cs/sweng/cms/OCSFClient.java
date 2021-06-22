@@ -65,7 +65,7 @@ public class OCSFClient extends AbstractClient {
             // TODO: Update GUI with screenings.
         }
         if (response instanceof LoginResponse) {
-            handleLoginResponse((LoginResponse) response);
+            ((UserLoginController) controller).onReplyReceived((LoginResponse) response);
         }
         if (response instanceof ComplaintFileResponse) {
             ((ComplaintAddController) controller).handleComplaintFileResponse();
@@ -206,51 +206,6 @@ public class OCSFClient extends AbstractClient {
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
-    }
-
-
-    private void handleLoginResponse(LoginResponse response) {
-        if (response.getStatus() == ResponseStatus.Declined) {
-            App.setUserPermission(-1);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(null);
-            alert.setHeaderText(null);
-            alert.setContentText("Wrong Login!");
-            alert.showAndWait();
-        }
-        else if (response.getStatus() == ResponseStatus.Customer) {
-            App.setUserPermission(0);
-        }
-        else if (response.getStatus() == ResponseStatus.CustomerService) {
-            App.setUserPermission(1);
-        }
-        else if (response.getStatus() == ResponseStatus.ContentManager) {
-            App.setUserPermission(2);
-        }
-        else if (response.getStatus() == ResponseStatus.BranchManager) {
-            App.setUserPermission(3);
-        }
-        else if (response.getStatus() == ResponseStatus.Administrator) {
-            App.setUserPermission(4);
-        }
-        App.setUser(response.getUser());
-        int permission = App.getUserPermission();
-
-        if(permission > 0){
-            try {
-                App.setRoot("EmployeeHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if (permission == 0) {
-            try {
-                App.setRoot("CustomerHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        // TODO: Show "Unidentified response".
     }
 
 }

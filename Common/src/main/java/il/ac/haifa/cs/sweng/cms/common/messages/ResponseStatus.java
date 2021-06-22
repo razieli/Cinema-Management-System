@@ -7,7 +7,8 @@ package il.ac.haifa.cs.sweng.cms.common.messages;
  */
 public enum ResponseStatus {
     Acknowledged,
-    Declined,  // permission = -1
+    DeclinedUser,  // permission = -1
+    DeclinedPass,  // permission = -1
     Customer, // permission = 0
     CustomerService, // permission = 1
     ContentManager, // permission = 2

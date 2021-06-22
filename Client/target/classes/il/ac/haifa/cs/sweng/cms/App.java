@@ -1,19 +1,19 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.User;
-import il.ac.haifa.cs.sweng.cms.common.messages.requests.LoginRequest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,9 +24,15 @@ public class App extends Application {
     private static OCSFClient ocsfClient;
     private static String host = "localhost";
     private static Integer port = 8080;
+    // FIXME: Temporarily select the user type manually
+    // FIXME: "Customer" or "Employee"
     private static int userPermission = 0; // Default - Customer
+    private static String userType = "Employee";
+    private static String firstName = "David";
     private static String username = "david_1990";
     private static String pass = "123";
+    private static User user;
+
 
     /**
      * main method that load new scene to stage
@@ -35,7 +41,8 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserLogin.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/UserLogin.fxml"));
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/PurchaseCancel.fxml"));
         Parent root = (Parent)loader.load();
 
         scene = new Scene(root, 640, 480);//new scene to load
@@ -52,6 +59,7 @@ public class App extends Application {
     public static int connectToServer() throws IOException {
         String hostToConnect = getHost();
         Integer portToConnect = getPort();
+
         ocsfClient = new OCSFClient(hostToConnect, portToConnect);
         // status:
         //  0 - Already connected
@@ -63,10 +71,6 @@ public class App extends Application {
 
     public static void disconnect() throws IOException {
         ocsfClient.closeConnection();
-    }
-
-    public static void checkLogin(){
-        ocsfClient.tryLogin(username, pass);
     }
 
 
@@ -86,12 +90,8 @@ public class App extends Application {
         host = h;
     }
 
-    public static int getUserPermission() {
-        return userPermission;
-    }
-
-    static public void setUserPermission(int permission) {
-        userPermission = permission;
+    static public String getUserType() {
+        return userType;
     }
 
     static public void setUser(String user) {
@@ -102,12 +102,10 @@ public class App extends Application {
         pass = password;
     }
 
-    public static String getUserName() {
-        return username;
-    }
+    static public String getPass() { return pass; }
 
-    public static String hash(String pass){
-        return BCrypt.hashpw(pass, BCrypt.gensalt());
+    public static String getName() {
+        return firstName;
     }
 
     /**
@@ -116,7 +114,7 @@ public class App extends Application {
      * @throws IOException
      */
     static void setRoot(String fxml) throws  IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml));//FXML to load
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("fxmls/"+fxml));//FXML to load
         Parent root = (Parent)loader.load(); //load FXML to root object
         scene.setRoot(root);//set new root to scene
     }
@@ -136,6 +134,26 @@ public class App extends Application {
     protected static OCSFClient getOcsfClient(Initializable controller) {
         ocsfClient.setController(controller);
         return ocsfClient;
+    }
+
+    public static int getUserPermission() {
+        return userPermission;
+    }
+
+    static public void setUserPermission(int permission) {
+        userPermission = permission;
+    }
+
+    public static String getUserName() {
+        return username;
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User usr) {
+        user = usr;
     }
 
 }

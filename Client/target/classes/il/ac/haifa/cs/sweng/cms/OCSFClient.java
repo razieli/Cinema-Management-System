@@ -1,13 +1,10 @@
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.ListAllMoviesResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateScreeningsResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -52,54 +49,50 @@ public class OCSFClient extends AbstractClient {
      * @param response Response to handle.
      */
     private void handleResponse(AbstractResponse response) {
-        if (response instanceof ListAllMoviesResponse) {
-            ((ManagerViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+        if (response instanceof ListAllCinemasResponse) {
+            ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
         }
-        if (response instanceof UpdateScreeningsResponse) {
+        if (response instanceof ListAllMoviesResponse) {
+            ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+        }
+        if (response instanceof ListAllTicketsResponse) {
+            ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
+        }
+        if (response instanceof ListAllLinksResponse) {
+            ((CancelLinkController) controller).setLinks(((ListAllLinksResponse) response).getLinksList());
+        }
+        if(response instanceof UpdateMovieResponse) {
             // TODO: Update GUI with screenings.
         }
         if (response instanceof LoginResponse) {
-            if (response.getStatus() == ResponseStatus.Declined) {
-                App.setUserPermission(-1);
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(null);
-                alert.setHeaderText(null);
-                alert.setContentText("Wrong Login!");
-                alert.showAndWait();
+            ((UserLoginController) controller).onReplyReceived((LoginResponse) response);
+        }
+        if (response instanceof ComplaintFileResponse) {
+            ((ComplaintAddController) controller).handleComplaintFileResponse();
+        }
+        if (response instanceof ListAllComplaintsResponse) {
+            if(controller instanceof ComplaintAddController) {
+                ((ComplaintAddController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+            } else if(controller instanceof ComplaintHandlingController) {
+                ((ComplaintHandlingController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
             }
-            else if (response.getStatus() == ResponseStatus.Customer) {
-                App.setUserPermission(0);
-            }
-            else if (response.getStatus() == ResponseStatus.CustomerService) {
-                App.setUserPermission(1);
-            }
-            else if (response.getStatus() == ResponseStatus.ContentManager) {
-                App.setUserPermission(2);
-            }
-            else if (response.getStatus() == ResponseStatus.BranchManager) {
-                App.setUserPermission(3);
-            }
-            else if (response.getStatus() == ResponseStatus.Administrator) {
-                App.setUserPermission(4);
-            }
-            int permission = App.getUserPermission();
-            if(permission > 0){
-                try {
-                    App.setRoot("EmployeeHome.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (permission == 0) {
-                try {
-                    App.setRoot("CustomerHome.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            }
+        }
+        if (response instanceof ComplaintReplyResponse) {
+            ((ComplaintHandlingController) controller).onReplyReceived();
+        }
             // TODO: Show "Unidentified response".
         }
+
+    /**
+     * Sends a request to the server to get the list of all movies.
+     */
+    protected void getListOfCinemas() {
+        try {
+            sendToServer(new ListAllCinemasRequest());
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
 
     /**
      * Sends a request to the server to get the list of all movies.
@@ -113,12 +106,63 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
-     * Sends a request to the server to update a list of screenings.
-     * @param screeningList New list of screenings.
+     * Sends a request to the server to get the list of all tickets.
      */
-    protected void updateScreenings(List<Screening> screeningList) {
+    protected void getListOfTickets() {
         try {
-            sendToServer(new UpdateScreeningsRequest(screeningList));
+            sendToServer(new ListAllTicketsRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends a request to the server to get the list of all links.
+     */
+    protected void getListOfLinks() {
+        try {
+            sendToServer(new ListAllLinksRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void getListOfComplaints(User user) {
+        try {
+            sendToServer(new ListAllComplaintsRequest(user));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends a request to the server to update a movie.
+     * @param movie Movie to update.
+     */
+    protected void updateMovie(Movie movie) {
+        try {
+            sendToServer(new UpdateMovieRequest(movie));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    /**
+     * Sends a request to the server to update a list of tickets.
+     * @param TicketList New list of screenings.
+     */
+
+    protected void updateTickets(List<Ticket> TicketList) {
+        try {
+            sendToServer(new UpdateTicketsRequest(TicketList));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    protected void updateLinks(List<Link> LinktList) {
+        try {
+            sendToServer(new UpdateLinksRequest(LinktList));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
@@ -144,7 +188,7 @@ public class OCSFClient extends AbstractClient {
      * Sends a request to the server to file a complaint.
      * @param complaint Complaint to file.
      */
-    protected void fileComplaint(Complaint complaint) {
+    public void fileComplaint(Complaint complaint) {
         try {
             sendToServer(new ComplaintFileRequest(complaint));
         } catch (IOException e) {
@@ -156,7 +200,7 @@ public class OCSFClient extends AbstractClient {
      * Sends a request to the server to reply to a complaint.
      * @param complaint Complaint to reply to.
      */
-    protected void replyToComplaint(Complaint complaint) {
+    public void replyToComplaint(Complaint complaint) {
         try {
             sendToServer(new ComplaintReplyRequest(complaint));
         } catch (IOException e) {
