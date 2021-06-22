@@ -106,6 +106,8 @@ public class App extends Application {
         pass = password;
     }
 
+    static public String getPass() { return pass; }
+
     public static String getName() {
         return firstName;
     }
