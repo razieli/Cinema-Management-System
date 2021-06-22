@@ -17,7 +17,7 @@ public class Ticket implements Serializable {
 	@JoinColumn(name="screening")
 	private Screening screening;
 
-
+	// TODO: 22/06/2021  payment, waiting to Yaniv
 	private int seatRow;
 	private int seatCol;
 

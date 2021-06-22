@@ -47,6 +47,7 @@ public class App extends Application {
 
         scene = new Scene(root, 640, 480);//new scene to load
         stage.setScene(scene);//set scene
+//        stage.setMaximized(true); //set max size available
         Image img = new Image(new FileInputStream("Client/src/main/resourses/icon.png"));
         stage.getIcons().add(img);
 

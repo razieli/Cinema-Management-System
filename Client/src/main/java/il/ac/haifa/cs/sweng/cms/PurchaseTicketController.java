@@ -241,7 +241,7 @@ public class PurchaseTicketController implements Initializable {
         }
 
         seatGridPane.add(imageView,col,row);
-
+        // TODO: 22/06/2021  send taken seat to server 
         imageView.setOnMouseClicked(e -> {
             try {
 

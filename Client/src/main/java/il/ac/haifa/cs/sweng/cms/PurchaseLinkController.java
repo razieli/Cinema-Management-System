@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
 import il.ac.haifa.cs.sweng.cms.common.entities.Link;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import javafx.event.ActionEvent;
@@ -161,8 +162,10 @@ public class PurchaseLinkController implements Initializable {
         else{
 
             try {
-//                MovieLink movieLink new MovieLink(movie ,gregorianCalendar);
-//                PaymentScreenController.setMovieLink(movieLink);
+                Customer customer = (Customer)App.getUser();
+
+                Link movieLink = new Link (customer, gregorianCalendar,movie);
+//              PaymentScreenController.setMovieLink(movieLink);
 
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
