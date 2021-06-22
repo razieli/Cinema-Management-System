@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,6 +30,13 @@ public class Screening implements Serializable {
 	@OneToMany(targetEntity = Ticket.class, mappedBy = "screening",fetch = FetchType.LAZY)
 	private List<Ticket> tickets;
 
+	private int seatsCapacity;
+
+	@Transient
+	private int[][] seats;
+
+
+
 	/**
 	 * constructors
 	 */
@@ -37,6 +45,7 @@ public class Screening implements Serializable {
 		this.theater = new Theater();
 		this.date = new GregorianCalendar();
 		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
+		this.seatsCapacity = 0;
 	}
 
 	public Screening(Movie movie, Theater theater, GregorianCalendar gregorianCalendar)
@@ -44,11 +53,11 @@ public class Screening implements Serializable {
 		this();
 		this.movie = movie;
 		this.theater = theater;
-		this.theater.setRealSeatsCapacity();
 		this.date = gregorianCalendar;
-//		this.setTickets(new ArrayList<Ticket>(this.theater.getSeatsCapacity()));
-//		for(int i=0;i<this.theater.getSeatsCapacity();i++)
-//			tickets.set(i, new Ticket(this,i));
+		this.seatsCapacity = theater.getSeatsCapacity();
+		this.seats = new int[seatsCapacity/10 + 1 ][10];
+
+
 	}
 
 	/**
@@ -110,6 +119,19 @@ public class Screening implements Serializable {
 		this.tickets = tickets;
 	}
 
+	/**
+	 * Set tickets
+	 */
+	public void addTicket(Ticket ticket){
+		seats[ticket.getRow()][ticket.getCol()] = ticket.getId();
+		tickets.add(ticket);
+	}
+
+	public void removeTicket(Ticket ticket){
+		seats[ticket.getRow()][ticket.getCol()] = -1;
+		tickets.remove(ticket);
+	}
+
 	@Override
 	public String toString() {
 		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
@@ -118,4 +140,20 @@ public class Screening implements Serializable {
 		return date +", in " + this.theater.getName();
 	}
 
+
+	public int getSeatsCapacity() {
+		return seatsCapacity;
+	}
+
+	public void setSeatsCapacity(int seatsCapacity) {
+		this.seatsCapacity = seatsCapacity;
+	}
+
+	public int[][] getSeats() {
+		return seats;
+	}
+
+	public void setSeats(int[][] seats) {
+		this.seats = seats;
+	}
 }

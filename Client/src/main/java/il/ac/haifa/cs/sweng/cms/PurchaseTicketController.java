@@ -4,16 +4,14 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
-import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -23,6 +21,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -196,7 +196,7 @@ public class PurchaseTicketController implements Initializable {
                 List<Screening> screenList = new ArrayList<Screening>();
                 for (Theater theater : pickedCinema.getTheaters()) {
                     for (Screening screen : theater.getScreeningList())
-                    screenList.add(screen);
+                        screenList.add(screen);
                 }
 
                 screeningComboBox.setItems(FXCollections.observableArrayList(screenList));
@@ -207,6 +207,16 @@ public class PurchaseTicketController implements Initializable {
         screeningComboBox.setOnAction((event) -> {
             pickedScreening = screeningComboBox.getValue();
             System.out.println(pickedScreening);
+            int[][] seatsMap = pickedScreening.getSeats();
+            for(int row=0;row <= pickedScreening.getSeatsCapacity()/10 ; row++){
+                for(int col=0 ; col < 10 ; col++){
+                    try {
+                        addSeat(pickedScreening,row,col);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
 
         //seats
@@ -214,10 +224,33 @@ public class PurchaseTicketController implements Initializable {
            pickSeats=seatComboBox.getValue();
         });
 
+
+
     }
 
-    protected void addSeat(Theater theater){
+    protected void addSeat(Screening screening, int row, int col) throws FileNotFoundException {
+        int[][] seatMap = screening.getSeats();
+        ImageView imageView = new ImageView();
+        if(seatMap[row][col] == 0){
+            // TODO: 22/06/2021 toggle collor,   max seat to select
+            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png")));
+        }
 
+        else{
+            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/BusySeat.png")));
+        }
+
+        seatGridPane.add(imageView,col,row);
+
+        imageView.setOnMouseClicked(e -> {
+            try {
+
+                imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/ChackedSeat.png")));
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+
+        });
     }
 
     public static String intToLetters(int num) {

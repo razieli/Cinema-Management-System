@@ -120,7 +120,7 @@ public class CancelTicketController implements Initializable {
             movieName.setText(TicketsComboBox.getValue().getScreening().getMovie().getEngName());
             theaterName.setText(String.valueOf(TicketsComboBox.getValue().getScreening().getTheater().getId()));
             screeningTime.setText(format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()));
-            seats.setText(String.valueOf(TicketsComboBox.getValue().getSeat()));
+            seats.setText(String.valueOf(TicketsComboBox.getValue().getRow() + "add later"));
 //            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName()); // not working yet
         }
     }

@@ -89,13 +89,15 @@ public class DB {
 			generateComplaint();
 			generateLinks();
 			generatePriceChanges();
+			session.getTransaction().commit(); // Save everything.
 
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		session.getTransaction().commit(); // Save everything.
+
+
 	}
 
 	protected void close() {
@@ -107,10 +109,14 @@ public class DB {
 	 * generate initial employees
 	 */
 	public void generateEmployee(){
-		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
-		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",2));
-		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",3));
-		session.save(new Employee("Dani","Keren",hash("ds348ds"), "DaniKeren",4));
+//		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
+//		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",2));
+//		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",3));
+//		session.save(new Employee("Dani","Keren",hash("ds348ds"), "DaniKeren",4));
+		session.save(new Employee("Haim","Cohen",hash("1"), "1",1));
+		session.save(new Employee("Eyal","Shani",hash("2"), "2",2));
+		session.save(new Employee("Ilan","Newman",hash("3"), "3",3));
+		session.save(new Employee("Dani","Keren",hash("4"), "4",4));
 		session.flush();
 	}
 
@@ -118,8 +124,10 @@ public class DB {
 	 * generate initial customers
 	 */
 	public void generateCustomer(){
-		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal", 0));
-		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
+//		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal", 0));
+//		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
+		session.save(new Customer("Gal","Galgal", hash("0"), "0", 0));
+		session.save(new Customer("Ron","Bonbon", hash("00"), "00", 0));
 		session.flush();
 	}
 
@@ -214,10 +222,17 @@ public class DB {
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		List<Customer> customers=getAllCustomer();
-		for(Screening s:screenings) {
-			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-				session.save(new Ticket(customers.get(i%2),s,i));
-		}
+//		for(Screening s:screenings) {
+//			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
+//				session.save(new Ticket(customers.get(i%2),s,0,0));
+//		}
+
+		Ticket tic1 = new Ticket (customers.get(0), screenings.get(0) ,0,4);
+		Ticket tic2 = new Ticket (customers.get(1), screenings.get(1) ,0,2);
+		Ticket tic3 = new Ticket (customers.get(0), screenings.get(2) ,0,5);
+		session.save(tic1);
+		session.save(tic2);
+		session.save(tic3);
 		session.flush();
 	}
 
