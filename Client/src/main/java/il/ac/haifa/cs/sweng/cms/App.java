@@ -73,10 +73,6 @@ public class App extends Application {
         ocsfClient.closeConnection();
     }
 
-    public static void checkLogin(){
-        ocsfClient.tryLogin(username, pass);
-    }
-
 
     static public Integer getPort() {
         return port;
