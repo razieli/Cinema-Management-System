@@ -151,7 +151,6 @@ public class OCSFClient extends AbstractClient {
      * Sends a request to the server to update a list of tickets.
      * @param TicketList New list of screenings.
      */
-
     protected void updateTickets(List<Ticket> TicketList) {
         try {
             sendToServer(new UpdateTicketsRequest(TicketList));
