@@ -80,6 +80,16 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ComplaintReplyResponse) {
             ((ComplaintHandlingController) controller).onReplyReceived();
         }
+        if (response instanceof ListAllPriceChangesResponse) {
+            if(controller instanceof ComplaintAddController) {
+
+            } else if(controller instanceof PriceChangesHandlingController) {
+                ((PriceChangesHandlingController) controller).setPriceChanges(((ListAllPriceChangesResponse) response).getPriceChanges());
+            }
+        }
+        if (response instanceof PriceChangeReplyResponse) {
+            ((PriceChangesHandlingController) controller).onReplyReceived();
+        }
             // TODO: Show "Unidentified response".
         }
 
@@ -130,6 +140,14 @@ public class OCSFClient extends AbstractClient {
     protected void getListOfComplaints(User user) {
         try {
             sendToServer(new ListAllComplaintsRequest(user));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void getListOfPriceChanges(User user) {
+        try {
+            sendToServer(new ListAllPriceChangesRequest(user));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -208,6 +226,18 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
+    /**
+     * Sends a request to the server to reply to a price change.
+     * @param priceChange Price change to reply to.
+     */
+    public void replyToPriceChange(PriceChange priceChange) {
+        try {
+            sendToServer(new PriceChangeReplyRequest(priceChange));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
 
     private void handleLoginResponse(LoginResponse response) {
         if (response.getStatus() == ResponseStatus.Declined) {
@@ -236,7 +266,14 @@ public class OCSFClient extends AbstractClient {
         App.setUser(response.getUser());
         int permission = App.getUserPermission();
 
-        if(permission > 0){
+        if(permission >= 3){
+            try {
+                App.setRoot("CinemaManagerHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(permission > 0){
             try {
                 App.setRoot("EmployeeHome.fxml");
             } catch (IOException e) {

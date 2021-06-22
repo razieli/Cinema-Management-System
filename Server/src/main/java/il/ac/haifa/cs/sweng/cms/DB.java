@@ -606,6 +606,28 @@ public class DB {
 		//session = sessionFactory.openSession();
 	}
 
+	public void setPriceChange(PriceChange priceChange) {
+		session.beginTransaction();
+		PriceChange existingPriceChange;
+		List<PriceChange> priceChanges = getAllPriceChanges(null);
+		existingPriceChange = priceChanges.stream().filter(pc -> pc.getId() == priceChange.getId()).findFirst().orElse(priceChange);
+		existingPriceChange.copyFrom(priceChange);
+		if(priceChange.getStatus() == PriceChange.Status.ACCEPTED) {
+			List<Movie> movieList = getAllMovies();
+			for (Movie movie : movieList) {
+				if (movie.getId() == priceChange.getMovie().getId()) {
+					movie.setPrice(priceChange.getNewPrice());
+					session.saveOrUpdate(movie);
+				}
+			}
+		}
+		session.saveOrUpdate(existingPriceChange);
+		session.flush();
+		session.getTransaction().commit();
+		//session.close();
+		//session = sessionFactory.openSession();
+	}
+
 	public User getLoggedUser(String userName) throws Exception {
 		List<User> users = getAllUsers();
 		for(User user: users){
@@ -625,5 +647,16 @@ public class DB {
 			complaints.removeIf(complaint -> complaint.getCustomer().getId() != user.getId());
 		}
 		return complaints;
+	}
+
+	public List<PriceChange> getAllPriceChanges(User user) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<PriceChange> query = builder.createQuery(PriceChange.class);
+		query.from(PriceChange.class);
+		List<PriceChange> priceChanges = session.createQuery(query).getResultList();
+		if(user != null) {
+			priceChanges.removeIf(priceChange -> priceChange.getSubmitter().getId() != user.getId());
+		}
+		return priceChanges;
 	}
 }
