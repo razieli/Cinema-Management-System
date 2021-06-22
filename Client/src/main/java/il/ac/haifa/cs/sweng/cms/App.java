@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
+import il.ac.haifa.cs.sweng.cms.common.entities.PurpleBadge;
 import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class App extends Application {
     private static String username = "david_1990";
     private static String pass = "123";
     private static User user;
+    private static PurpleBadge pb;
 
 
     /**
@@ -48,9 +51,12 @@ public class App extends Application {
         scene = new Scene(root, 640, 480);//new scene to load
         stage.setScene(scene);//set scene
 //        stage.setMaximized(true); //set max size available
-        Image img = new Image(new FileInputStream("Client/src/main/resourses/icon.png"));
+        try {
+        Image img = new Image(new FileInputStream("/Client/src/main/resourses/icon.png"));
         stage.getIcons().add(img);
-
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
 
         stage.show();//show stage
         
@@ -156,5 +162,20 @@ public class App extends Application {
     public static void setUser(User usr) {
         user = usr;
     }
+
+	/**
+	 * @return the pb
+	 */
+	public static PurpleBadge getPb() {
+		pb = PurpleBadge.getInstance();//TODO: get pb from ocsf
+		return pb;
+	}
+
+	/**
+	 * @param pb the pb to set
+	 */
+	public static void setPb(PurpleBadge pb) {
+		ocsfClient.updatePurpleBadge(pb.getY(), pb.getStatus());
+	}
 
 }

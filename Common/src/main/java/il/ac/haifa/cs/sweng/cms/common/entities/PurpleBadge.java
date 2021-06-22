@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,6 +97,14 @@ public class PurpleBadge implements Serializable {
 	public void setClosingDates(List<GregorianCalendar> closingDates) {
 		this.closingDates = closingDates;
 	}
+	public void setClosingDates(GregorianCalendar from,GregorianCalendar to) {
+		List<GregorianCalendar> dates = new ArrayList<GregorianCalendar>();
+		while(from.before(to)) {
+			dates.add(from);
+			from.add(GregorianCalendar.DAY_OF_MONTH,1);
+		}
+		this.closingDates=dates;
+	}
 	public void addClosingDate(GregorianCalendar date) {
 		this.closingDates.add(date);
 	}
@@ -107,5 +116,6 @@ public class PurpleBadge implements Serializable {
 	}
 	public void CoronaFree(){
 		this.closingDates.removeAll(this.closingDates);
+		this.Y=DEFAULT;
 	}
 }
