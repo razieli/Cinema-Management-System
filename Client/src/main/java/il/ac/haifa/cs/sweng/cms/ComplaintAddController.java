@@ -3,13 +3,11 @@ package il.ac.haifa.cs.sweng.cms;
 import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
 import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -24,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ComplaintAddController implements Initializable {
 
-    private static final long TIME_TO_RESPOND = 24;
+    protected static final long TIME_TO_RESPOND = 24;
 
     @FXML
     private ListView<Complaint> complaintListView;
@@ -36,13 +34,22 @@ public class ComplaintAddController implements Initializable {
     private ComboBox<String> subject;
 
     @FXML
-    private TextField body;
+    private TextArea body;
 
     @FXML
     private Text complaintListSubject;
 
     @FXML
+    private TextArea complaintListBody;
+
+    @FXML
     private Text complaintListStatus;
+
+    @FXML
+    private TextArea complaintListReply;
+
+    @FXML
+    private Text complaintListCompensation;
 
     @FXML
     private Text complaintListDate;
@@ -60,9 +67,7 @@ public class ComplaintAddController implements Initializable {
      */
     @FXML
     protected void addComplaint() {
-        if (!verifyInput()) {
-            // TODO: show error in GUI.
-        } else {
+        if (verifyInput()) {
             this.date = new Date();
 
             Complaint complaint = new Complaint(date, subject.getSelectionModel().getSelectedItem(), body.getText(), (Customer) App.getUser());
@@ -79,18 +84,26 @@ public class ComplaintAddController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    private void showAlert(Alert.AlertType alertType, String header, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     /**
      * Verifies the complaint data the user has entered.
      *
      * @return True if data is verified, false otherwise.
      */
     private boolean verifyInput() {
-        if (subject.getSelectionModel().getSelectedItem().isEmpty()) {
+        if (subject.getSelectionModel().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Complaint filing failed:", "Please select a subject.");
             return false;
         }
 
         if (body.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Complaint filing failed:", "Please enter complaint body.");
             return false;
         }
         return true;
@@ -98,11 +111,6 @@ public class ComplaintAddController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        App.getOcsfClient(this).getListOfComplaints(null);
-        while (complaints == null) {
-            Thread.yield();
-        }
-        updateComplaintList();
         name.setText(App.getUser().getUserName());
         subject.getItems().addAll(
                 "Technical issue",
@@ -115,19 +123,26 @@ public class ComplaintAddController implements Initializable {
             Thread.yield();
         }
         updateComplaintList();
+        complaintListView.getSelectionModel().selectedItemProperty().addListener((observableValue, complaint, t1) -> updateSelectedComplaint(t1));
     }
 
     public void updateComplaintList() {
-
+        complaints.removeIf(complaint -> !complaint.getCustomer().getUserName().equals(App.getUser().getUserName()));
         this.complaintListView.getItems().addAll(complaints);
-        this.complaintListSubject.setText(complaints.get(complaints.size() - 1).getSubject());
-        Complaint.Status status = complaints.get(complaints.size() - 1).getStatus();
+    }
+
+    private void updateSelectedComplaint(Complaint selected) {
+        this.complaintListSubject.setText(selected.getSubject());
+        this.complaintListBody.setText(selected.getBody());
+        Complaint.Status status = selected.getStatus();
         switch (status) {
             case FILED -> this.complaintListStatus.setText("Waiting");
             case CLOSED_WITH_COMP -> this.complaintListStatus.setText("Closed with compensation");
             case CLOSED_WITHOUT_COMP -> this.complaintListStatus.setText("Closed without compensation");
         }
-        Date filingDate = complaints.get(complaints.size() - 1).getFilingDate();
+        this.complaintListReply.setText(selected.getResponse());
+        this.complaintListCompensation.setText(String.valueOf(selected.getCompensation()));
+        Date filingDate = selected.getFilingDate();
         this.complaintListDate.setText(filingDate.toString());
         Date currDate = new Date();
         long diff = currDate.getTime() - filingDate.getTime();
@@ -139,5 +154,11 @@ public class ComplaintAddController implements Initializable {
 
     public void setComplaints(List<Complaint> complaints) {
         this.complaints = complaints;
+    }
+
+    public void handleComplaintFileResponse() {
+        Platform.runLater(() -> this.complaintListView.getItems().add(complaints.get(complaints.size() - 1)));
+        this.body.setText("");
+        Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Complaint filed successfully.", ""));
     }
 }

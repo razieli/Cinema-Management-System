@@ -28,6 +28,8 @@ public class Theater implements Serializable {
 	private Cinema cinema;
 
 
+
+
 	/**
 	 * constructors
 	 */
@@ -89,7 +91,7 @@ public class Theater implements Serializable {
 		return realSeatsCapacity;
 	}
 	/**
-	 * @param realSeatsCapacity the realSeatsCapacity to set
+	 * set the realSeatsCapacity to set
 	 */
 	public void setRealSeatsCapacity() {
 		PurpleBadge pb=PurpleBadge.getInstance();
@@ -144,5 +146,11 @@ public class Theater implements Serializable {
 	public String toString() {
 		return this.getName();
 	}
+
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+
 
 }

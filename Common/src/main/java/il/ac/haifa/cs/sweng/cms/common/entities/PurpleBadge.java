@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,29 +9,40 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "purpleBadge")
-public class PurpleBadge {
+public class PurpleBadge implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 	final static int DEFAULT = 100;
 	private static PurpleBadge single_instance;
 	
-	private boolean status;// false-No restrictions, true-No more than y 
+	private boolean status;// false-No restrictions, true-No more than y
 	private int Y;
 	@Column
 	@ElementCollection
 	private List<GregorianCalendar> closingDates;
-	private PurpleBadge()
+	public PurpleBadge()
 	{
 		this.setStatus(false);
 		this.Y=DEFAULT;
 		this.setClosingDates(new LinkedList<GregorianCalendar>());
 	}
-	private PurpleBadge(int y)
+	public PurpleBadge(int y)
 	{
 		this();
 		this.Y=y;
+
 	}
+
+	public PurpleBadge(int y, boolean status)
+	{
+		this();
+		this.Y=y;
+		this.status=status;
+	}
+
+
+
 	public static PurpleBadge getInstance()
 	{
 		if(single_instance == null)

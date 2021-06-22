@@ -131,6 +131,16 @@ public class OCSFServer extends AbstractServer {
             List<Complaint> complaints = db.getAllComplaints(((ListAllComplaintsRequest) request).getUser());
             return new ListAllComplaintsResponse(complaints);
         }
+        if(request instanceof ComplaintReplyRequest) {
+            db.setComplaint(((ComplaintReplyRequest) request).getComplaint());
+            return new ComplaintReplyResponse(ResponseStatus.Acknowledged);
+        }
+        if(request instanceof UpdatePurpleBadgeRequest) {
+            // Save updated PurpleBadge in DB.
+            PurpleBadge pb = new PurpleBadge(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;
+            db.setPurpleBadge(pb);
+            return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
+        }
         Log.w(TAG, "Unidentified request.");
         return null;
     }
@@ -138,30 +148,35 @@ public class OCSFServer extends AbstractServer {
     private LoginResponse handleLoginRequest(LoginRequest request) {
         String username = ((LoginRequest) request).getUsername();
         String password = ((LoginRequest) request).getPassword();
-        String pwFromDB = db.getPassword(username);
-        int perFromDB = db.getPermission(username);
+        String userFromDB = db.checkUserName(username);
         LoginResponse loginResponse = null;
-
-        if (DB.passMatches(password, pwFromDB) == 1) {
-            User user = null;
-            try {
-                user = db.getLoggedUser(username);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (userFromDB != null) {
+            String pwFromDB = db.getPassword(username);
+            int perFromDB = db.getPermission(username);
+            if (DB.passMatches(password, pwFromDB) == 0) {
+                User user = null;
+                try {
+                    user = db.getLoggedUser(username);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (perFromDB == 0) {
+                    loginResponse = new LoginResponse(ResponseStatus.Customer, user);
+                } else if (perFromDB == 1) {
+                    loginResponse = new LoginResponse(ResponseStatus.CustomerService, user);
+                } else if (perFromDB == 2) {
+                    loginResponse = new LoginResponse(ResponseStatus.ContentManager, user);
+                } else if (perFromDB == 3) {
+                    loginResponse = new LoginResponse(ResponseStatus.BranchManager, user);
+                } else if (perFromDB == 4) {
+                    loginResponse = new LoginResponse(ResponseStatus.Administrator, user);
+                }
+            } else if (DB.passMatches(password, pwFromDB) == -1) {
+                loginResponse = new LoginResponse(ResponseStatus.DeclinedPass, null);
             }
-            if (perFromDB == 0) {
-                loginResponse = new LoginResponse(ResponseStatus.Customer, user);
-            } else if (perFromDB == 1) {
-                loginResponse = new LoginResponse(ResponseStatus.CustomerService,user);
-            } else if (perFromDB == 2) {
-                loginResponse = new LoginResponse(ResponseStatus.ContentManager,user);
-            } else if (perFromDB == 3) {
-                loginResponse = new LoginResponse(ResponseStatus.BranchManager,user);
-            } else if (perFromDB == 4) {
-                loginResponse = new LoginResponse(ResponseStatus.Administrator,user);
-            }
-        } else {
-            loginResponse = new LoginResponse(ResponseStatus.Declined, null);
+        }
+        else {
+            loginResponse = new LoginResponse(ResponseStatus.DeclinedUser, null);
         }
         return loginResponse;
     }

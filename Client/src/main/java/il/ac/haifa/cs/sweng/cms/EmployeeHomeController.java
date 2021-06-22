@@ -90,11 +90,17 @@ public class EmployeeHomeController  implements Initializable {
 
     @FXML
     void switchToOperationalMonitoringScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
+        if (App.getUserPermission() < 3 )
+        {
+            showAlert(Alert.AlertType.ERROR, null, "No Permission!");
+        }
+        else {
+            try {
+                App.setRoot("OperationalReports.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -103,6 +109,14 @@ public class EmployeeHomeController  implements Initializable {
         alert.setTitle(null);
         alert.setHeaderText(null);
         alert.setContentText("New features coming soon..  :)");
+        alert.showAndWait();
+    }
+
+    private void showAlert(Alert.AlertType alertType, String header, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
+        alert.setHeaderText(header);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 

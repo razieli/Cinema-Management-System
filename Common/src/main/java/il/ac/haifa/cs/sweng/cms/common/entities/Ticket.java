@@ -16,23 +16,25 @@ public class Ticket implements Serializable {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="screening")
 	private Screening screening;
-	private int seat;
-	
+
+	// TODO: 22/06/2021  payment, waiting to Yaniv
+	private int seatRow;
+	private int seatCol;
+
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
+		this.seatRow = 0;
+		this.seatCol = 0;
 	}
-	public Ticket(Customer customer, Screening screening,int seat){
+	public Ticket(Customer customer, Screening screening,int row, int col){
 		this.customer=customer;
 		this.screening=screening;
-		this.seat=seat;
-		
+		this.seatRow = row;
+		this.seatCol = col;
+
 	}
-	public Ticket(Screening screening,int seat){
-		this.customer=null;
-		this.screening=screening;
-		this.seat=seat;
-	}
+
 	
 	public Customer getCustomer() {return customer;}
 	
@@ -41,10 +43,23 @@ public class Ticket implements Serializable {
 	public Screening getScreening() {return screening;}
 
 	public void setScreening(Screening screening) {this.screening = screening;}
-	
-	public int getSeat() {return seat;}
-	
-	public void setSeat(int seat) {this.seat = seat;}
+
+	public int getRow() {
+		return seatRow;
+	}
+
+	public void setRow(int row) {
+		this.seatRow = row;
+	}
+
+	public int getCol() {
+		return seatCol;
+	}
+
+	public void setCol(int seatCol) {
+		this.seatCol = seatCol;
+	}
+
 	/**
 	 * Id set/get
 	 */

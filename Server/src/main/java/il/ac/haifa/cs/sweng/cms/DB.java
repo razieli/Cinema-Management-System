@@ -9,6 +9,7 @@ import javax.persistence.criteria.*;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,6 +31,7 @@ public class DB {
 
 	private Session session;
 	private SessionFactory sessionFactory;
+
 	private SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration = new Configuration();
 		// Add ALL of your entities here. You can also try adding a whole package.
@@ -44,6 +46,7 @@ public class DB {
 		configuration.addAnnotatedClass(PurpleBadge.class);
 		configuration.addAnnotatedClass(Complaint.class);
 		configuration.addAnnotatedClass(Link.class);
+		configuration.addAnnotatedClass(PriceChange.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -85,13 +88,16 @@ public class DB {
 			generateTicket();
 			generateComplaint();
 			generateLinks();
+			generatePriceChanges();
+			session.getTransaction().commit(); // Save everything.
 
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		session.getTransaction().commit(); // Save everything.
+
+
 	}
 
 	protected void close() {
@@ -103,10 +109,14 @@ public class DB {
 	 * generate initial employees
 	 */
 	public void generateEmployee(){
-		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
-		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",2));
-		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",3));
-		session.save(new Employee("Dani","Keren",hash("ds348ds"), "DaniKeren",4));
+//		session.save(new Employee("Haim","Cohen",hash("asdfg"), "HaimCohen",1));
+//		session.save(new Employee("Eyal","Shani",hash("poiuyt"), "EyalShani",2));
+//		session.save(new Employee("Ilan","Newman",hash("q2w34e"), "IlanNewman",3));
+//		session.save(new Employee("Dani","Keren",hash("ds348ds"), "DaniKeren",4));
+		session.save(new Employee("Haim","Cohen",hash("1"), "1",1));
+		session.save(new Employee("Eyal","Shani",hash("2"), "2",2));
+		session.save(new Employee("Ilan","Newman",hash("3"), "3",3));
+		session.save(new Employee("Dani","Keren",hash("4"), "4",4));
 		session.flush();
 	}
 
@@ -114,8 +124,10 @@ public class DB {
 	 * generate initial customers
 	 */
 	public void generateCustomer(){
-		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal", 0));
-		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
+//		session.save(new Customer("Gal","Galgal", hash("182fde"), "GalGalGal", 0));
+//		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
+		session.save(new Customer("Gal","Galgal", hash("0"), "0", 0));
+		session.save(new Customer("Ron","Bonbon", hash("00"), "00", 0));
 		session.flush();
 	}
 
@@ -126,10 +138,13 @@ public class DB {
 	}
 
 	public static int passMatches(String candidate, String hashed) {
+
+
+
 		if (BCrypt.checkpw(candidate, hashed))	//It matches
-			return 1;
-		else	//It does not match
 			return 0;
+		else	//It does not match
+			return -1;
 	}
 
 
@@ -207,10 +222,17 @@ public class DB {
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		List<Customer> customers=getAllCustomer();
-		for(Screening s:screenings) {
-			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-				session.save(new Ticket(customers.get(i%2),s,i));
-		}
+//		for(Screening s:screenings) {
+//			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
+//				session.save(new Ticket(customers.get(i%2),s,0,0));
+//		}
+
+		Ticket tic1 = new Ticket (customers.get(0), screenings.get(0) ,0,4);
+		Ticket tic2 = new Ticket (customers.get(1), screenings.get(1) ,0,2);
+		Ticket tic3 = new Ticket (customers.get(0), screenings.get(2) ,0,5);
+		session.save(tic1);
+		session.save(tic2);
+		session.save(tic3);
 		session.flush();
 	}
 
@@ -288,6 +310,20 @@ public class DB {
 		session.flush();
 	}
 
+	public void generatePriceChanges() throws Exception {
+		List<Movie> movies = getAllMovies();
+		List<Employee> employees = getAllEmployee();
+		Employee contentManager = employees.stream().filter(employee -> employee.getPermission() == 2).findFirst().orElse(null);
+		Movie movie1 = movies.stream().findAny().orElse(null);
+		Movie movie2 = movies.stream().filter(movie -> movie.getId() != movie1.getId()).findAny().orElse(null);
+		if(contentManager != null && movie1 != null && movie2 != null) {
+			PriceChange priceChange1 = new PriceChange(contentManager, movie1, 50);
+			PriceChange priceChange2 = new PriceChange(contentManager, movie2, 30);
+			session.save(priceChange1);
+			session.save(priceChange2);
+		}
+	}
+
 	/**
 	 * Gets list of all movies from the database.
 	 * @return list of database movies
@@ -356,6 +392,14 @@ public class DB {
 		return data;
 	}
 
+	public PurpleBadge getPurpleBadge() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<PurpleBadge> query = builder.createQuery(PurpleBadge.class);
+		query.from(PurpleBadge.class);
+		PurpleBadge data = session.createQuery(query).getSingleResult();
+		return data;
+	}
+
 	/**
 	 * Updates the database with the given movie.
 	 * @param movie Movie to update.
@@ -373,8 +417,25 @@ public class DB {
 		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
+	}
+
+	/**
+	 * Updates the database with the given PurpleBadge.
+	 * @param pb PurpleBadge to update.
+	 */
+	protected void setPurpleBadge(PurpleBadge pb) {
+		PurpleBadge oldPb = getPurpleBadge();
+		oldPb.setY(pb.getY());
+		oldPb.setStatus(pb.getStatus());
+
+		session.beginTransaction();
+		session.saveOrUpdate(oldPb);
+		session.flush();
+		session.getTransaction().commit();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -429,8 +490,8 @@ public class DB {
 		}
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -461,12 +522,28 @@ public class DB {
 		return deleteList;
 	}
 
+	public String checkUserName(String username) {
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+		Query<User> query = session.createQuery(criteriaQuery);
+		try
+		{
+			return query.getSingleResult().getUserName();
+		}
+		catch (NoResultException e)
+		{
+			return null;
+		}
+	}
+
 	public String getPassword(String username) {
 //			String sql = "SELECT password FROM cinema.user WHERE userName='" + username + "'";
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 			Root<User> root = criteriaQuery.from(User.class);
-			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName").as(String.class), username));
 			Query<User> query = session.createQuery(criteriaQuery);
 			try
 			{
@@ -502,8 +579,8 @@ public class DB {
 		}
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	/**
@@ -538,7 +615,7 @@ public class DB {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		Root<User> root = criteriaQuery.from(User.class);
-		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), username));
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName").as(String.class), username));
 		Query<User> query = session.createQuery(criteriaQuery);
 		try
 		{
@@ -578,12 +655,16 @@ public class DB {
 	}
 
 	public void setComplaint(Complaint complaint) {
+		Complaint existingComplaint;
+		List<Complaint> complaints = getAllComplaints(null);
+		existingComplaint = complaints.stream().filter(c -> c.getId() == complaint.getId()).findFirst().orElse(complaint);
+		existingComplaint.copyFrom(complaint);
 		session.beginTransaction();
-		session.save(complaint);
+		session.saveOrUpdate(existingComplaint);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
-		session = sessionFactory.openSession();
+		//session.close();
+		//session = sessionFactory.openSession();
 	}
 
 	public User getLoggedUser(String userName) throws Exception {
