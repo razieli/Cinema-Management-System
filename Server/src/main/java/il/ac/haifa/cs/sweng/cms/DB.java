@@ -44,6 +44,7 @@ public class DB {
 		configuration.addAnnotatedClass(PurpleBadge.class);
 		configuration.addAnnotatedClass(Complaint.class);
 		configuration.addAnnotatedClass(Link.class);
+		configuration.addAnnotatedClass(PriceChange.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -85,6 +86,7 @@ public class DB {
 			generateTicket();
 			generateComplaint();
 			generateLinks();
+			generatePriceChanges();
 
 		} catch (URISyntaxException e) {
 			Log.e(TAG, "Bad URL in generateMovie.");
@@ -286,6 +288,20 @@ public class DB {
 		session.save(l3);
 		session.save(l4);
 		session.flush();
+	}
+
+	public void generatePriceChanges() throws Exception {
+		List<Movie> movies = getAllMovies();
+		List<Employee> employees = getAllEmployee();
+		Employee contentManager = employees.stream().filter(employee -> employee.getPermission() == 2).findFirst().orElse(null);
+		Movie movie1 = movies.stream().findAny().orElse(null);
+		Movie movie2 = movies.stream().filter(movie -> movie.getId() != movie1.getId()).findAny().orElse(null);
+		if(contentManager != null && movie1 != null && movie2 != null) {
+			PriceChange priceChange1 = new PriceChange(contentManager, movie1, 50);
+			PriceChange priceChange2 = new PriceChange(contentManager, movie2, 30);
+			session.save(priceChange1);
+			session.save(priceChange2);
+		}
 	}
 
 	/**
