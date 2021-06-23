@@ -98,11 +98,16 @@ public class ContentManagerHomeController implements Initializable {
 
     @FXML
     void switchToPurpleBadgeScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
+        //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        //        alert.setTitle(null);
+        //        alert.setHeaderText(null);
+        //        alert.setContentText("New features coming soon..  :)");
+        //        alert.showAndWait();
+        try {
+            App.setRoot("PurpleBadge.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

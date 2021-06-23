@@ -247,9 +247,11 @@ public class OCSFClient extends AbstractClient {
      */
     protected void updatePurpleBadge(int seatCapacity, boolean status) {
         try {
-            sendToServer(new UpdatePurpleBadgeRequest(seatCapacity,status));
+            sendToServer(new UpdatePurpleBadgeRequest(seatCapacity, status));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
+        }
+    }
     /**
      * Sends a request to the server to submit a price change.
      * @param priceChange Price change to submit.
@@ -274,7 +276,7 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
-
+/*
     private void handleLoginResponse(LoginResponse response) {
         if (response.getStatus() == ResponseStatus.Declined) {
             App.setUserPermission(-1);
@@ -332,5 +334,6 @@ public class OCSFClient extends AbstractClient {
         }
         // TODO: Show "Unidentified response".
     }
+*/
 
 }
