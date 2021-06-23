@@ -185,9 +185,9 @@ public class OCSFClient extends AbstractClient {
      * @param ticket New list of screenings.
      */
 
-    protected void updateTickets(Ticket ticket, boolean addOrRemove) {
+    protected void updateTickets(Ticket ticket, boolean addOrRemove, boolean boughtWithPackage) {
         try {
-            sendToServer(new UpdateTicketsRequest(ticket, addOrRemove));
+            sendToServer(new UpdateTicketsRequest(ticket, addOrRemove, boughtWithPackage));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

@@ -489,6 +489,9 @@ public class DB {
 	 * @param ticket New list of tickets for a movie.
 	 */
 	protected void setTickets(Ticket ticket, boolean addOrRemove) {
+		// TODO: 23/06/2021  add/ remove money/tickets from customer
+
+
 		session.beginTransaction();
 		if(addOrRemove){
 			session.save(ticket);
