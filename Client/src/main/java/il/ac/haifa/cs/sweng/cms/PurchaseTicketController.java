@@ -9,26 +9,20 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PurchaseTicketController implements Initializable {
     private static Movie movie;
@@ -208,6 +202,7 @@ public class PurchaseTicketController implements Initializable {
             pickedScreening = screeningComboBox.getValue();
             System.out.println(pickedScreening);
             int[][] seatsMap = pickedScreening.getSeats();
+            seatGridPane.getChildren().clear();
             for(int row=0;row <= pickedScreening.getSeatsCapacity()/10 ; row++){
                 for(int col=0 ; col < 10 ; col++){
                     try {
@@ -220,8 +215,18 @@ public class PurchaseTicketController implements Initializable {
         });
 
         //seats
-        seatComboBox.setOnMouseClicked(e->{
+        seatComboBox.setOnAction(e->{
            pickSeats=seatComboBox.getValue();
+            seatGridPane.getChildren().clear();
+            for(int row=0;row <= pickedScreening.getSeatsCapacity()/10 ; row++){
+                for(int col=0 ; col < 10 ; col++){
+                    try {
+                        addSeat(pickedScreening,row,col);
+                    } catch (FileNotFoundException el) {
+                        el.printStackTrace();
+                    }
+                }
+            }
         });
 
 
@@ -229,25 +234,48 @@ public class PurchaseTicketController implements Initializable {
     }
 
     protected void addSeat(Screening screening, int row, int col) throws FileNotFoundException {
+        AtomicBoolean seatFlag = new AtomicBoolean(false);
         int[][] seatMap = screening.getSeats();
         ImageView imageView = new ImageView();
         if(seatMap[row][col] == 0){
             // TODO: 22/06/2021 toggle collor,   max seat to select
-            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png")));
+            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png"),30,30,false,false));
         }
 
         else{
-            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/BusySeat.png")));
+            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/BusySeat.png"),30,30,false,false));
         }
 
         seatGridPane.add(imageView,col,row);
         // TODO: 22/06/2021  send taken seat to server 
         imageView.setOnMouseClicked(e -> {
-            try {
-
-                imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/ChackedSeat.png")));
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
+            if (seatMap[row][col] == 0) {
+                System.out.println(pickSeats);
+                seatFlag.set(!seatFlag.get());
+                try {
+                    if (seatFlag.get() == true) {
+                        if (pickSeats == 0) {
+                            //set a error alert
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                            errorAlert.setTitle(null);
+                            errorAlert.setHeaderText(null);
+                            errorAlert.setContentText("you can't pick more seats.");
+                            errorAlert.showAndWait();
+                            if (errorAlert.getResult() == ButtonType.OK) {
+                                seatFlag.set(false);//if cant pick reset chack
+                            }
+                        } else {
+                            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/ChackedSeat.png"), 30, 30, false, false));
+//                            while(imageView.isEmpty()) { Thread.yield(); }
+                            pickSeats--;
+                        }
+                    } else if (seatFlag.get() == false) {
+                        imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png"), 30, 30, false, false));
+                        pickSeats++;
+                    }
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
 
         });
