@@ -162,9 +162,7 @@ public class PurchaseLinkController implements Initializable {
         else{
 
             try {
-                Customer customer = (Customer)App.getUser();
-
-                Link movieLink = new Link (customer, gregorianCalendar,movie);
+                Link movieLink = new Link ((Customer)App.getUser(), gregorianCalendar,movie);
 //              PaymentScreenController.setMovieLink(movieLink);
 
 
