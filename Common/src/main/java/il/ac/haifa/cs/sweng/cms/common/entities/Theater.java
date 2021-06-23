@@ -114,7 +114,7 @@ public class Theater implements Serializable {
 			if(pb.getClosingDates().contains(s.getDate()))
 				for(Ticket t: s.getTickets()) {
 //TODO:					//notify(t.getCustomer());//Send alert to the customer about canceling
-					if(t.getCustomer().getPackageList().contains(t))
+					if(t.getCustomer().getTicket().contains(t))
 						t.getCustomer().removeTicket(t, true);
 					else
 						t.getCustomer().removeTicket(t, false);

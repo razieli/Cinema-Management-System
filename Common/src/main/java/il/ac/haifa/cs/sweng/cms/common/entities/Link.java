@@ -19,12 +19,13 @@ public class Link implements Serializable {
     @JoinColumn(name="movie_id")
     private Movie movie;
     GregorianCalendar date;
-
+    private double linkPrice;
 
     public Link() {
         this.customer=null;
         this.movie=null;
         this.date = new GregorianCalendar();
+        this.linkPrice =20;
     }
 
 
@@ -32,6 +33,7 @@ public class Link implements Serializable {
         this.customer=customer;
         this.date = gregorianCalendar;
         this.movie=movie;
+        this.linkPrice =20;
     }
 
 
@@ -67,4 +69,12 @@ public class Link implements Serializable {
      */
     public GregorianCalendar getDate() { return date; }
     public void setDate(GregorianCalendar date) { this.date = date; }
+
+    public double getLinkPrice() {
+        return linkPrice;
+    }
+
+    public void setLinkPrice(double moviePrice) {
+        this.linkPrice = moviePrice;
+    }
 }

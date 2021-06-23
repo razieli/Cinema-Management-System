@@ -19,8 +19,11 @@ public class Customer extends User implements Serializable {
 	@OneToMany(targetEntity = Ticket.class, fetch = FetchType.LAZY, mappedBy = "customer")
 	private List<Ticket> ticket;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-	private List<Ticket> packageList;
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+//	private List<Ticket> packageList;
+
+	private int packageTicketsRemaining;
+	static int packageTicketsNumber = 20;
 
 	@OneToMany(targetEntity = Complaint.class, mappedBy="customer", fetch = FetchType.LAZY)
 	private List<Complaint> complaints;
@@ -28,13 +31,17 @@ public class Customer extends User implements Serializable {
 	@OneToMany(targetEntity = Link.class, fetch = FetchType.LAZY, mappedBy = "customer")
 	private List<Link> links;
 
+	private double balance;
+
 	/**
 	 * constructors
 	 */
-	public Customer(){super();}
+	public Customer(){super(); balance = 200;}
 	public Customer(String firstName, String lastName, String password, String userName, int permission)
 	{
 		super(firstName,lastName, password, userName, permission);
+		this.balance = 200;
+		this.packageTicketsRemaining = 0;
 	}
 
 	/**
@@ -76,42 +83,32 @@ public class Customer extends User implements Serializable {
 	 * @param isPackage
 	 */
 	public void addTicket(Ticket ticket,boolean isPackage) {
-		if(isPackage) {
-			if (this.packageList==null)
-				this.packageList=new ArrayList<Ticket>();
-			this.packageList.add(ticket);
-		}
-		else
+		if(isPackage){
+			this.packageTicketsRemaining--;
 			this.ticket.add(ticket);
+		}
+		else{
+			this.ticket.add(ticket);
+			this.balance-=ticket.getScreening().getMovie().getPrice();
+		}
 	}
 
 	/**
-	 * adding ticket from customer
+	 * removing ticket from customer
 	 * @param ticket
 	 * @param isPackage
 	 */
 	public void removeTicket(Ticket ticket, boolean isPackage) {
-		if(isPackage) {
-			this.packageList.remove(ticket);
+		if(isPackage){
+			this.packageTicketsRemaining++;
+			this.ticket.add(ticket);
 		}
-		else
-			this.ticket=null;
+		else{
+			this.ticket.add(ticket);
+			this.balance+=ticket.getScreening().getMovie().getPrice();
+		}
 	}
 
-	/**
-	 * @return the package as tickets list
-	 */
-	public List<Ticket> getPackageList() {
-		return packageList;
-	}
-
-	/**
-	 * setting the package as tickets list
-	 * @param packageList
-	 */
-	public void setPackageList(List<Ticket> packageList) {
-		this.packageList = packageList;
-	}
 
 	public List<Complaint> getComplaints() {
 		return complaints;
@@ -132,23 +129,30 @@ public class Customer extends User implements Serializable {
 	/**
 	 * adding link to customer
 	 * @param link
-
 	 */
 	public void addLink(Link link) {
 		if (links == null)
 				this.links = new ArrayList<Link>();
 		this.links.add(link);
+		this.balance-=link.getLinkPrice();
 		setHas_link(true);
 	}
 
 	/**
-	 * adding ticket from customer
+	 * removing link from customer
 	 * @param link
 	 */
 	public void removeLink(Link link) {
 		links.remove(link);
+		this.balance+=link.getLinkPrice();
 		if(links.isEmpty()){
 			setHas_link(false);
 		}
 	}
+
+	/**
+	 * add tickets to package
+	 */
+	public void addPackage(){
+		this.packageTicketsRemaining+=packageTicketsNumber;}
 }

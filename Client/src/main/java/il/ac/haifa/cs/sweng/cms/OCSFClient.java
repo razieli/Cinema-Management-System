@@ -181,21 +181,21 @@ public class OCSFClient extends AbstractClient {
     }
 
     /**
-     * Sends a request to the server to update a list of tickets.
-     * @param TicketList New list of screenings.
+     * Sends a request to the server to update the list of tickets by adding or removing a ticket.
+     * @param ticket New list of screenings.
      */
 
-    protected void updateTickets(List<Ticket> TicketList) {
+    protected void updateTickets(Ticket ticket, boolean addOrRemove) {
         try {
-            sendToServer(new UpdateTicketsRequest(TicketList));
+            sendToServer(new UpdateTicketsRequest(ticket, addOrRemove));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
     }
 
-    protected void updateLinks(List<Link> LinktList) {
+    protected void updateLinks(Link link, boolean addOrRemove) {
         try {
-            sendToServer(new UpdateLinksRequest(LinktList));
+            sendToServer(new UpdateLinksRequest(link,addOrRemove ));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

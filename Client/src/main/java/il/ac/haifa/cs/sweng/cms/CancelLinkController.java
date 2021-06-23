@@ -70,8 +70,8 @@ public class CancelLinkController implements Initializable {
             //TODO: cancellation based on current time.
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
+                App.getOcsfClient(this).updateLinks(linksComboBox.getValue(), false);
                 linksList.remove(linksComboBox.getValue());
-                App.getOcsfClient(this).updateLinks(linksList);
                 alert.setHeaderText(null);
                 alert.setContentText("Link Canceled");
             } else {
@@ -91,6 +91,7 @@ public class CancelLinkController implements Initializable {
             alert.showAndWait();
         }
     }
+
 
 
     /**
