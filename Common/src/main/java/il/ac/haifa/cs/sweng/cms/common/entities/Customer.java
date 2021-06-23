@@ -94,7 +94,7 @@ public class Customer extends User implements Serializable {
 	}
 
 	/**
-	 * adding ticket from customer
+	 * removing ticket from customer
 	 * @param ticket
 	 * @param isPackage
 	 */
@@ -129,21 +129,22 @@ public class Customer extends User implements Serializable {
 	/**
 	 * adding link to customer
 	 * @param link
-
 	 */
 	public void addLink(Link link) {
 		if (links == null)
 				this.links = new ArrayList<Link>();
 		this.links.add(link);
+		this.balance-=link.getLinkPrice();
 		setHas_link(true);
 	}
 
 	/**
-	 * adding ticket from customer
+	 * removing link from customer
 	 * @param link
 	 */
 	public void removeLink(Link link) {
 		links.remove(link);
+		this.balance+=link.getLinkPrice();
 		if(links.isEmpty()){
 			setHas_link(false);
 		}

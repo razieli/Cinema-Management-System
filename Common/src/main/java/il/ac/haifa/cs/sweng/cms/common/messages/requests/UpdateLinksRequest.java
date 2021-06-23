@@ -12,21 +12,27 @@ import java.util.List;
  */
 public class UpdateLinksRequest extends AbstractRequest {
 
-    private List<Link> linksList;
+    private Link link;
+    private boolean addOrRemove; //true if add ticket, false if delete ticket
 
     /**
      * Constructs an UpdateTicketsRequest instance with the tickets to update.
      * @param ticketsList List of tickets to replace the existing list of this tickets.
      */
-    public UpdateLinksRequest(List<Link> ticketsList) {
-        this.linksList = ticketsList;
+    public UpdateLinksRequest(Link ticketsList, boolean addOrRemove) {
+        this.link = ticketsList;
+        this.addOrRemove = addOrRemove;
     }
 
     /**
      * Returns the new list of tickets that is requested.
      * @return New list of tickets.
      */
-    public List<Link> getLinksList() {
-        return linksList;
+    public Link getLinksList() {
+        return link;
+    }
+
+    public boolean getAddOrRemove() {
+        return addOrRemove;
     }
 }

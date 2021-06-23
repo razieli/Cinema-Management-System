@@ -12,21 +12,27 @@ import java.util.List;
  */
 public class UpdateTicketsRequest extends AbstractRequest {
 
-    private List<Ticket> ticketList;
+    private Ticket ticket;
+    private boolean addOrRemove; //true if add ticket, false if delete ticket
 
     /**
      * Constructs an UpdateTicketsRequest instance with the tickets to update.
-     * @param ticketsList List of tickets to replace the existing list of this tickets.
+     * @param ticket List of tickets to replace the existing list of this tickets.
      */
-    public UpdateTicketsRequest(List<Ticket> ticketsList) {
-        this.ticketList = ticketsList;
+    public UpdateTicketsRequest(Ticket ticket, boolean addOrRemove) {
+        this.ticket = ticket;
+        this.addOrRemove = addOrRemove;
     }
 
     /**
      * Returns the new list of tickets that is requested.
      * @return New list of tickets.
      */
-    public List<Ticket> getTicketsList() {
-        return ticketList;
+    public Ticket getTicket() {
+        return this.ticket;
+    }
+
+    public boolean getAddOrRemove() {
+        return addOrRemove;
     }
 }
