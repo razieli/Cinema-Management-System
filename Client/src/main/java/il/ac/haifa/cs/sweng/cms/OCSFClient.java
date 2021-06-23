@@ -53,7 +53,12 @@ public class OCSFClient extends AbstractClient {
             ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
         }
         if (response instanceof ListAllMoviesResponse) {
-            ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            if(controller instanceof ViewMoviesController) {
+                ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            }
+            if(controller instanceof PriceChangeSubmissionController) {
+                ((PriceChangeSubmissionController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            }
         }
         if (response instanceof ListAllTicketsResponse) {
             ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
@@ -84,6 +89,19 @@ public class OCSFClient extends AbstractClient {
             // TODO: Update GUI with screenings.
         }
 
+        if (response instanceof ListAllPriceChangesResponse) {
+            if(controller instanceof PriceChangeSubmissionController) {
+                ((PriceChangeSubmissionController) controller).setPriceChanges(((ListAllPriceChangesResponse) response).getPriceChanges());
+            } else if(controller instanceof PriceChangeHandlingController) {
+                ((PriceChangeHandlingController) controller).setPriceChanges(((ListAllPriceChangesResponse) response).getPriceChanges());
+            }
+        }
+        if (response instanceof PriceChangeSubmissionResponse) {
+            ((PriceChangeSubmissionController) controller).handlePriceChangeSubmissionResponse();
+        }
+        if (response instanceof PriceChangeReplyResponse) {
+            ((PriceChangeHandlingController) controller).onReplyReceived();
+        }
             // TODO: Show "Unidentified response".
 
     }
@@ -137,6 +155,14 @@ public class OCSFClient extends AbstractClient {
     protected void getListOfComplaints(User user) {
         try {
             sendToServer(new ListAllComplaintsRequest(user));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void getListOfPriceChanges(User user) {
+        try {
+            sendToServer(new ListAllPriceChangesRequest(user));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,7 +250,87 @@ public class OCSFClient extends AbstractClient {
             sendToServer(new UpdatePurpleBadgeRequest(seatCapacity,status));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
+    /**
+     * Sends a request to the server to submit a price change.
+     * @param priceChange Price change to submit.
+     */
+    public void submitPriceChange(PriceChange priceChange) {
+        try {
+            sendToServer(new PriceChangeSubmissionRequest(priceChange));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
         }
+    }
+
+    /**
+     * Sends a request to the server to reply to a price change.
+     * @param priceChange Price change to reply to.
+     */
+    public void replyToPriceChange(PriceChange priceChange) {
+        try {
+            sendToServer(new PriceChangeReplyRequest(priceChange));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+
+    private void handleLoginResponse(LoginResponse response) {
+        if (response.getStatus() == ResponseStatus.Declined) {
+            App.setUserPermission(-1);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Wrong Login!");
+            alert.showAndWait();
+        }
+        else if (response.getStatus() == ResponseStatus.Customer) {
+            App.setUserPermission(0);
+        }
+        else if (response.getStatus() == ResponseStatus.CustomerService) {
+            App.setUserPermission(1);
+        }
+        else if (response.getStatus() == ResponseStatus.ContentManager) {
+            App.setUserPermission(2);
+        }
+        else if (response.getStatus() == ResponseStatus.BranchManager) {
+            App.setUserPermission(3);
+        }
+        else if (response.getStatus() == ResponseStatus.Administrator) {
+            App.setUserPermission(4);
+        }
+        App.setUser(response.getUser());
+        int permission = App.getUserPermission();
+
+        if(permission >= 3){
+            try {
+                App.setRoot("CinemaManagerHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(permission >= 2) {
+            try {
+                App.setRoot("ContentManagerHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(permission > 0){
+            try {
+                App.setRoot("EmployeeHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (permission == 0) {
+            try {
+                App.setRoot("CustomerHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // TODO: Show "Unidentified response".
     }
 
 }

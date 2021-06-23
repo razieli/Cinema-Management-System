@@ -3,14 +3,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -21,14 +18,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.EditMovieScreenController">
+<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.PriceChangeHandlingController">
    <children>
-      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
                <children>
                   <MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0" prefWidth="681.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
-                  <Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375" strokeType="OUTSIDE" strokeWidth="0.0" text="Prices Changes Handling" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+                  <Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375" strokeType="OUTSIDE" strokeWidth="0.0" text="Price Changes Handling" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <font>
                         <Font name="Aharoni Bold" size="30.0" />
                      </font>
@@ -57,7 +54,7 @@
                            <content>
                               <AnchorPane fx:id="anchorPaneLeft" style="-fx-background-color: black;">
                                  <children>
-                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="491.0" prefWidth="441.0" style="-fx-background-color: BLACK;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="0.0">
+                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="99999.0" prefWidth="99999.0" style="-fx-background-color: BLACK;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <GridPane fx:id="gridPaneLeft" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="558.0" prefWidth="450.0" style="-fx-background-color: black;" vgap="5.0">
                                              <columnConstraints>
@@ -70,6 +67,10 @@
                                                 <RowConstraints maxHeight="61.0" minHeight="0.0" prefHeight="51.333333333333336" vgrow="ALWAYS" />
                                                 <RowConstraints maxHeight="61.0" minHeight="0.0" prefHeight="51.333333333333336" vgrow="ALWAYS" />
                                                 <RowConstraints maxHeight="117.0" minHeight="0.0" prefHeight="45.600012207031256" vgrow="ALWAYS" />
+                                                <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
+                                                <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
+                                                <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
+                                                <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
                                                 <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
                                                 <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
                                                 <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="24.79998779296875" vgrow="ALWAYS" />
@@ -106,16 +107,16 @@
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <FlowPane fx:id="screeningFlow" prefHeight="89.0" prefWidth="362.0" GridPane.columnIndex="1" GridPane.rowIndex="32">
+                                                <FlowPane fx:id="screeningFlow" prefHeight="89.0" prefWidth="362.0" GridPane.columnIndex="1" GridPane.rowIndex="36">
                                                    <GridPane.margin>
                                                       <Insets bottom="3.0" top="3.0" />
                                                    </GridPane.margin></FlowPane>
-                                                <Button fx:id="accept" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" mnemonicParsing="false" onAction="#onAccept" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #ffa500;" text="Accept" textAlignment="CENTER" GridPane.rowIndex="11">
+                                                <Button fx:id="accept" alignment="CENTER" mnemonicParsing="false" onAction="#onAccept" style="-fx-background-color: #ffa500;" text="Accept" textAlignment="CENTER" GridPane.rowIndex="12">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
                                                 </Button>
-                                                <Button fx:id="reject" alignment="CENTER" layoutX="85.0" layoutY="282.0" minWidth="27.0" mnemonicParsing="false" onAction="#onReject" onMouseClicked="#handheldsMovieUpdate" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #ffa500;" text="Reject" textAlignment="CENTER" translateX="100.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                                <Button fx:id="reject" alignment="CENTER" layoutX="85.0" layoutY="282.0" mnemonicParsing="false" onAction="#onReject" style="-fx-background-color: #ffa500;" text="Reject" textAlignment="CENTER" translateX="100.0" GridPane.rowIndex="12">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
@@ -143,17 +144,6 @@
                                                 <Insets right="5.0" />
                                              </padding>
                                           </GridPane>
-                                          <AnchorPane prefWidth="438.0">
-                                             <children>
-                                                <ButtonBar layoutX="0.800000011920929" prefHeight="25.0" prefWidth="397.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
-                                                   <buttons>
-                                                      <DatePicker fx:id="datePicker" prefHeight="25.0" promptText="Date" />
-                                                      <ComboBox fx:id="hourComboBox" prefHeight="25.0" prefWidth="150.0" promptText="Hour" />
-                                                      <Button fx:id="addScreeningButton" minWidth="49.0" mnemonicParsing="false" onAction="#handheldsAddScreeningButton" prefHeight="25.0" style="-fx-background-color: orange;" text="Add" />
-                                                   </buttons>
-                                                </ButtonBar>
-                                             </children>
-                                          </AnchorPane>
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -172,38 +162,24 @@
                                  <children>
                                     <VBox layoutX="1.0" layoutY="207.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                        <children>
-                                          <AnchorPane>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                          </AnchorPane>
-                                          <AnchorPane>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                             <opaqueInsets>
-                                                <Insets bottom="5.0" />
-                                             </opaqueInsets>
-                                          </AnchorPane>
-                                          <AnchorPane fx:id="status" prefHeight="337.0" prefWidth="1219.0">
+                                          <AnchorPane prefHeight="9999.0" prefWidth="9999.0">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
                                              <children>
-                                                <ImageView fx:id="inputImage" fitHeight="300.0" fitWidth="200.0" layoutX="-9.0" layoutY="-74.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="-9.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-74.0" />
-                                                <Label layoutX="12.0" layoutY="182.0" text="Status:" textFill="ORANGE" underline="true">
+                                                <ListView fx:id="priceChangesList" layoutX="9.0" layoutY="-4.0" prefHeight="137.0" prefWidth="250.0" AnchorPane.leftAnchor="7.0" />
+                                                <Label layoutX="14.0" layoutY="137.0" text="Movie:" textFill="ORANGE" underline="true" AnchorPane.leftAnchor="7.0">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="statusComplaint" fill="ORANGE" layoutX="12.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" wrappingWidth="180.0" />
-                                                <Label layoutX="14.0" layoutY="137.0" text="Movie:" textFill="ORANGE" underline="true">
+                                                <Text fx:id="movie" fill="ORANGE" layoutX="10.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" wrappingWidth="185.0" AnchorPane.leftAnchor="7.0" />
+                                                <Label layoutX="12.0" layoutY="182.0" text="Status:" textFill="ORANGE" underline="true" AnchorPane.leftAnchor="7.0">
                                                    <font>
                                                       <Font name="System Bold" size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <Text fx:id="movie" fill="ORANGE" layoutX="10.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" wrappingWidth="185.0" />
-                                                <ListView fx:id="priceChangesList" layoutX="9.0" layoutY="-4.0" prefHeight="137.0" prefWidth="200.0" />
+                                                <Text fx:id="status" fill="ORANGE" layoutX="12.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="JUSTIFY" wrappingWidth="180.0" AnchorPane.leftAnchor="7.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>
