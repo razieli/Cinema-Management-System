@@ -30,11 +30,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-
+import java.time.Year;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class EditMovieScreenController implements Initializable  {
 
@@ -47,6 +45,8 @@ public class EditMovieScreenController implements Initializable  {
     URI backButtonUri = null;
     Cinema pickedCinema = null;
     Theater pickedTheater = null;
+    private double price=0;
+    private GregorianCalendar premiere;
 
     @FXML // fx:id="titleText"
     private Text titleText; // Value injected by FXMLLoader
@@ -78,8 +78,11 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="PGRaitingBox"
     private TextField PGRaitingBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="availableBox"
-    private TextField availableBox; // Value injected by FXMLLoader
+    @FXML // fx:id="priceBox"
+    private TextField priceBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PremiereDate"
+    private DatePicker premiereDate /*=  new DatePicker(LocalDate.of(GregorianCalendar.getInstance().get(Calendar.YEAR), GregorianCalendar.getInstance().get(Calendar.MONTH),GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)))*/; // Value injected by FXMLLoader
 
     @FXML // fx:id="castBox"
     private TextArea castBox; // Value injected by FXMLLoader
@@ -111,6 +114,9 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="inputTrailer"
     private Hyperlink inputTrailer; // Value injected by FXMLLoader
 
+    @FXML // fx:id="inputPrice"
+    private Text inputPrice; // Value injected by FXMLLoader
+
     @FXML // fx:id="inputLength"
     private Text inputLength; // Value injected by FXMLLoader
 
@@ -125,6 +131,9 @@ public class EditMovieScreenController implements Initializable  {
 
     @FXML // fx:id="inputCast"
     private Text inputCast; // Value injected by FXMLLoader
+
+    @FXML // fx:id="inputPremiere"
+    private Text inputPremiere; // Value injected by FXMLLoader
 
     @FXML // fx:id="inputDescription"
     private Text inputDescription; // Value injected by FXMLLoader
@@ -206,7 +215,7 @@ public class EditMovieScreenController implements Initializable  {
      */
     @FXML
     void handheldsMovieUpdate(ActionEvent event) throws URISyntaxException {
-        if(!englishTitle.getText().isEmpty() && !hebrewTitle.getText().isEmpty() && !descriptionBox.getText().isEmpty() && !yearBox.getText().isEmpty() && !lengthBox.getText().isEmpty() && !PGRaitingBox.getText().isEmpty() && !castBox.getText().isEmpty() && !posterBox.getText().isEmpty() && !trailerBox.getText().isEmpty()) {
+        if(!englishTitle.getText().isEmpty() && !hebrewTitle.getText().isEmpty()  && premiereDate.getValue()!=null && !yearBox.getText().isEmpty() && !lengthBox.getText().isEmpty() && !PGRaitingBox.getText().isEmpty() && !posterBox.getText().isEmpty()) {
             //set a conformation alert
             Alert confarmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confarmationAlert.setTitle(null);
@@ -229,6 +238,8 @@ public class EditMovieScreenController implements Initializable  {
                 movie.setPosterUrl(new URI(posterBox.getText()));
                 movie.setTrailerUrl(new URI(trailerBox.getText()));
                 movie.setScreening(screeningList);
+                movie.setPrice(Double.parseDouble(priceBox.getText()));
+                movie.setPremiere(premiere);
 
                 //update movie on database
                 App.getOcsfClient(this).updateMovie(movie);
@@ -333,6 +344,17 @@ public class EditMovieScreenController implements Initializable  {
             descriptionBox.setText(movie.getDescription());
             inputDescription.setText(movie.getDescription());
 
+            //set price to show on screen
+            priceBox.setText(String.valueOf(movie.getPrice()));
+            inputPrice.setText(String.valueOf(movie.getPrice()));
+
+            //set premiere to show on screen
+            premiere = movie.getPremiere();
+            premiereDate.setValue(LocalDate.of(premiere.get(Calendar.YEAR), premiere.get(Calendar.MONTH), premiere.get(Calendar.DAY_OF_MONTH)));
+            SimpleDateFormat f = new SimpleDateFormat("YY.MM.dd E"); //set a date format
+            inputPremiere.setText(String.valueOf(f.format(premiere.getTime())));
+
+
             //set movie screening time to show on screen
             for (Screening screening : movie.getScreening()) {
                 addScreening(screening);
@@ -389,6 +411,8 @@ public class EditMovieScreenController implements Initializable  {
             pickedCinema = cinemaComboBox.getValue();
             theaterComboBox.getItems().clear(); //clear choiceBox
 
+
+
             //init theaterComboBox from picked cinema
             if (pickedCinema!=null) {
                 while (cinemas.isEmpty()) {
@@ -405,6 +429,11 @@ public class EditMovieScreenController implements Initializable  {
 
         theaterComboBox.setOnAction((event) -> {
             pickedTheater = theaterComboBox.getValue();
+        });
+
+        premiereDate.setOnAction((event) -> {
+             LocalDate localPremiere = premiereDate.getValue();
+            premiere = new GregorianCalendar(localPremiere.getYear(), localPremiere.getMonthValue(), localPremiere.getDayOfMonth(), 0,0);
         });
     }
 

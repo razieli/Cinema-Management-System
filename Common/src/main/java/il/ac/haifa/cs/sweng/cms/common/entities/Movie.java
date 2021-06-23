@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Movie implements Serializable {
 	private String castList;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="movie")
 	private List<Screening> screening;
+	private GregorianCalendar premiere;
 	private Integer length;
 	private Integer ageRestriction;
 	private String description;
@@ -44,7 +46,7 @@ public class Movie implements Serializable {
 	
 	public Movie(String engName,String hebName,Integer year,
 				 String castList, Integer length, Integer ageRestriction,
-				 String description, URI inputStream, URI inputStream2) {
+				 String description, URI inputStream, URI inputStream2,GregorianCalendar premiere) {
 		this();
 		this.engName = engName;
 		this.hebName=hebName;
@@ -56,6 +58,7 @@ public class Movie implements Serializable {
 		this.trailerUrl = inputStream2;
 		this.description = description;
 		this.price = BASE_PRICE;
+		this.premiere = premiere;
 	}
 
 	/**
@@ -154,6 +157,14 @@ public class Movie implements Serializable {
 	public double getPrice() { return price; }
 	public void setPrice(double price) { this.price = price; }
 
+	public GregorianCalendar getPremiere() {
+		return premiere;
+	}
+
+	public void setPremiere(GregorianCalendar premiere) {
+		this.premiere = premiere;
+	}
+
 	public void copyFrom(Movie movie) {
 		this.engName = movie.engName;
 		this.hebName = movie.hebName;
@@ -172,5 +183,6 @@ public class Movie implements Serializable {
     public String toString() {
 		return this.engName + " (" + this.year + ")";
 	}
+
 
 }
