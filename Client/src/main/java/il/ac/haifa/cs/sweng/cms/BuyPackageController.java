@@ -19,7 +19,10 @@ public class BuyPackageController implements Initializable  {
 
     @FXML
     public void handheldsBuyPackage(javafx.event.ActionEvent actionEvent) {
-        // TODO: 23/06/2021 but package things.. 
+        // TODO: 23/06/2021 but package things..
+//        PaymentController.setLink(link);
+//        PaymentController.setFromScreen(2); //came from buy packege
+//        App.setRoot("Payment.fxml"); //set the sceen to the last page.
     }
 
     

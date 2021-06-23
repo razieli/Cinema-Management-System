@@ -161,30 +161,23 @@ public class PurchaseLinkController implements Initializable {
 
         else{
 
-            try {
-                Link movieLink = new Link ((Customer)App.getUser(), gregorianCalendar,movie);
-//                PaymentController.setLink(movieLink);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Remember");
+            alert.setHeaderText(null);
+            alert.setContentText("Remember the link to the movie is available for a week from the time you selected");
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().addAll(ButtonType.OK);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                Link link = new Link((Customer)App.getUser() , gregorianCalendar, movie);
 
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Remember");
-                alert.setHeaderText(null);
-                alert.setContentText("Remember the link to the movie is available for a week from the time you selected");
-                alert.getButtonTypes().clear();
-                alert.getButtonTypes().addAll(ButtonType.OK);
-                alert.showAndWait();
-                if (alert.getResult() == ButtonType.OK) {
-                    Link link = new Link(null , gregorianCalendar, movie);
-
-                    //todo: repalce with paymant screen when ready
-//                    PaymentScreenController.getLink(link);
-                    App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
+                //todo: repalce with paymant screen when ready
+//                    PaymentController.setLink(link);
+//                    PaymentController.setFromScreen(3);//came from Link
+//                        App.setRoot("Payment.fxml"); //set the sceen to the last page.
 //                    App.setRoot("PaymentScreen.fxml"); //set the scean to the last page.
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
         }
     }
 

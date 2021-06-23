@@ -109,7 +109,8 @@ public class OCSFServer extends AbstractServer {
             // Save tickets in DB.
             Ticket ticket= ((UpdateTicketsRequest) request).getTicket();
             boolean addOrRemove = ((UpdateTicketsRequest) request).getAddOrRemove();
-            db.setTickets(ticket, addOrRemove);
+            boolean boughtWithPackage = ((UpdateTicketsRequest) request).getBoughtWithPackage();
+            db.setTickets(ticket, addOrRemove,boughtWithPackage);
             return new UpdateTicketsResponse(ResponseStatus.Acknowledged);
         }
 

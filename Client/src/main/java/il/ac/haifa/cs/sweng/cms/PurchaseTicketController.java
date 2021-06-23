@@ -30,7 +30,9 @@ public class PurchaseTicketController implements Initializable {
     private static Screening pickedScreening = null;
     private static int pickSeats = 0;
 //    private List<Cinema> cinemas= new ArrayList<Cinema>();
+    private List<Ticket> seats =new ArrayList<Ticket>();
     private List<Cinema>cinemas= ViewMoviesController.getCinemas();
+    private List<Ticket> tickets =new ArrayList<Ticket>();
 
     @FXML // fx:id="backButton"
     private Button backButton; // Value injected by FXMLLoader
@@ -141,7 +143,21 @@ public class PurchaseTicketController implements Initializable {
 
     @FXML
     void handheldsPayment(ActionEvent event) {
+        if (tickets.isEmpty()){
+            //set a error alert
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle(null);
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("You didn't pick any seats.");
+            errorAlert.showAndWait();
+        }
 
+       else {
+            // TODO: 23/06/2021 :find out about that static problam
+//            PaymentController.setTickets(tickets);
+//            PaymentController.setFromScreen(1);//set came from ticket
+//            App.setRoot("Payment.fxml"); //set the sceen to the last page.
+        }
     }
 
     @Override
@@ -217,13 +233,14 @@ public class PurchaseTicketController implements Initializable {
         //seats
         seatComboBox.setOnAction(e->{
            pickSeats=seatComboBox.getValue();
-            seatGridPane.getChildren().clear();
+            tickets.clear();//clear all picked seats
+            seatGridPane.getChildren().clear();//reload seats map
             for(int row=0;row <= pickedScreening.getSeatsCapacity()/10 ; row++){
                 for(int col=0 ; col < 10 ; col++){
                     try {
                         addSeat(pickedScreening,row,col);
-                    } catch (FileNotFoundException el) {
-                        el.printStackTrace();
+                    } catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
                     }
                 }
             }
@@ -235,6 +252,7 @@ public class PurchaseTicketController implements Initializable {
 
     protected void addSeat(Screening screening, int row, int col) throws FileNotFoundException {
         AtomicBoolean seatFlag = new AtomicBoolean(false);
+        Ticket ticket = new Ticket(null, screening, row,col);
         int[][] seatMap = screening.getSeats();
         ImageView imageView = new ImageView();
         if(seatMap[row][col] == 0){
@@ -247,10 +265,9 @@ public class PurchaseTicketController implements Initializable {
         }
 
         seatGridPane.add(imageView,col,row);
-        // TODO: 22/06/2021  send taken seat to server 
+        // TODO: 22/06/2021  send taken seat to server
         imageView.setOnMouseClicked(e -> {
             if (seatMap[row][col] == 0) {
-                System.out.println(pickSeats);
                 seatFlag.set(!seatFlag.get());
                 try {
                     if (seatFlag.get() == true) {
@@ -259,18 +276,21 @@ public class PurchaseTicketController implements Initializable {
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                             errorAlert.setTitle(null);
                             errorAlert.setHeaderText(null);
-                            errorAlert.setContentText("you can't pick more seats.");
+                            errorAlert.setContentText("You can't pick more seats.");
                             errorAlert.showAndWait();
                             if (errorAlert.getResult() == ButtonType.OK) {
                                 seatFlag.set(false);//if cant pick reset chack
                             }
                         } else {
                             imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/ChackedSeat.png"), 30, 30, false, false));
-//                            while(imageView.isEmpty()) { Thread.yield(); }
+                            ticket.setCustomer((Customer)App.getUser());
+                            tickets.add(ticket);
                             pickSeats--;
                         }
                     } else if (seatFlag.get() == false) {
                         imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png"), 30, 30, false, false));
+                        ticket.setCustomer(null);
+                        tickets.remove(ticket);
                         pickSeats++;
                     }
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -280,49 +300,4 @@ public class PurchaseTicketController implements Initializable {
 
         });
     }
-
-    public static String intToLetters(int num) {
-        String numberInLetter = null;
-        switch (num) {
-            case 1:
-                numberInLetter = "A";
-                break;
-            case 2:
-                numberInLetter = "B";
-                break;
-            case 3:
-                numberInLetter = "C";
-                break;
-            case 4:
-                numberInLetter = "D";
-                break;
-            case 5:
-                numberInLetter = "E";
-                break;
-            case 6:
-                numberInLetter = "F";
-                break;
-            case 7:
-                numberInLetter = "G";
-                break;
-            case 8:
-                numberInLetter = "H";
-                break;
-            case 9:
-                numberInLetter = "I";
-                break;
-            case 10:
-                numberInLetter = "J";
-                break;
-        }
-        return numberInLetter;
-    }
-
-//    public List<Cinema> getCinemas() {
-//        return cinemas;
-//    }
-//
-//    public void setCinemas(List<Cinema> cinemas) {
-//        this.cinemas = cinemas;
-//    }
 }
