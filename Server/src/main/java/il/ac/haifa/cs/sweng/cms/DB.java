@@ -488,10 +488,8 @@ public class DB {
 	 * Updates the database according to the given ticket
 	 * @param ticket New list of tickets for a movie.
 	 */
-	protected void setTickets(Ticket ticket, boolean addOrRemove) {
+	protected void setTickets(Ticket ticket, boolean addOrRemove, boolean boughtWithPackage) {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
-
-
 		session.beginTransaction();
 		if(addOrRemove){
 			session.save(ticket);

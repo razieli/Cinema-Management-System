@@ -163,7 +163,7 @@ public class PurchaseLinkController implements Initializable {
 
             try {
                 Link movieLink = new Link ((Customer)App.getUser(), gregorianCalendar,movie);
-//              PaymentScreenController.setMovieLink(movieLink);
+//                PaymentController.setLink(movieLink);
 
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

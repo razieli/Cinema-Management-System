@@ -4,15 +4,24 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Link;
+import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class PaymentController {
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class PaymentController implements Initializable {
+    private List<Ticket> tickets = null;
+    private Link link = null;
+    private int fromScreen;
+
 
     @FXML // fx:id="titleText"
     private Text titleText; // Value injected by FXMLLoader
@@ -74,7 +83,51 @@ public class PaymentController {
 
     @FXML
     void handheldsPay(ActionEvent event) {
-
+        for(Ticket ticket : tickets) {
+            if (ticket.getCustomer().isHas_package()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Pay With Package");
+                alert.setHeaderText(null);
+                alert.setContentText("a package was detected, would you like to pay with it?");
+                alert.getButtonTypes().clear();
+                alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES)//delete operation from database
+                {
+                    App.getOcsfClient(this).updateTickets(ticket,true,true);
+                } else {
+                    App.getOcsfClient(this).updateTickets(ticket,true,false);
+                }
+            }
+        }
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public Link getLink() {
+        return link;
+    }
+
+    public void setLink(Link link) {
+        this.link = link;
+    }
+
+    public int getFromScreen() {
+        return fromScreen;
+    }
+
+    public void setFromScreen(int fromScreen) {
+        this.fromScreen = fromScreen;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }
