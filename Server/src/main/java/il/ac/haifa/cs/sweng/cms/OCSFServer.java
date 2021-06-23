@@ -135,6 +135,19 @@ public class OCSFServer extends AbstractServer {
             db.setComplaint(((ComplaintReplyRequest) request).getComplaint());
             return new ComplaintReplyResponse(ResponseStatus.Acknowledged);
         }
+        if(request instanceof PriceChangeSubmissionRequest) {
+            PriceChange priceChange = ((PriceChangeSubmissionRequest) request).getPriceChange();
+            db.setPriceChange(priceChange);
+            return new PriceChangeSubmissionResponse(ResponseStatus.Acknowledged);
+        }
+        if(request instanceof ListAllPriceChangesRequest) {
+            List<PriceChange> priceChanges = db.getAllPriceChanges(((ListAllPriceChangesRequest) request).getUser());
+            return new ListAllPriceChangesResponse(priceChanges);
+        }
+        if(request instanceof PriceChangeReplyRequest) {
+            db.setPriceChange(((PriceChangeReplyRequest) request).getPriceChange());
+            return new PriceChangeReplyResponse(ResponseStatus.Acknowledged);
+        }
         if(request instanceof UpdatePurpleBadgeRequest) {
             // Save updated PurpleBadge in DB.
             PurpleBadge pb = new PurpleBadge(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;

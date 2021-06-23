@@ -94,4 +94,16 @@ public class PriceChange implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public void copyFrom(PriceChange priceChange) {
+        this.submitter = priceChange.submitter;
+        this.movie = priceChange.movie;
+        this.origPrice = priceChange.origPrice;
+        this.newPrice = priceChange.newPrice;
+        this.status = priceChange.status;
+    }
+
+    public String toString() {
+        return this.submitter.getUserName() + ", " + this.movie.getEngName() + ", " + this.origPrice + ", " + this.newPrice;
+    }
 }
