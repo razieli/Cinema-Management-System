@@ -41,7 +41,8 @@ public class EditMovieScreenController implements Initializable  {
     private List<Cinema>cinemas= ViewMoviesController.getCinemas();
     private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
     private LocalDate date = null;
-    private LocalTime hour= null;
+    private String hour;
+    private String min;
     URI backButtonUri = null;
     Cinema pickedCinema = null;
     Theater pickedTheater = null;
@@ -148,7 +149,7 @@ public class EditMovieScreenController implements Initializable  {
     private AnchorPane anchorPaneRight; // Value injected by FXMLLoader
 
     @FXML // fx:id="hourComboBox"
-    private ComboBox<LocalTime> hourComboBox; // Value injected by FXMLLoader
+    private ComboBox<String> hourComboBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="cinemaComboBox"
     private ComboBox<Cinema> cinemaComboBox; // Value injected by FXMLLoader
@@ -379,7 +380,11 @@ public class EditMovieScreenController implements Initializable  {
         //hour
         for (int i = 0; i <= 23; i++) {
             for (int j = 0; j < 60; j = j + 15) {
-                hourComboBox.getItems().add(LocalTime.of(i, j, 0, 0));
+                if(j==0)
+                   hourComboBox.getItems().add(i +":00");
+
+                else
+                  hourComboBox.getItems().add(i +":"+j);
             }
         }
 
@@ -395,7 +400,12 @@ public class EditMovieScreenController implements Initializable  {
 
         //hour
         hourComboBox.setOnAction((event) -> {
-            hour = hourComboBox.getValue();
+            String hourS = hourComboBox.getValue();
+           if (hourS!=null) {
+               String[] hourSplit = hourS.split(":", 2);
+               hour = hourSplit[0];
+               min =hourSplit[1];
+           }
         });
 
         //cinema
@@ -434,7 +444,7 @@ public class EditMovieScreenController implements Initializable  {
      */
     @FXML
     void handheldsAddScreeningButton(ActionEvent event) {
-        if(date==null ||  hour==null || pickedCinema==null || pickedTheater==null) {
+        if(date==null || hour==null || min ==null || pickedCinema==null || pickedTheater==null) {
             //set a conformation alert
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle(null);
@@ -445,7 +455,7 @@ public class EditMovieScreenController implements Initializable  {
 
         else{
             //add to screeningList
-            GregorianCalendar gregorianCalendar = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth(), hour.getHour(),hour.getMinute());
+            GregorianCalendar gregorianCalendar = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth(), Integer.parseInt(hour) ,Integer.parseInt(min));
 
 
             if (gregorianCalendar.getTime().before(GregorianCalendar.getInstance().getTime())) {
