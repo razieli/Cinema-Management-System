@@ -265,6 +265,8 @@ public class PurchaseTicketController implements Initializable {
         }
 
         seatGridPane.add(imageView,col,row);
+        seatGridPane.setVgap(5);
+        seatGridPane.setHgap(5);
         // TODO: 22/06/2021  send taken seat to server
         imageView.setOnMouseClicked(e -> {
             if (seatMap[row][col] == 0) {
