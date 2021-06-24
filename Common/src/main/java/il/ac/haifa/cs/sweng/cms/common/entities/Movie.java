@@ -178,6 +178,7 @@ public class Movie implements Serializable {
 		this.trailerUrl = movie.trailerUrl;
 		this.links = movie.links;
 		this.price = movie.price;
+		this.premiere = movie.premiere;
     }
 
     public String toString() {

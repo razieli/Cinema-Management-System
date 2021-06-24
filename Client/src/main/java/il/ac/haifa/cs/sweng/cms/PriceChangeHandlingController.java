@@ -57,7 +57,7 @@ public class PriceChangeHandlingController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("CinemaManagerHome.fxml"); //set the screen to the last page.
+            App.setRoot("GeneralManagerHome.fxml"); //set the screen to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }

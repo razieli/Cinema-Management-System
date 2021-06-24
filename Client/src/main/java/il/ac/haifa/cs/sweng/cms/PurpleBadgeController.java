@@ -17,8 +17,9 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.text.Text;
 
 public class PurpleBadgeController implements Initializable {
-
+	private int permission= App.getUserPermission();
 	private PurpleBadge pb = App.getPb();
+
 	@FXML
 	private ResourceBundle resources;
 
@@ -65,11 +66,30 @@ public class PurpleBadgeController implements Initializable {
 	@FXML
 	void handheldsBackButton(ActionEvent event) {
 		App.setPb(pb);
-		try {
-			App.setRoot("EmployeeHome.fxml"); //set the screen to the last page.
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (permission == 1){//Employee
+			try {
+
+				App.setRoot("EmployeeHome.fxml");//load edit movie screen
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
+		else if (permission == 3 ){//Employee
+			try {
+
+				App.setRoot("CinemaManagerHome.fxml");//load edit movie screen
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}else if ( permission == 4){//Employee
+			try {
+
+				App.setRoot("GeneralManagerHome.fxml");//load edit movie screen
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+
 	}
 
 	@FXML

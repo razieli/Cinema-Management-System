@@ -26,16 +26,10 @@ public class EmployeeHomeController  implements Initializable {
 	private Button movieListBtn;
 
 	@FXML
-	private Button movieAddBtn;
-
-	@FXML
 	private Button purpleBtn;
 
 	@FXML
 	private Button ComplaintHandlingBtn;
-
-	@FXML
-	private Button operationalBtn;
 
 	@FXML
 	private Text helloUserName;
@@ -71,35 +65,11 @@ public class EmployeeHomeController  implements Initializable {
 	}
 
 	@FXML
-	void switchToMovieAddScreen(ActionEvent event) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle(null);
-		alert.setHeaderText(null);
-		alert.setContentText("New features coming soon..  :)");
-		alert.showAndWait();
-	}
-
-	@FXML
 	void switchToMovieListScreen(ActionEvent event) {
 		try {
 			App.setRoot("ViewMovies.fxml");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	@FXML
-	void switchToOperationalMonitoringScreen(ActionEvent event) {
-		if (App.getUserPermission() < 3 )
-		{
-			showAlert(Alert.AlertType.ERROR, null, "No Permission!");
-		}
-		else {
-			try {
-				App.setRoot("OperationalReports.fxml");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

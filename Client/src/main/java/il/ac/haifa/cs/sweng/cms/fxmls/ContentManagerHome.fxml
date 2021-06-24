@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ContentManagerHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.ContentManagerHomeController">
     <children>
         <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -48,10 +48,6 @@
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
@@ -60,27 +56,7 @@
                                             <Font name="System Bold" size="14.0" />
                                         </font>
                                     </Button>
-                              <Button fx:id="movieAddBtn" mnemonicParsing="false" onAction="#switchToMovieAddScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Add Movie" textAlignment="CENTER" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="purpleBtn" mnemonicParsing="false" onAction="#switchToPurpleBadgeScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purple Badage Update" textAlignment="CENTER" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="ComplaintHandlingBtn" mnemonicParsing="false" onAction="#switchToComplaintHandlingScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Complaint Handling" textAlignment="CENTER" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="priceChangeSubmissionBtn" mnemonicParsing="false" onAction="#switchToPriceChangeSubmissionScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Price Change Submission" textAlignment="CENTER" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="operationalBtn" mnemonicParsing="false" onAction="#switchToOperationalMonitoringScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Operational Monitoring" textAlignment="CENTER" GridPane.rowIndex="5">
+                              <Button fx:id="priceChangeSubmissionBtn" mnemonicParsing="false" onAction="#switchToPriceChangeSubmissionScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Price Change Submission" textAlignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>

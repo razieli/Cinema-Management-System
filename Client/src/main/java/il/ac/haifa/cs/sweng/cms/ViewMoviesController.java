@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -38,7 +39,7 @@ import java.util.ResourceBundle;
 
 public class ViewMoviesController implements Initializable {
 
-    Scene scene;
+//    Scene scene;
     ArrayList<File> fileList = new ArrayList<File>();
     List<Movie> allMovies= new ArrayList<Movie>();
     List<Movie> comingSoonMovies= new ArrayList<Movie>();
@@ -46,9 +47,6 @@ public class ViewMoviesController implements Initializable {
     static List<Cinema>cinemas=new ArrayList<Cinema>();
     private Cinema pickedCinema = null;
     private GregorianCalendar pickedDate = null;
-
-    HBox comingSoonHBox = new HBox();
-
 
     private int permission= App.getUserPermission();
 
@@ -58,17 +56,14 @@ public class ViewMoviesController implements Initializable {
     @FXML // fx:id="flow"
     private FlowPane flow; // Value injected by FXMLLoader
 
-    @FXML // fx:id="addButton"
-    private Button addButton; // Value injected by FXMLLoader
-
-    @FXML // fx:id="backButton"
-    private Button backButton; // Value injected by FXMLLoader
-
     @FXML // fx:id="pickedFilter"
     private Pane pickedFilter; // Value injected by FXMLLoader
 
     @FXML // fx:id="soonAnchorPane"
     private AnchorPane soonAnchorPane; // Value injected by FXMLLoader
+
+    @FXML
+    private HBox comingSoonHBox;
 
     @FXML // fx:id="addButtonAnchor"
     private AnchorPane addButtonAnchor; // Value injected by FXMLLoader
@@ -96,14 +91,11 @@ public class ViewMoviesController implements Initializable {
 
             /*init comingSoonMovies movie list*/
             for(Movie m: allMovies)
-                if (m.getScreening().isEmpty()) {
-                    comingSoonMovies.add(m);
-                    if (soonAnchorPane.getChildren().isEmpty()) {
-                        comingSoonHBox.setSpacing(5);
+                if (m.getPremiere().getTime().after(GregorianCalendar.getInstance().getTime())){ // case of coming soon Movie) {
+                        comingSoonMovies.add(m);
+//                        comingSoonHBox.setSpacing(5);
                         comingSoonHBox.setAlignment(Pos.CENTER);
-                        soonAnchorPane.getChildren().add(comingSoonHBox);
                     }
-                }
 
             /*add an add button for authorized employees */
             if ( permission == 2 || permission == 3 || permission == 4) { //Manager
@@ -154,8 +146,8 @@ public class ViewMoviesController implements Initializable {
 //                addImage(movie);
 //            }
 
-            while(cinemas.isEmpty()) { Thread.yield(); }
-            movies=allMovies;
+            while(allMovies.isEmpty()) { Thread.yield(); }
+            movies.addAll(allMovies);
             updateScreen();
                     }
 
@@ -198,13 +190,37 @@ public class ViewMoviesController implements Initializable {
         textEngName.setFill(Color.ORANGE);//format title text
         textEngName.setFont(Font.font(null, FontWeight.BOLD, 12));
 
-        if (movie.getScreening().isEmpty()){ // case of coming soon Movie
+        if (movie.getPremiere().getTime().after(GregorianCalendar.getInstance().getTime())){ // case of coming soon Movie
+            pic.setFitWidth(100);
+            pic.setFitHeight(160);
+
             Text textComingSoon = new Text("Coming Soon!");
             textComingSoon.setFill(Color.WHITESMOKE);
-            textComingSoon.setStyle(" -fx-font-size: 14; ");
-            VBox vb = new VBox(4, pic, textHebName, textEngName, textComingSoon); //create new VBox component to hold all the movie data
+            textComingSoon.setFont(Font.font(null, FontWeight.BOLD, 12));
+//            VBox vb = new VBox(4, pic, textHebName, textEngName, textComingSoon); //create new VBox component to hold all the movie data
+            VBox vb = new VBox(3, textHebName, textEngName, textComingSoon); //create new VBox component to hold all the movie data
+            vb.setAlignment(Pos.CENTER);
 
-            comingSoonHBox.getChildren().add(vb);
+            vb.setStyle("-fx-background-color: black; -fx-opacity: 65%;");
+            StackPane sp = new StackPane(pic,vb); //create new VBox component to hold all the movie data
+            sp.setAlignment(Pos.BOTTOM_CENTER);
+            comingSoonHBox.getChildren().add(sp);
+            comingSoonHBox.setMargin(sp, new Insets(5, 30, 5, 10));
+
+            vb.setOnMouseClicked(e -> {
+                if (permission == 2 || permission == 3 || permission == 4) { //Manager
+                    try {
+
+                        // storing the selected film to customise the newly created scene
+                        pickedDate = null;//reset pickedDate if go to another screen
+                        EditMovieScreenController.setSelectedFilmTitle(movie);//pass the movie to  the next screen
+                        App.setRoot("EditMovieScreen.fxml");//load edit movie screen
+                    } catch (IOException ex) {
+
+                    }
+                }
+            });
+
         }
 
          else{ // case of a Movie in the thearers
@@ -230,6 +246,7 @@ public class ViewMoviesController implements Initializable {
             }
 
             VBox vb = new VBox(4, pic, textHebName, textEngName, gridPane); //create new VBox component to hold all the movie data
+            vb.setAlignment(Pos.CENTER);
 
             /*add new component to the scene*/
             flow.getChildren().add(vb);
@@ -282,16 +299,44 @@ public class ViewMoviesController implements Initializable {
             try {
                 pickedCinema=null; //reset pickedCinema if go to another screen
                 pickedDate=null;//reset pickedDate if go to another screen
+//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("CustomerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
 
-        else if (permission == 1 || permission == 2 || permission == 3 || permission == 4){//manager
+        else if (permission == 1 ){//Employee
             try {
                 pickedDate=null;//reset pickedDate if go to another screen
+//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("EmployeeHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else if (permission == 2){//content manager
+            try {
+                pickedDate=null;//reset pickedDate if go to another screen
+//                ((Node)(event.getSource())).getScene().getWindow().hide();
+                App.setRoot("ContentManagerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else if (permission == 3){//cinema manager
+            try {
+                pickedDate=null;//reset pickedDate if go to another screen
+//                ((Node)(event.getSource())).getScene().getWindow().hide();
+                App.setRoot("CinemaManagerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }else if ( permission == 4){//cinema manager
+            try {
+                pickedDate=null;//reset pickedDate if go to another screen
+//                ((Node)(event.getSource())).getScene().getWindow().hide();
+                App.setRoot("GeneralManagerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -316,9 +361,9 @@ public class ViewMoviesController implements Initializable {
         cinemaFilter.setOnAction(e ->{
             pickedCinema = cinemaFilter.getValue();
 
-            if(pickedCinema.getName() == "ALL"){
-//                while(cinemas.isEmpty()) { Thread.yield(); }
-                movies=allMovies;
+            if(pickedCinema.equals(allCinemas)){
+                movies.clear();
+                movies.addAll(allMovies);
             }
 
             else{

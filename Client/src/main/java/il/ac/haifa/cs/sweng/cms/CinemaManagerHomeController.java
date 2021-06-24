@@ -25,16 +25,10 @@ public class CinemaManagerHomeController implements Initializable {
     private Button movieListBtn;
 
     @FXML
-    private Button movieAddBtn;
-
-    @FXML
     private Button purpleBtn;
 
     @FXML
     private Button ComplaintHandlingBtn;
-
-    @FXML
-    private Button priceChangeHandlingBtn;
 
     @FXML
     private Button operationalBtn;
@@ -73,15 +67,6 @@ public class CinemaManagerHomeController implements Initializable {
     }
 
     @FXML
-    void switchToMovieAddScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
-    }
-
-    @FXML
     void switchToMovieListScreen(ActionEvent event) {
         try {
             App.setRoot("ViewMovies.fxml");
@@ -112,15 +97,4 @@ public class CinemaManagerHomeController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    void switchToPriceChangeHandlingScreen(ActionEvent event) {
-        try {
-            App.setRoot("PriceChangeHandling.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

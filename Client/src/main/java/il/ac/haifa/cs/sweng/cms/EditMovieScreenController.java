@@ -78,11 +78,8 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="PGRaitingBox"
     private TextField PGRaitingBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="priceBox"
-    private TextField priceBox; // Value injected by FXMLLoader
-
     @FXML // fx:id="PremiereDate"
-    private DatePicker premiereDate /*=  new DatePicker(LocalDate.of(GregorianCalendar.getInstance().get(Calendar.YEAR), GregorianCalendar.getInstance().get(Calendar.MONTH),GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)))*/; // Value injected by FXMLLoader
+    private DatePicker premiereDate;
 
     @FXML // fx:id="castBox"
     private TextArea castBox; // Value injected by FXMLLoader
@@ -238,7 +235,6 @@ public class EditMovieScreenController implements Initializable  {
                 movie.setPosterUrl(new URI(posterBox.getText()));
                 movie.setTrailerUrl(new URI(trailerBox.getText()));
                 movie.setScreening(screeningList);
-                movie.setPrice(Double.parseDouble(priceBox.getText()));
                 movie.setPremiere(premiere);
 
                 //update movie on database
@@ -344,13 +340,9 @@ public class EditMovieScreenController implements Initializable  {
             descriptionBox.setText(movie.getDescription());
             inputDescription.setText(movie.getDescription());
 
-            //set price to show on screen
-            priceBox.setText(String.valueOf(movie.getPrice()));
-            inputPrice.setText(String.valueOf(movie.getPrice()));
-
             //set premiere to show on screen
             premiere = movie.getPremiere();
-            premiereDate.setValue(LocalDate.of(premiere.get(Calendar.YEAR), premiere.get(Calendar.MONTH), premiere.get(Calendar.DAY_OF_MONTH)));
+            premiereDate.setValue(LocalDate.of(premiere.get(Calendar.YEAR), premiere.get(Calendar.MONTH)+1, premiere.get(Calendar.DAY_OF_MONTH)));
             SimpleDateFormat f = new SimpleDateFormat("YY.MM.dd E"); //set a date format
             inputPremiere.setText(String.valueOf(f.format(premiere.getTime())));
 
@@ -433,7 +425,7 @@ public class EditMovieScreenController implements Initializable  {
 
         premiereDate.setOnAction((event) -> {
              LocalDate localPremiere = premiereDate.getValue();
-            premiere = new GregorianCalendar(localPremiere.getYear(), localPremiere.getMonthValue(), localPremiere.getDayOfMonth(), 0,0);
+            premiere = new GregorianCalendar(localPremiere.getYear(), localPremiere.getMonthValue()-1, localPremiere.getDayOfMonth(), 0,0);
         });
     }
 

@@ -63,7 +63,7 @@ public class PriceChangeSubmissionController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("CustomerHome.fxml"); //set the scean to the last page.
+            App.setRoot("ContentManagerHome.fxml"); //set the scean to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }

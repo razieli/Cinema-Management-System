@@ -106,7 +106,14 @@ public class UserLoginController implements Initializable {
         App.setUser(response.getUser());
         int permission = App.getUserPermission();
 
-        if(permission >= 3){
+        if(permission == 4){
+            try {
+                App.setRoot("GeneralManagerHome.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(permission == 3){
             try {
                 App.setRoot("CinemaManagerHome.fxml");
             } catch (IOException e) {

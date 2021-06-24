@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ContentManagerHomeController implements Initializable {
-
+public class GeneralManagerHomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         helloUserName.setText("Hello " + App.getUserName() + " !");
@@ -23,6 +22,18 @@ public class ContentManagerHomeController implements Initializable {
 
     @FXML
     private Button movieListBtn;
+
+    @FXML
+    private Button purpleBtn;
+
+    @FXML
+    private Button ComplaintHandlingBtn;
+
+    @FXML
+    private Button priceChangeHandlingBtn;
+
+    @FXML
+    private Button operationalBtn;
 
     @FXML
     private Text helloUserName;
@@ -49,6 +60,15 @@ public class ContentManagerHomeController implements Initializable {
     }
 
     @FXML
+    void switchToComplaintHandlingScreen(ActionEvent event) {
+        try {
+            App.setRoot("ComplaintHandling.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     void switchToMovieListScreen(ActionEvent event) {
         try {
             App.setRoot("ViewMovies.fxml");
@@ -58,12 +78,36 @@ public class ContentManagerHomeController implements Initializable {
     }
 
     @FXML
-    void switchToPriceChangeSubmissionScreen(ActionEvent event) {
+    void switchToOperationalMonitoringScreen(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("New features coming soon..  :)");
+        alert.showAndWait();
+    }
+
+    @FXML
+    void switchToPurpleBadgeScreen(ActionEvent event) {
+        //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        //        alert.setTitle(null);
+        //        alert.setHeaderText(null);
+        //        alert.setContentText("New features coming soon..  :)");
+        //        alert.showAndWait();
         try {
-            App.setRoot("PriceChangeSubmission.fxml");
+            App.setRoot("PurpleBadge.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void switchToPriceChangeHandlingScreen(ActionEvent event) {
+        try {
+            App.setRoot("PriceChangeHandling.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

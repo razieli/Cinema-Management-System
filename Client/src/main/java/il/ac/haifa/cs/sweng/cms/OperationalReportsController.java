@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 
 public class OperationalReportsController {
+    private int permission= App.getUserPermission();
 
     @FXML
     private ResourceBundle resources;
@@ -25,10 +26,18 @@ public class OperationalReportsController {
 
     @FXML
     void backBtn(ActionEvent event) {
-        try {
-            App.setRoot("EmployeeHome.fxml"); //set the screen to the last page.
-        } catch (IOException e) {
-            e.printStackTrace();
+       if (permission == 3 ){//Employee
+            try {
+                App.setRoot("CinemaManagerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }else if ( permission == 4){//Employee
+            try {
+                App.setRoot("GeneralManagerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

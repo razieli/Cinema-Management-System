@@ -29,7 +29,7 @@
                                 </Text>
                             </children>
                         </TextFlow>
-                  <Button fx:id="LogOutBtn" mnemonicParsing="false" onAction="#logOut" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Log Out" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="LogOutBtn" mnemonicParsing="false" onAction="#logOut" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Log Out" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -49,8 +49,6 @@
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
@@ -59,22 +57,12 @@
                                             <Font name="System Bold" size="14.0" />
                                         </font>
                                     </Button>
-                              <Button fx:id="movieAddBtn" mnemonicParsing="false" onAction="#switchToMovieAddScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Add Movie" textAlignment="CENTER" GridPane.rowIndex="1">
+                              <Button fx:id="purpleBtn" mnemonicParsing="false" onAction="#switchToPurpleBadgeScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purple Badage Update" textAlignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="purpleBtn" mnemonicParsing="false" onAction="#switchToPurpleBadgeScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purple Badage Update" textAlignment="CENTER" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="ComplaintHandlingBtn" mnemonicParsing="false" onAction="#switchToComplaintHandlingScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Complaint handling" textAlignment="CENTER" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="operationalBtn" mnemonicParsing="false" onAction="#switchToOperationalMonitoringScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Operational Monitoring" textAlignment="CENTER" GridPane.rowIndex="4">
+                              <Button fx:id="ComplaintHandlingBtn" mnemonicParsing="false" onAction="#switchToComplaintHandlingScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Complaint handling" textAlignment="CENTER" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>

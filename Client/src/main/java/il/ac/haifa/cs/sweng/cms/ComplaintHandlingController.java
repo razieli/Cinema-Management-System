@@ -21,7 +21,7 @@ import static il.ac.haifa.cs.sweng.cms.ComplaintAddController.TIME_TO_RESPOND;
  * Controller for complaint handling.
  */
 public class ComplaintHandlingController implements Initializable {
-
+    private int permission= App.getUserPermission();
     private static final double MAX_COMPENSATION = 100;
 
     @FXML
@@ -73,12 +73,31 @@ public class ComplaintHandlingController implements Initializable {
     }
     @FXML
     void handheldsBackButton(ActionEvent event) {
-        try {
-            App.setRoot("EmployeeHome.fxml"); //set the screen to the last page.
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (permission == 1){//Employee
+            try {
+
+                App.setRoot("EmployeeHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else if (permission == 3){//Employee
+            try {
+
+                App.setRoot("CinemaManagerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }else if (permission == 4){//Employee
+            try {
+
+                App.setRoot("GeneralManagerHome.fxml");//load edit movie screen
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
+
     /**
      * Verifies the complaint reply data the user has entered.
      * @return True if data is verified, false otherwise.
