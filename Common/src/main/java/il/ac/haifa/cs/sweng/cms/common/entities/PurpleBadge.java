@@ -18,10 +18,10 @@ public class PurpleBadge implements Serializable {
 	private static PurpleBadge single_instance;
 	
 	private boolean status;// false-No restrictions, true-No more than y
-	private int Y;
+	private int Y; //max capasity
 	@Column
 	@ElementCollection
-	private List<GregorianCalendar> closingDates;
+	private List<GregorianCalendar> closingDates; //validity
 	public PurpleBadge()
 	{
 		this.setStatus(false);

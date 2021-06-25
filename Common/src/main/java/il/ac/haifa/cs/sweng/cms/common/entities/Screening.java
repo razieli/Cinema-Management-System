@@ -31,6 +31,8 @@ public class Screening implements Serializable {
 	private List<Ticket> tickets;
 
 	private int seatsCapacity;
+	private int realSeatsCapacity;
+
 
 	@Transient
 	private int[][] seats;
@@ -46,6 +48,7 @@ public class Screening implements Serializable {
 		this.date = new GregorianCalendar();
 		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
 		this.seatsCapacity = 0;
+		this.realSeatsCapacity=this.seatsCapacity;
 	}
 
 	public Screening(Movie movie, Theater theater, GregorianCalendar gregorianCalendar)
@@ -56,8 +59,7 @@ public class Screening implements Serializable {
 		this.date = gregorianCalendar;
 		this.seatsCapacity = theater.getSeatsCapacity();
 		this.seats = new int[seatsCapacity/10 + 1 ][10];
-
-
+		this.realSeatsCapacity = this.theater.getRealSeatsCapacity();
 	}
 
 	/**
@@ -155,5 +157,13 @@ public class Screening implements Serializable {
 
 	public void setSeats(int[][] seats) {
 		this.seats = seats;
+	}
+
+	public int getRealSeatsCapacity() {
+		return realSeatsCapacity;
+	}
+
+	public void setRealSeatsCapacity(int realseatsCapacity) {
+		this.realSeatsCapacity = realseatsCapacity;
 	}
 }

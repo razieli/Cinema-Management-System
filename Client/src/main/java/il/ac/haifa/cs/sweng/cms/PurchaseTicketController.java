@@ -215,16 +215,18 @@ public class PurchaseTicketController implements Initializable {
 
         //Screening
         screeningComboBox.setOnAction((event) -> {
-            pickedScreening = screeningComboBox.getValue();
-            System.out.println(pickedScreening);
-            int[][] seatsMap = pickedScreening.getSeats();
-            seatGridPane.getChildren().clear();
-            for(int row=0;row <= pickedScreening.getSeatsCapacity()/10 ; row++){
-                for(int col=0 ; col < 10 ; col++){
-                    try {
-                        addSeat(pickedScreening,row,col);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+            if(!PurpleBadge.getInstance().getStatus()) {
+                pickedScreening = screeningComboBox.getValue();
+                System.out.println(pickedScreening);
+                int[][] seatsMap = pickedScreening.getSeats();
+                seatGridPane.getChildren().clear();
+                for (int row = 0; row <= pickedScreening.getSeatsCapacity() / 10; row++) {
+                    for (int col = 0; col < 10; col++) {
+                        try {
+                            addSeat(pickedScreening, row, col);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -232,17 +234,23 @@ public class PurchaseTicketController implements Initializable {
 
         //seats
         seatComboBox.setOnAction(e->{
-           pickSeats=seatComboBox.getValue();
-            tickets.clear();//clear all picked seats
-            seatGridPane.getChildren().clear();//reload seats map
-            for(int row=0;row <= pickedScreening.getSeatsCapacity()/10 ; row++){
-                for(int col=0 ; col < 10 ; col++){
-                    try {
-                        addSeat(pickedScreening,row,col);
-                    } catch (FileNotFoundException ex) {
-                        ex.printStackTrace();
+            if(!PurpleBadge.getInstance().getStatus()) {
+                pickSeats = seatComboBox.getValue();
+                tickets.clear();//clear all picked seats
+                seatGridPane.getChildren().clear();//reload seats map
+                for (int row = 0; row <= pickedScreening.getSeatsCapacity() / 10; row++) {
+                    for (int col = 0; col < 10; col++) {
+                        try {
+                            addSeat(pickedScreening, row, col);
+                        } catch (FileNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
+            }
+            
+            else{
+                // TODO: 25/06/2021 add purches button
             }
         });
 
