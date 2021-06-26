@@ -47,6 +47,7 @@ public class DB {
 		configuration.addAnnotatedClass(Complaint.class);
 		configuration.addAnnotatedClass(Link.class);
 		configuration.addAnnotatedClass(PriceChange.class);
+		configuration.addAnnotatedClass(Payment.class);
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties())
@@ -89,6 +90,7 @@ public class DB {
 			generateComplaint();
 			generateLinks();
 			generatePriceChanges();
+			generatePayments();
 			session.getTransaction().commit(); // Save everything.
 
 		} catch (URISyntaxException e) {
@@ -215,6 +217,13 @@ public class DB {
 		session.save(new Movie("The Pursuit of Happyness","המרדף לאושר",2006,cast5s,117,13,description6, uri6a, uri6b, new GregorianCalendar(18,3,27,0,00)));
 		session.flush();
 	}
+
+	/**
+	 * generate initial payments
+	 */
+	public void generatePayments() throws Exception{
+	}
+
 
 	/**
 	 * generate initial tickets
