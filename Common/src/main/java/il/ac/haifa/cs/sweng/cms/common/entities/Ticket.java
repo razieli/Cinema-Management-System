@@ -13,6 +13,11 @@ public class Ticket implements Serializable {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
+
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="payment_id")
+	private Payment payment;
+
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="screening")
 	private Screening screening;
@@ -24,15 +29,16 @@ public class Ticket implements Serializable {
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
+		this.payment=null;
 		this.seatRow = 0;
 		this.seatCol = 0;
 	}
 	public Ticket(Customer customer, Screening screening,int row, int col){
 		this.customer=customer;
 		this.screening=screening;
+		this.payment=null;
 		this.seatRow = row;
 		this.seatCol = col;
-
 	}
 
 	

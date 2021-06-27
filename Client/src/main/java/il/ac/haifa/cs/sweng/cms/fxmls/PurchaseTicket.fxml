@@ -108,7 +108,7 @@
                                              <center>
                                                 <StackPane fx:id="seatStackPane" BorderPane.alignment="CENTER">
                                                    <children>
-                                                      <VBox fx:id="PBAcceptVBox" alignment="CENTER" style="-fx-background-color: black;">
+                                                      <VBox fx:id="PBAcceptVBox" alignment="CENTER" style="-fx-background-color: black; -fx-border-color: red;">
                                                          <children>
                                                             <Button fx:id="PBAcceptButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: orange;" text="Accept " />
                                                          </children>

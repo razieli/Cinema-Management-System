@@ -179,6 +179,23 @@ public class PurchaseTicketController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         accordion.setExpandedPane(selectSeatPane);//open next section
+        /*
+         *set components size to adapt window size
+         */
+        seatStackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            PBAcceptVBox.prefWidthProperty().bind(seatStackPane.widthProperty());
+        });
+
+        seatStackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            PBAcceptVBox.prefHeightProperty().bind(seatStackPane.heightProperty());
+        });
+        seatStackPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            seatsPane.prefWidthProperty().bind(seatStackPane.widthProperty());
+        });
+
+        seatStackPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            seatsPane.prefHeightProperty().bind(seatStackPane.heightProperty());
+        });
 //        accordion.setExpandedPane(selectScreeningPane);//open first pane
 //
 //        messageTitle.setText("When and where would you like to watch \'"+movie.getEngName()+"\' ?");//setup header

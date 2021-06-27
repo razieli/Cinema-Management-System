@@ -16,6 +16,10 @@ public class Link implements Serializable {
     private Customer customer;
 
     @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name="payment_id")
+    private Payment payment;
+
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="movie_id")
     private Movie movie;
     GregorianCalendar date;
@@ -24,6 +28,7 @@ public class Link implements Serializable {
     public Link() {
         this.customer=null;
         this.movie=null;
+        this.payment=null;
         this.date = new GregorianCalendar();
         this.linkPrice =20;
     }
@@ -34,6 +39,7 @@ public class Link implements Serializable {
         this.date = gregorianCalendar;
         this.movie=movie;
         this.linkPrice =20;
+        this.payment=null;
     }
 
 
