@@ -71,13 +71,14 @@ public class OCSFServer extends AbstractServer {
     private AbstractResponse genResponse(AbstractRequest request) {
         if(request instanceof ListAllCinemasRequest) {
             // Get list of tickets from DB.
-            List<Cinema> cinemaList = null;
+            Object obj = ((ListAllCinemasRequest)request).getObj();
+        	List<Cinema> cinemaList = null;
             try {
                 cinemaList = db.getAllCinemas();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return new ListAllCinemasResponse(cinemaList);
+            return new ListAllCinemasResponse(cinemaList,obj);
         }
 
         if(request instanceof ListAllMoviesRequest) {
