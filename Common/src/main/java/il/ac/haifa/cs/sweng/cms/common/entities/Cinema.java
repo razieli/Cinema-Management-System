@@ -66,6 +66,7 @@ public class Cinema implements Serializable {
 	public void updatePurpleBadge() {
 		for (Theater t: this.theaters) {
 			t.setPurpleBadge();
+			t.coronaCheck();
 		}
 	}
 

@@ -13,14 +13,13 @@ public class Ticket implements Serializable {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
-
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="payment_id")
-	private Payment payment;
-
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="screening")
 	private Screening screening;
+	
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="payment_id")
+	private Payment payment;
 
 	// TODO: 22/06/2021  payment, waiting to Yaniv
 	private int seatRow;
@@ -39,6 +38,7 @@ public class Ticket implements Serializable {
 		this.payment=null;
 		this.seatRow = row;
 		this.seatCol = col;
+
 	}
 
 	
@@ -54,17 +54,15 @@ public class Ticket implements Serializable {
 		return seatRow;
 	}
 
-	public void setRow(int row) {
-		this.seatRow = row;
-	}
-
 	public int getCol() {
 		return seatCol;
 	}
 
-	public void setCol(int seatCol) {
-		this.seatCol = seatCol;
+	public void setSeat(int row ,int col){
+		this.seatRow = row;
+		this.seatCol = col;
 	}
+
 
 	/**
 	 * Id set/get
@@ -81,6 +79,6 @@ public class Ticket implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return this.getScreening().getMovie().getEngName();
+		return "seats: ("+this.seatRow+", "+this.seatCol+") "+this.getScreening().getMovie().getEngName() +this.getScreening();
 	}
 }

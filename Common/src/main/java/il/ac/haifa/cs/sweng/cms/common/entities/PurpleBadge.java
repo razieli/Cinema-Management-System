@@ -22,24 +22,31 @@ public class PurpleBadge implements Serializable {
 	@Column
 	@ElementCollection
 	private List<GregorianCalendar> closingDates;
-	public PurpleBadge()
+	private PurpleBadge()
 	{
 		this.setStatus(false);
 		this.Y=DEFAULT;
 		this.setClosingDates(new LinkedList<GregorianCalendar>());
 	}
-	public PurpleBadge(int y)
+	private PurpleBadge(int y)
 	{
 		this();
 		this.Y=y;
 
 	}
 
-	public PurpleBadge(int y, boolean status)
+	private PurpleBadge(int y, boolean status)
 	{
 		this();
 		this.Y=y;
 		this.status=status;
+	}
+	private PurpleBadge(PurpleBadge pb)
+	{
+		this();
+		this.Y=pb.Y;
+		this.status=pb.status;
+		this.closingDates.addAll(pb.closingDates);
 	}
 
 
@@ -50,12 +57,35 @@ public class PurpleBadge implements Serializable {
 			single_instance=new PurpleBadge();
 		return single_instance;
 	}
+	public static PurpleBadge getInstance(int y,boolean status)
+	{
+		if(single_instance == null)
+			single_instance=new PurpleBadge(y,status);
+		else {
+			single_instance.setY(y);
+			single_instance.setStatus(status);
+		}
+			
+		return single_instance;
+	}
 	public static PurpleBadge getInstance(int y)
 	{
 		if(single_instance == null)
 			single_instance=new PurpleBadge(y);
 		else
 			single_instance.setY(y);
+		return single_instance;
+	}
+	public static PurpleBadge getInstance(PurpleBadge pb)
+	{
+		if(single_instance == null)
+			single_instance=new PurpleBadge(pb);
+		else
+		{
+			single_instance.Y=pb.Y;
+			single_instance.status=pb.status;
+			single_instance.closingDates.addAll(pb.closingDates);
+		}
 		return single_instance;
 	}
 	/**
@@ -103,7 +133,7 @@ public class PurpleBadge implements Serializable {
 			dates.add(from);
 			from.add(GregorianCalendar.DAY_OF_MONTH,1);
 		}
-		this.closingDates=dates;
+		this.closingDates.addAll(dates);
 	}
 	public void addClosingDate(GregorianCalendar date) {
 		this.closingDates.add(date);
@@ -115,7 +145,10 @@ public class PurpleBadge implements Serializable {
 		this.closingDates.remove(date);
 	}
 	public void CoronaFree(){
-		this.closingDates.removeAll(this.closingDates);
+		GregorianCalendar today = new GregorianCalendar();
+		for (GregorianCalendar gd:this.closingDates)
+			if(gd.after(today))
+				this.closingDates.remove(gd);
 		this.Y=DEFAULT;
 	}
 }

@@ -50,9 +50,9 @@ public class OCSFClient extends AbstractClient {
      */
     private void handleResponse(AbstractResponse response) {
         if (response instanceof ListAllCinemasResponse) {
-            if(((ListAllCinemasResponse)response).getObj() instanceof ViewMoviesController)
+            if(controller instanceof ViewMoviesController)
             	((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
-            if(((ListAllCinemasResponse)response).getObj() instanceof PurpleBadgeController)
+            if(controller instanceof PurpleBadgeController)
             	((PurpleBadgeController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
         }
         if (response instanceof ListAllMoviesResponse) {
@@ -91,6 +91,9 @@ public class OCSFClient extends AbstractClient {
         if(response instanceof UpdatePurpleBadgeResponse) {
             // TODO: Update GUI with screenings.
         }
+        if(response instanceof getPurpleBadgeResponse) {
+        	((PurpleBadgeController) controller).setPb(((getPurpleBadgeResponse)response).getPb());
+        }
 
         if (response instanceof ListAllPriceChangesResponse) {
             if(controller instanceof PriceChangeSubmissionController) {
@@ -114,9 +117,9 @@ public class OCSFClient extends AbstractClient {
     /**
      * Sends a request to the server to get the list of all movies.
      */
-    protected void getListOfCinemas(Object obj) {
+    protected void getListOfCinemas() {
         try {
-            sendToServer(new ListAllCinemasRequest(obj));
+            sendToServer(new ListAllCinemasRequest());
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
@@ -248,9 +251,16 @@ public class OCSFClient extends AbstractClient {
      * Sends a request to the server to update the purple badge.
      * @param  seatCapacity and status status to update.
      */
-    protected void updatePurpleBadge(int seatCapacity, boolean status) {
+    public void updatePurpleBadge(PurpleBadge pb) {
         try {
-            sendToServer(new UpdatePurpleBadgeRequest(seatCapacity, status));
+            sendToServer(new UpdatePurpleBadgeRequest(pb));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+    public void getPurpleBadge() {
+        try {
+            sendToServer(new getPurpleBadgeRequest());
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
