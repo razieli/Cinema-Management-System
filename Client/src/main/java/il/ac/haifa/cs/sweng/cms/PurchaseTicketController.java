@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,9 +30,8 @@ public class PurchaseTicketController implements Initializable {
     private static Cinema pickedCinema = null;
     private static Screening pickedScreening = null;
     private static int pickSeats = 0;
-//    private List<Cinema> cinemas= new ArrayList<Cinema>();
+    private List<Cinema> cinemas= new ArrayList<Cinema>();
     private List<Ticket> seats =new ArrayList<Ticket>();
-    private List<Cinema>cinemas= ViewMoviesController.getCinemas();
     private List<Ticket> tickets =new ArrayList<Ticket>();
 
     @FXML // fx:id="backButton"
@@ -88,6 +88,18 @@ public class PurchaseTicketController implements Initializable {
     @FXML // fx:id="selectSeats"
     private Text selectSeats; // Value injected by FXMLLoader
 
+    @FXML // fx:id="seatStackPane"
+    private StackPane seatStackPane; // Value injected by FXMLLoader
+
+    @FXML // fx:id="seatsAncour"
+    private Pane seatsPane; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PBAcceptVBox"
+    private VBox PBAcceptVBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PBAcceptButton"
+    private Button PBAcceptButton; // Value injected by FXMLLoader
+
     @FXML
     ImageView pic;
 
@@ -114,6 +126,10 @@ public class PurchaseTicketController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
+            screeningComboBox.setValue(null);
+            seatComboBox.setValue(null);
+            cinemaComboBox.setValue(null);
+            tickets.clear();
             App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,8 +184,15 @@ public class PurchaseTicketController implements Initializable {
 
         /*set Combobox options*/
         //Cinema
-        cinemaComboBox.setItems(FXCollections.observableArrayList(cinemas));
+        for(Screening screening: movie.getScreening()){
+            if (cinemas.isEmpty() || !cinemas.contains(screening.getTheater().getCinema())){
+                cinemas.add(screening.getTheater().getCinema());
+            }
+        }
+        if (!cinemas.isEmpty())
+            cinemaComboBox.setItems(FXCollections.observableArrayList(cinemas));
 
+        //Screening
         //if filter by cinema show pick by defult.
         if(pickedCinema != null) {
             cinemaComboBox.setValue(pickedCinema);
@@ -179,11 +202,11 @@ public class PurchaseTicketController implements Initializable {
                 Thread.yield();
             }
             List<Screening> screenList = new ArrayList<Screening>();
-            for (Theater theater : pickedCinema.getTheaters()) {
-                for (Screening screen : theater.getScreeningList())
-                    screenList.add(screen);
+            for(Screening screening: movie.getScreening()){
+                if(screening.getTheater().getCinema().equals(pickedCinema)){
+                    screenList.add(screening);
+                }
             }
-
             screeningComboBox.setItems(FXCollections.observableArrayList(screenList));
         }
 
@@ -215,9 +238,13 @@ public class PurchaseTicketController implements Initializable {
 
         //Screening
         screeningComboBox.setOnAction((event) -> {
+            pickedScreening = screeningComboBox.getValue();
+            System.out.println(pickedScreening);
+
             if(!PurpleBadge.getInstance().getStatus()) {
-                pickedScreening = screeningComboBox.getValue();
-                System.out.println(pickedScreening);
+                seatStackPane.getChildren().remove(seatsPane);
+                seatStackPane.getChildren().add(seatsPane);
+
                 int[][] seatsMap = pickedScreening.getSeats();
                 seatGridPane.getChildren().clear();
                 for (int row = 0; row <= pickedScreening.getSeatsCapacity() / 10; row++) {
@@ -230,12 +257,105 @@ public class PurchaseTicketController implements Initializable {
                     }
                 }
             }
+
+            else{ //purple badge case
+                seatStackPane.getChildren().remove(PBAcceptVBox);
+                seatStackPane.getChildren().add(PBAcceptVBox);
+
+                AtomicBoolean flag = new AtomicBoolean(true);
+                PBAcceptButton.setOnAction(e->{
+                    flag.set(!flag.get());
+                    if(flag.get()==false) {
+
+                    System.out.format("%b , present: %d, ecpected: %d",pickedScreening.getTickets().size()+pickSeats > pickedScreening.getRealSeatsCapacity(),pickedScreening.getTickets().size()+pickSeats , pickedScreening.getRealSeatsCapacity());
+                    if (pickSeats==0 || (pickedScreening.getTickets().size()+pickSeats) > pickedScreening.getRealSeatsCapacity()) {//alert for a case of out of bounds
+                        //set a error alert
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                        errorAlert.setTitle(null);
+                        errorAlert.setHeaderText(null);
+                        errorAlert.setContentText("Pleas pick legal number of seats first.");
+                        errorAlert.showAndWait();
+                        flag.set(false);
+                    }
+                    else{
+                        PBAcceptButton.setText("Cancel");
+                        int[][] seatMap = pickedScreening.getSeats();
+                        Ticket lastTicket;
+
+                        if(pickedScreening.getTickets().isEmpty()) { // TODO: 27/06/2021 what hapand if not empthy???????
+
+
+                            int i = 1;
+                            int j = 1;
+                            for (int k = 0; k < pickSeats; k++) {
+                                tickets.add(new Ticket((Customer) App.getUser(), pickedScreening, i, j));//add Tickets to purchase
+                                j++;
+                                j = j % 10;
+                                if (i == 0) {
+                                    j = 1;
+                                    i += 2;
+                                }
+                            }
+                            System.out.println(tickets);
+                        }
+
+                        else { // TODO: 27/06/2021 what hapand if not empthy???????
+                            lastTicket = pickedScreening.getTickets().get(pickedScreening.getTickets().size());
+                            if (lastTicket.getCustomer().equals((Customer) App.getUser())) {//if the same customer
+
+                                int i = lastTicket.getRow() + 1;
+                                int j = lastTicket.getCol() + 1;
+                                for (int k = 0; k < pickSeats; k++) {
+                                    j++;
+                                    j = j % 10;
+                                    if (i == 0) {
+                                        j = 1;
+                                        i += 2;
+                                    }
+                                    tickets.add(new Ticket((Customer) App.getUser(), pickedScreening, i, j));//add Tickets to purchase
+                                    System.out.println(tickets.size());
+                                }
+                            } else {//if different than the last customer
+                                int i = lastTicket.getRow() + 1;
+                                int j = lastTicket.getCol() + 1;
+                                j++;
+                                j = j % 10;
+                                if (i == 0) {
+                                    j = 1;
+                                    i += 2;
+                                }
+                                pickedScreening.addTicket(new Ticket(null, null, i, j));//add blank seat
+
+                                for (int k = 0; k < pickSeats; k++) {
+                                    j++;
+                                    j = j % 10;
+                                    if (i == 0) {
+                                        j = 1;
+                                        i += 2;
+                                    }
+                                    tickets.add(new Ticket((Customer) App.getUser(), pickedScreening, i, j));//add Tickets to purchase
+                                }
+                                System.out.println(tickets);
+                            }
+                        }
+                    }
+                    }
+                    else {
+                        PBAcceptButton.setText("Accept");//change button text
+
+                        tickets.clear(); //Remove all tickets that insert
+                        if(!pickedScreening.getTickets().isEmpty() && pickedScreening.getTickets().get(pickedScreening.getTickets().size()).getCustomer()==null){//if added blank seat remove it.
+                            pickedScreening.getTickets().remove(pickedScreening.getTickets().size());
+                        }
+                    }});
+            }
+            System.out.println(tickets.size());
         });
 
         //seats
         seatComboBox.setOnAction(e->{
+            pickSeats = seatComboBox.getValue();
             if(!PurpleBadge.getInstance().getStatus()) {
-                pickSeats = seatComboBox.getValue();
                 tickets.clear();//clear all picked seats
                 seatGridPane.getChildren().clear();//reload seats map
                 for (int row = 0; row <= pickedScreening.getSeatsCapacity() / 10; row++) {
@@ -250,12 +370,17 @@ public class PurchaseTicketController implements Initializable {
             }
             
             else{
+                if((pickedScreening.getTickets().size()+pickSeats) > pickedScreening.getRealSeatsCapacity()){ //case of reach limit of purple badge
+                    //set a error alert
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle(null);
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("You can't pick more than "+ (pickedScreening.getRealSeatsCapacity()-pickedScreening.getTickets().size()) +" seats.");
+                    errorAlert.showAndWait();
+                }
                 // TODO: 25/06/2021 add purches button
             }
         });
-
-
-
     }
 
     protected void addSeat(Screening screening, int row, int col) throws FileNotFoundException {

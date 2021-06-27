@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * Theater Entity
@@ -118,16 +119,51 @@ public class Theater implements Serializable {
 			//stack<-ticketList
 			//pop * ticketList.size-real (send cancelation massage)
 			//ticketList<-stack(change the seats No. , if not same customer space) (send changed seat massage)
+			Stack<Ticket> stack = new Stack();
+			stack.addAll(s.getTickets());
 
-				for(Ticket t: s.getTickets()) {
-//TODO:					//notify(t.getCustomer());//Send alert to the customer about canceling
-					if(t.getCustomer().getTicket().contains(t))
-						t.getCustomer().removeTicket(t, true);
-					else
-						t.getCustomer().removeTicket(t, false);
-					cancel.add(t.getCustomer());
+			/*cancel seats*/
+			while(stack.size()>realSeatsCapacity){
+				Ticket tic = stack.pop();
+				// TODO: 25/06/2021 sand massege of cancelation
+			}
+
+			/*change taken seats*/
+			int i =1;
+			int j = 1;
+			while(!stack.isEmpty()){
+				Ticket tic = stack.pop();
+				if (!stack.peek().getCustomer().equals(tic.getCustomer())){//skip seat
+					s.addTicket(new Ticket(null,null,i,j));
+					j++;
+					j=j%10;
+					if (i==0){
+						j=1;
+						i+=2;
+					}
 				}
-		}
+
+				tic.setSeat(i,j);
+				s.addTicket(tic);
+
+				// TODO: 25/06/2021 sand massege of changing seats.
+
+				j++;
+				j=j%10;
+				if (i==0){
+					j=1;
+					i+=2;
+				}
+			}
+//				for(Ticket t: s.getTickets()) {
+//TODO:					//notify(t.getCustomer());//Send alert to the customer about canceling
+	//					if(t.getCustomer().getTicket().contains(t))
+	//						t.getCustomer().removeTicket(t, true);
+	//					else
+	//						t.getCustomer().removeTicket(t, false);
+	//					cancel.add(t.getCustomer());
+				}
+//		}
 		return cancel;
 	}
 

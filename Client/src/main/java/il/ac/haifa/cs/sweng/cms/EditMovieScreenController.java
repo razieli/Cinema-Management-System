@@ -20,6 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.awt.*;
@@ -54,6 +56,12 @@ public class EditMovieScreenController implements Initializable  {
 
     @FXML // fx:id="backButton"
     private Button backButton; // Value injected by FXMLLoader
+
+    @FXML // fx:id="leftVBox"
+    private VBox leftVBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="gridPaneLeft"
+    private GridPane gridPaneLeft; // Value injected by FXMLLoader
 
     @FXML // fx:id="posterBox"
     private TextArea posterBox; // Value injected by FXMLLoader
@@ -139,14 +147,8 @@ public class EditMovieScreenController implements Initializable  {
     @FXML // fx:id="scrollPaneLeft"
     private ScrollPane scrollPaneLeft; // Value injected by FXMLLoader
 
-    @FXML // fx:id="anchorPaneLeft"
-    private AnchorPane anchorPaneLeft; // Value injected by FXMLLoader
-
     @FXML // fx:id="scrollPaneRight"
     private ScrollPane scrollPaneRight; // Value injected by FXMLLoader
-
-    @FXML // fx:id="anchorPaneRight"
-    private AnchorPane anchorPaneRight; // Value injected by FXMLLoader
 
     @FXML // fx:id="hourComboBox"
     private ComboBox<String> hourComboBox; // Value injected by FXMLLoader
@@ -165,6 +167,12 @@ public class EditMovieScreenController implements Initializable  {
 
     @FXML // fx:id="datePicker"
     private DatePicker datePicker; // Value injected by FXMLLoader
+
+    @FXML // fx:id="rightAnchor"
+    private AnchorPane rightAnchor; // Value injected by FXMLLoader
+
+    @FXML // fx:id="rightVBox"
+    private VBox rightVBox; // Value injected by FXMLLoader
 
     public static Movie getSelectedFilmTitle() {
         return movie;
@@ -213,7 +221,7 @@ public class EditMovieScreenController implements Initializable  {
      */
     @FXML
     void handheldsMovieUpdate(ActionEvent event) throws URISyntaxException {
-        if(!englishTitle.getText().isEmpty() && !hebrewTitle.getText().isEmpty()  && premiereDate.getValue()!=null && !yearBox.getText().isEmpty() && !lengthBox.getText().isEmpty() && !PGRaitingBox.getText().isEmpty() && !posterBox.getText().isEmpty()) {
+        if(!englishTitle.getText().isEmpty() && !hebrewTitle.getText().isEmpty()  && premiereDate.getValue()!=null && !yearBox.getText().isEmpty() && !lengthBox.getText().isEmpty() && !PGRaitingBox.getText().isEmpty()) {
             //set a conformation alert
             Alert confarmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confarmationAlert.setTitle(null);
@@ -265,21 +273,25 @@ public class EditMovieScreenController implements Initializable  {
         /*
         *set components size to adapt window size
         */
-        scrollPaneRight.widthProperty().addListener((obs, oldVal, newVal) -> {
-            anchorPaneRight.prefWidthProperty().bind(scrollPaneRight.widthProperty());
-        });
-
-        scrollPaneRight.heightProperty().addListener((obs, oldVal, newVal) -> {
-            anchorPaneRight.prefHeightProperty().bind(scrollPaneRight.heightProperty());
-        });
-
         scrollPaneLeft.widthProperty().addListener((obs, oldVal, newVal) -> {
-            anchorPaneLeft.prefWidthProperty().bind(scrollPaneLeft.widthProperty());
+            leftVBox.prefWidthProperty().bind(scrollPaneLeft.widthProperty());
         });
 
         scrollPaneLeft.heightProperty().addListener((obs, oldVal, newVal) -> {
-            anchorPaneLeft.prefHeightProperty().bind(scrollPaneLeft.heightProperty());
+            leftVBox.prefHeightProperty().bind(scrollPaneLeft.heightProperty());
         });
+
+        scrollPaneRight.widthProperty().addListener((obs, oldVal, newVal) -> {
+            rightVBox.prefWidthProperty().bind(scrollPaneRight.widthProperty());
+        });
+
+        scrollPaneRight.heightProperty().addListener((obs, oldVal, newVal) -> {
+            rightVBox.prefHeightProperty().bind(scrollPaneRight.heightProperty());
+        });
+
+
+
+
 
 
 //        try {

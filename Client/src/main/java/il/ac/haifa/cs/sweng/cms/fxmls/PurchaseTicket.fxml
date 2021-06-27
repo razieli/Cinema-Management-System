@@ -12,7 +12,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -112,15 +114,28 @@
                                                 </AnchorPane>
                                              </top>
                                              <center>
-                                                <AnchorPane prefHeight="208.0" prefWidth="683.0" BorderPane.alignment="CENTER">
+                                                <StackPane fx:id="seatStackPane" BorderPane.alignment="CENTER">
                                                    <children>
-                                                      <GridPane fx:id="seatGridPane" alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                        <rowConstraints>
-                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                        </rowConstraints>
-                                                      </GridPane>
+                                                      <VBox fx:id="PBAcceptVBox" alignment="CENTER" style="-fx-background-color: black;">
+                                                         <children>
+                                                            <Button fx:id="PBAcceptButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: orange;" text="Accept " />
+                                                         </children>
+                                                      </VBox>
+                                                      <Pane fx:id="seatsPane" style="-fx-background-color: black;">
+                                                         <children>
+                                                            <AnchorPane prefHeight="208.0" prefWidth="683.0">
+                                                               <children>
+                                                                  <GridPane fx:id="seatGridPane" alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                                                                    <rowConstraints>
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                  </GridPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </children>
+                                                      </Pane>
                                                    </children>
-                                                </AnchorPane>
+                                                </StackPane>
                                              </center>
                                           </BorderPane>
                                        </children>

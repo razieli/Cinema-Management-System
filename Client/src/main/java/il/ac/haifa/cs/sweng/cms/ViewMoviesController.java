@@ -32,10 +32,7 @@ import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ViewMoviesController implements Initializable {
 
@@ -229,20 +226,23 @@ public class ViewMoviesController implements Initializable {
             /*add screening times*/
             SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm; ");//set a date format
             String screenTime = "";
-            int i = 0, j = 0;
+            int i = 0, j = 0, k=0;
+            movie.getScreening().sort(new SortByDate());//sort screening list
             for (Screening screen : movie.getScreening()) {
-                screenTime = format.format(screen.getDate().getTime()).toString();
-                Text textScreenTime = new Text(screenTime);
-                textScreenTime.setFill(Color.ORANGE);
-                gridPane.add(textScreenTime, i, j);//add screening time to grid
+                if((screen.getDate().after(GregorianCalendar.getInstance()) && k<4) && (pickedCinema==null || screen.getTheater().getCinema().equals(pickedCinema))){
+                            screenTime = format.format(screen.getDate().getTime()).toString();
+                            Text textScreenTime = new Text(screenTime);
+                            textScreenTime.setFill(Color.ORANGE);
+                            gridPane.add(textScreenTime, i, j);//add screening time to grid
 
-                //set location in the grid
-                i++;
-                if (i % 2 == 0) {
-                    j++;
-                    i = 0;
-                }
-
+                            //set location in the grid
+                            i++;
+                            if (i % 2 == 0) {
+                                j++;
+                                i = 0;
+                            }
+                            k++;//show only 4 screenings at a time
+                    }
             }
 
             VBox vb = new VBox(4, pic, textHebName, textEngName, gridPane); //create new VBox component to hold all the movie data
@@ -364,12 +364,14 @@ public class ViewMoviesController implements Initializable {
             if(pickedCinema.equals(allCinemas)){
                 movies.clear();
                 movies.addAll(allMovies);
+                pickedCinema=null;
             }
 
             else{
                 movies.clear();
                 movies=comingSoonMovies;
-                while(cinemas.isEmpty()) { Thread.yield(); }
+
+//                while(cinemas.isEmpty()) { Thread.yield(); }
                 for (Theater t: pickedCinema.getTheaters()){
                     for(Screening s:  t.getScreeningList()){
                         if(!movies.contains(s.getMovie())){
