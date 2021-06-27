@@ -7,39 +7,29 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.io.IOException;
-import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
+import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+
+
+
 
 public class CancelTicketController implements Initializable {
 
-    //test DB
-    private ArrayList<Ticket> ticketsList = new ArrayList<Ticket>();
-    private  ArrayList<Screening> screeningList= new ArrayList<Screening>();
-    private  ArrayList<Customer> customerList= new ArrayList<Customer>();
-    private  ArrayList<Movie> movieList= new ArrayList<Movie>();
-    private Theater theater1 = new Theater("place1",50,null);
-    private Theater theater2 = new Theater("place2",80,null);
-    private GregorianCalendar time1 = new GregorianCalendar(2021, 8, 20, 16, 16, 47);
-    private GregorianCalendar time2 = new GregorianCalendar(2021, 6, 27, 8, 00, 00);
 
-    private Movie movie1 = new Movie("movie1name","סרט1",2020,"cast1,cast2",90,10,"good movie", URI.create("www.imdb.com"), URI.create("www.google.com"));
-    private Movie movie2 = new Movie("movie2name","סרט2",2021,"cast3,cast4",100,0,"better movie", URI.create("www.imdb2.com"), URI.create("www.google2.com"));
+    public List<Ticket> ticketList = new ArrayList<Ticket>();
+    private List<Screening> screeningList= new ArrayList<Screening>();
+    private List<Customer> customerList= new ArrayList<Customer>();
+    private List<Movie> movieList= new ArrayList<Movie>();
 
-    private Screening screen1 = new Screening(movie1,theater1,time1);
-    private Screening screen2 = new Screening(movie2,theater2,time2);
-
-    private Customer cus1 = new Customer("Customer1", "Customer1","","");
-    private Customer cus2 = new Customer("Customer2", "Customer2","","");
-
-
-    private Ticket ticket1 = new Ticket(cus1,screen1,8);
-    private Ticket ticket2 = new Ticket(cus2,screen2,42);
-
-    SimpleDateFormat format = new SimpleDateFormat("dd.MM.YY E HH:mm");
+    SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm");
 
     // javaFX buttons and fields
     @FXML
@@ -81,7 +71,7 @@ public class CancelTicketController implements Initializable {
      * handling cancel ticket button
      */
     @FXML
-    public void handheldsCancelTicket(ActionEvent actionEvent) {
+    public void handheldsCancelTicket(ActionEvent actionEvent) throws URISyntaxException {
         //set a warning alert
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
@@ -97,9 +87,11 @@ public class CancelTicketController implements Initializable {
             //TODO: cancellation based on current time.
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
-                ticketsList.remove(TicketsComboBox.getValue());
+                App.getOcsfClient(this).updateTickets(TicketsComboBox.getValue(), false, false);
+                ticketList.remove(TicketsComboBox.getValue());
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Canceled");
+                updateScreen();
             } else {
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Did Not Canceled");
@@ -126,13 +118,10 @@ public class CancelTicketController implements Initializable {
         if (TicketsComboBox.getValue() != null) {
             //setting right screen based on TicketsCoboBox selection
             movieName.setText(TicketsComboBox.getValue().getScreening().getMovie().getEngName());
-
-            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName());
             theaterName.setText(String.valueOf(TicketsComboBox.getValue().getScreening().getTheater().getId()));
-
-            String name = format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()).toString();
-            screeningTime.setText(name);
-            seats.setText(String.valueOf(TicketsComboBox.getValue().getSeat()));
+            screeningTime.setText(format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()));
+            seats.setText(String.valueOf(TicketsComboBox.getValue().getRow() + "add later"));
+//            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName()); // not working yet
         }
     }
 
@@ -144,7 +133,7 @@ public class CancelTicketController implements Initializable {
         movieName.setText("Movie Name");
         locationName.setText("Cinema Location");
         theaterName.setText("Theater");
-        screeningTime.setText("dd.MM.YY E HH:mm");
+        screeningTime.setText("dd.MM.YYYY E HH:mm");
         seats.setText("Seats");
         TicketsComboBox.setPromptText("Your Tickets");
     }
@@ -155,9 +144,8 @@ public class CancelTicketController implements Initializable {
      */
     public void updateScreen(){
         resetTexts();
-        theater1.setId(0);
-        theater2.setId(1);
-        TicketsComboBox.setItems(FXCollections.observableArrayList(ticketsList));
+
+        TicketsComboBox.setItems(FXCollections.observableArrayList(ticketList));
 
     }
 
@@ -167,12 +155,25 @@ public class CancelTicketController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //initializing TicketsCoboBox
-
-        ticketsList.add(ticket1);
-        ticketsList.add(ticket2);
-        updateScreen();
+        try{
+            Customer customer = (Customer) App.getUser();
+            App.getOcsfClient(this).getListOfTickets();
+            while(ticketList.isEmpty()) { Thread.yield(); }
+            List <Ticket> ticks = new ArrayList<Ticket>();
+            for (Ticket ticket : ticketList) {
+                if(ticket.getCustomer().getUserName().equals(customer.getUserName())){
+                    ticks.add(ticket);
+                }
+            }
+            ticketList = ticks;
+            updateScreen();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
-
-
+    public void setTickets(List<Ticket> tickets) {
+        this.ticketList = tickets;
+    }
 }
