@@ -7,35 +7,33 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 
 public class CancelLinkController implements Initializable {
 
-    public List<Link> linksList = new ArrayList<Link>();
-    private List<Customer> customerList= new ArrayList<Customer>();
-    private List<Movie> movieList= new ArrayList<Movie>();
+    //test DB
+    //private Customer cus1 = new Customer("Customer1", "Customer1","","");
+    //private Customer cus2 = new Customer("Customer2", "Customer2","","");
 
-    SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm");
+    SimpleDateFormat format = new SimpleDateFormat("dd.MM.YY E HH:mm");
 
     // javaFX buttons and fields
     @FXML
     private TextField movieName;
 
     @FXML
-    private TextField Time;
+    private TextField screeningTime;
 
     @FXML
-    private Button CancelLink;
+    private Button CancelTicket;
 
     @FXML // fx:id="Tickets"
-    private ComboBox<Link> linksComboBox;
+    private ComboBox<Ticket> linksComboBox;
 
 
     /**
@@ -70,8 +68,7 @@ public class CancelLinkController implements Initializable {
             //TODO: cancellation based on current time.
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
-                App.getOcsfClient(this).updateLinks(linksComboBox.getValue(), false);
-                linksList.remove(linksComboBox.getValue());
+
                 alert.setHeaderText(null);
                 alert.setContentText("Link Canceled");
             } else {
@@ -93,15 +90,13 @@ public class CancelLinkController implements Initializable {
     }
 
 
-
     /**
      * handle combobox selection
      */
     public void handheldsSelectLink(ActionEvent actionEvent) {
         if (linksComboBox.getValue() != null) {
             //setting right screen based on TicketsCoboBox selection
-            movieName.setText(linksComboBox.getValue().getMovie().getEngName());
-            Time.setText(format.format(linksComboBox.getValue().getDate().getTime()));
+
         }
     }
 
@@ -110,7 +105,8 @@ public class CancelLinkController implements Initializable {
      */
     public void resetTexts(){
         movieName.setText("Movie Name");
-        Time.setText("dd.MM.YY E HH:mm");
+        screeningTime.setText("dd.MM.YY E HH:mm");
+
     }
 
 
@@ -119,7 +115,8 @@ public class CancelLinkController implements Initializable {
      */
     public void updateScreen(){
         resetTexts();
-        linksComboBox.setItems(FXCollections.observableArrayList(linksList));
+
+
     }
 
 
@@ -128,25 +125,14 @@ public class CancelLinkController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try{
-            Customer customer = (Customer) App.getUser();
-            App.getOcsfClient(this).getListOfLinks();
-            while(linksList.isEmpty()) { Thread.yield(); }
-            List <Link> links = new ArrayList<Link>();
-            for (Link link : linksList) {
-                if(link.getCustomer().getUserName().equals(customer.getUserName())){
-                    links.add(link);
-                }
-            }
-            linksList = links;
-            updateScreen();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        //initializing TicketsCoboBox
+
+
+        updateScreen();
     }
-    public void setLinks(List<Link> links) {
-        this.linksList = links;
-    }
+
+
+
+
 
 }

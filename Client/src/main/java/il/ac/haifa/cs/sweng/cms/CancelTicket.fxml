@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.CancelTicketController">
+    <children>
+        <MenuBar prefHeight="45.0" prefWidth="640.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" />
+        <Text fill="ORANGE" layoutX="10.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cancel Purchase" textAlignment="CENTER" wrappingWidth="640.0">
+            <font>
+                <Font name="Aharoni Bold" size="30.0" />
+            </font>
+        </Text>
+        <Button fx:id="backButton" layoutX="562.0" layoutY="10.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+      <SplitPane dividerPositions="0.4" layoutY="80.0" prefHeight="436.0" prefWidth="640.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="434.0" prefWidth="150.0">
+               <children>
+                  <ComboBox id="Tickets" fx:id="TicketsComboBox" layoutX="47.0" layoutY="126.0" onAction="#handheldsSelectTicket" prefHeight="25.0" prefWidth="157.0" promptText="your tickets:" />
+                  <Text fill="ORANGE" layoutX="22.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Purchased Tickets:">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <Text fill="ORANGE" layoutX="96.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Information">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="ORANGE" layoutX="50.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Movie name:" underline="true" AnchorPane.bottomAnchor="339.486328125" AnchorPane.leftAnchor="49.48828125" AnchorPane.rightAnchor="250.51171875" AnchorPane.topAnchor="74.892578125">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Text fill="ORANGE" layoutX="50.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Text fill="ORANGE" layoutX="50.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Theater" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Text fill="ORANGE" layoutX="50.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Screening Time:" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Text fill="ORANGE" layoutX="50.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seats:" underline="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <TextField id="movieName" fx:id="movieName" layoutX="180.0" layoutY="70.0" text="name" />
+                  <TextField id="locationName" fx:id="locationName" layoutX="180.0" layoutY="130.0" text="place" />
+                  <TextField id="theaterName" fx:id="theaterName" layoutX="180.0" layoutY="190.0" text="theater" />
+                  <TextField fx:id="screeningTime" layoutX="180.0" layoutY="250.0" text="time" />
+                  <TextField id="seats" fx:id="seats" layoutX="180.0" layoutY="310.0" text="seats" />
+                  <Button id="CancelTicket" fx:id="CancelTicket" layoutX="111.0" layoutY="368.0" mnemonicParsing="false" onAction="#handheldsCancelTicket" style="-fx-background-color: ORANGE;" text="Cancel Ticket">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+    </children>
+</AnchorPane>

@@ -1,8 +1,11 @@
+/**
+ * Sample Skeleton for 'PurchaseLink.fxml' Controller Class
+ */
+
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
-import il.ac.haifa.cs.sweng.cms.common.entities.Link;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -69,7 +72,7 @@ public class PurchaseLinkController implements Initializable {
     @FXML
     void handheldsBackButton(ActionEvent event) {
         try {
-            App.setRoot("MovieOverview.fxml"); //set the screan to the last page.
+            App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,23 +164,24 @@ public class PurchaseLinkController implements Initializable {
 
         else{
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Remember");
-            alert.setHeaderText(null);
-            alert.setContentText("Remember the link to the movie is available for a week from the time you selected");
-            alert.getButtonTypes().clear();
-            alert.getButtonTypes().addAll(ButtonType.OK);
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.OK) {
-                Link link = new Link((Customer)App.getUser() , gregorianCalendar, movie);
+            try {
+//                MovieLink movieLink new MovieLink(movie ,gregorianCalendar);
+//                PaymentScreenController.setMovieLink(movieLink);
+
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Remember");
+                alert.setHeaderText(null);
+                alert.setContentText("Remember the link to the movie is available for a week from the time you selected");
+                alert.getButtonTypes().clear();
+                alert.getButtonTypes().addAll(ButtonType.OK);
+                alert.showAndWait();
 
                 //todo: repalce with paymant screen when ready
-//                    PaymentController.setLink(link);
-//                    PaymentController.setFromScreen(3);//came from Link
-//                        App.setRoot("Payment.fxml"); //set the sceen to the last page.
-//                    App.setRoot("PaymentScreen.fxml"); //set the scean to the last page.
+                App.setRoot("MovieOverview.fxml"); //set the scean to the last page.
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
         }
     }
 

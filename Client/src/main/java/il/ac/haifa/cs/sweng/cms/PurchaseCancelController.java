@@ -1,15 +1,34 @@
 package il.ac.haifa.cs.sweng.cms;
 
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class PurchaseCancelController implements Initializable {
 
@@ -33,11 +52,6 @@ public class PurchaseCancelController implements Initializable {
 
     @FXML
     public void handheldsBackButton(ActionEvent actionEvent) {
-        try {
-            App.setRoot("CustomerHome.fxml"); //set the screen to the last page.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML

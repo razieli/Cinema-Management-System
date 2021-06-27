@@ -5,7 +5,6 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
 import javafx.event.ActionEvent;
@@ -27,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class MovieOverviewController implements Initializable {
     private static Movie movie;
-    private static Cinema pickedCinema = null;
+    private static Theater theater = null;
 
     @FXML // fx:id="inputEngTitle"
     private Text inputEngTitle; // Value injected by FXMLLoader
@@ -91,21 +90,20 @@ public class MovieOverviewController implements Initializable {
     }
 
     /**
-     *
-     * @return
+     * get theater object
+     * @return theater
      */
-    public static Cinema getPickedCinema() {
-        return pickedCinema;
+    public static Theater getTheater() {
+        return theater;
     }
 
     /**
-     *
-     * @param pickedCinema
+     * set theater object
+     * @param theater
      */
-    public static void setPickedCinema(Cinema pickedCinema) {
-        MovieOverviewController.pickedCinema = pickedCinema;
+    public static void setTheater(Theater theater) {
+        MovieOverviewController.theater = theater;
     }
-
 
     /**
      * back button functionality
@@ -140,19 +138,16 @@ public class MovieOverviewController implements Initializable {
     void handheldsPurchaseTicket(ActionEvent event) {
         //todo: add FXML to move to the tickets
 
-        try {
-//            if (pickedCinema!=null){
-//                PurchaseTicketController.setCinema(pickedCinema);
+//        try {
+//            if (theater!=null){
+//                PurchaseTicketController.setTheater(theater);
 //            }
-
-            if(pickedCinema != null)
-                PurchaseTicketController.setPickedCinema(pickedCinema);
-
-            PurchaseTicketController.setMovie(movie);
-            App.setRoot("PurchaseTicket.fxml"); //set the scean to the last page.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//
+//            PurchaseTicketController.setMovie(movie);
+//            App.setRoot("PurchaseTicket.fxml"); //set the scean to the last page.
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
