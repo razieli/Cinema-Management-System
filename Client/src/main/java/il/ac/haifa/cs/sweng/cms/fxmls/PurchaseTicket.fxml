@@ -68,14 +68,6 @@
                                        <children>
                                           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label fx:id="messageTitle" textFill="WHITE">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </Label>
                                                 <ButtonBar fx:id="screeningButtonBar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
                                                   <buttons>
                                                       <Button fx:id="addScreeningButton" minWidth="49.0" mnemonicParsing="false" onAction="#handheldsAddScreeningButton" prefHeight="25.0" style="-fx-background-color: orange;" text="Sounds good" />

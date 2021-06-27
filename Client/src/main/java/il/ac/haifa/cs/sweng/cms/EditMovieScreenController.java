@@ -359,6 +359,7 @@ public class EditMovieScreenController implements Initializable  {
             SimpleDateFormat f = new SimpleDateFormat("YY.MM.dd E"); //set a date format
             inputPremiere.setText(String.valueOf(f.format(premiere.getTime())));
 
+            inputPrice.setText(String.valueOf(movie.getPrice()));
 
             //set movie screening time to show on screen
             for (Screening screening : movie.getScreening()) {
