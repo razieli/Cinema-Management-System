@@ -423,6 +423,7 @@ public class DB {
 			}
 		}
 		session.beginTransaction();
+		session.saveOrUpdate(movie.getScreening());
 		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
