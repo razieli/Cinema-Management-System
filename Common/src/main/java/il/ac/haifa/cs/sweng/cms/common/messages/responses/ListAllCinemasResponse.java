@@ -12,15 +12,13 @@ public class ListAllCinemasResponse extends AbstractResponse {
      * List of all the movies in the db.
      */
     private List<Cinema> cinemaList;
-    private Object obj;
     /**
      * Constructs a ListAllCinemasResponse instance with the given list.
      * @param cinemaList List of cinemas (should be all the movies).
      */
-    public ListAllCinemasResponse(List<Cinema> cinemaList,Object obj) {
+    public ListAllCinemasResponse(List<Cinema> cinemaList) {
         super(ResponseStatus.Acknowledged);
         this.cinemaList = cinemaList;
-        this.setObj(obj);
     }
 
     /**
@@ -31,17 +29,5 @@ public class ListAllCinemasResponse extends AbstractResponse {
         return cinemaList;
     }
 
-	/**
-	 * @return the obj
-	 */
-	public Object getObj() {
-		return obj;
-	}
 
-	/**
-	 * @param obj the obj to set
-	 */
-	public void setObj(Object obj) {
-		this.obj = obj;
-	}
 }
