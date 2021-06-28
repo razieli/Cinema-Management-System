@@ -100,8 +100,8 @@ public class UserLoginController implements Initializable {
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "Wrong Password!"));
         }
         else if (response.getStatus() == ResponseStatus.Customer) {
-//            App.getOcsfClient(this).sendMail("Cinema2021SWE@gmail.com",
-//                    "cinema test", "Hey Yaniv,\n\nHow are you?");
+            App.getOcsfClient(this).sendMail("Cinema2021SWE@gmail.com",
+                    "cinema test", "Hey Yaniv,\n\nHow are you?");
             App.setUserPermission(0);
         }
         else if (response.getStatus() == ResponseStatus.CustomerService) {

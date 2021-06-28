@@ -66,13 +66,19 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.3m</version>
         </dependency>
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-email</artifactId>
             <version>1.5</version>
         </dependency>
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     </dependencies>
 
 

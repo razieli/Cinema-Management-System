@@ -79,6 +79,7 @@ public class OCSFServer extends AbstractServer {
             }
             return new ListAllCinemasResponse(cinemaList);
         }
+
         if(request instanceof ListAllMoviesRequest) {
             // Get list of movies from DB.
             List<Movie> movieList = db.getAllMovies();
@@ -156,17 +157,22 @@ public class OCSFServer extends AbstractServer {
         }
         if(request instanceof UpdatePurpleBadgeRequest) {
             // Save updated PurpleBadge in DB.
-            PurpleBadge pb = new PurpleBadge(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;
+            PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest)request).getPb()) ;
             db.setPurpleBadge(pb);
             return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
+        }
+        if(request instanceof getPurpleBadgeRequest) {
+            // Save updated PurpleBadge in DB.
+            PurpleBadge pb = PurpleBadge.getInstance(db.getPurpleBadge()) ;
+            return new getPurpleBadgeResponse(pb);
         }
         Log.w(TAG, "Unidentified request.");
         return null;
     }
 
     private LoginResponse handleLoginRequest(LoginRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
+        String username = ((LoginRequest) request).getUsername();
+        String password = ((LoginRequest) request).getPassword();
         String userFromDB = db.checkUserName(username);
         LoginResponse loginResponse = null;
         if (userFromDB != null) {
