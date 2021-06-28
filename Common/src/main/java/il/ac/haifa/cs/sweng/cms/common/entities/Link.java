@@ -62,13 +62,7 @@ public class Link implements Serializable {
         this.id = id;
     }
 
-    /**
-     * convert ticket to the movie name
-     */
-    @Override
-    public String toString() {
-        return this.getMovie().getEngName();
-    }
+
 
     /**
      * date set/get
@@ -82,5 +76,21 @@ public class Link implements Serializable {
 
     public void setLinkPrice(double moviePrice) {
         this.linkPrice = moviePrice;
+    }
+
+    public void copyFrom(Link link) {
+        this.customer = link.customer;
+        this.payment = link.payment;
+        this.movie = link.movie;
+        this.date = link.date;
+        this.linkPrice = link.linkPrice;
+    }
+
+    /**
+     * convert ticket to the movie name
+     */
+    @Override
+    public String toString() {
+        return this.getMovie().getEngName();
     }
 }

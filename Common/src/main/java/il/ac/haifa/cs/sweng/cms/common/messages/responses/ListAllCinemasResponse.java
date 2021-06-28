@@ -12,7 +12,6 @@ public class ListAllCinemasResponse extends AbstractResponse {
      * List of all the movies in the db.
      */
     private List<Cinema> cinemaList;
-
     /**
      * Constructs a ListAllCinemasResponse instance with the given list.
      * @param cinemaList List of cinemas (should be all the movies).
@@ -29,4 +28,6 @@ public class ListAllCinemasResponse extends AbstractResponse {
     public List<Cinema> getCinemaList() {
         return cinemaList;
     }
+
+
 }

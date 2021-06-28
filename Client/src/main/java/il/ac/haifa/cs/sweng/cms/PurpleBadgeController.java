@@ -3,9 +3,12 @@ package il.ac.haifa.cs.sweng.cms;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.PurpleBadge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.text.Text;
 public class PurpleBadgeController implements Initializable {
 	private int permission= App.getUserPermission();
 	private PurpleBadge pb = App.getPb();
+	private List<Cinema> cinemas = new ArrayList<Cinema>();
 
 	@FXML
 	private ResourceBundle resources;
@@ -130,27 +134,29 @@ public class PurpleBadgeController implements Initializable {
 			capacityAmount.setVisible(false);
 			okButton.setVisible(false);
 			toggleSwitch.setStyle("-fx-background-color: lightgreen;");
+			for (Cinema c:cinemas) {
+				c.updatePurpleBadge();
+			}
 		}
 	}
 	@FXML
 	void setFromDate(ActionEvent event) {
-		System.out.println(toDate.getValue());
 		if (toDate.getValue() != null) {
-			pb.setClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue(),fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue(),toDate.getValue().getDayOfMonth()));
+			pb.addClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue()-1,fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue()-1,toDate.getValue().getDayOfMonth()));
 		}
 	}
 
 	@FXML
 	void setToDate(ActionEvent event) {
 		if (fromDate.getValue() != null) {
-			pb.setClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue(),fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue(),toDate.getValue().getDayOfMonth()));
+			pb.addClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue()-1,fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue()-1,toDate.getValue().getDayOfMonth()));
 		}
-		System.out.println(pb.getClosingDates().toString());
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		App.getPb();
+		App.getOcsfClient(this).getListOfCinemas();
 		toggleSwitch.setSelected(pb.getStatus());
 		if(pb.getStatus()) {
 			capacityText.setVisible(true);
@@ -178,5 +184,13 @@ public class PurpleBadgeController implements Initializable {
 			toggleSwitch.setStyle("-fx-background-color: lightgreen;");
 		}
 
+	}
+	public void setCinemas(List<Cinema> cinemaList) {
+		// TODO Auto-generated method stub
+		this.cinemas=cinemaList;
+	}
+	public void setPb(PurpleBadge pb) {
+		// TODO Auto-generated method stub
+		this.pb=PurpleBadge.getInstance(pb);
 	}
 }

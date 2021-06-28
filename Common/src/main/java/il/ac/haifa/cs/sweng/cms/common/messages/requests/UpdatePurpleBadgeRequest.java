@@ -2,6 +2,11 @@
 package il.ac.haifa.cs.sweng.cms.common.messages.requests;
 
 
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import il.ac.haifa.cs.sweng.cms.common.entities.PurpleBadge;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractRequest;
 
 
@@ -12,25 +17,48 @@ import il.ac.haifa.cs.sweng.cms.common.messages.AbstractRequest;
  */
 public class UpdatePurpleBadgeRequest extends AbstractRequest {
 
-    private int seatCapacity;
-    private boolean status;
+	private PurpleBadge pb;
 
-    /**
-     * Constructs an UpdatePurpleBadgeRequest instance with the values to update.
-     * @param seatCapacity and status to update.
-     */
-    public UpdatePurpleBadgeRequest(int seatCapacity,boolean status) {
+	/**
+	 * @return the closingDates
+	 */
+	public List<GregorianCalendar> getClosingDates() {
+		return pb.getClosingDates();
+	}
 
-        this.seatCapacity = seatCapacity;
-        this.status = status;
+	/**
+	 * @param closingDates the closingDates to set
+	 */
+	public void setClosingDates(List<GregorianCalendar> closingDates) {
+		this.pb.setClosingDates(closingDates);
+	}
 
-    }
+	/**
+	 * Constructs an UpdatePurpleBadgeRequest instance with the values to update.
+	 * @param seatCapacity and status to update.
+	 */
 
-    public int getSeatCapacity() {
-        return seatCapacity;
-    }
+	public UpdatePurpleBadgeRequest(PurpleBadge pb) {
+		if(this.pb==null) {
+			this.pb=PurpleBadge.getInstance(pb);
+		}
+		else {
+			this.pb.setY(pb.getY());
+			this.pb.setStatus(pb.getStatus());
+			this.pb.setClosingDates(pb.getClosingDates());
+		}
 
-    public boolean getStatus() {
-        return status;
-    }
+	}
+
+	public int getSeatCapacity() {
+		return this.pb.getY();
+	}
+
+	public boolean getStatus() {
+		return this.pb.getStatus();
+	}
+
+	public PurpleBadge getPb() {
+		return this.pb;
+	}
 }
