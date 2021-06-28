@@ -3,6 +3,7 @@ import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.MailResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -79,6 +80,16 @@ public class UserLoginController implements Initializable {
         App.getOcsfClient(this).tryLogin(username, pass);
     }
 
+    public void onReplyReceived2(MailResponse response) {
+        if (response.getStatus() == ResponseStatus.Acknowledged) {
+            System.out.println("Go check your E-Mail box for a new message..");
+        }
+        else
+        {
+            System.out.println("Failed to send you an email.");
+        }
+    }
+
     public void onReplyReceived(LoginResponse response) {
         if (response.getStatus() == ResponseStatus.DeclinedUser) {
             App.setUserPermission(-1);
@@ -89,6 +100,8 @@ public class UserLoginController implements Initializable {
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "Wrong Password!"));
         }
         else if (response.getStatus() == ResponseStatus.Customer) {
+//            App.getOcsfClient(this).sendMail("Cinema2021SWE@gmail.com",
+//                    "cinema test", "Hey Yaniv,\n\nHow are you?");
             App.setUserPermission(0);
         }
         else if (response.getStatus() == ResponseStatus.CustomerService) {

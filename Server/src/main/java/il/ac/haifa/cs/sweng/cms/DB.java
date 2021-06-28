@@ -4,6 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
 
@@ -19,6 +25,11 @@ import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 
 /**
@@ -660,4 +671,43 @@ public class DB {
 		}
 		return priceChanges;
 	}
+
+	public void sendMail(String emailAddressToSend, String subject, String msg) {
+		final String username = "Cinema2021SWE@gmail.com";
+		final String password = "fd34DS4$3Jdo";
+		String from = "Cinema2021SWE@gmail.com";
+
+		Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "587");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+		javax.mail.Session session = javax.mail.Session.getInstance(prop,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new
+								PasswordAuthentication(username, password);
+					}
+				});
+
+		try {
+			System.out.println("Trying To send an e-mail....\n");
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(
+					Message.RecipientType.TO,
+					InternetAddress.parse(emailAddressToSend)
+			);
+			message.setSubject(subject);
+			message.setText(msg);
+
+			Transport.send(message);
+			System.out.println("Sent message successfully....");
+
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

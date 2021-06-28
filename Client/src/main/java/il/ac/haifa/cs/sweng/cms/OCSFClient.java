@@ -72,6 +72,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof LoginResponse) {
             ((UserLoginController) controller).onReplyReceived((LoginResponse) response);
         }
+        if (response instanceof MailResponse) {
+            ((UserLoginController) controller).onReplyReceived2((MailResponse) response);
+        }
         if (response instanceof ComplaintFileResponse) {
             ((ComplaintAddController) controller).handleComplaintFileResponse();
         }
@@ -216,6 +219,15 @@ public class OCSFClient extends AbstractClient {
             e.printStackTrace();
         }
     }
+
+    protected void sendMail(String emailAddressToSend, String subject, String msg) {
+        try {
+            sendToServer(new MailRequest(emailAddressToSend, subject, msg));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Sends a request to the server to file a complaint.

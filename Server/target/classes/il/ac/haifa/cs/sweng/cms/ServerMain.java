@@ -1,7 +1,6 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +17,6 @@ public class ServerMain {
 
     public static void main(String[] args) {
         int port;
-
         // Validate port argument.
         if (args.length != 1) {
             printUsage();

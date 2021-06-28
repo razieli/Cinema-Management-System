@@ -79,7 +79,6 @@ public class OCSFServer extends AbstractServer {
             }
             return new ListAllCinemasResponse(cinemaList);
         }
-
         if(request instanceof ListAllMoviesRequest) {
             // Get list of movies from DB.
             List<Movie> movieList = db.getAllMovies();
@@ -123,7 +122,11 @@ public class OCSFServer extends AbstractServer {
         }
         if(request instanceof LoginRequest) {
             return handleLoginRequest((LoginRequest) request);
-
+        }
+        if(request instanceof MailRequest) {
+            db.sendMail(((MailRequest) request).getEmailAddressToSend(),
+                    ((MailRequest) request).getSubject(), ((MailRequest) request).getMsg());
+            return new MailResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof ComplaintFileRequest) {
             Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
@@ -162,8 +165,8 @@ public class OCSFServer extends AbstractServer {
     }
 
     private LoginResponse handleLoginRequest(LoginRequest request) {
-        String username = ((LoginRequest) request).getUsername();
-        String password = ((LoginRequest) request).getPassword();
+        String username = request.getUsername();
+        String password = request.getPassword();
         String userFromDB = db.checkUserName(username);
         LoginResponse loginResponse = null;
         if (userFromDB != null) {
