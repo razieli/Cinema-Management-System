@@ -423,27 +423,48 @@ public class DB {
 		}
 
 		session.beginTransaction();
+		Movie finalMovie = movie;
+
+		// Check for new screenings
+		List<Screening> screeningList = getAllScreening();
+		screeningList.removeIf(screening -> !screening.getMovie().toString().equals(finalMovie.toString()));
 		for(Screening screening : movie.getScreening()) {
-			for (Screening existingScreening : getAllScreening()) {
-				if (existingScreening.getId() == screening.getId()) {
-					existingScreening.copyFrom(screening);
-					screening = existingScreening;
-					break;
-				}
+			if(screeningList.stream().noneMatch(existingScreening -> existingScreening.getDate().equals(screening.getDate()))) {
+				session.save(screening);
 			}
-			session.saveOrUpdate(screening);
 		}
 
-		for(Link link : movie.getLinks()) {
-			for (Link existingLink : getAllLinks()) {
-				if (existingLink.getId() == link.getId()) {
-					existingLink.copyFrom(link);
-					link = existingLink;
-					break;
+		// Check for deleted screenings
+		for(Screening existingScreening : screeningList) {
+			if(existingScreening.getMovie().getId() == finalMovie.getId()) {
+				if (movie.getScreening().stream().noneMatch(screening -> screening.getId() == existingScreening.getId())) {
+					List<Ticket> ticketList = existingScreening.getTickets();
+					if(ticketList != null) {
+						ticketList.forEach(ticket -> session.delete(ticket));
+					}
+					session.delete(existingScreening);
 				}
 			}
-			session.saveOrUpdate(link);
 		}
+
+		// Check for new links
+		List<Link> linkList = getAllLinks();
+		for(Link link : movie.getLinks()) {
+			// TODO: Replace ID matching with something else as ID may be 0.
+			if(linkList.stream().noneMatch(existingLink -> existingLink.getId() == link.getId())) {
+				session.save(link);
+			}
+		}
+
+		// Check for deleted links
+		for(Link existingLink : linkList) {
+			if(existingLink.getMovie().getId() == finalMovie.getId()) {
+				if (movie.getLinks().stream().noneMatch(link -> link.getId() == existingLink.getId())) {
+					session.delete(existingLink);
+				}
+			}
+		}
+
 		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
