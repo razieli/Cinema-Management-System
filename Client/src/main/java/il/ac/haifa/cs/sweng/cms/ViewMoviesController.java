@@ -228,15 +228,7 @@ public class ViewMoviesController implements Initializable {
             int i = 0, j = 0, k=0;
             movie.getScreening().sort(new SortByDate());//sort screening list
             for (Screening screen : movie.getScreening()) {
-                System.out.println("-----"+movie);
-                System.out.println(screen.getDate().after(GregorianCalendar.getInstance()));
-                System.out.println(k<4);
-                System.out.println(pickedCinema==null);
-//                System.out.println(screen.getTheater().getCinema().getName().equals(pickedCinema.getName()));
-                System.out.println(pickedCinema);
-
-
-                if((screen.getDate().after(pickedDate) && k<4) && (pickedCinema==null || screen.getTheater().getCinema().getName().equals(pickedCinema.getName()))){
+               if((screen.getDate().after(pickedDate) && k<4) && (pickedCinema==null || screen.getTheater().getCinema().getName().equals(pickedCinema.getName()))){
                             screenTime = format.format(screen.getDate().getTime()).toString();
                             Text textScreenTime = new Text(screenTime);
                             textScreenTime.setFill(Color.ORANGE);
@@ -294,7 +286,6 @@ public class ViewMoviesController implements Initializable {
                 }
             });
         }
-
     }
 
     /**
@@ -306,7 +297,6 @@ public class ViewMoviesController implements Initializable {
             try {
                 pickedCinema=null; //reset pickedCinema if go to another screen
                 pickedDate=(GregorianCalendar)GregorianCalendar.getInstance();//reset pickedDate if go to another screen
-//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("CustomerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -316,7 +306,6 @@ public class ViewMoviesController implements Initializable {
         else if (permission == 1 ){//Employee
             try {
                 pickedDate=(GregorianCalendar)GregorianCalendar.getInstance();//reset pickedDate if go to another screen
-//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("EmployeeHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -325,7 +314,6 @@ public class ViewMoviesController implements Initializable {
         else if (permission == 2){//content manager
             try {
                 pickedDate=(GregorianCalendar)GregorianCalendar.getInstance();//reset pickedDate if go to another screen
-//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("ContentManagerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -334,7 +322,6 @@ public class ViewMoviesController implements Initializable {
         else if (permission == 3){//cinema manager
             try {
                 pickedDate=(GregorianCalendar)GregorianCalendar.getInstance();//reset pickedDate if go to another screen
-//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("CinemaManagerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -342,7 +329,6 @@ public class ViewMoviesController implements Initializable {
         }else if ( permission == 4){//cinema manager
             try {
                 pickedDate=(GregorianCalendar)GregorianCalendar.getInstance();//reset pickedDate if go to another screen
-//                ((Node)(event.getSource())).getScene().getWindow().hide();
                 App.setRoot("GeneralManagerHome.fxml");//load edit movie screen
             } catch (IOException ex) {
                 ex.printStackTrace();

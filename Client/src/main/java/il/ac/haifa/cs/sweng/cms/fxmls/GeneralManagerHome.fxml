@@ -33,55 +33,59 @@
                </children>
             </AnchorPane>
          </top>
-         <bottom>
-            <AnchorPane prefHeight="316.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox alignment="CENTER" layoutY="22.0" prefHeight="281.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Button fx:id="movieListBtn" mnemonicParsing="false" onAction="#switchToMovieListScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Movie List" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="purpleBtn" mnemonicParsing="false" onAction="#switchToPurpleBadgeScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purple Badage Update" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="ComplaintHandlingBtn" mnemonicParsing="false" onAction="#switchToComplaintHandlingScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Complaint Handling" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="priceChangeHandlingBtn" mnemonicParsing="false" onAction="#switchToPriceChangeHandlingScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Price Change Handling" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="operationalBtn" mnemonicParsing="false" onAction="#switchToOperationalMonitoringScreen" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Operational Monitoring" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-         </bottom>
          <center>
-            <AnchorPane prefHeight="43.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextFlow layoutX="49.0" layoutY="15.0" prefHeight="24.0" prefWidth="245.0" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="10.0">
+            <BorderPane BorderPane.alignment="CENTER">
+               <top>
+                  <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <Text fx:id="helloUserName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Regev !" textAlignment="CENTER" wrappingWidth="182.20184326171875">
-                           <font>
-                              <Font name="Britannic Bold" size="24.0" />
-                           </font>
-                        </Text>
+                        <TextFlow layoutX="49.0" layoutY="15.0" prefHeight="24.0" prefWidth="245.0" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <Text fx:id="helloUserName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Regev !" textAlignment="CENTER" wrappingWidth="182.20184326171875">
+                                 <font>
+                                    <Font name="Britannic Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
                      </children>
-                  </TextFlow>
-               </children>
-            </AnchorPane>
+                  </AnchorPane>
+               </top>
+               <center>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox alignment="CENTER" layoutY="22.0" prefHeight="281.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button fx:id="movieListBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToMovieListScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Movie List" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="purpleBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToPurpleBadgeScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purple Badage Update" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="ComplaintHandlingBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToComplaintHandlingScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Complaint Handling" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="priceChangeHandlingBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToPriceChangeHandlingScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Price Change Handling" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="operationalBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToOperationalMonitoringScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Operational Monitoring" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
          </center>
       </BorderPane>
    </children>

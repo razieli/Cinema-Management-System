@@ -19,10 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PurchaseTicketController implements Initializable {
@@ -259,7 +256,7 @@ public class PurchaseTicketController implements Initializable {
 //            screening = screeningComboBox.getValue();
 //            System.out.println(screening);
 
-            if(!PurpleBadge.getInstance().getStatus()) {
+            if(!PurpleBadge.getInstance().isPurpleBadge(screening.getDate()) ) { //if purpleBadge is on in the same values
                 seatStackPane.getChildren().remove(seatsPane);
                 seatStackPane.getChildren().add(seatsPane);
 
@@ -285,7 +282,7 @@ public class PurchaseTicketController implements Initializable {
                     flag.set(!flag.get());
                     if(flag.get()==false) {
 
-                    System.out.format("%b , present: %d, ecpected: %d",screening.getTickets().size()+pickSeats > screening.getRealSeatsCapacity(),screening.getTickets().size()+pickSeats , screening.getRealSeatsCapacity());
+                    System.out.format("%b , present: %d, ecpected: %d\n",screening.getTickets().size()+pickSeats > screening.getRealSeatsCapacity(),screening.getTickets().size()+pickSeats , screening.getRealSeatsCapacity());
                     if (pickSeats==0 || (screening.getTickets().size()+pickSeats) > screening.getRealSeatsCapacity()) {//alert for a case of out of bounds
                         //set a error alert
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -300,9 +297,7 @@ public class PurchaseTicketController implements Initializable {
                         int[][] seatMap = screening.getSeats();
                         Ticket lastTicket;
 
-                        if(screening.getTickets().isEmpty()) { // TODO: 27/06/2021 what hapand if not empthy???????
-
-
+                        if(screening.getTickets().isEmpty()) {
                             int i = 1;
                             int j = 1;
                             for (int k = 0; k < pickSeats; k++) {
@@ -373,7 +368,7 @@ public class PurchaseTicketController implements Initializable {
         //seats
         seatComboBox.setOnAction(e->{
             pickSeats = seatComboBox.getValue();
-            if(!PurpleBadge.getInstance().getStatus()) {
+            if(!PurpleBadge.getInstance().isPurpleBadge(screening.getDate())) {
                 tickets.clear();//clear all picked seats
                 seatGridPane.getChildren().clear();//reload seats map
                 for (int row = 0; row <= screening.getSeatsCapacity() / 10; row++) {
@@ -423,7 +418,7 @@ public class PurchaseTicketController implements Initializable {
             if (seatMap[row][col] == 0) {
                 seatFlag.set(!seatFlag.get());
                 try {
-                    if (seatFlag.get() == true) {
+                    if (seatFlag.get() == true) {//if purpleBadge is on in the same values
                         if (pickSeats == 0) {
                             //set a error alert
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR);

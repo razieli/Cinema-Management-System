@@ -71,7 +71,7 @@ public class OCSFServer extends AbstractServer {
     private AbstractResponse genResponse(AbstractRequest request) {
         if(request instanceof ListAllCinemasRequest) {
             // Get list of tickets from DB.
-            List<Cinema> cinemaList = null;
+        	List<Cinema> cinemaList = null;
             try {
                 cinemaList = db.getAllCinemas();
             } catch (Exception e) {
@@ -153,9 +153,14 @@ public class OCSFServer extends AbstractServer {
         }
         if(request instanceof UpdatePurpleBadgeRequest) {
             // Save updated PurpleBadge in DB.
-            PurpleBadge pb = new PurpleBadge(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;
+            PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;
             db.setPurpleBadge(pb);
             return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
+        }
+        if(request instanceof getPurpleBadgeRequest) {
+            // Save updated PurpleBadge in DB.
+            PurpleBadge pb = PurpleBadge.getInstance(db.getPurpleBadge()) ;
+            return new getPurpleBadgeResponse(pb);
         }
         Log.w(TAG, "Unidentified request.");
         return null;

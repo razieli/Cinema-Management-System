@@ -456,12 +456,10 @@ public class DB {
 	 * @param pb PurpleBadge to update.
 	 */
 	protected void setPurpleBadge(PurpleBadge pb) {
-		PurpleBadge oldPb = getPurpleBadge();
-		oldPb.setY(pb.getY());
-		oldPb.setStatus(pb.getStatus());
+		PurpleBadge newPb = PurpleBadge.getInstance(pb);
 
 		session.beginTransaction();
-		session.saveOrUpdate(oldPb);
+		session.saveOrUpdate(newPb);
 		session.flush();
 		session.getTransaction().commit();
 		//session.close();
