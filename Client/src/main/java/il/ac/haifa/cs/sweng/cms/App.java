@@ -175,7 +175,7 @@ public class App extends Application {
 	 * @param pb the pb to set
 	 */
 	public static void setPb(PurpleBadge pb) {
-		ocsfClient.updatePurpleBadge(pb.getY(), pb.getStatus());
+		ocsfClient.updatePurpleBadge(pb);
 	}
 
 }
