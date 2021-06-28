@@ -23,7 +23,7 @@ public class PurpleBadge implements Serializable {
 	private PurpleBadge() {
 		this.setStatus(false);
 		this.Y = DEFAULT;
-		this.setClosingDates(new LinkedList<GregorianCalendar>());
+		this.setClosingDates(new ArrayList<GregorianCalendar>());
 	}
 
 	private PurpleBadge(int y) {
@@ -77,7 +77,7 @@ public class PurpleBadge implements Serializable {
 		else {
 			single_instance.Y = pb.Y;
 			single_instance.status = pb.status;
-			single_instance.closingDates.addAll(pb.closingDates);
+			single_instance.setClosingDates(pb.getClosingDates());
 		}
 		return single_instance;
 	}
@@ -124,7 +124,7 @@ public class PurpleBadge implements Serializable {
 		this.closingDates = closingDates;
 	}
 
-	public void setClosingDates(GregorianCalendar from, GregorianCalendar to) {
+	public void addClosingDates(GregorianCalendar from, GregorianCalendar to) {
 
 		// TODO: 28/06/2021 fixxxxxxxxxxxxxxxxx  
 //		List<GregorianCalendar> dates = new ArrayList<GregorianCalendar>();
