@@ -3,55 +3,32 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.MovieOverviewController">
+<AnchorPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.MovieOverviewController">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <BorderPane BorderPane.alignment="CENTER">
                <top>
-                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
+                  <AnchorPane style="-fx-background-color: black; -fx-border-color: orange;" BorderPane.alignment="CENTER">
                      <children>
-                        <MenuBar layoutX="3.0" layoutY="3.0" prefHeight="32.0" prefWidth="680.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="2.0" />
-                        <HBox layoutY="2.0" prefHeight="36.0" prefWidth="392.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
-                           <children>
-                              <AnchorPane>
-                                 <children>
-                                    <Text fx:id="inputEngTitle" fill="ORANGE" layoutX="34.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="English Name" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="231.33331274986267" AnchorPane.bottomAnchor="2.0" AnchorPane.topAnchor="8.0">
-                                       <font>
-                                          <Font name="Aharoni Bold" size="24.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane>
-                                 <children>
-                                    <Text fx:id="inputHebTitle" fill="ORANGE" layoutX="31.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heberw Name" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="248.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
-                                       <font>
-                                          <Font name="Aharoni Bold" size="24.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                                 <opaqueInsets>
-                                    <Insets bottom="5.0" />
-                                 </opaqueInsets>
-                              </AnchorPane>
-                           </children>
-                        </HBox>
-                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -60,157 +37,228 @@
                   </AnchorPane>
                </top>
                <bottom>
-                  <AnchorPane prefHeight="35.0" prefWidth="671.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+                  <StackPane minHeight="300.0" style="-fx-background-color: black; -fx-border-color: orange;" BorderPane.alignment="CENTER">
                      <children>
-                        <ButtonBar layoutX="341.0" layoutY="11.0" prefHeight="35.0" prefWidth="309.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <buttons>
-                              <Button fx:id="purchaseLinkButton" alignment="CENTER" minWidth="27.0" mnemonicParsing="false" onAction="#handheldsPurchaseLink" prefHeight="25.0" prefWidth="270.0" text="Purchase Link" textAlignment="CENTER">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="purchaseTicketButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handheldsPurchaseTicket" prefHeight="25.0" prefWidth="270.0" style="-fx-background-color: orange;" text="Purchase Ticket" textAlignment="CENTER">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                           </buttons>
-                        </ButtonBar>
-                     </children>
-                  </AnchorPane>
-               </bottom>
-               <center>
-                  <AnchorPane style="-fx-background-color: black;" BorderPane.alignment="CENTER">
-                     <children>
-                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="353.0" prefWidth="315.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <content>
-                              <AnchorPane fx:id="anchorScrollPane" cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="646.0" prefWidth="669.0" style="-fx-background-color: black;">
+                        <ImageView fx:id="inputImage" fitHeight="150.0" fitWidth="118.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+                        <VBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <HBox alignment="CENTER">
                                  <children>
-                                    <VBox layoutY="-3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="630.0" prefWidth="670.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    <TextFlow>
                                        <children>
-                                          <AnchorPane style="-fx-position-shape: center;">
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                             <children>
-                                                <ImageView fx:id="inputImage" fitHeight="300.0" fitWidth="200.0" layoutX="235.0" layoutY="7.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-7.0" AnchorPane.topAnchor="7.0" />
-                                             </children>
-                                          </AnchorPane>
-                                          <AnchorPane>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                             <children>
-                                                <Hyperlink fx:id="inputTrailer" layoutX="76.0" style="-fx-background-position: center;" text="Trailer" underline="true" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <font>
-                                                      <Font name="System Bold Italic" size="14.0" />
-                                                   </font>
-                                                </Hyperlink>
-                                             </children>
-                                          </AnchorPane>
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                             <children>
-                                                <Label text="Movie Length:" textFill="ORANGE" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <Text fx:id="inputLength" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="mmm">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </HBox>
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                             <children>
-                                                <Label text="Year:" textFill="ORANGE" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <Text fx:id="inputYear" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="YYYY">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </HBox>
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                             <children>
-                                                <Label text="PG Raiting:" textFill="ORANGE" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <Text fx:id="inputPGRaiting" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="13 / 18 etc.">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </HBox>
-                                          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                             <children>
-                                                <TextFlow prefHeight="75.0" prefWidth="621.0">
-                                                   <children>
-                                                      <Label text="Cast:" textFill="ORANGE" underline="true">
-                                                         <opaqueInsets>
-                                                            <Insets right="5.0" />
-                                                         </opaqueInsets>
-                                                         <padding>
-                                                            <Insets right="5.0" />
-                                                         </padding>
-                                                         <font>
-                                                            <Font name="System Bold" size="18.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Text fx:id="inputCast" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="The director of the film and then the main actors" wrappingWidth="356.48150634765625">
-                                                         <font>
-                                                            <Font size="18.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </TextFlow>
-                                             </children>
-                                          </HBox>
-                                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                             <children>
-                                                <Label text="About:" textFill="ORANGE" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <Text fx:id="inputDescription" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Whats the movie about.." textAlignment="JUSTIFY" wrappingWidth="120.0">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </VBox>
+                                          <Text fx:id="inputEngTitle" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="English Name" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="231.33331274986267">
+                                             <font>
+                                                <Font name="Aharoni Bold" size="24.0" />
+                                             </font>
+                                          </Text>
                                        </children>
-                                       <opaqueInsets>
-                                          <Insets bottom="5.0" />
-                                       </opaqueInsets>
-                                    </VBox>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </TextFlow>
+                                    <TextFlow>
+                                       <children>
+                                          <Text fx:id="inputHebTitle" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Heberw Name" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="248.0">
+                                             <font>
+                                                <Font name="Aharoni Bold" size="24.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="15.0" />
+                                       </HBox.margin>
+                                    </TextFlow>
                                  </children>
-                              </AnchorPane>
-                           </content>
-                        </ScrollPane>
+                              </HBox>
+                              <Hyperlink fx:id="inputTrailer" style="-fx-background-position: center;" text="Trailer" underline="true">
+                                 <font>
+                                    <Font name="System Bold Italic" size="14.0" />
+                                 </font>
+                              </Hyperlink>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Movie Length:" textFill="ORANGE">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="inputLength" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="mmm">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="25.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Text>
+                                    <Label text="Year:" textFill="ORANGE">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Text fx:id="inputYear" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="YYYY">
+                                       <HBox.margin>
+                                          <Insets left="5.0" right="25.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Label text="PG Raiting:" textFill="ORANGE">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Text fx:id="inputPGRaiting" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="13 / 18 etc.">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+               </bottom>
+            </BorderPane>
+         </top>
+         <center>
+            <SplitPane dividerPositions="0.5" style="-fx-background-color: black; -fx-border-color: orange;" BorderPane.alignment="CENTER">
+               <items>
+                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" style="-fx-background-color: black;">
+                     <content>
+                        <VBox fx:id="leftVBox" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="78.0" prefWidth="315.0" style="-fx-background-color: black;">
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Cast:" textFill="ORANGE" underline="true">
+                                       <opaqueInsets>
+                                          <Insets right="5.0" />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets right="5.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextFlow>
+                                       <children>
+                                          <Text fx:id="inputCast" accessibleRole="DATE_PICKER" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="The director of the film and then the main actors" wrappingWidth="356.48150634765625">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </TextFlow>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" minWidth="400.0">
+                                 <children>
+                                    <Label text="About:" textFill="ORANGE" underline="true">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextFlow>
+                                       <children>
+                                          <Text fx:id="inputDescription" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Whats the movie about.." textAlignment="JUSTIFY" wrappingWidth="120.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                    </TextFlow>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <opaqueInsets>
+                              <Insets bottom="5.0" />
+                           </opaqueInsets>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <AnchorPane>
+                     <children>
+                        <StackPane fx:id="stackPane" maxHeight="400.0" maxWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox fx:id="chooseTicket" alignment="CENTER" style="-fx-background-color: black;">
+                                 <children>
+                                    <TextFlow textAlignment="CENTER">
+                                       <children>
+                                          <Text fx:id="messageTicketTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </TextFlow>
+                                    <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" vgap="10.0">
+                                       <children>
+                                          <ComboBox fx:id="cinemaComboBox" minWidth="150.0" nodeOrientation="LEFT_TO_RIGHT" promptText="Cinema" />
+                                          <ComboBox fx:id="screeningComboBox" minWidth="150.0" nodeOrientation="LEFT_TO_RIGHT" promptText="Screening" />
+                                          <ButtonBar>
+                                             <buttons>
+                                                <Button fx:id="addScreeningButton" minWidth="100.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="Sounds good" />
+                                                <Button fx:id="cancelTicket" mnemonicParsing="false" text="Cancel" />
+                                             </buttons>
+                                          </ButtonBar>
+                                       </children>
+                                    </FlowPane>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="chooseLink" alignment="CENTER" style="-fx-background-color: black;">
+                                 <children>
+                                    <TextFlow textAlignment="CENTER">
+                                       <children>
+                                          <Text fx:id="messageLinkTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </TextFlow>
+                                    <FlowPane alignment="CENTER" hgap="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" vgap="10.0">
+                                       <children>
+                                          <DatePicker fx:id="datePicker" minWidth="150.0" promptText="Date" />
+                                          <ComboBox fx:id="hourComboBox" minWidth="150.0" promptText="Hour" />
+                                          <ButtonBar>
+                                             <buttons>
+                                                <Button fx:id="addTimeButton" minWidth="100.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="Sounds Good!" />
+                                                <Button fx:id="cancelLink" mnemonicParsing="false" text="Cancel" />
+                                             </buttons>
+                                          </ButtonBar>
+                                       </children>
+                                    </FlowPane>
+                                 </children>
+                              </VBox>
+                              <FlowPane fx:id="chooseViewing" alignment="CENTER" columnHalignment="CENTER" hgap="10.0" minWidth="200.0" style="-fx-background-color: black;" vgap="10.0">
+                                 <children>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" minHeight="105.0" minWidth="105.0" mnemonicParsing="false" onAction="#handheldsPurchaseTicket" style="-fx-background-color: orange;" text="Purchase Ticket" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <Button alignment="CENTER" minHeight="105.0" minWidth="105.0" mnemonicParsing="false" onAction="#handheldsPurchaseLink" text="Purchase Link" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </FlowPane>
+                           </children>
+                        </StackPane>
                      </children>
                   </AnchorPane>
-               </center>
-            </BorderPane>
-         </children>
-      </AnchorPane>
+               </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

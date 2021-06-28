@@ -134,15 +134,6 @@ public class Screening implements Serializable {
 		tickets.remove(ticket);
 	}
 
-	@Override
-	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
-		String date = format.format(this.getDate().getTime()).toString();
-
-		return date +", in " + this.theater.getName();
-	}
-
-
 	public int getSeatsCapacity() {
 		return seatsCapacity;
 	}
@@ -165,5 +156,23 @@ public class Screening implements Serializable {
 
 	public void setRealSeatsCapacity(int realseatsCapacity) {
 		this.realSeatsCapacity = realseatsCapacity;
+	}
+
+	public void copyFrom(Screening screening) {
+		this.movie = screening.movie;
+		this.theater = screening.theater;
+		this.date = screening.date;
+		this.tickets.addAll(screening.tickets);
+		this.seatsCapacity = screening.seatsCapacity;
+		this.realSeatsCapacity = screening.realSeatsCapacity;
+		this.seats = screening.seats;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
+		String date = format.format(this.getDate().getTime()).toString();
+
+		return date +", in " + this.theater.getName();
 	}
 }

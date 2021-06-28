@@ -13,13 +13,14 @@ public class Ticket implements Serializable {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="screening")
-	private Screening screening;
-	
+
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="payment_id")
 	private Payment payment;
+
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="screening")
+	private Screening screening;
 
 	// TODO: 22/06/2021  payment, waiting to Yaniv
 	private int seatRow;
@@ -38,7 +39,6 @@ public class Ticket implements Serializable {
 		this.payment=null;
 		this.seatRow = row;
 		this.seatCol = col;
-
 	}
 
 	
