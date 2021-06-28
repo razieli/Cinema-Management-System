@@ -8,8 +8,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
 
@@ -694,7 +693,7 @@ public class DB {
 	public void sendMail(String emailAddressToSend, String subject, String msg) {
 		final String username = "Cinema2021SWE@gmail.com";
 		final String password = "fd34DS4$3Jdo";
-		String from = "Cinema2021SWE@gmail.com";
+		String from = "Cinema@no-reply";
 
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -719,10 +718,18 @@ public class DB {
 					InternetAddress.parse(emailAddressToSend)
 			);
 			message.setSubject(subject);
-			message.setText(msg);
+			Multipart multipart = new MimeMultipart();
+			MimeBodyPart bodyMessagePart = new MimeBodyPart();
+			bodyMessagePart.setContent(msg, "text/html; charset=utf-8");
+			multipart.addBodyPart(bodyMessagePart);
+
+			message.setContent(multipart);
+
+//			message.setContent(msg, "text/html; charset=utf-8");
+			message.saveChanges();
 
 			Transport.send(message);
-			System.out.println("Sent message successfully....");
+			System.out.println("E-Mail Sent Successfully!!....");
 
 		} catch (MessagingException e) {
 			e.printStackTrace();

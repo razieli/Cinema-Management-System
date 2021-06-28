@@ -59,6 +59,16 @@ public class UserLoginController implements Initializable {
         int val_connection = App.connectToServer();
         if (val_connection == 1) {
             this.checkLogin(App.getUserName(), App.getPass());
+
+//            App.getOcsfClient(this).sendMail(
+//                    "yshnur@campus.haifa.ac.il, galuk3@gmail.com, " +
+//                            "rzyuval@gmail.com, shay.silber@gmail.com, zvikno@gmail.com, " +
+//                            "raloni02@campus.haifa.ac.il",
+//                    "ORDER CONFIRMED",
+//                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+//                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+//                            "<br><h3 style=\"color:black;\">Your order (3292384) is confirmed.</h3></bdo>");
+
         }
         else if (val_connection == -2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -100,8 +110,6 @@ public class UserLoginController implements Initializable {
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "Wrong Password!"));
         }
         else if (response.getStatus() == ResponseStatus.Customer) {
-//            App.getOcsfClient(this).sendMail("Cinema2021SWE@gmail.com",
-//                    "cinema test", "Hey Yaniv,\n\nHow are you?");
             App.setUserPermission(0);
         }
         else if (response.getStatus() == ResponseStatus.CustomerService) {
