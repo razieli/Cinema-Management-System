@@ -130,12 +130,12 @@ public class PurpleBadge implements Serializable {
 //		List<GregorianCalendar> dates = new ArrayList<GregorianCalendar>();
 		while (from.before(to)) {
 //			System.out.println(from.getTime());
-			GregorianCalendar fromTemp = new GregorianCalendar (from.get(Calendar.YEAR),from.get(Calendar.MONTH),from.get(Calendar.DAY_OF_MONTH),0,0);
-			this.closingDates.add(fromTemp);
+			if(!this.closingDates.contains(from)) {
+				GregorianCalendar fromTemp = new GregorianCalendar (from.get(Calendar.YEAR),from.get(Calendar.MONTH),from.get(Calendar.DAY_OF_MONTH),0,0);
+				this.closingDates.add(fromTemp);
+			}
 			from.add(Calendar.DAY_OF_MONTH, 1);
 		}
-		System.out.println(this.closingDates);
-//		this.closingDates.addAll(dates);
 	}
 
 	public void addClosingDate(GregorianCalendar date) {
@@ -152,9 +152,12 @@ public class PurpleBadge implements Serializable {
 
 	public void CoronaFree() {
 		GregorianCalendar today = new GregorianCalendar();
+		List<GregorianCalendar> delete = new ArrayList<GregorianCalendar>();
 		for (GregorianCalendar gd : this.closingDates)
 			if (gd.after(today))
-				this.closingDates.remove(gd);
+				delete.add(gd);
+		for (GregorianCalendar gd : delete)
+			this.closingDates.remove(gd);
 		this.Y = DEFAULT;
 	}
 
