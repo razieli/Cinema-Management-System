@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -59,6 +60,8 @@ public class Movie implements Serializable {
 		this.description = description;
 		this.price = BASE_PRICE;
 		this.premiere = premiere;
+		this.screening = new ArrayList<>();
+		this.links = new ArrayList<>();
 	}
 
 	/**
@@ -170,13 +173,13 @@ public class Movie implements Serializable {
 		this.hebName = movie.hebName;
 		this.year = movie.year;
 		this.castList = movie.castList;
-		this.screening = movie.screening;
 		this.length = movie.length;
 		this.ageRestriction = movie.ageRestriction;
 		this.description = movie.description;
 		this.posterUrl = movie.posterUrl;
 		this.trailerUrl = movie.trailerUrl;
-		this.links = movie.links;
+		this.screening.addAll(movie.screening);
+		this.links.addAll(movie.links);
 		this.price = movie.price;
 		this.premiere = movie.premiere;
     }
