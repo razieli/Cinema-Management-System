@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextField?>
@@ -33,42 +34,32 @@
          <center>
             <AnchorPane prefHeight="319.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox prefHeight="208.0" prefWidth="463.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
+                  <VBox alignment="CENTER" prefHeight="208.0" prefWidth="463.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="124.0">
+                        <HBox alignment="CENTER">
                            <children>
-                              <TextFlow prefHeight="200.0" prefWidth="200.0">
-                                 <children>
-                                    <Text fx:id="userName" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER">
-                                       <font>
-                                          <Font name="System Bold" size="18.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </TextFlow>
-                              <TextFlow prefHeight="100.0" prefWidth="84.0">
-                                 <children>
-                                    <TextField fx:id="userText" prefHeight="25.0" prefWidth="257.0" promptText="user" />
-                                 </children>
-                              </TextFlow>
+                              <Text fx:id="userName" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="userText" prefWidth="250.0" promptText="user">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin></TextField>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <TextFlow prefHeight="200.0" prefWidth="200.0">
-                                 <children>
-                                    <Text fx:id="password" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" textAlignment="CENTER">
-                                       <font>
-                                          <Font name="System Bold" size="18.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </TextFlow>
-                              <TextFlow prefHeight="100.0" prefWidth="68.0">
-                                 <children>
-                                    <TextField fx:id="passText" prefHeight="25.0" prefWidth="257.0" promptText="pass" />
-                                 </children>
-                              </TextFlow>
+                              <Text fx:id="password" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="passText" prefWidth="250.0" promptText="pass">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin></TextField>
                            </children>
                         </HBox>
                      </children>

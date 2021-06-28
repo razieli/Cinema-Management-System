@@ -31,6 +31,8 @@ public class Screening implements Serializable {
 	private List<Ticket> tickets;
 
 	private int seatsCapacity;
+	private int realSeatsCapacity;
+
 
 	@Transient
 	private int[][] seats;
@@ -46,6 +48,7 @@ public class Screening implements Serializable {
 		this.date = new GregorianCalendar();
 		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
 		this.seatsCapacity = 0;
+		this.realSeatsCapacity=this.seatsCapacity;
 	}
 
 	public Screening(Movie movie, Theater theater, GregorianCalendar gregorianCalendar)
@@ -56,8 +59,7 @@ public class Screening implements Serializable {
 		this.date = gregorianCalendar;
 		this.seatsCapacity = theater.getSeatsCapacity();
 		this.seats = new int[seatsCapacity/10 + 1 ][10];
-
-
+		this.realSeatsCapacity = this.theater.getRealSeatsCapacity();
 	}
 
 	/**
@@ -132,15 +134,6 @@ public class Screening implements Serializable {
 		tickets.remove(ticket);
 	}
 
-	@Override
-	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
-		String date = format.format(this.getDate().getTime()).toString();
-
-		return date +", in " + this.theater.getName();
-	}
-
-
 	public int getSeatsCapacity() {
 		return seatsCapacity;
 	}
@@ -155,5 +148,31 @@ public class Screening implements Serializable {
 
 	public void setSeats(int[][] seats) {
 		this.seats = seats;
+	}
+
+	public int getRealSeatsCapacity() {
+		return realSeatsCapacity;
+	}
+
+	public void setRealSeatsCapacity(int realseatsCapacity) {
+		this.realSeatsCapacity = realseatsCapacity;
+	}
+
+	public void copyFrom(Screening screening) {
+		this.movie = screening.movie;
+		this.theater = screening.theater;
+		this.date = screening.date;
+		this.tickets.addAll(screening.tickets);
+		this.seatsCapacity = screening.seatsCapacity;
+		this.realSeatsCapacity = screening.realSeatsCapacity;
+		this.seats = screening.seats;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
+		String date = format.format(this.getDate().getTime()).toString();
+
+		return date +", in " + this.theater.getName();
 	}
 }

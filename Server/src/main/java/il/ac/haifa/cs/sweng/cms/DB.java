@@ -414,16 +414,36 @@ public class DB {
 	 * @param movie Movie to update.
 	 */
 	protected void setMovie(Movie movie) {
-		List<Movie> movieList = getAllMovies();
-		for(Movie existingMovie : movieList) {
+		for(Movie existingMovie : getAllMovies()) {
 			if(existingMovie.getId() == movie.getId()) {
 				existingMovie.copyFrom(movie);
 				movie = existingMovie;
 				break;
 			}
 		}
+
 		session.beginTransaction();
-		session.saveOrUpdate(movie.getScreening());
+		for(Screening screening : movie.getScreening()) {
+			for (Screening existingScreening : getAllScreening()) {
+				if (existingScreening.getId() == screening.getId()) {
+					existingScreening.copyFrom(screening);
+					screening = existingScreening;
+					break;
+				}
+			}
+			session.saveOrUpdate(screening);
+		}
+
+		for(Link link : movie.getLinks()) {
+			for (Link existingLink : getAllLinks()) {
+				if (existingLink.getId() == link.getId()) {
+					existingLink.copyFrom(link);
+					link = existingLink;
+					break;
+				}
+			}
+			session.saveOrUpdate(link);
+		}
 		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
@@ -436,12 +456,10 @@ public class DB {
 	 * @param pb PurpleBadge to update.
 	 */
 	protected void setPurpleBadge(PurpleBadge pb) {
-		PurpleBadge oldPb = getPurpleBadge();
-		oldPb.setY(pb.getY());
-		oldPb.setStatus(pb.getStatus());
+		PurpleBadge newPb = PurpleBadge.getInstance(pb);
 
 		session.beginTransaction();
-		session.saveOrUpdate(oldPb);
+		session.saveOrUpdate(newPb);
 		session.flush();
 		session.getTransaction().commit();
 		//session.close();

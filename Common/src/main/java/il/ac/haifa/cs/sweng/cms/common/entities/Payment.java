@@ -2,8 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "payments")
@@ -41,6 +40,7 @@ public class Payment implements Serializable {
 	//Credit card holder details for refund
 	private String firstName;
 	private String lastName;
+	private GregorianCalendar date;
 	private String email; //to send the purchase details by mail
 	private String phoneNumber;
 	private String cardNumber;
@@ -54,18 +54,29 @@ public class Payment implements Serializable {
 	public Payment() {
 		ticketList = new ArrayList<>();
 		linkList = new ArrayList<>();
+		this.date = new GregorianCalendar();
 	}
 
-	public Payment(String firstName, String lastName, String email, String phoneNumber, String cardNumber, String expirationDate, String cvvNumber) {
+	public Payment(String firstName, String lastName, GregorianCalendar gregorianCalendar, String email, String phoneNumber, String cardNumber, String expirationDate, String cvvNumber) {
 		this();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.date = gregorianCalendar;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.cardNumber = cardNumber;
 		this.expirationDate = expirationDate;
 		this.cvvNumber = cvvNumber;
 	}
+
+	public GregorianCalendar getDate() {
+		return date;
+	}
+
+	public void setDate(GregorianCalendar date) {
+		this.date = date;
+	}
+
 
 	public List<Ticket> getTicketList() {
 		return ticketList;
