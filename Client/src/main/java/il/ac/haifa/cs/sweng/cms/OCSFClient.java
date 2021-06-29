@@ -51,9 +51,9 @@ public class OCSFClient extends AbstractClient {
     private void handleResponse(AbstractResponse response) {
         if (response instanceof ListAllCinemasResponse) {
             if(controller instanceof ViewMoviesController)
-            	((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+                ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
             if(controller instanceof PurpleBadgeController)
-            	((PurpleBadgeController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+                ((PurpleBadgeController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
         }
         if (response instanceof ListAllMoviesResponse) {
             if(controller instanceof ViewMoviesController) {
@@ -75,6 +75,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof LoginResponse) {
             ((UserLoginController) controller).onReplyReceived((LoginResponse) response);
         }
+        if (response instanceof MailResponse) {
+            ((UserLoginController) controller).onReplyReceived2((MailResponse) response);
+        }
         if (response instanceof ComplaintFileResponse) {
             ((ComplaintAddController) controller).handleComplaintFileResponse();
         }
@@ -92,7 +95,7 @@ public class OCSFClient extends AbstractClient {
             // TODO: Update GUI with screenings.
         }
         if(response instanceof getPurpleBadgeResponse) {
-        	((PurpleBadgeController) controller).setPb(((getPurpleBadgeResponse)response).getPb());
+            ((PurpleBadgeController) controller).setPb(((getPurpleBadgeResponse)response).getPb());
         }
 
         if (response instanceof ListAllPriceChangesResponse) {
@@ -108,7 +111,7 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof PriceChangeReplyResponse) {
             ((PriceChangeHandlingController) controller).onReplyReceived();
         }
-            // TODO: Show "Unidentified response".
+        // TODO: Show "Unidentified response".
 
     }
 
@@ -186,6 +189,14 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
+    protected void deleteMovie(Movie movie) {
+        try {
+            sendToServer(new DeleteMovieRequest(movie));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
     /**
      * Sends a request to the server to update the list of tickets by adding or removing a ticket.
      * @param ticket New list of screenings.
@@ -223,6 +234,14 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
+    protected void sendMail(String emailAddressToSend, String subject, String msg) {
+        try {
+            sendToServer(new MailRequest(emailAddressToSend, subject, msg));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sends a request to the server to file a complaint.
      * @param complaint Complaint to file.
@@ -249,7 +268,7 @@ public class OCSFClient extends AbstractClient {
 
     /**
      * Sends a request to the server to update the purple badge.
-     * @param  seatCapacity and status status to update.
+     * @param seatCapacity and status status to update.
      */
     public void updatePurpleBadge(PurpleBadge pb) {
         try {

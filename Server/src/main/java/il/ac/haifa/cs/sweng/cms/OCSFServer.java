@@ -71,7 +71,7 @@ public class OCSFServer extends AbstractServer {
     private AbstractResponse genResponse(AbstractRequest request) {
         if(request instanceof ListAllCinemasRequest) {
             // Get list of tickets from DB.
-        	List<Cinema> cinemaList = null;
+            List<Cinema> cinemaList = null;
             try {
                 cinemaList = db.getAllCinemas();
             } catch (Exception e) {
@@ -105,6 +105,13 @@ public class OCSFServer extends AbstractServer {
             return new UpdateMovieResponse(ResponseStatus.Acknowledged);
         }
 
+        if(request instanceof DeleteMovieRequest) {
+            // Delete move from DB.
+            Movie movie = ((DeleteMovieRequest) request).getMovie();
+            db.deleteMovie(movie);
+            return new DeleteMovieResponse(ResponseStatus.Acknowledged);
+        }
+
         if(request instanceof UpdateTicketsRequest) {
             // Save tickets in DB.
             Ticket ticket= ((UpdateTicketsRequest) request).getTicket();
@@ -123,7 +130,11 @@ public class OCSFServer extends AbstractServer {
         }
         if(request instanceof LoginRequest) {
             return handleLoginRequest((LoginRequest) request);
-
+        }
+        if(request instanceof MailRequest) {
+            db.sendMail(((MailRequest) request).getEmailAddressToSend(),
+                    ((MailRequest) request).getSubject(), ((MailRequest) request).getMsg());
+            return new MailResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof ComplaintFileRequest) {
             Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
@@ -153,7 +164,7 @@ public class OCSFServer extends AbstractServer {
         }
         if(request instanceof UpdatePurpleBadgeRequest) {
             // Save updated PurpleBadge in DB.
-            PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest) request).getSeatCapacity(),((UpdatePurpleBadgeRequest) request).getStatus()) ;
+            PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest)request).getPb()) ;
             db.setPurpleBadge(pb);
             return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
         }

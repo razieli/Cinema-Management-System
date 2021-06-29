@@ -142,14 +142,14 @@ public class PurpleBadgeController implements Initializable {
 	@FXML
 	void setFromDate(ActionEvent event) {
 		if (toDate.getValue() != null) {
-			pb.setClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue()-1,fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue()-1,toDate.getValue().getDayOfMonth()));
+			pb.addClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue()-1,fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue()-1,toDate.getValue().getDayOfMonth()));
 		}
 	}
 
 	@FXML
 	void setToDate(ActionEvent event) {
 		if (fromDate.getValue() != null) {
-			pb.setClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue()-1,fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue()-1,toDate.getValue().getDayOfMonth()));
+			pb.addClosingDates(new GregorianCalendar(fromDate.getValue().getYear(),fromDate.getValue().getMonthValue()-1,fromDate.getValue().getDayOfMonth()), new GregorianCalendar(toDate.getValue().getYear(),toDate.getValue().getMonthValue()-1,toDate.getValue().getDayOfMonth()));
 		}
 	}
 
