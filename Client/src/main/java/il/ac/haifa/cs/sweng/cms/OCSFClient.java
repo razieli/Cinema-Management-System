@@ -71,6 +71,7 @@ public class OCSFClient extends AbstractClient {
         }
         if(response instanceof UpdateMovieResponse) {
             // TODO: Update GUI with screenings.
+            System.out.println();
         }
         if (response instanceof LoginResponse) {
             ((UserLoginController) controller).onReplyReceived((LoginResponse) response);
@@ -110,6 +111,12 @@ public class OCSFClient extends AbstractClient {
         }
         if (response instanceof PriceChangeReplyResponse) {
             ((PriceChangeHandlingController) controller).onReplyReceived();
+        }
+        if (response instanceof UpdateTicketsResponse) {
+            // TODO: Check if successful or not and show it on the screen.
+        }
+        if (response instanceof UpdateLinksResponse) {
+            // TODO: Check if successful or not and show it on the screen.
         }
         // TODO: Show "Unidentified response".
 
@@ -268,7 +275,7 @@ public class OCSFClient extends AbstractClient {
 
     /**
      * Sends a request to the server to update the purple badge.
-     * @param seatCapacity and status status to update.
+     * @param pb and status status to update.
      */
     public void updatePurpleBadge(PurpleBadge pb) {
         try {

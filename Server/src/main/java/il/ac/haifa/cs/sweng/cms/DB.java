@@ -647,11 +647,13 @@ public class DB {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
+			session.save(ticket.getPayment());
 			session.save(ticket);
 		}
 		else{
 			Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
 			if (ticketToRemove != null) {
+				session.remove(ticketToRemove.getPayment());
 				session.remove(ticketToRemove);
 			}
 		}
@@ -684,11 +686,13 @@ public class DB {
 	protected void setLinks(Link link, boolean addOrRemove) {
 		session.beginTransaction();
 		if(addOrRemove){
+			session.save(link.getPayment());
 			session.save(link);
 		}
 		else{
 			Link linkToRemove = session.get(Link.class, link.getId());
 			if (linkToRemove != null) {
+				session.remove(link.getPayment());
 				session.remove(linkToRemove);
 			}
 		}

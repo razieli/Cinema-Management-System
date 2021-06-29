@@ -40,6 +40,8 @@ public class Movie implements Serializable {
 	 * constructors
 	 */
 	public Movie() {
+		this.screening = new ArrayList<>();
+		this.links = new ArrayList<>();
 	}
 	
 	public Movie(String engName,String hebName,Integer year,
@@ -57,8 +59,6 @@ public class Movie implements Serializable {
 		this.description = description;
 		this.price = BASE_PRICE;
 		this.premiere = premiere;
-		this.screening = new ArrayList<>();
-		this.links = new ArrayList<>();
 	}
 
 	/**

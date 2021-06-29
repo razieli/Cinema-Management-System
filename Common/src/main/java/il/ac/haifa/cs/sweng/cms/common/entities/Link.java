@@ -78,6 +78,14 @@ public class Link implements Serializable {
         this.linkPrice = moviePrice;
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     public void copyFrom(Link link) {
         this.customer = link.customer;
         this.payment = link.payment;

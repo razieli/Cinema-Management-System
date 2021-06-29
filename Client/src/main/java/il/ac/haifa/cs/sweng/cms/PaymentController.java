@@ -164,46 +164,59 @@ public class PaymentController implements Initializable {
         inputCvvNumber= cvvNumber.getText();
 
         if (isChecked()){
-            for(Ticket ticket : tickets) {
-                if (ticket.getCustomer().isHas_package()) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Pay With Package");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Package was detected, would you like to pay with it?");
-                    alert.getButtonTypes().clear();
-                    alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
-                    alert.showAndWait();
-                    if (alert.getResult() == ButtonType.YES)//delete operation from database
-                    {
-                        App.getOcsfClient(this).updateTickets(ticket,true,true);
-                    } else {
-                        App.getOcsfClient(this).updateTickets(ticket,true,false);
-                    }
+            if(!tickets.isEmpty()) {
+                for (Ticket ticket : tickets) {
+                    if (ticket.getCustomer().isHas_package()) {
+                        boolean payWithPackage;
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Pay With Package");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Package was detected, would you like to pay with it?");
+                        alert.getButtonTypes().clear();
+                        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+                        alert.showAndWait();
+                        payWithPackage = alert.getResult() == ButtonType.YES;
 
-                    try {
-                        Payment payment =new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                        for (Ticket tic :tickets)
-                            tic.setPayment(payment);
+                        try {
+                            Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+                            for (Ticket tic : tickets)
+                                tic.setPayment(payment);
 
-                        System.out.println(tickets);
-                        // TODO: 29/06/2021 push to DB
-                        App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                            System.out.println(tickets);
+                            App.getOcsfClient(this).updateTickets(ticket, true, payWithPackage);
+                            // TODO: Declare success only after acknowledge from server was received.
+                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else { //in case of no package available for the customer
+                        try {
+                            Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+                            for (Ticket tic : tickets)
+                                tic.setPayment(payment);
+
+                            System.out.println(tickets);
+                            App.getOcsfClient(this).updateTickets(ticket, true, false);
+                            // TODO: Declare success only after acknowledge from server was received.
+                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-                else{ //in case of no package available for the customer
-                    try {
-                        Payment payment =new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                        for (Ticket tic :tickets)
-                            tic.setPayment(payment);
+            } else {
+                try {
+                    // TODO: set the selected movie.
+                    Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+                    Link newLink = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
+                    newLink.setPayment(payment);
 
-                        System.out.println(tickets);
-                        // TODO: 29/06/2021 push to DB
-                        App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    System.out.println(tickets);
+                    App.getOcsfClient(this).updateLinks(newLink, true);
+                    // TODO: Declare success only after acknowledge from server was received.
+                    App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -516,7 +529,7 @@ public class PaymentController implements Initializable {
             }
             
             else{
-                // TODO: 29/06/2021 error 
+                // TODO: 29/06/2021 error
             }
 
         }
