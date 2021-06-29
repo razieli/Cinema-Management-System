@@ -26,17 +26,14 @@ public class Movie implements Serializable {
 	private String castList;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="movie")
 	private List<Screening> screening;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
+	private List<Link> links;
 	private GregorianCalendar premiere;
 	private Integer length;
 	private Integer ageRestriction;
 	private String description;
 	private URI posterUrl;
 	private URI trailerUrl;
-
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
-	private List<Link> links;
-
 	private double price;
 
 	/**

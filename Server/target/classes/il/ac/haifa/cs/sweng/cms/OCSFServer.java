@@ -105,6 +105,13 @@ public class OCSFServer extends AbstractServer {
             return new UpdateMovieResponse(ResponseStatus.Acknowledged);
         }
 
+        if(request instanceof DeleteMovieRequest) {
+            // Delete move from DB.
+            Movie movie = ((DeleteMovieRequest) request).getMovie();
+            db.deleteMovie(movie);
+            return new DeleteMovieResponse(ResponseStatus.Acknowledged);
+        }
+
         if(request instanceof UpdateTicketsRequest) {
             // Save tickets in DB.
             Ticket ticket= ((UpdateTicketsRequest) request).getTicket();

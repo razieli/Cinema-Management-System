@@ -33,7 +33,7 @@ public class Ticket implements Serializable {
 		this.seatRow = 0;
 		this.seatCol = 0;
 	}
-	public Ticket(Customer customer, Screening screening,int row, int col){
+	public Ticket(Customer customer, Screening screening, int row, int col){
 		this.customer=customer;
 		this.screening=screening;
 		this.payment=null;

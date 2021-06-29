@@ -25,9 +25,9 @@ public class Screening implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="theater_id")
 	private Theater theater;
-
 	private GregorianCalendar date;
-	@OneToMany(targetEntity = Ticket.class, mappedBy = "screening",fetch = FetchType.LAZY)
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="screening")
 	private List<Ticket> tickets;
 
 	private int seatsCapacity;
@@ -46,7 +46,8 @@ public class Screening implements Serializable {
 		this.movie = new Movie();
 		this.theater = new Theater();
 		this.date = new GregorianCalendar();
-		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
+		this.tickets = new ArrayList<>();
+//		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
 		this.seatsCapacity = 0;
 		this.realSeatsCapacity=this.seatsCapacity;
 	}
@@ -91,6 +92,7 @@ public class Screening implements Serializable {
 	 * Tickets getter and setter.
 	 */
 	public List<Ticket> getTickets() {return tickets;}
+
 	public void setTickets(ArrayList<Ticket> tickets) {this.tickets = tickets;}
 
 	/**
@@ -111,14 +113,6 @@ public class Screening implements Serializable {
 	 */
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	/**
-	 * Set tickets.
-	 * @param tickets tickets to set.
-	 */
-	public void setTickets(List<Ticket> tickets) {
-		this.tickets = tickets;
 	}
 
 	/**

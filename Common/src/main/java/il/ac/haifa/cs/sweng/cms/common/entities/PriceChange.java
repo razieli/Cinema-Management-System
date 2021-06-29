@@ -22,7 +22,7 @@ public class PriceChange implements Serializable {
     private Employee submitter;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="movie_id")
+    @JoinColumn(name="movie")
     private Movie movie;
 
     private double origPrice;

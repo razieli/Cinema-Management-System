@@ -189,6 +189,14 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
+    protected void deleteMovie(Movie movie) {
+        try {
+            sendToServer(new DeleteMovieRequest(movie));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
     /**
      * Sends a request to the server to update the list of tickets by adding or removing a ticket.
      * @param ticket New list of screenings.

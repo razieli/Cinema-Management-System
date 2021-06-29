@@ -241,17 +241,23 @@ public class DB {
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		List<Customer> customers=getAllCustomer();
-//		for(Screening s:screenings) {
-//			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-//				session.save(new Ticket(customers.get(i%2),s,0,0));
-//		}
-
-		Ticket tic1 = new Ticket (customers.get(0), screenings.get(0) ,0,4);
-		Ticket tic2 = new Ticket (customers.get(1), screenings.get(1) ,0,2);
-		Ticket tic3 = new Ticket (customers.get(0), screenings.get(2) ,0,5);
-		session.save(tic1);
-		session.save(tic2);
-		session.save(tic3);
+		for(Screening s:screenings) {
+			ArrayList<Ticket> t = new ArrayList<>();
+			Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4);
+			Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2);
+			Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5);
+			Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1);
+			t.add(tic1);
+			t.add(tic2);
+			t.add(tic3);
+			t.add(tic4);
+			session.save(tic1);
+			session.save(tic2);
+			session.save(tic3);
+			session.save(tic4);
+			s.setTickets(t);
+			session.save(s);
+		}
 		session.flush();
 	}
 
@@ -262,7 +268,7 @@ public class DB {
 		List<Movie> movies=getAllMovies();
 		List<Theater> theaters = getAllTheaters();
 		for(Movie m:movies){
-			ArrayList<Screening> s= new ArrayList<>();
+			ArrayList<Screening> s = new ArrayList<>();
 			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,6,27,17,00));
 			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,9,14,21,30));
 			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,7,17,23,00));
@@ -274,14 +280,17 @@ public class DB {
 			session.save(sc3);
 			m.setScreening(s);
 			session.save(m);
+
 			List<Screening> st=theaters.get(0).getScreeningList();
 			st.add(s.get(0));
 			theaters.get(0).setScreeningList(st);
 			session.save(theaters.get(0));
+
 			st=theaters.get(1).getScreeningList();
 			st.add(s.get(1));
 			theaters.get(1).setScreeningList(st);
 			session.save(theaters.get(1));
+
 			st=theaters.get(2).getScreeningList();
 			st.add(s.get(2));
 			theaters.get(2).setScreeningList(st);
@@ -289,6 +298,34 @@ public class DB {
 		}
 		session.flush();
 
+	}
+
+	public void generateLinks() throws Exception{
+		List<Movie> movies=getAllMovies();
+		List<Customer> customers = getAllCustomer();
+		for(Movie m:movies) {
+			ArrayList<Link> l = new ArrayList<>();
+			Link l1 = new Link(customers.get(0), new GregorianCalendar(2021, 7, 15, 8, 00), m);
+			Link l2 = new Link(customers.get(1), new GregorianCalendar(2021, 8, 20, 15, 15), m);
+			Link l3 = new Link(customers.get(0), new GregorianCalendar(2021, 9, 1, 20, 20), m);
+			Link l4 = new Link(customers.get(1), new GregorianCalendar(2021, 10, 8, 10, 45), m);
+			l.add(l1);
+			l.add(l2);
+			l.add(l3);
+			l.add(l4);
+			session.save(l1);
+			session.save(l2);
+			session.save(l3);
+			session.save(l4);
+			m.setLinks(l);
+			session.save(m);
+
+			customers.get(0).addLink(l1);
+			customers.get(1).addLink(l2);
+			customers.get(0).addLink(l3);
+			customers.get(1).addLink(l4);
+		}
+		session.flush();
 	}
 
 	/**
@@ -312,20 +349,6 @@ public class DB {
 		session.save(t1);
 		session.save(t2);
 		session.save(t3);
-		session.flush();
-	}
-
-	public void generateLinks() throws Exception{
-		List<Movie> movies=getAllMovies();
-		List<Customer> customers = getAllCustomer();
-		Link l1= new Link(customers.get(0),new GregorianCalendar( 2021,  7,  15,  8,  00), movies.get(0));
-		Link l2= new Link(customers.get(1),new GregorianCalendar( 2021,  8,  20,  15,  15), movies.get(1));
-		Link l3= new Link(customers.get(0),new GregorianCalendar( 2021,  9,  1,  20,  20), movies.get(2));
-		Link l4= new Link(customers.get(1),new GregorianCalendar( 2021,  10,  8,  10,  45), movies.get(3));
-		session.save(l1);
-		session.save(l2);
-		session.save(l3);
-		session.save(l4);
 		session.flush();
 	}
 
@@ -459,6 +482,66 @@ public class DB {
 		session.getTransaction().commit();
 		//session.close();
 		//session = sessionFactory.openSession();
+	}
+
+	protected void deleteMovie(Movie movie) {
+		session.beginTransaction();
+
+		for(Screening screening : movie.getScreening()) {
+			for (Screening existingScreening : getAllScreening()) {
+				if (existingScreening.getId() == screening.getId()) {
+					System.out.println("Found SCREENING-A!!");
+					for (Ticket ticket : existingScreening.getTickets()) {
+						for (Ticket existingTicket : getAllTickets()) {
+							if (existingTicket.getId() == ticket.getId()) {
+								session.delete(existingTicket);
+								System.out.println("Ticket Deleted.");
+							}
+						}
+						session.delete(existingScreening);
+						System.out.println("Screening Deleted.");
+					}
+				}
+			}
+		}
+
+//		for(Screening screening : movie.getScreening()) {
+//			for (Screening existingScreening : getAllScreening()) {
+//				if (existingScreening.getId() == screening.getId()) {
+//					System.out.println("Found SCREENING-B!!");
+//					session.delete(existingScreening);
+//					System.out.println("Screening Deleted.");
+//					break;
+//				}
+//			}
+//		}
+
+		for(Link link : movie.getLinks()) {
+			for (Link existingLink : getAllLinks()) {
+				if (existingLink.getId() == link.getId()) {
+					session.delete(existingLink);
+					System.out.println("Link Deleted.");
+				}
+			}
+		}
+
+		for(PriceChange existingPriceChange : getAllPriceChanges(null)) {
+			if (existingPriceChange.getId() == movie.getId()) {
+				session.delete(existingPriceChange);
+				System.out.println("PriceChange Deleted");
+			}
+		}
+
+		//TODO: remove also Payment !!!
+
+		for(Movie existingMovie : getAllMovies()) {
+			if(existingMovie.getId() == movie.getId()) {
+				session.delete(existingMovie);
+				System.out.println("Movie Deleted.");
+			}
+		}
+		session.flush();
+		session.getTransaction().commit();
 	}
 
 	/**
@@ -620,7 +703,8 @@ public class DB {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Link> query = builder.createQuery(Link.class);
 		query.from(Link.class);
-		return session.createQuery(query).getResultList();
+		List<Link> data = session.createQuery(query).getResultList();
+		return data;
 	}
 
 	public void setComplaint(Complaint complaint) {

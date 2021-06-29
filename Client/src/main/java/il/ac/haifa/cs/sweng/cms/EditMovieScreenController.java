@@ -212,7 +212,9 @@ public class EditMovieScreenController implements Initializable  {
 
         if (alert.getResult() == ButtonType.YES)//delete operation from database
         {
-            // TODO: call function to delete the movie
+            if(movie != null) {
+                App.getOcsfClient(this).deleteMovie(movie);
+            }
         }
     }
 
