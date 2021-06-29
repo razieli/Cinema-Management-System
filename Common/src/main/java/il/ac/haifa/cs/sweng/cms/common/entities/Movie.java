@@ -175,7 +175,9 @@ public class Movie implements Serializable {
 		this.description = movie.description;
 		this.posterUrl = movie.posterUrl;
 		this.trailerUrl = movie.trailerUrl;
+		this.screening.clear();
 		this.screening.addAll(movie.screening);
+		this.links.clear();
 		this.links.addAll(movie.links);
 		this.price = movie.price;
 		this.premiere = movie.premiere;
