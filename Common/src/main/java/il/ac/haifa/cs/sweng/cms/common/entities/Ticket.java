@@ -82,4 +82,12 @@ public class Ticket implements Serializable {
 	public String toString() {
 		return "seats: ("+this.seatRow+", "+this.seatCol+") "+this.getScreening().getMovie().getEngName() +this.getScreening();
 	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 }
