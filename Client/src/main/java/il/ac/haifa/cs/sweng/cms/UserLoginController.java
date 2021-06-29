@@ -109,6 +109,10 @@ public class UserLoginController implements Initializable {
             App.setUserPermission(-1);
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "Wrong Password!"));
         }
+        else if (response.getStatus() == ResponseStatus.DeclinedMultConnections) {
+            App.setUserPermission(-1);
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "User is already logged in!"));
+        }
         else if (response.getStatus() == ResponseStatus.Customer) {
             App.setUserPermission(0);
         }
