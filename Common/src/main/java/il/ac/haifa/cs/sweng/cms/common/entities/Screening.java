@@ -59,7 +59,7 @@ public class Screening implements Serializable {
 		this.date = gregorianCalendar;
 		this.seatsCapacity = theater.getSeatsCapacity();
 		this.seats = new int[seatsCapacity/10 + 1 ][10];
-		this.realSeatsCapacity = this.theater.getRealSeatsCapacity();
+		this.realSeatsCapacity = theater.getRealSeatsCapacity();
 	}
 
 	/**

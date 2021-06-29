@@ -125,17 +125,12 @@ public class PurpleBadge implements Serializable {
 	}
 
 	public void setClosingDates(GregorianCalendar from, GregorianCalendar to) {
-
-		// TODO: 28/06/2021 fixxxxxxxxxxxxxxxxx  
-//		List<GregorianCalendar> dates = new ArrayList<GregorianCalendar>();
+		to.add(Calendar.DAY_OF_MONTH, 1);
 		while (from.before(to)) {
-//			System.out.println(from.getTime());
 			GregorianCalendar fromTemp = new GregorianCalendar (from.get(Calendar.YEAR),from.get(Calendar.MONTH),from.get(Calendar.DAY_OF_MONTH),0,0);
 			this.closingDates.add(fromTemp);
 			from.add(Calendar.DAY_OF_MONTH, 1);
 		}
-		System.out.println(this.closingDates);
-//		this.closingDates.addAll(dates);
 	}
 
 	public void addClosingDate(GregorianCalendar date) {
@@ -159,14 +154,8 @@ public class PurpleBadge implements Serializable {
 	}
 
 	public boolean isPurpleBadge(GregorianCalendar screeningDate) {
-//		GregorianCalendar screeningDay=new GregorianCalendar(screeningDate.get(Calendar.YEAR), screeningDate.get(Calendar.MONTH), screeningDate.get(Calendar.DAY_OF_MONTH), 0 , 0);
 		if (getStatus() == true) {
-//			System.out.println("screeningDate: "+ screeningDate.getTime());
-//			System.out.println( closingDates);
-
 			for (GregorianCalendar date : closingDates) {
-//				if (screeningDay.getTime().equals(date.getTime()))
-//				System.out.println("date: "+ date.getTime());
 				if (screeningDate.get(Calendar.YEAR)==date.get(Calendar.YEAR) && screeningDate.get(Calendar.MONTH)==date.get(Calendar.MONTH) && screeningDate.get(Calendar.DAY_OF_MONTH)==date.get(Calendar.DAY_OF_MONTH))
 					return true;
 			}

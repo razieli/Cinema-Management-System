@@ -44,7 +44,7 @@ public class Payment implements Serializable {
 	private String email; //to send the purchase details by mail
 	private String phoneNumber;
 	private String cardNumber;
-	private String expirationDate;
+	private GregorianCalendar expirationDate;
 	private String cvvNumber;
 
 
@@ -57,7 +57,7 @@ public class Payment implements Serializable {
 		this.date = new GregorianCalendar();
 	}
 
-	public Payment(String firstName, String lastName, GregorianCalendar gregorianCalendar, String email, String phoneNumber, String cardNumber, String expirationDate, String cvvNumber) {
+	public Payment(String firstName, String lastName, GregorianCalendar gregorianCalendar, String email, String phoneNumber, String cardNumber, GregorianCalendar expirationDate, String cvvNumber) {
 		this();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -126,11 +126,11 @@ public class Payment implements Serializable {
 		this.cardNumber = cardNumber;
 	}
 
-	public String getExpirationDate() {
+	public GregorianCalendar getExpirationDate() {
 		return expirationDate;
 	}
 
-	public void setExpirationDate(String expirationDate) {
+	public void setExpirationDate(GregorianCalendar expirationDate) {
 		this.expirationDate = expirationDate;
 	}
 

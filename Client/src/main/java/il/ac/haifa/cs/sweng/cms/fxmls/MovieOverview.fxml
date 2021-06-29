@@ -238,7 +238,7 @@
                                     </FlowPane>
                                  </children>
                               </VBox>
-                              <FlowPane fx:id="chooseViewing" alignment="CENTER" columnHalignment="CENTER" hgap="10.0" minWidth="200.0" style="-fx-background-color: black;" vgap="10.0">
+                              <FlowPane fx:id="chooseViewing" alignment="CENTER" columnHalignment="CENTER" hgap="10.0" minWidth="200.0" style="-fx-background-color: black;" vgap="10.0" StackPane.alignment="CENTER">
                                  <children>
                                     <Button alignment="CENTER" contentDisplay="CENTER" minHeight="105.0" minWidth="105.0" mnemonicParsing="false" onAction="#handheldsPurchaseTicket" style="-fx-background-color: orange;" text="Purchase Ticket" textAlignment="CENTER">
                                        <font>

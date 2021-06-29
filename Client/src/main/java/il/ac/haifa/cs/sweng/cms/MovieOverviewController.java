@@ -232,18 +232,26 @@ public class MovieOverviewController implements Initializable {
                     alert.getButtonTypes().addAll(ButtonType.OK);
                     alert.showAndWait();
                     if (alert.getResult() == ButtonType.OK) {
+                        try {
                         datePicker.setValue(null);
                         hourComboBox.setValue(null);
-
                         Link link = new Link((Customer)App.getUser() , gregorianCalendar, movie);
+                        PaymentController.setLink(link);
+                        PaymentController.setFromScreen(2);
 
-                        //todo: repalce with paymant screen when ready
-//                    PaymentController.setLink(link);
-//                    PaymentController.setFromScreen(3);//came from Link
-//                        App.setRoot("Payment.fxml"); //set the sceen to the last page.
-//                    App.setRoot("PaymentScreen.fxml"); //set the scean to the last page.
+                        App.setRoot("Payment.fxml"); //set the scean to the last page.
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        cancelLink.setOnAction(e5->{
+                            datePicker.setValue(null);//clean
+                            hourComboBox.setValue(null);//clean
+
+                            stackPane.getChildren().remove(chooseViewing);
+                            stackPane.getChildren().add(chooseViewing);
+                        });
                     }
-
                 }
             }
         });
@@ -333,10 +341,11 @@ public class MovieOverviewController implements Initializable {
             }
             else {
                 try {
-                    PurchaseTicketController.setMovie(movie);
-                    PurchaseTicketController.setScreening(pickedScreening);
+                    PaymentController.setMovie(movie);
+                    PaymentController.setScreening(pickedScreening);
+                    PaymentController.setFromScreen(1);
                     cinemaComboBox.getItems().clear();//clean combobox
-                    App.setRoot("PurchaseTicket.fxml"); //set the scean to the last page.
+                    App.setRoot("Payment.fxml"); //set the scean to the last page.
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
