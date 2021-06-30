@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -35,6 +38,9 @@
 							<font>
 								<Font name="System Bold" size="14.0" />
 							</font>
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
 						</Button>
 					</children>
 				</AnchorPane>
@@ -42,59 +48,80 @@
 			<bottom>
 				<AnchorPane prefHeight="316.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 					<children>
-                  <HBox alignment="BOTTOM_CENTER" layoutY="50.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                     <children>
+						<HBox alignment="BOTTOM_CENTER" layoutY="50.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+							<children>
 								<Button fx:id="purchase" mnemonicParsing="false" onAction="#purchase" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purchase through cinema">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Button>
+									<HBox.margin>
+										<Insets left="5.0" right="5.0" />
+									</HBox.margin>
+								</Button>
 								<Button fx:id="pack_link" mnemonicParsing="false" onAction="#packageANDlink" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Package and links">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Button>
+									<HBox.margin>
+										<Insets left="5.0" right="5.0" />
+									</HBox.margin>
+								</Button>
 								<Button fx:id="pbRefunds" mnemonicParsing="false" onAction="#purpleBadgeRefunds" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purple-badge Refunds">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Button>
+									<HBox.margin>
+										<Insets left="5.0" right="5.0" />
+									</HBox.margin>
+								</Button>
 								<Button fx:id="complaint" mnemonicParsing="false" onAction="#complaintReport" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Complaint">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
+									<HBox.margin>
+										<Insets left="5.0" right="5.0" />
+									</HBox.margin>
+								</Button>
+							</children>
+						</HBox>
 					</children>
 				</AnchorPane>
 			</bottom>
 			<center>
-				<AnchorPane prefHeight="43.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <PieChart fx:id="purchasePie" minHeight="-Infinity" minWidth="-Infinity" StackPane.alignment="CENTER" />
-                        <PieChart fx:id="packLink" visible="false" StackPane.alignment="CENTER" />
-                        <BarChart fx:id="pbchart" visible="false" StackPane.alignment="CENTER">
+				<AnchorPane prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+					<children>
+
+						<StackPane fx:id="stackPane" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: WHITE;" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+							<children>
+                        <StackedBarChart fx:id="purchaseChart" StackPane.alignment="CENTER"> 
+                          <xAxis>
+                            <CategoryAxis label="Movies" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Amount" minorTickCount="1" side="LEFT" upperBound="10.0">
+                                 <tickLabelFont>
+                                    <Font size="11.0" />
+                                 </tickLabelFont>
+                                 <cursor>
+                                    <Cursor fx:constant="NONE" />
+                                 </cursor></NumberAxis>
+                          </yAxis>
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                        </StackedBarChart>
+								<PieChart fx:id="packLinkChart" StackPane.alignment="CENTER" />
+								<StackedBarChart fx:id="pbchart" StackPane.alignment="CENTER"> 
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
                           <yAxis>
                             <NumberAxis side="LEFT" />
                           </yAxis>
-                        </BarChart>
-                        <BarChart fx:id="complaintChart" visible="false" StackPane.alignment="CENTER">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </BarChart>
-                     </children>
-                  </StackPane>
-               </children>
+                        </StackedBarChart>
+								
+								<TableView fx:id="ComplaintTable" StackPane.alignment="CENTER">
+									<columns>
+										<TableColumn maxWidth="100" prefWidth="100" text="id" />
+										<TableColumn maxWidth="100" prefWidth="100" text="Complaint" />
+										<TableColumn maxWidth="100" prefWidth="100" text="response" />
+										<TableColumn maxWidth="100" prefWidth="100" text="status" />
+										<TableColumn maxWidth="100" prefWidth="100" text="Opened on" />
+										<TableColumn maxWidth="100" prefWidth="100" text="Closed on" />
+									</columns>
+								</TableView>
+							</children>
+						</StackPane>
+
+					</children>
 				</AnchorPane>
 			</center>
 

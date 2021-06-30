@@ -6,6 +6,7 @@ import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 
@@ -52,16 +53,23 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ListAllCinemasResponse) {
             if(controller instanceof ViewMoviesController)
                 ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
-            if(controller instanceof PurpleBadgeController)
+            else if(controller instanceof PurpleBadgeController)
                 ((PurpleBadgeController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+            else if(controller instanceof OperationalReportsController)
+                ((OperationalReportsController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+        
         }
         if (response instanceof ListAllMoviesResponse) {
             if(controller instanceof ViewMoviesController) {
                 ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
             }
-            if(controller instanceof PriceChangeSubmissionController) {
+            else if(controller instanceof PriceChangeSubmissionController) {
                 ((PriceChangeSubmissionController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
             }
+            else if(controller instanceof OperationalReportsController) {
+                ((OperationalReportsController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            }
+            
         }
         if (response instanceof ListAllTicketsResponse) {
             ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
@@ -90,7 +98,10 @@ public class OCSFClient extends AbstractClient {
                 ((ComplaintAddController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
             } else if(controller instanceof ComplaintHandlingController) {
                 ((ComplaintHandlingController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+            } else if(controller instanceof OperationalReportsController) {
+                ((OperationalReportsController) controller).setComps(((ListAllComplaintsResponse) response).getComplaints());
             }
+            
         }
         if (response instanceof ComplaintReplyResponse) {
             ((ComplaintHandlingController) controller).onReplyReceived();
@@ -115,6 +126,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof PriceChangeReplyResponse) {
             ((PriceChangeHandlingController) controller).onReplyReceived();
         }
+        if (response instanceof ListAllPaymentsResponse) {
+        	((OperationalReportsController) controller).setPayments(((ListAllPaymentsResponse) response).getPayments());
+        }
         if (response instanceof UpdateTicketsResponse) {
             // TODO: Check if successful or not and show it on the screen.
             ((PaymentController) controller).setTickets(((UpdateTicketsResponse) response).getTicketList());
@@ -122,10 +136,23 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof UpdateLinksResponse) {
             // TODO: Check if successful or not and show it on the screen.
         }
+        if (response instanceof AlertMessageResponse) {
+            Alert.AlertType alertType = Alert.AlertType.values()[((AlertMessageResponse) response).getAlertType()];
+            String header = ((AlertMessageResponse) response).getHeader();
+            String message = ((AlertMessageResponse) response).getMessage();
+            Platform.runLater(() -> showAlert(alertType, header, message));
+        }
         // TODO: Show "Unidentified response".
 
     }
 
+    private void showAlert(Alert.AlertType alertType, String header, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 
     /**

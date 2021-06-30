@@ -8,12 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.PurpleBadge;
+import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
+import il.ac.haifa.cs.sweng.cms.common.entities.Theater;
+import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,7 +37,7 @@ public class PurpleBadgeController implements Initializable {
 	 */
 
 	private List<Cinema> cinemas = new ArrayList<Cinema>();
-
+	private List<Theater> theaters = new ArrayList<Theater>();
 	@FXML
 	private ResourceBundle resources;
 
@@ -130,6 +135,10 @@ public class PurpleBadgeController implements Initializable {
 		pb.setStatus(!pb.getStatus());
 		setMode();
 		App.getOcsfClient(this).updatePurpleBadge(this.pb);
+		for (Cinema c: cinemas) {
+			c.updatePurpleBadge();
+		}
+		//App.getOcsfClient(this).updateCinemas();
 	}
 
 	@FXML
@@ -177,6 +186,18 @@ public class PurpleBadgeController implements Initializable {
 		// TODO Auto-generated method stub
 		this.cinemas=cinemaList;
 	}
+	/**
+	 * @return the theaters
+	 */
+	public List<Theater> getTheaters() {
+		return theaters;
+	}
+	/**
+	 * @param theaters the theaters to set
+	 */
+	public void setTheaters(List<Theater> theaters) {
+		this.theaters = theaters;
+	}
 	public void setPb(PurpleBadge pb) {
 		// TODO Auto-generated method stub
 		this.pb=PurpleBadge.getInstance(pb);
@@ -217,4 +238,63 @@ public class PurpleBadgeController implements Initializable {
 			toggleSwitch.setStyle("-fx-background-color: lightgreen;");
 		}
 	}
+	public void coronaCheck(){
+		for(Theater t:theaters) {
+			for (Screening s: t.getScreeningList()){
+				if(PurpleBadge.getInstance().getClosingDates().contains(s.getDate()))
+					s.setRealSeatsCapacity(t.getRealSeatsCapacity());
+
+				//stack<-ticketList
+				//pop * ticketList.size-real (send cancelation massage)
+				//ticketList<-stack(change the seats No. , if not same customer space) (send changed seat massage)
+				Stack<Ticket> stack = new Stack();
+				stack.addAll(s.getTickets());
+
+				/*cancel seats*/
+				while(stack.size()>t.getRealSeatsCapacity()){
+					Ticket tic = stack.pop();
+					
+					// TODO: 25/06/2021 sand massege of cancelation
+				}
+
+				/*change taken seats*/
+				int i =1;
+				int j = 1;
+				while(!stack.isEmpty()){
+					Ticket tic = stack.pop();
+					if (!stack.peek().getCustomer().equals(tic.getCustomer())){//skip seat
+						s.addTicket(new Ticket(null,null,i,j));
+						j++;
+						j=j%10;
+						if (i==0){
+							j=1;
+							i+=2;
+						}
+					}
+
+					tic.setSeat(i,j);
+					s.addTicket(tic);
+
+					// TODO: 25/06/2021 sand massege of changing seats.
+
+					j++;
+					j=j%10;
+					if (i==0){
+						j=1;
+						i+=2;
+					}
+				}
+				//				for(Ticket t: s.getTickets()) {
+				//TODO:					//notify(t.getCustomer());//Send alert to the customer about canceling
+				//					if(t.getCustomer().getTicket().contains(t))
+				//						t.getCustomer().removeTicket(t, true);
+				//					else
+				//						t.getCustomer().removeTicket(t, false);
+				//					cancel.add(t.getCustomer());
+			}
+		}
+		//		}
+		
+	}
+
 }

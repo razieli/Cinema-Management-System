@@ -24,6 +24,7 @@ public class Link implements Serializable {
     private Movie movie;
     GregorianCalendar date;
     private double linkPrice;
+    private boolean notified;
 
     public Link() {
         this.customer=null;
@@ -31,6 +32,7 @@ public class Link implements Serializable {
         this.payment=null;
         this.date = new GregorianCalendar();
         this.linkPrice =20;
+        this.notified = false;
     }
 
 
@@ -40,6 +42,7 @@ public class Link implements Serializable {
         this.movie=movie;
         this.linkPrice =20;
         this.payment=null;
+        this.notified = false;
     }
 
 
@@ -84,6 +87,14 @@ public class Link implements Serializable {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 
     public void copyFrom(Link link) {

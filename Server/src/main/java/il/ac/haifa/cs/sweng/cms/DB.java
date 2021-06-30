@@ -184,7 +184,7 @@ public class DB {
 		String description2 = ("A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.");
 		URI uri2a = new URI("https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri2b = new URI("https://www.imdb.com/video/vi2959588889?playlistId=tt1375666");
-		session.save(new Movie("Inception","התהחלה",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
+		session.save(new Movie("Inception","התחלה",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");
@@ -846,52 +846,6 @@ public class DB {
 		CriteriaQuery<Payment> query = builder.createQuery(Payment.class);
 		query.from(Payment.class);
 		return session.createQuery(query).getResultList();
-	}
-
-	public void sendMail(String emailAddressToSend, String subject, String msg) {
-		final String username = "Cinema2021SWE@gmail.com";
-		final String password = "fd34DS4$3Jdo";
-		String from = "Cinema@no-reply";
-
-		Properties prop = new Properties();
-		prop.put("mail.smtp.host", "smtp.gmail.com");
-		prop.put("mail.smtp.port", "587");
-		prop.put("mail.smtp.auth", "true");
-		prop.put("mail.smtp.starttls.enable", "true"); //TLS
-
-		javax.mail.Session session = javax.mail.Session.getInstance(prop,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new
-								PasswordAuthentication(username, password);
-					}
-				});
-
-		try {
-			System.out.println("Trying To send an e-mail....\n");
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setRecipients(
-					Message.RecipientType.TO,
-					InternetAddress.parse(emailAddressToSend)
-			);
-			message.setSubject(subject);
-			Multipart multipart = new MimeMultipart();
-			MimeBodyPart bodyMessagePart = new MimeBodyPart();
-			bodyMessagePart.setContent(msg, "text/html; charset=utf-8");
-			multipart.addBodyPart(bodyMessagePart);
-
-			message.setContent(multipart);
-
-//			message.setContent(msg, "text/html; charset=utf-8");
-			message.saveChanges();
-
-			Transport.send(message);
-			System.out.println("E-Mail Sent Successfully!!....");
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

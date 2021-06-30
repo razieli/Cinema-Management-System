@@ -15,32 +15,61 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.PurpleBadgeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0"
+	prefWidth="640.0" style="-fx-background-color: BLACK;"
+	xmlns="http://javafx.com/javafx/15.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="il.ac.haifa.cs.sweng.cms.PurpleBadgeController">
 	<children>
-		<BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<BorderPane prefHeight="400.0" prefWidth="600.0"
+			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<top>
-				<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="683.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" BorderPane.alignment="CENTER">
+				<AnchorPane minHeight="-Infinity" minWidth="-Infinity"
+					prefHeight="38.0" prefWidth="683.0"
+					style="-fx-background-color: BLACK; -fx-border-color: ORANGE;"
+					BorderPane.alignment="CENTER">
 					<children>
-						<MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0" prefWidth="681.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
-						<Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375" strokeType="OUTSIDE" strokeWidth="0.0" text="Purple Badge" textAlignment="CENTER" wrappingWidth="640.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+						<MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0"
+							prefWidth="681.0" style="-fx-background-color: black;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0"
+							AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
+						<Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375"
+							strokeType="OUTSIDE" strokeWidth="0.0" text="Purple Badge"
+							textAlignment="CENTER" wrappingWidth="640.0"
+							AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
 							<font>
 								<Font name="Aharoni Bold" size="30.0" />
 							</font>
 						</Text>
-						<Button fx:id="backButton" layoutX="583.0" layoutY="8.0" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: orange;" text="BACK" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="8.0">
+						<Button fx:id="backButton" layoutX="583.0" layoutY="8.0"
+							mnemonicParsing="false" onAction="#handheldsBackButton"
+							prefHeight="30.0" prefWidth="68.0"
+							style="-fx-background-color: orange;" text="BACK"
+							AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="50.0"
+							AnchorPane.topAnchor="8.0">
 							<font>
 								<Font name="Aharoni Bold" size="14.0" />
 							</font>
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
 						</Button>
 					</children>
 				</AnchorPane>
 			</top>
 			<center>
-				<AnchorPane prefHeight="316.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+				<AnchorPane prefHeight="316.0" prefWidth="400.0"
+					BorderPane.alignment="CENTER">
 					<children>
-						<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+						<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+							AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
 							<children>
-								<ToggleButton fx:id="toggleSwitch" mnemonicParsing="false" onAction="#setPurpleBadge" text="Purple Badge">
+								<ToggleButton fx:id="toggleSwitch"
+									mnemonicParsing="false" onAction="#setPurpleBadge"
+									text="Purple Badge">
 									<font>
 										<Font name="Aharoni Bold" size="14.0" />
 									</font>
@@ -53,7 +82,9 @@
 								</ToggleButton>
 								<HBox alignment="CENTER">
 									<children>
-										<Text fx:id="capacityText" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Set maximum capacity">
+										<Text fx:id="capacityText" fill="ORANGE"
+											strokeType="OUTSIDE" strokeWidth="0.0"
+											text="Set maximum capacity">
 											<cursor>
 												<Cursor fx:constant="TEXT" />
 											</cursor>
@@ -64,7 +95,9 @@
 												<Insets right="20.0" />
 											</HBox.margin>
 										</Text>
-										<Button fx:id="editButton" mnemonicParsing="false" onAction="#editCapacity" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: orange;" text="Edit">
+										<Button fx:id="editButton" mnemonicParsing="false"
+											onAction="#editCapacity" prefHeight="30.0" prefWidth="68.0"
+											style="-fx-background-color: orange;" text="Edit">
 											<font>
 												<Font name="Aharoni Bold" size="14.0" />
 											</font>
@@ -74,14 +107,19 @@
 										</Button>
 									</children>
 								</HBox>
-								<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+								<HBox alignment="CENTER" prefHeight="100.0"
+									prefWidth="200.0">
 									<children>
-										<TextField fx:id="capacityAmount" prefWidth="50.0" text="">
+										<TextField fx:id="capacityAmount" prefWidth="50.0"
+											text="">
 											<HBox.margin>
 												<Insets right="20.0" />
 											</HBox.margin>
 										</TextField>
-										<Button fx:id="okButton" mnemonicParsing="false" onAction="#setCapacityAmount" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: orange;" text="OK">
+										<Button fx:id="okButton" mnemonicParsing="false"
+											onAction="#setCapacityAmount" prefHeight="30.0"
+											prefWidth="68.0" style="-fx-background-color: orange;"
+											text="OK">
 											<font>
 												<Font name="Aharoni Bold" size="14.0" />
 											</font>
@@ -91,11 +129,14 @@
 										</Button>
 									</children>
 								</HBox>
-								<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+								<HBox alignment="CENTER" prefHeight="100.0"
+									prefWidth="200.0">
 									<children>
-										<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+										<VBox alignment="CENTER" prefHeight="200.0"
+											prefWidth="100.0">
 											<children>
-												<Text fx:id="FromText" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="From:">
+												<Text fx:id="FromText" fill="ORANGE"
+													strokeType="OUTSIDE" strokeWidth="0.0" text="From:">
 													<font>
 														<Font name="Aharoni Bold" size="14.0" />
 													</font>
@@ -110,9 +151,11 @@
 												<Insets right="50.0" />
 											</HBox.margin>
 										</VBox>
-										<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+										<VBox alignment="CENTER" prefHeight="200.0"
+											prefWidth="100.0">
 											<children>
-												<Text fx:id="toText" fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="To:">
+												<Text fx:id="toText" fill="ORANGE" strokeType="OUTSIDE"
+													strokeWidth="0.0" text="To:">
 													<font>
 														<Font name="Aharoni Bold" size="14.0" />
 													</font>
@@ -127,16 +170,18 @@
 												<Insets left="50.0" right="50.0" />
 											</HBox.margin>
 										</VBox>
-										<Button fx:id="setButton" mnemonicParsing="false" onAction="#setDates" prefHeight="16.0" prefWidth="68.0" style="-fx-background-color: orange;" text="SET">
+										<Button fx:id="setButton" mnemonicParsing="false"
+											onAction="#setDates" prefHeight="16.0" prefWidth="68.0"
+											style="-fx-background-color: orange;" text="SET">
 											<font>
 												<Font name="Aharoni Bold" size="14.0" />
 											</font>
 											<cursor>
 												<Cursor fx:constant="HAND" />
 											</cursor>
-                                 <HBox.margin>
-                                    <Insets top="14.0" />
-                                 </HBox.margin>
+											<HBox.margin>
+												<Insets top="14.0" />
+											</HBox.margin>
 										</Button>
 									</children>
 								</HBox>
@@ -148,16 +193,17 @@
 					</opaqueInsets>
 				</AnchorPane>
 			</center>
-         <left>
-            <TextArea fx:id="datesText" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <font>
-                  <Font name="Aharoni Bold" size="11.5" />
-               </font>
-            </TextArea>
-         </left>
+			<left>
+				<TextArea fx:id="datesText" prefHeight="200.0"
+					prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
+					<cursor>
+						<Cursor fx:constant="TEXT" />
+					</cursor>
+					<font>
+						<Font name="Aharoni Bold" size="11.5" />
+					</font>
+				</TextArea>
+			</left>
 		</BorderPane>
 	</children>
 </AnchorPane>
