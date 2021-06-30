@@ -394,9 +394,17 @@ public class MovieOverviewController implements Initializable {
         //set title to show on screen
         inputEngTitle.setText(movie.getEngName());
         inputHebTitle.setText(movie.getHebName());
-
-        inputImage.setImage(new Image(movie.getPosterUrl().toString()));//set poster to show from url
-
+        if(movie.getPosterUrl().toString().isEmpty())
+        {
+            inputImage.setImage(new Image("DefaultMoviePoster.png"));
+        }
+        else {
+            try {
+                inputImage.setImage(new Image(movie.getPosterUrl().toString()));
+            } catch (Exception e) {
+                inputImage.setImage(new Image("DefaultMoviePoster.png"));
+            }
+        }
         inputTrailer.setOnAction(new EventHandler<ActionEvent>() {
                                      @Override public void handle(ActionEvent e) {
                                          try {
