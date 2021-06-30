@@ -174,7 +174,12 @@ public class ViewMoviesController implements Initializable {
     protected void addImage(Movie movie){
 
         /*add poster of the movie*/
-        pic = new ImageView(movie.getPosterUrl().toString());
+        try {
+            pic = new ImageView(movie.getPosterUrl().toString());
+        } catch (Exception e) {
+            pic = new ImageView("DefaultMoviePoster.png");
+            e.printStackTrace();
+        }
         pic.setFitWidth(160);
         pic.setFitHeight(220);
 
