@@ -139,6 +139,9 @@ public class OCSFClient extends AbstractClient {
             ((PaymentController) controller).setLink(((UpdateLinksResponse) response).getLink());
             ((PaymentController) controller).setMessageStatus(true);
         }
+        if (response instanceof UpdateCustomerResponse) {
+            // TODO: Check if successful or not and show it on the screen.
+        }
         if (response instanceof AlertMessageResponse) {
             Alert.AlertType alertType = Alert.AlertType.values()[((AlertMessageResponse) response).getAlertType()];
             String header = ((AlertMessageResponse) response).getHeader();
@@ -262,6 +265,14 @@ public class OCSFClient extends AbstractClient {
     protected void updateLinks(Link link, boolean addOrRemove) {
         try {
             sendToServer(new UpdateLinksRequest(link,addOrRemove ));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    protected void updateCustomer(Customer customer) {
+        try {
+            sendToServer(new UpdateCustomerRequest(customer));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

@@ -177,6 +177,10 @@ public class OCSFServer extends AbstractServer {
             db.setLinks(link, addOrRemove);
             return new UpdateLinksResponse(link, ResponseStatus.Acknowledged);
         }
+        if(request instanceof UpdateCustomerRequest) {
+            db.setCustomer(((UpdateCustomerRequest) request).getCustomer());
+            return new UpdateCustomerResponse(ResponseStatus.Acknowledged);
+        }
         if(request instanceof LoginRequest) {
             return handleLoginRequest((LoginRequest) request, client);
         }

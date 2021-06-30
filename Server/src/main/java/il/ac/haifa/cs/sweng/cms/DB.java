@@ -4,17 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Transport;
-import javax.mail.internet.*;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.util.Log;
-import org.hibernate.Criteria;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,11 +19,6 @@ import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 import org.mindrot.jbcrypt.BCrypt;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Properties;
 
 
 /**
@@ -720,6 +710,17 @@ public class DB {
 		session.getTransaction().commit();
 	}
 
+	/**
+	 * Updates the database according to the given customer
+	 * @param customer Customer to update.
+	 */
+	protected void setCustomer(Customer customer) {
+		session.beginTransaction();
+		session.save(customer.getPayment());
+		session.merge(customer);
+		session.flush();
+		session.getTransaction().commit();
+	}
 
 	public int getPermission(String username) {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

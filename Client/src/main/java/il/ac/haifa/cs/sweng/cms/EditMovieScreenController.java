@@ -247,7 +247,12 @@ public class EditMovieScreenController implements Initializable {
                 movie.setLength(Integer.valueOf(lengthBox.getText()));
                 movie.setAgeRestriction(Integer.valueOf(PGRaitingBox.getText()));
                 movie.setCastList(castBox.getText());
-                movie.setPosterUrl(new URI(posterBox.getText()));
+                if(castBox.getText() == null) {
+                    movie.setPosterUrl(new URI(null));
+                }
+                else {
+                    movie.setPosterUrl(new URI(posterBox.getText()));
+                }
                 movie.setTrailerUrl(new URI(trailerBox.getText()));
                 movie.setScreening(screeningList);
                 movie.setPremiere(premiere);
@@ -308,7 +313,18 @@ public class EditMovieScreenController implements Initializable {
             //set poster to show from url
             posterBox.setText(movie.getPosterUrl().toString());
             trailerBox.setText(movie.getTrailerUrl().toString());
-            inputImage.setImage(new Image(movie.getPosterUrl().toString()));
+            if(movie.getPosterUrl().toString().isEmpty())
+            {
+                inputImage.setImage(new Image("DefaultMoviePoster.png"));
+            }
+            else {
+                try {
+                    inputImage.setImage(new Image(movie.getPosterUrl().toString()));
+                } catch (Exception e) {
+                    inputImage.setImage(new Image("DefaultMoviePoster.png"));
+                }
+
+            }
             inputTrailer.setOnAction(new EventHandler<ActionEvent>() {
                                          @Override
                                          public void handle(ActionEvent e) {

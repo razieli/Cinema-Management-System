@@ -35,6 +35,10 @@ public class Customer extends User implements Serializable {
 
 	private double balance;
 
+	@OneToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="payment_id")
+	private Payment payment;
+
 	/**
 	 * constructors
 	 */
@@ -177,5 +181,13 @@ public class Customer extends User implements Serializable {
 
 	public double getBalance() {
 		return balance;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 }
