@@ -10,12 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane minHeight="400.0" minWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.SuccessfulPurchaseController">
    <children>
       <BorderPane layoutY="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <VBox fx:id="successfulVBox" alignment="TOP_CENTER" spacing="15.0">
+            <VBox fx:id="successfulVBox" alignment="CENTER" spacing="15.0">
                <children>
                   <Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your purchase have made successfully">
                      <font>
@@ -39,17 +38,6 @@
                </children>
             </VBox>
          </center>
-         <top>
-            <AnchorPane fx:id="TopMenu" style="-fx-border-color: orange;" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
-               </children>
-            </AnchorPane>
-         </top>
          <bottom>
             <VBox alignment="CENTER">
                <children>
