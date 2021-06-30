@@ -99,6 +99,16 @@ public class UserLoginController implements Initializable {
                             "you bought tickets for is canceled. </h2>" +
                             "<br><h2 style=\"color:black;\">your bank account will receive a compensation of 50$ shortly." +
                             "</bdo>");
+
+            // changed screening message
+            App.getOcsfClient(this).sendMail(
+                    "galuk3@gmail.com",
+                    "Screening seats Changed due to Purple Badge Rules",
+                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+                            "<br><h2 style=\"color:black;\">Unfortunately, due to the Purple Badge rules your seats have been changed. </h2>" +
+                            "you may choose new seats when you arrive to the theater. </h2>" +
+                            "<br><h2 style=\"color:black;\">." +
+                            "</bdo>");
         }
         else if (val_connection == -2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
