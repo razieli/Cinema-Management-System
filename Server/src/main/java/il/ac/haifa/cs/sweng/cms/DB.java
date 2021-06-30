@@ -825,6 +825,13 @@ public class DB {
 		return priceChanges;
 	}
 
+	public List<Payment> getAllPayments() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Payment> query = builder.createQuery(Payment.class);
+		query.from(Payment.class);
+		return session.createQuery(query).getResultList();
+	}
+
 	public void sendMail(String emailAddressToSend, String subject, String msg) {
 		final String username = "Cinema2021SWE@gmail.com";
 		final String password = "fd34DS4$3Jdo";

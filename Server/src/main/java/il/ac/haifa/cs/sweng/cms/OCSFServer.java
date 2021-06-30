@@ -107,6 +107,12 @@ public class OCSFServer extends AbstractServer {
             return new ListAllLinksResponse(linkList);
         }
 
+        if(request instanceof ListAllPaymentsRequest) {
+            // Get list of payments from DB.
+            List<Payment> paymentList = db.getAllPayments();
+            return new ListAllPaymentsResponse(paymentList);
+        }
+
         if(request instanceof UpdateMovieRequest) {
             // Save updated movie in DB.
             Movie movie = ((UpdateMovieRequest) request).getMovie();
