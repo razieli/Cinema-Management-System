@@ -96,7 +96,7 @@ public class OCSFClient extends AbstractClient {
             // TODO: Update GUI with screenings.
         }
         if(response instanceof getPurpleBadgeResponse) {
-            ((PurpleBadgeController) controller).setPb(((getPurpleBadgeResponse)response).getPb());
+        	((PurpleBadgeController) controller).setPb(((getPurpleBadgeResponse)response).getPb());
         }
 
         if (response instanceof ListAllPriceChangesResponse) {
@@ -285,10 +285,11 @@ public class OCSFClient extends AbstractClient {
         }
     }
     public void getPurpleBadge() {
-        try {
+    	
+    	try {
             sendToServer(new getPurpleBadgeRequest());
         } catch (IOException e) {
-            // TODO: Show "IO exception while sending request to server."
+        	// TODO: Show "IO exception while sending request to server."
         }
     }
     /**

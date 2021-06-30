@@ -110,8 +110,8 @@ public class Theater implements Serializable {
 			this.realSeatsCapacity = this.seatsCapacity;
 	}
 
-	public List<Customer> coronaCheck(){
-		List<Customer> cancel = new LinkedList<Customer>();
+	public List<Ticket> coronaCheck(){
+		List<Ticket> cancel = new LinkedList<Ticket>();
 		for (Screening s: this.screeningList){
 			if(PurpleBadge.getInstance().getClosingDates().contains(s.getDate()))
 				s.setRealSeatsCapacity(realSeatsCapacity);
@@ -125,6 +125,7 @@ public class Theater implements Serializable {
 			/*cancel seats*/
 			while(stack.size()>realSeatsCapacity){
 				Ticket tic = stack.pop();
+				cancel.add(tic);
 				// TODO: 25/06/2021 sand massege of cancelation
 			}
 

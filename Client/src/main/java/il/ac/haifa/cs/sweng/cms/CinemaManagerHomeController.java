@@ -77,11 +77,17 @@ public class CinemaManagerHomeController implements Initializable {
 
     @FXML
     void switchToOperationalMonitoringScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle(null);
+//        alert.setHeaderText(null);
+//        alert.setContentText("New features coming soon..  :)");
+//        alert.showAndWait();
+    	try {
+            App.setRoot("OperationalReports.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	
     }
 
     @FXML

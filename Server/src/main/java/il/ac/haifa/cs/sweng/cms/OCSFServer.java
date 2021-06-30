@@ -174,7 +174,12 @@ public class OCSFServer extends AbstractServer {
         if(request instanceof UpdatePurpleBadgeRequest) {
             // Save updated PurpleBadge in DB.
             PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest)request).getPb()) ;
-            db.setPurpleBadge(pb);
+            try {
+				db.setPurpleBadge(pb);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof getPurpleBadgeRequest) {
