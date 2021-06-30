@@ -121,7 +121,7 @@ public class OCSFServer extends AbstractServer {
         }
 
         if(request instanceof DeleteMovieRequest) {
-            // Delete move from DB.
+            // Delete Movie from DB.
             Movie movie = ((DeleteMovieRequest) request).getMovie();
             db.deleteMovie(movie);
             return new DeleteMovieResponse(ResponseStatus.Acknowledged);
@@ -129,11 +129,29 @@ public class OCSFServer extends AbstractServer {
 
         if(request instanceof UpdateTicketsRequest) {
             // Save tickets in DB.
-            Ticket ticket= ((UpdateTicketsRequest) request).getTicket();
+            List<Ticket> tempTickets = new ArrayList<Ticket>();
+            List<Ticket> tickets= ((UpdateTicketsRequest) request).getTicket();
             boolean addOrRemove = ((UpdateTicketsRequest) request).getAddOrRemove();
             boolean boughtWithPackage = ((UpdateTicketsRequest) request).getBoughtWithPackage();
-            db.setTickets(ticket, addOrRemove,boughtWithPackage);
-            return new UpdateTicketsResponse(ResponseStatus.Acknowledged);
+            for (Ticket ticket: tickets) {
+                db.setTickets(ticket, addOrRemove, boughtWithPackage);
+            }
+            List<Ticket> allTickets= db.getAllTickets(); //read all tickets
+
+            for (Ticket ticket: tickets) {
+                for (int i = allTickets.size() ; i >=0 ; i--) {
+                    Ticket allTicket=allTickets.get(i);
+                    if (ticket.getCustomer().equals(allTicket.getCustomer()) && ticket.getPayment().equals(allTicket.getPayment())){
+                        tempTickets.add(allTicket);
+                        break;
+                    }
+                }
+            }
+
+            if (!tempTickets.isEmpty() && tempTickets.size()==tickets.size())
+                tickets=tempTickets;
+            
+            return new UpdateTicketsResponse(ResponseStatus.Acknowledged, tickets);
         }
 
         if(request instanceof UpdateLinksRequest) {

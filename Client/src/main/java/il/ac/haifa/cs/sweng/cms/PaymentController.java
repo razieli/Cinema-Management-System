@@ -5,6 +5,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateTicketsResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -165,8 +166,7 @@ public class PaymentController implements Initializable {
 
         if (isChecked()){
             if(!tickets.isEmpty()) {
-                for (Ticket ticket : tickets) {
-                    if (ticket.getCustomer().isHas_package()) {
+                    if (tickets.get(0).getCustomer().isHas_package()) {
                         boolean payWithPackage;
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Pay With Package");
@@ -183,9 +183,16 @@ public class PaymentController implements Initializable {
                                 tic.setPayment(payment);
 
                             System.out.println(tickets);
-                            App.getOcsfClient(this).updateTickets(ticket, true, payWithPackage);
+                            App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
+                            App.getOcsfClient(this).getListOfTickets();
                             // TODO: Declare success only after acknowledge from server was received.
-                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+
+
+//                            if(){
+                                // TODO: 30/06/2021 update the packeg statuse
+                                sendMail(tickets);//send mail
+                                App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -196,25 +203,31 @@ public class PaymentController implements Initializable {
                                 tic.setPayment(payment);
 
                             System.out.println(tickets);
-                            App.getOcsfClient(this).updateTickets(ticket, true, false);
+                            App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
-                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                            if(){
+                                sendMail(tickets);//send mail
+                                App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                }
-            } else {
+
+            } else if (link!=null) {//links
                 try {
                     // TODO: set the selected movie.
                     Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
                     Link newLink = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
                     newLink.setPayment(payment);
 
-                    System.out.println(tickets);
+                    System.out.println(link);
                     App.getOcsfClient(this).updateLinks(newLink, true);
                     // TODO: Declare success only after acknowledge from server was received.
-                    App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                    if(){
+                        sendMail(link);//send mail
+                        App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -279,6 +292,7 @@ public class PaymentController implements Initializable {
                 seatGridPane.getChildren().clear();
                 for (int row = 0; row <= screening.getSeatsCapacity() / 10; row++) {
                     for (int col = 0; col < 10; col++) {
+//                        System.out.println("seats: "+seatsMap[row][col]);
                         try {
                             addSeat(screening, row, col);
                         } catch (FileNotFoundException e) {
@@ -303,7 +317,7 @@ public class PaymentController implements Initializable {
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                             errorAlert.setTitle(null);
                             errorAlert.setHeaderText(null);
-                            errorAlert.setContentText("Pleas pick legal number of seats first.");
+                            errorAlert.setContentText("Please pick legal number of seats first.");
                             errorAlert.showAndWait();
                             flag.set(false);
                         }
@@ -516,7 +530,7 @@ public class PaymentController implements Initializable {
                 Label availableLabel = new Label("Available until: ");
                 GregorianCalendar availableTime = new GregorianCalendar(link.getDate().get(Calendar.YEAR),link.getDate().get(Calendar.MONTH),link.getDate().get(Calendar.DAY_OF_MONTH),link.getDate().get(Calendar.HOUR_OF_DAY),link.getDate().get(Calendar.MINUTE));
                 availableTime.add(Calendar.DAY_OF_MONTH,7);
-                SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm"); //set a date format
                 Text availableText = new Text(format.format(availableTime.getTime()));
                 availableLabel.setTextFill(Color.WHITE);
                 availableText.setFill(Color.WHITE);
@@ -617,6 +631,7 @@ public class PaymentController implements Initializable {
         Ticket ticket = new Ticket(null, s, row,col);
         int[][] seatMap = s.getSeats();
         ImageView imageView = new ImageView();
+
         if(seatMap[row][col] == 0){
             // TODO: 22/06/2021 toggle collor,   max seat to select
             imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
@@ -648,12 +663,14 @@ public class PaymentController implements Initializable {
                         imageView.setImage(new Image("ChackedSeat.png", 30,30,false,false));
                         ticket.setCustomer((Customer)App.getUser());
                         tickets.add(ticket);
+                        // TODO: 30/06/2021  mark seat as taken in screening seat[][]<- -1
                         pickSeats--;
                     }
                 } else if (seatFlag.get() == false) {
                     imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
                     ticket.setCustomer(null);
                     tickets.remove(ticket);
+                    // TODO: 30/06/2021  mark seat as not taken in screening seat[][] <-0
                     pickSeats++;
                 }
             }
@@ -705,6 +722,13 @@ public class PaymentController implements Initializable {
         PaymentController.link = link;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
 
     /**
      * chack if valid details inserts
@@ -872,6 +896,54 @@ public class PaymentController implements Initializable {
         return m.matches();
     }
 
+    private void sendMail(List<Ticket> tickets){
+        String seats="      <td>";
 
+        for (Ticket ticket:tickets){
+            seats+="("+ticket.getRow()+", "+ticket.getCol()+") ";
+        }
+        seats+="<td>\n";
+
+            App.getOcsfClient(this).sendMail(
+                    "galuk3@gmail.com, "+tickets.get(0).getPayment().getEmail(),
+                    "Order Confirmed",
+                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+tickets.get(0).getPayment().getFirstName()+" "+ tickets.get(0).getPayment().getLastName()+"</i></h1><br>" +
+                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                            "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
+                            "<br><table border='1' dir=\"ltr\">\n" +
+                            "    <tr>\n" +
+                            "      <td>theater</td>\n" +
+                            "      <td>movie</td>\n" +
+                            "      <td>quantity</td></td>\n" +
+                            "      <td>seats</td></td>\n" +
+                            "    </tr>\n" +
+                            "    <tr>\n" +
+                            "      <td>"+tickets.get(0).getScreening().getTheater().getName()+"</td>\n" +
+                            "      <td>"+tickets.get(0).getScreening().getMovie().getEngName()+"</td>\n" +
+                            "      <td>"+tickets.size()+"</td>\n" +
+                            seats +
+                            "    </tr></table dir=\"ltr\">" +
+                            "</bdo>");
+    }
+
+    private void sendMail(Link link) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm");//set a date format
+        GregorianCalendar to = new GregorianCalendar(link.getDate().get(Calendar.YEAR),link.getDate().get(Calendar.MONTH),link.getDate().get(Calendar.DAY_OF_MONTH)+7,link.getDate().get(Calendar.HOUR_OF_DAY),link.getDate().get(Calendar.MINUTE));
+        App.getOcsfClient(this).sendMail(
+                "galuk3@gmail.com, "+link.getPayment().getEmail(),
+                "Order Confirmed",
+                "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+link.getPayment().getFirstName()+" "+ link.getPayment().getLastName()+"</i></h1><br>" +
+                        "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                        "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
+                        "<br><table border='1' dir=\"ltr\">\n" +
+                        "    <tr>\n" +
+                        "      <td>movie</td>\n" +
+                        "    </tr>\n" +
+                        "    <tr>\n" +
+                        "      <td>"+link.getMovie().getEngName()+"</td>\n" +
+                        "      <td> The link will be available between: "+format.format(link.getDate().getTime().getTime()).toString()+" to: "+format.format(to.getTime()).toString() +"</td>\n" +
+                        "    </tr></table dir=\"ltr\">" +
+                        "</bdo>");
+    }
 }
 

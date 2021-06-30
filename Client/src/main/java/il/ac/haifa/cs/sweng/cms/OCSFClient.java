@@ -86,6 +86,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof MailResponse) {
             ((UserLoginController) controller).onReplyReceived2((MailResponse) response);
         }
+        if (response instanceof DeleteMovieResponse) {
+            ((EditMovieScreenController) controller).onReplyReceived((DeleteMovieResponse) response);
+        }
         if (response instanceof ComplaintFileResponse) {
             ((ComplaintAddController) controller).handleComplaintFileResponse();
         }
@@ -127,6 +130,7 @@ public class OCSFClient extends AbstractClient {
         }
         if (response instanceof UpdateTicketsResponse) {
             // TODO: Check if successful or not and show it on the screen.
+            ((PaymentController) controller).setTickets(((UpdateTicketsResponse) response).getTicketList());
         }
         if (response instanceof UpdateLinksResponse) {
             // TODO: Check if successful or not and show it on the screen.
@@ -227,12 +231,12 @@ public class OCSFClient extends AbstractClient {
 
     /**
      * Sends a request to the server to update the list of tickets by adding or removing a ticket.
-     * @param ticket New list of screenings.
+     * @param tickets New list of screenings.
      */
 
-    protected void updateTickets(Ticket ticket, boolean addOrRemove, boolean boughtWithPackage) {
+    protected void updateTickets(List <Ticket> tickets, boolean addOrRemove, boolean boughtWithPackage) {
         try {
-            sendToServer(new UpdateTicketsRequest(ticket, addOrRemove, boughtWithPackage));
+            sendToServer(new UpdateTicketsRequest(tickets, addOrRemove, boughtWithPackage));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

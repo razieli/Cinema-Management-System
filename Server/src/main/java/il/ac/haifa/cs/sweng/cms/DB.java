@@ -267,11 +267,12 @@ public class DB {
 	public void generateScreening() throws Exception{
 		List<Movie> movies=getAllMovies();
 		List<Theater> theaters = getAllTheaters();
+		Random rand = new Random();
 		for(Movie m:movies){
 			ArrayList<Screening> s = new ArrayList<>();
-			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,6,27,17,00));
-			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,9,14,21,30));
-			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,7,17,23,00));
+			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,rand.nextInt(12)+1,rand.nextInt(28)+1,rand.nextInt(24),15));
+			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,rand.nextInt(12)+1,rand.nextInt(28)+1,rand.nextInt(24),30));
+			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,rand.nextInt(12)+1,rand.nextInt(28)+1,rand.nextInt(24),00));
 			s.add(sc1);
 			s.add(sc2);
 			s.add(sc3);
@@ -511,12 +512,12 @@ public class DB {
 		for(Screening screening : movie.getScreening()) {
 			for (Screening existingScreening : getAllScreening()) {
 				if (existingScreening.getId() == screening.getId()) {
-					System.out.println("Found SCREENING-A!!");
+//					System.out.println("Found SCREENING-A!!");
 					for (Ticket ticket : existingScreening.getTickets()) {
 						for (Ticket existingTicket : getAllTickets()) {
 							if (existingTicket.getId() == ticket.getId()) {
 								session.delete(existingTicket);
-								System.out.println("Ticket Deleted.");
+//								System.out.println("Ticket Deleted.");
 							}
 						}
 					}
@@ -532,7 +533,7 @@ public class DB {
 						for (Ticket existingTicket : getAllTickets()) {
 							if (existingTicket.getId() == ticket.getId()) {
 								session.delete(existingTicket);
-								System.out.println("Ticket Deleted.");
+//								System.out.println("Ticket Deleted.");
 							}
 						}
 					}
@@ -544,7 +545,7 @@ public class DB {
 			for (Screening existingScreening : getAllScreening()) {
 				if (existingScreening.getId() == screening.getId()) {
 					session.delete(existingScreening);
-					System.out.println("Screening Deleted.");
+//					System.out.println("Screening Deleted.");
 					break;
 				}
 			}
@@ -554,7 +555,7 @@ public class DB {
 			for (Link existingLink : getAllLinks()) {
 				if (existingLink.getId() == link.getId()) {
 					session.delete(existingLink);
-					System.out.println("Link Deleted.");
+//					System.out.println("Link Deleted.");
 				}
 			}
 		}
@@ -562,7 +563,7 @@ public class DB {
 		for(PriceChange existingPriceChange : getAllPriceChanges(null)) {
 			if (existingPriceChange.getId() == movie.getId()) {
 				session.delete(existingPriceChange);
-				System.out.println("PriceChange Deleted");
+//				System.out.println("PriceChange Deleted");
 			}
 		}
 
@@ -571,7 +572,7 @@ public class DB {
 		for(Movie existingMovie : getAllMovies()) {
 			if(existingMovie.getId() == movie.getId()) {
 				session.delete(existingMovie);
-				System.out.println("Movie Deleted.");
+//				System.out.println("Movie Deleted.");
 			}
 		}
 		session.flush();
@@ -660,15 +661,30 @@ public class DB {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
-			session.save(ticket.getPayment());
-			session.save(ticket);
+				session.save(ticket.getPayment());
+				session.save(ticket);
+				session.flush();
+
+			ticket.getScreening().addTicket(ticket);
+//			for(Screening screening : getAllScreening()) {
+//				if(screening.getId() == ticket.getScreening().getId()) {
+//					screening.copyFrom(ticket.getScreening());
+//					ticket.setScreening(screening);
+//					break;
+//				}
+//			}
+//			session.update(ticket.getScreening());
+			session.merge(ticket.getScreening());
 		}
 		else{
-			Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
-			if (ticketToRemove != null) {
-				session.remove(ticketToRemove.getPayment());
-				session.remove(ticketToRemove);
-			}
+				Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
+				if (ticketToRemove != null) {
+					ticket.getScreening().removeTicket(ticket);
+					session.merge(ticket.getScreening());
+					session.delete(ticketToRemove.getPayment());
+					session.remove(ticketToRemove);
+				}
+
 		}
 		session.flush();
 		session.getTransaction().commit();

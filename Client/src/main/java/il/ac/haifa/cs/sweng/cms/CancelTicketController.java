@@ -87,7 +87,10 @@ public class CancelTicketController implements Initializable {
             //TODO: cancellation based on current time.
             if (alert.getResult() == ButtonType.YES)//delete operation from database
             {
-                App.getOcsfClient(this).updateTickets(TicketsComboBox.getValue(), false, false);
+                List <Ticket> tickets = new ArrayList<Ticket>();
+                tickets.add(TicketsComboBox.getValue());
+
+                App.getOcsfClient(this).updateTickets(tickets, false, false);
                 ticketList.remove(TicketsComboBox.getValue());
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Canceled");

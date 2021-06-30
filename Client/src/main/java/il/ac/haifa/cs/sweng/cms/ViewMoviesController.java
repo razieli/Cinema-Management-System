@@ -223,7 +223,7 @@ public class ViewMoviesController implements Initializable {
             GridPane gridPane = new GridPane();
 
             /*add screening times*/
-            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm; ");//set a date format
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm; ");//set a date format
             String screenTime = "";
             int i = 0, j = 0, k=0;
             movie.getScreening().sort(new SortByDate());//sort screening list

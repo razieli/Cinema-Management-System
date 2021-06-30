@@ -34,7 +34,7 @@ public class Screening implements Serializable {
 	private int realSeatsCapacity;
 
 
-	@Transient
+//	@Transient
 	private int[][] seats;
 
 
@@ -120,11 +120,13 @@ public class Screening implements Serializable {
 	 */
 	public void addTicket(Ticket ticket){
 		seats[ticket.getRow()][ticket.getCol()] = ticket.getId();
+		System.out.println("id: "+ticket.getId());
+		System.out.println("seats: "+seats[ticket.getRow()][ticket.getCol()]);
 		tickets.add(ticket);
 	}
 
 	public void removeTicket(Ticket ticket){
-		seats[ticket.getRow()][ticket.getCol()] = -1;
+		seats[ticket.getRow()][ticket.getCol()] = 0;
 		tickets.remove(ticket);
 	}
 
@@ -140,7 +142,7 @@ public class Screening implements Serializable {
 		return seats;
 	}
 
-	public void setSeats(int[][] seats) {
+	public void setSeats(int[][] seat) {
 		this.seats = seats;
 	}
 
@@ -164,7 +166,7 @@ public class Screening implements Serializable {
 
 	@Override
 	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm"); //set a date format
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm"); //set a date format
 		String date = format.format(this.getDate().getTime()).toString();
 
 		return date +", in " + this.theater.getName();
