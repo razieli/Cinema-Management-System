@@ -719,6 +719,17 @@ public class DB {
 		session.getTransaction().commit();
 	}
 
+	/**
+	 * Updates the database according to the given customer
+	 * @param customer Customer to update.
+	 */
+	protected void setCustomer(Customer customer) {
+		session.beginTransaction();
+		session.save(customer.getPayment());
+		session.merge(customer);
+		session.flush();
+		session.getTransaction().commit();
+	}
 
 	public int getPermission(String username) {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
