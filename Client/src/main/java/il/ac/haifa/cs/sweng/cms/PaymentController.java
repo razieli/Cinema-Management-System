@@ -185,6 +185,28 @@ public class PaymentController implements Initializable {
                             System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(ticket, true, payWithPackage);
                             // TODO: Declare success only after acknowledge from server was received.
+
+                            App.getOcsfClient(this).sendMail(
+                                    "galuk3@gmail.com, "+inputEmail,
+                                    "Order Confirmed",
+                                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+inputFirstName+"</i></h1><br>" +
+                                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                                            "<br><h3 style=\"color:black;\">Your order "+ticket.getId()+" is confirmed.</h3> "+
+                                            "<br><table border='1' dir=\"ltr\">\n" +
+                                            "    <tr>\n" +
+                                            "      <td>theater</td>\n" +
+                                            "      <td>movie</td>\n" +
+                                            "      <td>num of tickets</td>\n" +
+                                            "      <td>places</td>\n" +
+                                            "    </tr>\n" +
+                                            "    <tr>\n" +
+                                            "      <td>"+ticket.getScreening().getTheater().getName()+"</td>\n" +
+                                            "      <td>"+ticket.getScreening().getMovie().getEngName()+"</td>\n" +
+                                            "      <td>"+pickSeats+"</td>\n" +
+                                            "      <td>+row: "+ticket.getRow()+", col: "+ticket.getCol()+"</td>\n" +
+                                            "    </tr></table dir=\"ltr\">" +
+                                            "</bdo>");
+
                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -303,7 +325,7 @@ public class PaymentController implements Initializable {
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                             errorAlert.setTitle(null);
                             errorAlert.setHeaderText(null);
-                            errorAlert.setContentText("Pleas pick legal number of seats first.");
+                            errorAlert.setContentText("Please pick legal number of seats first.");
                             errorAlert.showAndWait();
                             flag.set(false);
                         }

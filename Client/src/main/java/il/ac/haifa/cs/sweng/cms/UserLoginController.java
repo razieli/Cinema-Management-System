@@ -59,56 +59,58 @@ public class UserLoginController implements Initializable {
         int val_connection = App.connectToServer();
         if (val_connection == 1) {
             this.checkLogin(App.getUserName(), App.getPass());
-            // new purchase
-            App.getOcsfClient(this).sendMail(
-                    "galuk3@gmail.com",
-                    "Order Confirmed",
-                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
-                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
-                            "<br><h3 style=\"color:black;\">Your order (3292384) is confirmed.</h3> "+
-                            "<br><table border='1' dir=\"ltr\">\n" +
-                            "    <tr>\n" +
-                            "      <td>theater</td>\n" +
-                            "      <td>movie</td>\n" +
-                            "      <td>num of tickets</td>\n" +
-                            "      <td>places</td>\n" +
-                            "    </tr>\n" +
-                            "    <tr>\n" +
-                            "      <td>Haifa</td>\n" +
-                            "      <td>Batman</td>\n" +
-                            "      <td>2</td>\n" +
-                            "      <td>row 2 column 3, row 2 column 4</td>\n" +
-                            "    </tr></table dir=\"ltr\">" +
-                            "</bdo>");
+//            // new purchase
+//            App.getOcsfClient(this).sendMail(
+//                    "galuk3@gmail.com",
+//                    "Order Confirmed",
+//                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+//                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+//                            "<br><h3 style=\"color:black;\">Your order (3292384) is confirmed.</h3> "+
+//                            "<br><table border='1' dir=\"ltr\">\n" +
+//                            "    <tr>\n" +
+//                            "      <td>theater</td>\n" +
+//                            "      <td>movie</td>\n" +
+//                            "      <td>num of tickets</td>\n" +
+//                            "      <td>places</td>\n" +
+//                            "    </tr>\n" +
+//                            "    <tr>\n" +
+//                            "      <td>Haifa</td>\n" +
+//                            "      <td>Batman</td>\n" +
+//                            "      <td>2</td>\n" +
+//                            "      <td>row 2 column 3, row 2 column 4</td>\n" +
+//                            "    </tr></table dir=\"ltr\">" +
+//                            "</bdo>");
+//
+//
+//            // link is ready in one hour
+//            App.getOcsfClient(this).sendMail(
+//                    "galuk3@gmail.com",
+//                    "Movie link is almost ready",
+//                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+//                            "<br><h2 style=\"color:black;\">The movie link you purchased will be ready in less than one hour!</h2>" +
+//                            "</bdo>");
+//
+//            // canceled screening message
+//            App.getOcsfClient(this).sendMail(
+//                    "galuk3@gmail.com",
+//                    "Screening Canceled",
+//                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+//                            "<br><h2 style=\"color:black;\">Unfortunately, the screening of the movie " +
+//                            "you bought tickets for is canceled. </h2>" +
+//                            "<br><h2 style=\"color:black;\">your bank account will receive a compensation of 50$ shortly." +
+//                            "</bdo>");
+//
+//            // changed screening message
+//            App.getOcsfClient(this).sendMail(
+//                    "galuk3@gmail.com",
+//                    "Screening seats Changed due to Purple Badge Rules",
+//                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+//                            "<br><h2 style=\"color:black;\">Unfortunately, due to the Purple Badge rules your seats have been changed. </h2>" +
+//                            "you may choose new seats when you arrive to the theater. </h2>" +
+//                            "<br><h2 style=\"color:black;\">." +
+//                            "</bdo>");
+//
 
-
-            // link is ready in one hour
-            App.getOcsfClient(this).sendMail(
-                    "galuk3@gmail.com",
-                    "Movie link is almost ready",
-                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
-                            "<br><h2 style=\"color:black;\">The movie link you purchased will be ready in less than one hour!</h2>" +
-                            "</bdo>");
-
-            // canceled screening message
-            App.getOcsfClient(this).sendMail(
-                    "galuk3@gmail.com",
-                    "Screening Canceled",
-                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
-                            "<br><h2 style=\"color:black;\">Unfortunately, the screening of the movie " +
-                            "you bought tickets for is canceled. </h2>" +
-                            "<br><h2 style=\"color:black;\">your bank account will receive a compensation of 50$ shortly." +
-                            "</bdo>");
-
-            // changed screening message
-            App.getOcsfClient(this).sendMail(
-                    "galuk3@gmail.com",
-                    "Screening seats Changed due to Purple Badge Rules",
-                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
-                            "<br><h2 style=\"color:black;\">Unfortunately, due to the Purple Badge rules your seats have been changed. </h2>" +
-                            "you may choose new seats when you arrive to the theater. </h2>" +
-                            "<br><h2 style=\"color:black;\">." +
-                            "</bdo>");
         }
         else if (val_connection == -2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
