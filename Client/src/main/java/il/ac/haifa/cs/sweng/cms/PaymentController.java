@@ -188,12 +188,12 @@ public class PaymentController implements Initializable {
                             App.getOcsfClient(this).getListOfTickets();
                             // TODO: Declare success only after acknowledge from server was received.
 
-
-                            if(messageStatus){
+                            System.out.println(messageStatus);
+//                            if(messageStatus){
                                 // TODO: 30/06/2021 update the packeg statuse
                                 sendMail(tickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                            }
+//                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -206,10 +206,10 @@ public class PaymentController implements Initializable {
                             System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
-                            if(messageStatus){
+//                            if(messageStatus){
                                 sendMail(tickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                            }
+//                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -219,16 +219,17 @@ public class PaymentController implements Initializable {
                 try {
                     // TODO: set the selected movie.
                     Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                    Link newLink = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
-                    newLink.setPayment(payment);
+                    link = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
+                    link.setPayment(payment);
 
                     System.out.println(link);
-                    App.getOcsfClient(this).updateLinks(newLink, true);
+                    App.getOcsfClient(this).updateLinks(link, true);
                     // TODO: Declare success only after acknowledge from server was received.
-                    if(messageStatus){
+                    System.out.println(messageStatus);
+//                    if(messageStatus){
                         sendMail(link);//send mail
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                    }
+//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -236,14 +237,28 @@ public class PaymentController implements Initializable {
 
             else if(fromScreen==3){//package
                 Customer customer=(Customer)App.getUser();
-                if(!customer.isHas_package()) {
-                    Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-
+                if(customer.isHas_package()) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle(null);
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("You already have a ticket package.");
+                    errorAlert.showAndWait();
                 }
                 else{
+                    try {
+                        Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+                        customer.setPayment(payment);
+                        App.getOcsfClient(this).updateCustomer(customer);
 
-               }
-//                App.getUser()
+                        System.out.println(messageStatus);
+    //                    if(messageStatus){
+    //                        sendMail(link);//send mail
+                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                    }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         else{//if one or more of the section are empty
