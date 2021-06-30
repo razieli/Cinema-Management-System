@@ -511,12 +511,12 @@ public class DB {
 		for(Screening screening : movie.getScreening()) {
 			for (Screening existingScreening : getAllScreening()) {
 				if (existingScreening.getId() == screening.getId()) {
-					System.out.println("Found SCREENING-A!!");
+//					System.out.println("Found SCREENING-A!!");
 					for (Ticket ticket : existingScreening.getTickets()) {
 						for (Ticket existingTicket : getAllTickets()) {
 							if (existingTicket.getId() == ticket.getId()) {
 								session.delete(existingTicket);
-								System.out.println("Ticket Deleted.");
+//								System.out.println("Ticket Deleted.");
 							}
 						}
 					}
@@ -532,7 +532,7 @@ public class DB {
 						for (Ticket existingTicket : getAllTickets()) {
 							if (existingTicket.getId() == ticket.getId()) {
 								session.delete(existingTicket);
-								System.out.println("Ticket Deleted.");
+//								System.out.println("Ticket Deleted.");
 							}
 						}
 					}
@@ -544,7 +544,7 @@ public class DB {
 			for (Screening existingScreening : getAllScreening()) {
 				if (existingScreening.getId() == screening.getId()) {
 					session.delete(existingScreening);
-					System.out.println("Screening Deleted.");
+//					System.out.println("Screening Deleted.");
 					break;
 				}
 			}
@@ -554,7 +554,7 @@ public class DB {
 			for (Link existingLink : getAllLinks()) {
 				if (existingLink.getId() == link.getId()) {
 					session.delete(existingLink);
-					System.out.println("Link Deleted.");
+//					System.out.println("Link Deleted.");
 				}
 			}
 		}
@@ -562,7 +562,7 @@ public class DB {
 		for(PriceChange existingPriceChange : getAllPriceChanges(null)) {
 			if (existingPriceChange.getId() == movie.getId()) {
 				session.delete(existingPriceChange);
-				System.out.println("PriceChange Deleted");
+//				System.out.println("PriceChange Deleted");
 			}
 		}
 
@@ -571,7 +571,7 @@ public class DB {
 		for(Movie existingMovie : getAllMovies()) {
 			if(existingMovie.getId() == movie.getId()) {
 				session.delete(existingMovie);
-				System.out.println("Movie Deleted.");
+//				System.out.println("Movie Deleted.");
 			}
 		}
 		session.flush();
