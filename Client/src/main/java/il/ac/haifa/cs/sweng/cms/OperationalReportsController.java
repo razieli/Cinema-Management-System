@@ -126,7 +126,8 @@ public class OperationalReportsController implements Initializable{
 
 		final PieChart packLinkChart = new PieChart(pieChartData);
 		packLinkChart.setTitle("Purchase of Packages and Links\n"+new GregorianCalendar().toZonedDateTime().format(DateTimeFormatter.ofPattern("MMM uuuu")));
-		stackPane.getChildren().add(packLinkChart);
+//		stackPane.getChildren().remove(packLinkChart);
+//		stackPane.getChildren().add(packLinkChart);
 		
 	}
 
@@ -258,14 +259,15 @@ public class OperationalReportsController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		stackPane.getChildren().add(packLinkChart);
-		stackPane.getChildren().add(pbchart);
-		stackPane.getChildren().add(purchaseChart);
-		stackPane.getChildren().add(ComplaintTable);
+//		stackPane.getChildren().add(packLinkChart);
+//		stackPane.getChildren().add(pbchart);
+//		stackPane.getChildren().add(purchaseChart);
+//		stackPane.getChildren().add(ComplaintTable);
 		
 		App.getOcsfClient(this).getListOfCinemas();
 		App.getOcsfClient(this).getListOfComplaints(manager);
 		App.getOcsfClient(this).getListOfMovies();
+		App.getOcsfClient(this).getListOfPayments();
 		
 	}
 

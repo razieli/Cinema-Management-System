@@ -184,7 +184,7 @@ public class DB {
 		String description2 = ("A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.");
 		URI uri2a = new URI("https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri2b = new URI("https://www.imdb.com/video/vi2959588889?playlistId=tt1375666");
-		session.save(new Movie("Inception","ההתחלה",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
+		session.save(new Movie("Inception","התחלה",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");

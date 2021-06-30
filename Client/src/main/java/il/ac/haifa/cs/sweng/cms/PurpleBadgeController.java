@@ -138,6 +138,7 @@ public class PurpleBadgeController implements Initializable {
 		for (Cinema c: cinemas) {
 			c.updatePurpleBadge();
 		}
+		//App.getOcsfClient(this).updateCinemas();
 	}
 
 	@FXML

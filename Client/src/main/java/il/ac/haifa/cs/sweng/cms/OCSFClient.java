@@ -52,16 +52,23 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof ListAllCinemasResponse) {
             if(controller instanceof ViewMoviesController)
                 ((ViewMoviesController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
-            if(controller instanceof PurpleBadgeController)
+            else if(controller instanceof PurpleBadgeController)
                 ((PurpleBadgeController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+            else if(controller instanceof OperationalReportsController)
+                ((OperationalReportsController) controller).setCinemas(((ListAllCinemasResponse) response).getCinemaList());
+        
         }
         if (response instanceof ListAllMoviesResponse) {
             if(controller instanceof ViewMoviesController) {
                 ((ViewMoviesController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
             }
-            if(controller instanceof PriceChangeSubmissionController) {
+            else if(controller instanceof PriceChangeSubmissionController) {
                 ((PriceChangeSubmissionController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
             }
+            else if(controller instanceof OperationalReportsController) {
+                ((OperationalReportsController) controller).setMovies(((ListAllMoviesResponse) response).getMovieList());
+            }
+            
         }
         if (response instanceof ListAllTicketsResponse) {
             ((CancelTicketController) controller).setTickets(((ListAllTicketsResponse) response).getTicketsList());
@@ -87,7 +94,10 @@ public class OCSFClient extends AbstractClient {
                 ((ComplaintAddController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
             } else if(controller instanceof ComplaintHandlingController) {
                 ((ComplaintHandlingController) controller).setComplaints(((ListAllComplaintsResponse) response).getComplaints());
+            } else if(controller instanceof OperationalReportsController) {
+                ((OperationalReportsController) controller).setComps(((ListAllComplaintsResponse) response).getComplaints());
             }
+            
         }
         if (response instanceof ComplaintReplyResponse) {
             ((ComplaintHandlingController) controller).onReplyReceived();
@@ -111,6 +121,9 @@ public class OCSFClient extends AbstractClient {
         }
         if (response instanceof PriceChangeReplyResponse) {
             ((PriceChangeHandlingController) controller).onReplyReceived();
+        }
+        if (response instanceof ListAllPaymentsResponse) {
+        	((OperationalReportsController) controller).setPayments(((ListAllPaymentsResponse) response).getPayments());
         }
         if (response instanceof UpdateTicketsResponse) {
             // TODO: Check if successful or not and show it on the screen.

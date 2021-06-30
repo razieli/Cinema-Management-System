@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 public class Customer extends User implements Serializable {
 	private boolean has_link=false;
 	private boolean has_package=false;
+	private GregorianCalendar packagePaymentDate;
 	//TODO: things
 
 	@OneToMany(targetEntity = Ticket.class, fetch = FetchType.LAZY, mappedBy = "customer")
@@ -153,7 +155,20 @@ public class Customer extends User implements Serializable {
 	/**
 	 * add tickets to package
 	 */
-	public void addPackage(){
-		this.packageTicketsRemaining+=packageTicketsNumber;}
+	public void addPackage(GregorianCalendar paymentDate){
+		this.packageTicketsRemaining+=packageTicketsNumber;
+		this.setPackagePaymentDate(paymentDate);}
+	/**
+	 * @return the packagePaymentDate
+	 */
+	public GregorianCalendar getPackagePaymentDate() {
+		return packagePaymentDate;
+	}
+	/**
+	 * @param packagePaymentDate the packagePaymentDate to set
+	 */
+	public void setPackagePaymentDate(GregorianCalendar packagePaymentDate) {
+		this.packagePaymentDate = packagePaymentDate;
+	}
 
 }
