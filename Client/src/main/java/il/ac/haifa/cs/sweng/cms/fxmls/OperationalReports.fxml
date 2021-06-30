@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -35,6 +38,9 @@
 							<font>
 								<Font name="System Bold" size="14.0" />
 							</font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
 						</Button>
 					</children>
 				</AnchorPane>
@@ -72,28 +78,41 @@
 			<center>
 				<AnchorPane prefHeight="43.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
+                  <HBox>
                      <children>
-                        <PieChart fx:id="purchasePie" minHeight="-Infinity" minWidth="-Infinity" StackPane.alignment="CENTER" />
-                        <PieChart fx:id="packLink" visible="false" StackPane.alignment="CENTER" />
-                        <BarChart fx:id="pbchart" visible="false" StackPane.alignment="CENTER">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </BarChart>
-                        <BarChart fx:id="complaintChart" visible="false" StackPane.alignment="CENTER">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </BarChart>
+                        <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <BarChart fx:id="purchaseChart">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                              <PieChart fx:id="packLinkChart" StackPane.alignment="CENTER" />
+                              <BarChart fx:id="pbchart" StackPane.alignment="CENTER">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                              <TableView fx:id="ComplaintTable" prefHeight="200.0" prefWidth="200.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="id" />
+                                  <TableColumn prefWidth="75.0" text="Complaint" />
+                                    <TableColumn prefWidth="75.0" text="response" />
+                                    <TableColumn prefWidth="75.0" text="status" />
+                                    <TableColumn prefWidth="75.0" text="Opened on" />
+                                    <TableColumn prefWidth="75.0" text="Closed on" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </StackPane>
                      </children>
-                  </StackPane>
+                  </HBox>
                </children>
 				</AnchorPane>
 			</center>
