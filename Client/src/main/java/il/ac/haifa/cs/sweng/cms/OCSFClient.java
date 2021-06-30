@@ -79,6 +79,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof MailResponse) {
             ((UserLoginController) controller).onReplyReceived2((MailResponse) response);
         }
+        if (response instanceof DeleteMovieResponse) {
+            ((EditMovieScreenController) controller).onReplyReceived((DeleteMovieResponse) response);
+        }
         if (response instanceof ComplaintFileResponse) {
             ((ComplaintAddController) controller).handleComplaintFileResponse();
         }

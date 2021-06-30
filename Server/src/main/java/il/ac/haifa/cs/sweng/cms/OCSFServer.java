@@ -115,7 +115,7 @@ public class OCSFServer extends AbstractServer {
         }
 
         if(request instanceof DeleteMovieRequest) {
-            // Delete move from DB.
+            // Delete Movie from DB.
             Movie movie = ((DeleteMovieRequest) request).getMovie();
             db.deleteMovie(movie);
             return new DeleteMovieResponse(ResponseStatus.Acknowledged);
