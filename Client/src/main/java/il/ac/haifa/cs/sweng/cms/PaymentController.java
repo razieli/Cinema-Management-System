@@ -191,7 +191,7 @@ public class PaymentController implements Initializable {
                                     "Order Confirmed",
                                     "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+inputFirstName+"</i></h1><br>" +
                                             "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
-                                            "<br><h3 style=\"color:black;\">Your order "+ticket.getId()+" is confirmed.</h3> "+
+                                            "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
                                             "<br><table border='1' dir=\"ltr\">\n" +
                                             "    <tr>\n" +
                                             "      <td>theater</td>\n" +
@@ -224,7 +224,7 @@ public class PaymentController implements Initializable {
                                     "Order Confirmed",
                                     "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+inputFirstName+"</i></h1><br>" +
                                             "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
-                                            "<br><h3 style=\"color:black;\">Your order "+ticket.getId()+" is confirmed.</h3> "+
+                                            "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
                                             "<br><table border='1' dir=\"ltr\">\n" +
                                             "    <tr>\n" +
                                             "      <td>theater</td>\n" +
@@ -260,7 +260,7 @@ public class PaymentController implements Initializable {
                             "Order Confirmed",
                             "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+inputFirstName+"</i></h1><br>" +
                                     "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
-                                    "<br><h3 style=\"color:black;\">Your order "+link.getId()+" is confirmed.</h3> "+
+                                    "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
                                     "<br><table border='1' dir=\"ltr\">\n" +
                                     "    <tr>\n" +
                                     "      <td>movie</td>\n" +
