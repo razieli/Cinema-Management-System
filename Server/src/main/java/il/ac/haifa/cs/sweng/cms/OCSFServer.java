@@ -8,9 +8,13 @@ import il.ac.haifa.cs.sweng.cms.common.util.Log;
 import il.ac.haifa.cs.sweng.cms.common.messages.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Extension of the OCSF AbstractServer class.
@@ -25,7 +29,11 @@ public class OCSFServer extends AbstractServer {
 
     private final DB db;
 
-    private List<ClientUserPair> connectedUsers;
+    private final TempData tempData;
+
+    private final Timer timer;
+    private final TimerTask timerTask;
+    private final long LINKS_NOTIFY_PERIOD = 60000;
 
     /**
      * Constructs a new server.
@@ -38,12 +46,20 @@ public class OCSFServer extends AbstractServer {
             Log.w(TAG, "Using low port " + port + ".");
         }
         this.db = db;
-        this.connectedUsers = new ArrayList<>();
+        this.tempData = new TempData();
+        this.timer = new Timer();
+        this.timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                notifyUpcomingLinks();
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, LINKS_NOTIFY_PERIOD);
     }
 
     @Override
     synchronized protected void clientDisconnected(ConnectionToClient client) {
-        connectedUsers.removeIf(clientUserPair -> clientUserPair.getClient().equals(client));
+        tempData.getConnectedUsers().removeIf(clientUserPair -> clientUserPair.getClient().equals(client));
     }
 
     /**
@@ -147,7 +163,7 @@ public class OCSFServer extends AbstractServer {
             return handleLoginRequest((LoginRequest) request, client);
         }
         if(request instanceof MailRequest) {
-            db.sendMail(((MailRequest) request).getEmailAddressToSend(),
+            sendMail(((MailRequest) request).getEmailAddressToSend(),
                     ((MailRequest) request).getSubject(), ((MailRequest) request).getMsg());
             return new MailResponse(ResponseStatus.Acknowledged);
         }
@@ -213,10 +229,10 @@ public class OCSFServer extends AbstractServer {
                     e.printStackTrace();
                 }
                 User finalUser = user;
-                if(connectedUsers.stream().anyMatch(clientUserPair -> clientUserPair.getUser().equals(finalUser))) {
+                if(tempData.getConnectedUsers().stream().anyMatch(clientUserPair -> clientUserPair.getUser().equals(finalUser))) {
                     return new LoginResponse(ResponseStatus.DeclinedMultConnections, null);
                 }
-                connectedUsers.add(new ClientUserPair(client, user));
+                tempData.getConnectedUsers().add(new ClientUserPair(client, user));
                 if (perFromDB == 0) {
                     loginResponse = new LoginResponse(ResponseStatus.Customer, user);
                 } else if (perFromDB == 1) {
@@ -237,6 +253,77 @@ public class OCSFServer extends AbstractServer {
         }
         return loginResponse;
     }
+
+    private void notifyUpcomingLinks() {
+        List<Link> linkList = db.getAllLinks();
+        GregorianCalendar now = new GregorianCalendar();
+        now.add(Calendar.MINUTE, -5);
+        GregorianCalendar hourFromNow = new GregorianCalendar();
+        hourFromNow.add(Calendar.HOUR_OF_DAY, 1);
+        for(Link link : linkList) {
+            if(link.getDate().after(now) && link.getDate().before(hourFromNow) && !link.isNotified()) {
+                link.setNotified(true);
+                String fullName = link.getCustomer().getFirstName() + " " + link.getCustomer().getLastName();
+                sendMail(link.getPayment().getEmail(), "Reminder: Your link will activate in less than one hour.", "Hi " + fullName + ",\nThe link you have purchased is about to become active in the next hour.");
+                User user = link.getCustomer();
+                ClientUserPair linkClientUserPair = tempData.getConnectedUsers().stream().filter(clientUserPair -> clientUserPair.getUser().getId() == user.getId()).findAny().orElse(null);
+                if(linkClientUserPair != null) {
+                    try {
+                        linkClientUserPair.getClient().sendToClient(new AlertMessageResponse(ResponseStatus.Acknowledged, 1,"Reminder", "Link will be active in one hour."));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    public void sendMail(String emailAddressToSend, String subject, String msg) {
+        final String username = "Cinema2021SWE@gmail.com";
+        final String password = "fd34DS4$3Jdo";
+        String from = "Cinema@no-reply";
+
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+        javax.mail.Session session = javax.mail.Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new
+                                PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            System.out.println("Trying To send an e-mail....\n");
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(emailAddressToSend)
+            );
+            message.setSubject(subject);
+            Multipart multipart = new MimeMultipart();
+            MimeBodyPart bodyMessagePart = new MimeBodyPart();
+            bodyMessagePart.setContent(msg, "text/html; charset=utf-8");
+            multipart.addBodyPart(bodyMessagePart);
+
+            message.setContent(multipart);
+
+//			message.setContent(msg, "text/html; charset=utf-8");
+            message.saveChanges();
+
+            Transport.send(message);
+            System.out.println("E-Mail Sent Successfully!!....");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 
