@@ -36,7 +36,7 @@
 				</AnchorPane>
 			</top>
 			<center>
-				<AnchorPane prefHeight="316.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+				<AnchorPane prefHeight="316.0" prefWidth="400.0" BorderPane.alignment="CENTER">
 					<children>
 						<VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
 							<children>
@@ -149,12 +149,12 @@
 				</AnchorPane>
 			</center>
          <left>
-            <TextArea fx:id="datesText" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_LEFT">
+            <TextArea fx:id="datesText" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
                <cursor>
                   <Cursor fx:constant="TEXT" />
                </cursor>
                <font>
-                  <Font name="Aharoni Bold" size="8.0" />
+                  <Font name="Aharoni Bold" size="11.5" />
                </font>
             </TextArea>
          </left>

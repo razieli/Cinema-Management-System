@@ -143,18 +143,21 @@ public class PurpleBadgeController implements Initializable {
 		}
 	}
 	public void setDatesText() {
+		datesText.setText("");
 		SimpleDateFormat formattedDate= new SimpleDateFormat("dd-MMM-yyyy");
 		GregorianCalendar today = new GregorianCalendar();
-		today.set(GregorianCalendar.DAY_OF_MONTH, today.get(GregorianCalendar.DAY_OF_MONTH)-1);
 		for (GregorianCalendar gc:pb.getClosingDates()) {
 			String dateFormatted= formattedDate.format( gc.getTime());
-			if (gc.after(today))
+			if (gc.after(today)) {
 				if(datesText.getText().equals(""))
 					datesText.setText("Future Pupple Badge days:\n");
 				datesText.setText(datesText.getText()+dateFormatted+"\n");
+			}
 		}
+		if(!datesText.getText().equals(""))
+			datesText.setVisible(true);
 	}
-	
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -167,7 +170,7 @@ public class PurpleBadgeController implements Initializable {
 			e.printStackTrace();
 		}
 		setMode();
-		
+
 
 	}
 	public void setCinemas(List<Cinema> cinemaList) {
@@ -192,8 +195,8 @@ public class PurpleBadgeController implements Initializable {
 			toDate.setVisible(true);
 			toText.setVisible(true);
 			setButton.setVisible(true);
+			datesText.setVisible(false);
 			if (pb.getClosingDates().size()!=0) {
-				datesText.setVisible(true);
 				setDatesText();
 			}
 			toggleSwitch.setStyle("-fx-background-color: mediumpurple;");

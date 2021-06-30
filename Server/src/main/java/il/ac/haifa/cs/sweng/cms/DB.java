@@ -581,14 +581,27 @@ public class DB {
 	/**
 	 * Updates the database with the given PurpleBadge.
 	 * @param pb PurpleBadge to update.
+	 * @throws Exception 
 	 */
-	protected void setPurpleBadge(PurpleBadge pb) {
+	protected void setPurpleBadge(PurpleBadge pb) throws Exception {
 		PurpleBadge newPb = PurpleBadge.getInstance(pb);
 		newPb.id=pb.id;
 		session.beginTransaction();
-		session.saveOrUpdate(newPb);
+		session.merge(newPb);
 		session.flush();
 		session.getTransaction().commit();
+//		if(pb.getStatus())
+//		{
+//			List<Theater> theaters = getAllTheaters();
+//			List<Ticket> tickets = getAllTickets();
+//			List<Screening> screenings = getAllScreening();
+//			for (Theater t:theaters) {
+//				t.coronaCheck();
+//				t.setPurpleBadge();
+//				session.save(t);
+//			}
+//			
+//		}
 		//session.close();
 		//session = sessionFactory.openSession();
 	}
