@@ -52,7 +52,8 @@ public class App extends Application {
         stage.setScene(scene);//set scene
 //        stage.setMaximized(true); //set max size available
         try {
-        Image img = new Image(new FileInputStream("icon.png"));
+        Image img = new Image(new FileInputStream("Client/src/main/resourses/icon.png"));
+        stage.setTitle("Cinema");
         stage.getIcons().add(img);
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();

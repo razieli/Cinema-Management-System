@@ -33,9 +33,10 @@ public class Ticket implements Serializable {
 		this.seatRow = 0;
 		this.seatCol = 0;
 	}
-	public Ticket(Customer customer, Screening screening,int row, int col){
+	public Ticket(Customer customer, Screening screening, int row, int col){
 		this.customer=customer;
 		this.screening=screening;
+		this.screening.getTickets().add(this);
 		this.payment=null;
 		this.seatRow = row;
 		this.seatCol = col;
@@ -48,7 +49,7 @@ public class Ticket implements Serializable {
 	
 	public Screening getScreening() {return screening;}
 
-	public void setScreening(Screening screening) {this.screening = screening;}
+	public void setScreening(Screening screening) {this.screening = screening; this.screening.getTickets().add(this);}
 
 	public int getRow() {
 		return seatRow;
@@ -80,5 +81,13 @@ public class Ticket implements Serializable {
 	@Override
 	public String toString() {
 		return "seats: ("+this.seatRow+", "+this.seatCol+") "+this.getScreening().getMovie().getEngName() +this.getScreening();
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 }

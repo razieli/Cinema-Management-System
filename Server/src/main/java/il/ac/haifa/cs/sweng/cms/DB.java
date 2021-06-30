@@ -4,6 +4,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.*;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
 
@@ -19,6 +24,11 @@ import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 
 /**
@@ -164,7 +174,7 @@ public class DB {
 		String description1 = ("When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.");
 		URI uri1a = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		URI uri1b = new URI("https://www.imdb.com/video/vi324468761?playlistId=tt0468569");
-		session.save(new Movie("The Dark Knight","äàáéø äàôì",2008,cast1s,152,13,description1, uri1a, uri1b,new GregorianCalendar(2010,5,27,0,00)));
+		session.save(new Movie("The Dark Knight","ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½",2008,cast1s,152,13,description1, uri1a, uri1b,new GregorianCalendar(2010,5,27,0,00)));
 		List<String> cast2=new LinkedList<String>();
 		cast2.add("Christopher Nolan");
 		cast2.add("Leonardo DiCaprio");
@@ -174,7 +184,7 @@ public class DB {
 		String description2 = ("A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.");
 		URI uri2a = new URI("https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri2b = new URI("https://www.imdb.com/video/vi2959588889?playlistId=tt1375666");
-		session.save(new Movie("Inception","ääúçìä",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
+		session.save(new Movie("Inception","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");
@@ -184,7 +194,7 @@ public class DB {
 		String description3 = ("A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.");
 		URI uri3a = new URI("https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri3b = new URI("https://www.imdb.com/video/vi1586278169?playlistId=tt0816692");
-		session.save(new Movie("Interstellar","áéï ëåëáéí",2014,cast3s,169,13,description3, uri3a, uri3b, new GregorianCalendar(2018,3,13,0,00)));
+		session.save(new Movie("Interstellar","ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",2014,cast3s,169,13,description3, uri3a, uri3b, new GregorianCalendar(2018,3,13,0,00)));
 		List<String> cast4=new LinkedList<String>();
 		cast4.add("Antoine Fuqua");
 		cast4.add("Denzel Washington");
@@ -194,7 +204,7 @@ public class DB {
 		String description4 = ("A rookie cop spends his first day as a Los Angeles narcotics officer with a rogue detective who isn't what he appears to be.");
 		URI uri4a = new URI("https://m.media-amazon.com/images/M/MV5BMDZkMTUxYWEtMDY5NS00ZTA5LTg3MTItNTlkZWE1YWRjYjMwL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri4b = new URI("https://www.imdb.com/video/vi671023385?playlistId=tt0139654");
-		session.save(new Movie("Training Day","éåí àéîåðéí îñåëï",2001,cast4s,122,0,description4, uri4a, uri4b,new GregorianCalendar(2000,12,3,0,00)));
+		session.save(new Movie("Training Day","ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½",2001,cast4s,122,0,description4, uri4a, uri4b,new GregorianCalendar(2000,12,3,0,00)));
 		List<String> cast5=new LinkedList<String>();
 		cast5.add("Jon Favreau");
 		cast5.add("Donald Glover");
@@ -204,7 +214,7 @@ public class DB {
 		String description5 = ("After the murder of his father, a young lion prince flees his kingdom only to learn the true meaning of responsibility and bravery.");
 		URI uri5a = new URI("https://m.media-amazon.com/images/M/MV5BMjIwMjE1Nzc4NV5BMl5BanBnXkFtZTgwNDg4OTA1NzM@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri5b = new URI("https://www.imdb.com/video/vi3509369881?playlistId=tt6105098");
-		session.save(new Movie("The Lion King","îìê äàøéåú",2019,cast5s,118,0,description5, uri5a, uri5b, new GregorianCalendar(2021,6,27,0,00)));
+		session.save(new Movie("The Lion King","ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",2019,cast5s,118,0,description5, uri5a, uri5b, new GregorianCalendar(2021,6,27,0,00)));
 		List<String> cast6=new LinkedList<String>();
 		cast6.add("Gabriele Muccino");
 		cast6.add("Will Smith");
@@ -214,7 +224,7 @@ public class DB {
 		String description6 = ("A struggling salesman takes custody of his son as he's poised to begin a life-changing professional career.");
 		URI uri6a = new URI("https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri6b = new URI("https://www.imdb.com/video/vi1413719065?playlistId=tt0454921");
-		session.save(new Movie("The Pursuit of Happyness","äãøê àì äàåùø",2006,cast5s,117,13,description6, uri6a, uri6b, new GregorianCalendar(18,3,27,0,00)));
+		session.save(new Movie("The Pursuit of Happyness","ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½",2006,cast5s,117,13,description6, uri6a, uri6b, new GregorianCalendar(18,3,27,0,00)));
 		session.flush();
 	}
 
@@ -231,17 +241,23 @@ public class DB {
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		List<Customer> customers=getAllCustomer();
-//		for(Screening s:screenings) {
-//			for(int i=0;i<s.getTheater().getSeatsCapacity();i++)
-//				session.save(new Ticket(customers.get(i%2),s,0,0));
-//		}
-
-		Ticket tic1 = new Ticket (customers.get(0), screenings.get(0) ,0,4);
-		Ticket tic2 = new Ticket (customers.get(1), screenings.get(1) ,0,2);
-		Ticket tic3 = new Ticket (customers.get(0), screenings.get(2) ,0,5);
-		session.save(tic1);
-		session.save(tic2);
-		session.save(tic3);
+		for(Screening s:screenings) {
+			ArrayList<Ticket> t = new ArrayList<>();
+			Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4);
+			Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2);
+			Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5);
+			Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1);
+			t.add(tic1);
+			t.add(tic2);
+			t.add(tic3);
+			t.add(tic4);
+			session.save(tic1);
+			session.save(tic2);
+			session.save(tic3);
+			session.save(tic4);
+			s.setTickets(t);
+			session.save(s);
+		}
 		session.flush();
 	}
 
@@ -252,7 +268,7 @@ public class DB {
 		List<Movie> movies=getAllMovies();
 		List<Theater> theaters = getAllTheaters();
 		for(Movie m:movies){
-			ArrayList<Screening> s= new ArrayList<>();
+			ArrayList<Screening> s = new ArrayList<>();
 			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,6,27,17,00));
 			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,9,14,21,30));
 			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,7,17,23,00));
@@ -264,14 +280,17 @@ public class DB {
 			session.save(sc3);
 			m.setScreening(s);
 			session.save(m);
+
 			List<Screening> st=theaters.get(0).getScreeningList();
 			st.add(s.get(0));
 			theaters.get(0).setScreeningList(st);
 			session.save(theaters.get(0));
+
 			st=theaters.get(1).getScreeningList();
 			st.add(s.get(1));
 			theaters.get(1).setScreeningList(st);
 			session.save(theaters.get(1));
+
 			st=theaters.get(2).getScreeningList();
 			st.add(s.get(2));
 			theaters.get(2).setScreeningList(st);
@@ -279,6 +298,34 @@ public class DB {
 		}
 		session.flush();
 
+	}
+
+	public void generateLinks() throws Exception{
+		List<Movie> movies=getAllMovies();
+		List<Customer> customers = getAllCustomer();
+		for(Movie m:movies) {
+			ArrayList<Link> l = new ArrayList<>();
+			Link l1 = new Link(customers.get(0), new GregorianCalendar(2021, 7, 15, 8, 00), m);
+			Link l2 = new Link(customers.get(1), new GregorianCalendar(2021, 8, 20, 15, 15), m);
+			Link l3 = new Link(customers.get(0), new GregorianCalendar(2021, 9, 1, 20, 20), m);
+			Link l4 = new Link(customers.get(1), new GregorianCalendar(2021, 10, 8, 10, 45), m);
+			l.add(l1);
+			l.add(l2);
+			l.add(l3);
+			l.add(l4);
+			session.save(l1);
+			session.save(l2);
+			session.save(l3);
+			session.save(l4);
+			m.setLinks(l);
+			session.save(m);
+
+			customers.get(0).addLink(l1);
+			customers.get(1).addLink(l2);
+			customers.get(0).addLink(l3);
+			customers.get(1).addLink(l4);
+		}
+		session.flush();
 	}
 
 	/**
@@ -302,20 +349,6 @@ public class DB {
 		session.save(t1);
 		session.save(t2);
 		session.save(t3);
-		session.flush();
-	}
-
-	public void generateLinks() throws Exception{
-		List<Movie> movies=getAllMovies();
-		List<Customer> customers = getAllCustomer();
-		Link l1= new Link(customers.get(0),new GregorianCalendar( 2021,  7,  15,  8,  00), movies.get(0));
-		Link l2= new Link(customers.get(1),new GregorianCalendar( 2021,  8,  20,  15,  15), movies.get(1));
-		Link l3= new Link(customers.get(0),new GregorianCalendar( 2021,  9,  1,  20,  20), movies.get(2));
-		Link l4= new Link(customers.get(1),new GregorianCalendar( 2021,  10,  8,  10,  45), movies.get(3));
-		session.save(l1);
-		session.save(l2);
-		session.save(l3);
-		session.save(l4);
 		session.flush();
 	}
 
@@ -423,32 +456,126 @@ public class DB {
 		}
 
 		session.beginTransaction();
+		Movie finalMovie = movie;
+
+		// Check for new screenings
+		List<Screening> screeningList = getAllScreening();
+		screeningList.removeIf(screening -> !screening.getMovie().toString().equals(finalMovie.toString()));
 		for(Screening screening : movie.getScreening()) {
-			for (Screening existingScreening : getAllScreening()) {
-				if (existingScreening.getId() == screening.getId()) {
-					existingScreening.copyFrom(screening);
-					screening = existingScreening;
-					break;
-				}
+			if(screeningList.stream().noneMatch(existingScreening -> existingScreening.getDate().equals(screening.getDate()))) {
+				session.save(screening);
 			}
-			session.saveOrUpdate(screening);
 		}
 
-		for(Link link : movie.getLinks()) {
-			for (Link existingLink : getAllLinks()) {
-				if (existingLink.getId() == link.getId()) {
-					existingLink.copyFrom(link);
-					link = existingLink;
-					break;
+		// Check for deleted screenings
+		for(Screening existingScreening : screeningList) {
+			if(existingScreening.getMovie().getId() == finalMovie.getId()) {
+				if (movie.getScreening().stream().noneMatch(screening -> screening.getId() == existingScreening.getId())) {
+					List<Ticket> ticketList = existingScreening.getTickets();
+					if(ticketList != null) {
+						ticketList.forEach(ticket -> session.delete(ticket));
+					}
+					session.delete(existingScreening);
 				}
 			}
-			session.saveOrUpdate(link);
 		}
+
+		// Check for new links
+		List<Link> linkList = getAllLinks();
+		for(Link link : movie.getLinks()) {
+			// TODO: Replace ID matching with something else as ID may be 0.
+			if(linkList.stream().noneMatch(existingLink -> existingLink.getId() == link.getId())) {
+				session.save(link);
+			}
+		}
+
+		// Check for deleted links
+		for(Link existingLink : linkList) {
+			if(existingLink.getMovie().getId() == finalMovie.getId()) {
+				if (movie.getLinks().stream().noneMatch(link -> link.getId() == existingLink.getId())) {
+					session.delete(existingLink);
+				}
+			}
+		}
+
 		session.saveOrUpdate(movie);
 		session.flush();
 		session.getTransaction().commit();
 		//session.close();
 		//session = sessionFactory.openSession();
+	}
+
+	protected void deleteMovie(Movie movie) {
+		session.beginTransaction();
+
+		for(Screening screening : movie.getScreening()) {
+			for (Screening existingScreening : getAllScreening()) {
+				if (existingScreening.getId() == screening.getId()) {
+					System.out.println("Found SCREENING-A!!");
+					for (Ticket ticket : existingScreening.getTickets()) {
+						for (Ticket existingTicket : getAllTickets()) {
+							if (existingTicket.getId() == ticket.getId()) {
+								session.delete(existingTicket);
+								System.out.println("Ticket Deleted.");
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		for(Screening screening : movie.getScreening()) {
+			for (Screening existingScreening : getAllScreening()) {
+				if (existingScreening.getId() == screening.getId()) {
+					for (Ticket ticket : existingScreening.getTickets()) {
+						for (Ticket existingTicket : getAllTickets()) {
+							if (existingTicket.getId() == ticket.getId()) {
+								session.delete(existingTicket);
+								System.out.println("Ticket Deleted.");
+							}
+						}
+					}
+				}
+			}
+		}
+
+		for(Screening screening : movie.getScreening()) {
+			for (Screening existingScreening : getAllScreening()) {
+				if (existingScreening.getId() == screening.getId()) {
+					session.delete(existingScreening);
+					System.out.println("Screening Deleted.");
+					break;
+				}
+			}
+		}
+
+		for(Link link : movie.getLinks()) {
+			for (Link existingLink : getAllLinks()) {
+				if (existingLink.getId() == link.getId()) {
+					session.delete(existingLink);
+					System.out.println("Link Deleted.");
+				}
+			}
+		}
+
+		for(PriceChange existingPriceChange : getAllPriceChanges(null)) {
+			if (existingPriceChange.getId() == movie.getId()) {
+				session.delete(existingPriceChange);
+				System.out.println("PriceChange Deleted");
+			}
+		}
+
+		//TODO: remove also Payment !!!
+
+		for(Movie existingMovie : getAllMovies()) {
+			if(existingMovie.getId() == movie.getId()) {
+				session.delete(existingMovie);
+				System.out.println("Movie Deleted.");
+			}
+		}
+		session.flush();
+		session.getTransaction().commit();
 	}
 
 	/**
@@ -520,11 +647,13 @@ public class DB {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
+			session.save(ticket.getPayment());
 			session.save(ticket);
 		}
 		else{
 			Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
 			if (ticketToRemove != null) {
+				session.remove(ticketToRemove.getPayment());
 				session.remove(ticketToRemove);
 			}
 		}
@@ -557,11 +686,13 @@ public class DB {
 	protected void setLinks(Link link, boolean addOrRemove) {
 		session.beginTransaction();
 		if(addOrRemove){
+			session.save(link.getPayment());
 			session.save(link);
 		}
 		else{
 			Link linkToRemove = session.get(Link.class, link.getId());
 			if (linkToRemove != null) {
+				session.remove(link.getPayment());
 				session.remove(linkToRemove);
 			}
 		}
@@ -610,7 +741,8 @@ public class DB {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Link> query = builder.createQuery(Link.class);
 		query.from(Link.class);
-		return session.createQuery(query).getResultList();
+		List<Link> data = session.createQuery(query).getResultList();
+		return data;
 	}
 
 	public void setComplaint(Complaint complaint) {
@@ -679,4 +811,51 @@ public class DB {
 		}
 		return priceChanges;
 	}
+
+	public void sendMail(String emailAddressToSend, String subject, String msg) {
+		final String username = "Cinema2021SWE@gmail.com";
+		final String password = "fd34DS4$3Jdo";
+		String from = "Cinema@no-reply";
+
+		Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "587");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+		javax.mail.Session session = javax.mail.Session.getInstance(prop,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new
+								PasswordAuthentication(username, password);
+					}
+				});
+
+		try {
+			System.out.println("Trying To send an e-mail....\n");
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(
+					Message.RecipientType.TO,
+					InternetAddress.parse(emailAddressToSend)
+			);
+			message.setSubject(subject);
+			Multipart multipart = new MimeMultipart();
+			MimeBodyPart bodyMessagePart = new MimeBodyPart();
+			bodyMessagePart.setContent(msg, "text/html; charset=utf-8");
+			multipart.addBodyPart(bodyMessagePart);
+
+			message.setContent(multipart);
+
+//			message.setContent(msg, "text/html; charset=utf-8");
+			message.saveChanges();
+
+			Transport.send(message);
+			System.out.println("E-Mail Sent Successfully!!....");
+
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

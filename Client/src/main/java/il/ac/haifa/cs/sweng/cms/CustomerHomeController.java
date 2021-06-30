@@ -103,7 +103,8 @@ public class CustomerHomeController implements Initializable {
     @FXML
     void switchToPurchasePackageScreen(ActionEvent event) {
         try {
-            App.setRoot("BuyPackage.fxml");
+            PaymentController.setFromScreen(3);
+            App.setRoot("Payment.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

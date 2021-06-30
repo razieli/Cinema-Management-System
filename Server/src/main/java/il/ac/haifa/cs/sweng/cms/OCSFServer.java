@@ -9,6 +9,7 @@ import il.ac.haifa.cs.sweng.cms.common.messages.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,8 @@ public class OCSFServer extends AbstractServer {
 
     private final DB db;
 
+    private List<ClientUserPair> connectedUsers;
+
     /**
      * Constructs a new server.
      *
@@ -35,6 +38,12 @@ public class OCSFServer extends AbstractServer {
             Log.w(TAG, "Using low port " + port + ".");
         }
         this.db = db;
+        this.connectedUsers = new ArrayList<>();
+    }
+
+    @Override
+    synchronized protected void clientDisconnected(ConnectionToClient client) {
+        connectedUsers.removeIf(clientUserPair -> clientUserPair.getClient().equals(client));
     }
 
     /**
@@ -47,7 +56,7 @@ public class OCSFServer extends AbstractServer {
         Log.i(TAG, "Message received from client " + client);
 
         if(msg instanceof AbstractRequest) {
-            AbstractResponse response = genResponse((AbstractRequest) msg);
+            AbstractResponse response = genResponse((AbstractRequest) msg, client);
             if(response != null) {
                 try {
                     client.sendToClient(response);
@@ -68,10 +77,10 @@ public class OCSFServer extends AbstractServer {
      * @param request Request message.
      * @return Response message, or null if request is unidentified.
      */
-    private AbstractResponse genResponse(AbstractRequest request) {
+    private AbstractResponse genResponse(AbstractRequest request, ConnectionToClient client) {
         if(request instanceof ListAllCinemasRequest) {
             // Get list of tickets from DB.
-        	List<Cinema> cinemaList = null;
+            List<Cinema> cinemaList = null;
             try {
                 cinemaList = db.getAllCinemas();
             } catch (Exception e) {
@@ -105,6 +114,13 @@ public class OCSFServer extends AbstractServer {
             return new UpdateMovieResponse(ResponseStatus.Acknowledged);
         }
 
+        if(request instanceof DeleteMovieRequest) {
+            // Delete move from DB.
+            Movie movie = ((DeleteMovieRequest) request).getMovie();
+            db.deleteMovie(movie);
+            return new DeleteMovieResponse(ResponseStatus.Acknowledged);
+        }
+
         if(request instanceof UpdateTicketsRequest) {
             // Save tickets in DB.
             Ticket ticket= ((UpdateTicketsRequest) request).getTicket();
@@ -122,8 +138,12 @@ public class OCSFServer extends AbstractServer {
             return new UpdateLinksResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof LoginRequest) {
-            return handleLoginRequest((LoginRequest) request);
-
+            return handleLoginRequest((LoginRequest) request, client);
+        }
+        if(request instanceof MailRequest) {
+            db.sendMail(((MailRequest) request).getEmailAddressToSend(),
+                    ((MailRequest) request).getSubject(), ((MailRequest) request).getMsg());
+            return new MailResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof ComplaintFileRequest) {
             Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
@@ -166,7 +186,7 @@ public class OCSFServer extends AbstractServer {
         return null;
     }
 
-    private LoginResponse handleLoginRequest(LoginRequest request) {
+    private LoginResponse handleLoginRequest(LoginRequest request, ConnectionToClient client) {
         String username = ((LoginRequest) request).getUsername();
         String password = ((LoginRequest) request).getPassword();
         String userFromDB = db.checkUserName(username);
@@ -181,6 +201,11 @@ public class OCSFServer extends AbstractServer {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                User finalUser = user;
+                if(connectedUsers.stream().anyMatch(clientUserPair -> clientUserPair.getUser().equals(finalUser))) {
+                    return new LoginResponse(ResponseStatus.DeclinedMultConnections, null);
+                }
+                connectedUsers.add(new ClientUserPair(client, user));
                 if (perFromDB == 0) {
                     loginResponse = new LoginResponse(ResponseStatus.Customer, user);
                 } else if (perFromDB == 1) {

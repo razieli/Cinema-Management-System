@@ -3,6 +3,7 @@ import il.ac.haifa.cs.sweng.cms.App;
 import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.LoginResponse;
+import il.ac.haifa.cs.sweng.cms.common.messages.responses.MailResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,6 +59,16 @@ public class UserLoginController implements Initializable {
         int val_connection = App.connectToServer();
         if (val_connection == 1) {
             this.checkLogin(App.getUserName(), App.getPass());
+
+//            App.getOcsfClient(this).sendMail(
+//                    "yshnur@campus.haifa.ac.il, galuk3@gmail.com, " +
+//                            "rzyuval@gmail.com, shay.silber@gmail.com, zvikno@gmail.com, " +
+//                            "raloni02@campus.haifa.ac.il",
+//                    "ORDER CONFIRMED",
+//                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+//                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+//                            "<br><h3 style=\"color:black;\">Your order (3292384) is confirmed.</h3></bdo>");
+
         }
         else if (val_connection == -2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -79,6 +90,16 @@ public class UserLoginController implements Initializable {
         App.getOcsfClient(this).tryLogin(username, pass);
     }
 
+    public void onReplyReceived2(MailResponse response) {
+        if (response.getStatus() == ResponseStatus.Acknowledged) {
+            System.out.println("Go check your E-Mail box for a new message..");
+        }
+        else
+        {
+            System.out.println("Failed to send you an email.");
+        }
+    }
+
     public void onReplyReceived(LoginResponse response) {
         if (response.getStatus() == ResponseStatus.DeclinedUser) {
             App.setUserPermission(-1);
@@ -87,6 +108,10 @@ public class UserLoginController implements Initializable {
         else if (response.getStatus() == ResponseStatus.DeclinedPass) {
             App.setUserPermission(-1);
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "Wrong Password!"));
+        }
+        else if (response.getStatus() == ResponseStatus.DeclinedMultConnections) {
+            App.setUserPermission(-1);
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, null, "User is already logged in!"));
         }
         else if (response.getStatus() == ResponseStatus.Customer) {
             App.setUserPermission(0);

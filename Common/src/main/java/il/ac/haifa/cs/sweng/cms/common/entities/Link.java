@@ -20,7 +20,7 @@ public class Link implements Serializable {
     private Payment payment;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name="movie_id")
+    @JoinColumn(name="movie")
     private Movie movie;
     GregorianCalendar date;
     private double linkPrice;
@@ -76,6 +76,14 @@ public class Link implements Serializable {
 
     public void setLinkPrice(double moviePrice) {
         this.linkPrice = moviePrice;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public void copyFrom(Link link) {

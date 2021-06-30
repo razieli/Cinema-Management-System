@@ -212,7 +212,9 @@ public class EditMovieScreenController implements Initializable  {
 
         if (alert.getResult() == ButtonType.YES)//delete operation from database
         {
-            // TODO: call function to delete the movie
+            if(movie != null) {
+                App.getOcsfClient(this).deleteMovie(movie);
+            }
         }
     }
 
@@ -288,22 +290,6 @@ public class EditMovieScreenController implements Initializable  {
         scrollPaneRight.heightProperty().addListener((obs, oldVal, newVal) -> {
             rightVBox.prefHeightProperty().bind(scrollPaneRight.heightProperty());
         });
-
-
-
-
-
-
-//        try {
-//            backButtonUri = new URI("https://cdn.pixabay.com/photo/2016/09/05/10/50/app-1646213_640.png");
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//        ImageView backButtonIm = new ImageView(backButtonUri.toString());
-//        backButtonIm.setPreserveRatio(true);
-//        backButtonIm.setFitHeight(backButton.getPrefHeight());
-//        backButtonIm.setFitWidth(backButton.getPrefWidth());
-//        backButton.setGraphic(backButtonIm);
 
         if (movie!=null) { //in case of adding a new movie
             titleText.setText("Update Movie");

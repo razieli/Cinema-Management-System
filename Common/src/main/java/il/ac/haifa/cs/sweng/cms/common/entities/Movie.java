@@ -26,23 +26,22 @@ public class Movie implements Serializable {
 	private String castList;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="movie")
 	private List<Screening> screening;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
+	private List<Link> links;
 	private GregorianCalendar premiere;
 	private Integer length;
 	private Integer ageRestriction;
 	private String description;
 	private URI posterUrl;
 	private URI trailerUrl;
-
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
-	private List<Link> links;
-
 	private double price;
 
 	/**
 	 * constructors
 	 */
 	public Movie() {
+		this.screening = new ArrayList<>();
+		this.links = new ArrayList<>();
 	}
 	
 	public Movie(String engName,String hebName,Integer year,
@@ -60,8 +59,6 @@ public class Movie implements Serializable {
 		this.description = description;
 		this.price = BASE_PRICE;
 		this.premiere = premiere;
-		this.screening = new ArrayList<>();
-		this.links = new ArrayList<>();
 	}
 
 	/**
@@ -178,7 +175,9 @@ public class Movie implements Serializable {
 		this.description = movie.description;
 		this.posterUrl = movie.posterUrl;
 		this.trailerUrl = movie.trailerUrl;
+		this.screening.clear();
 		this.screening.addAll(movie.screening);
+		this.links.clear();
 		this.links.addAll(movie.links);
 		this.price = movie.price;
 		this.premiere = movie.premiere;
