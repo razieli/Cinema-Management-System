@@ -272,21 +272,18 @@ private static class complaint{
 	private final SimpleStringProperty open;
 	private final SimpleStringProperty close;
 	
-	private complaint(int id, String body, String response, String status, GregorianCalendar open, GregorianCalendar close) {
+	private complaint(int id, String body, String response, Status status, Date date, Date date2) {
 		SimpleDateFormat formattedDate= new SimpleDateFormat("dd-MMM-yyyy");
-		String openStr= formattedDate.format( open.getTime());
-		String closeStr= formattedDate.format( close.getTime());
+		String openStr= formattedDate.format( date.getTime());
+		String closeStr= formattedDate.format( date2.getTime());
 		this.id = id;
 		this.body = new SimpleStringProperty(body);
 		this.response = new SimpleStringProperty(response);
-		this.status = new SimpleStringProperty(status);
+		this.status = new SimpleStringProperty(status.toString());
 		this.open = new SimpleStringProperty(openStr);
 		this.close = new SimpleStringProperty(closeStr);
 	}
 
-	public complaint(int id2, String body2, String response2, Status status2, Date filingDate, Date closingDate) {
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * @return the id
