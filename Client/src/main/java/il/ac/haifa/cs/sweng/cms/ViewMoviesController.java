@@ -398,7 +398,7 @@ public class ViewMoviesController implements Initializable {
             LocalDate date = dateFilter.getValue();
 
             if(date!=null){
-            pickedDate = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth(), 23,59,59);
+            pickedDate = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth()-1, 23,59,59);
 
             //set a conformation alert
             if (pickedDate.getTime().before(GregorianCalendar.getInstance().getTime())) {
