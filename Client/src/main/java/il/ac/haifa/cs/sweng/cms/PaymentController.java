@@ -196,14 +196,12 @@ public class PaymentController implements Initializable {
                                             "    <tr>\n" +
                                             "      <td>theater</td>\n" +
                                             "      <td>movie</td>\n" +
-                                            "      <td>num of tickets</td>\n" +
-                                            "      <td>places</td>\n" +
+                                            "      <td>num of tickets</td></td>\n" +
                                             "    </tr>\n" +
                                             "    <tr>\n" +
                                             "      <td>"+ticket.getScreening().getTheater().getName()+"</td>\n" +
                                             "      <td>"+ticket.getScreening().getMovie().getEngName()+"</td>\n" +
-                                            "      <td>"+pickSeats+"</td>\n" +
-                                            "      <td>+row: "+ticket.getRow()+", col: "+ticket.getCol()+"</td>\n" +
+                                            "      <td>row: "+ticket.getRow()+", col: "+ticket.getCol()+"</td>\n" +
                                             "    </tr></table dir=\"ltr\">" +
                                             "</bdo>");
 
@@ -220,6 +218,26 @@ public class PaymentController implements Initializable {
                             System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(ticket, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
+
+                            App.getOcsfClient(this).sendMail(
+                                    "galuk3@gmail.com, "+inputEmail,
+                                    "Order Confirmed",
+                                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+inputFirstName+"</i></h1><br>" +
+                                            "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                                            "<br><h3 style=\"color:black;\">Your order "+ticket.getId()+" is confirmed.</h3> "+
+                                            "<br><table border='1' dir=\"ltr\">\n" +
+                                            "    <tr>\n" +
+                                            "      <td>theater</td>\n" +
+                                            "      <td>movie</td>\n" +
+                                            "      <td>num of tickets</td></td>\n" +
+                                            "    </tr>\n" +
+                                            "    <tr>\n" +
+                                            "      <td>"+ticket.getScreening().getTheater().getName()+"</td>\n" +
+                                            "      <td>"+ticket.getScreening().getMovie().getEngName()+"</td>\n" +
+                                            "      <td>row: "+ticket.getRow()+", col: "+ticket.getCol()+"</td>\n" +
+                                            "    </tr></table dir=\"ltr\">" +
+                                            "</bdo>");
+
                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -236,6 +254,22 @@ public class PaymentController implements Initializable {
                     System.out.println(tickets);
                     App.getOcsfClient(this).updateLinks(newLink, true);
                     // TODO: Declare success only after acknowledge from server was received.
+
+                    App.getOcsfClient(this).sendMail(
+                            "galuk3@gmail.com, "+inputEmail,
+                            "Order Confirmed",
+                            "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+inputFirstName+"</i></h1><br>" +
+                                    "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                                    "<br><h3 style=\"color:black;\">Your order "+link.getId()+" is confirmed.</h3> "+
+                                    "<br><table border='1' dir=\"ltr\">\n" +
+                                    "    <tr>\n" +
+                                    "      <td>movie</td>\n" +
+                                    "    </tr>\n" +
+                                    "    <tr>\n" +
+                                    "      <td>"+link.getMovie().getEngName()+"</td>\n" +
+                                    "    </tr></table dir=\"ltr\">" +
+                                    "</bdo>");
+
                     App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                 } catch (IOException e) {
                     e.printStackTrace();
