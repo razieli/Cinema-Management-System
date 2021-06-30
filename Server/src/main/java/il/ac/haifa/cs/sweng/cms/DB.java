@@ -731,6 +731,17 @@ public class DB {
 		session.getTransaction().commit();
 	}
 
+	/**
+	 * Updates the database according to the given cinema
+	 * @param cinema Cinema to update.
+	 */
+	protected void setCinema(Cinema cinema) {
+		session.beginTransaction();
+		session.merge(cinema);
+		session.flush();
+		session.getTransaction().commit();
+	}
+
 	public int getPermission(String username) {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);

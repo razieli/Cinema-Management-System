@@ -181,6 +181,10 @@ public class OCSFServer extends AbstractServer {
             db.setCustomer(((UpdateCustomerRequest) request).getCustomer());
             return new UpdateCustomerResponse(ResponseStatus.Acknowledged);
         }
+        if(request instanceof UpdateCinemaRequest) {
+            db.setCinema(((UpdateCinemaRequest) request).getCinema());
+            return new UpdateCinemaResponse(ResponseStatus.Acknowledged);
+        }
         if(request instanceof LoginRequest) {
             return handleLoginRequest((LoginRequest) request, client);
         }
