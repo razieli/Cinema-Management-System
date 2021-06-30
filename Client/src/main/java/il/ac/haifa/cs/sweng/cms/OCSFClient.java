@@ -184,6 +184,14 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
+    protected void getListOfPayments() {
+        try {
+            sendToServer(new ListAllPaymentsRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sends a request to the server to update a movie.
      * @param movie Movie to update.
