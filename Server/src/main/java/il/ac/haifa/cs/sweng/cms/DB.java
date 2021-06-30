@@ -267,11 +267,12 @@ public class DB {
 	public void generateScreening() throws Exception{
 		List<Movie> movies=getAllMovies();
 		List<Theater> theaters = getAllTheaters();
+		Random rand = new Random();
 		for(Movie m:movies){
 			ArrayList<Screening> s = new ArrayList<>();
-			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,6,27,17,00));
-			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,9,14,21,30));
-			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,7,17,23,00));
+			Screening sc1 = new Screening(m,theaters.get(0),new GregorianCalendar(2021,rand.nextInt(12)+1,rand.nextInt(28)+1,rand.nextInt(24),15));
+			Screening sc2 = new Screening(m,theaters.get(1),new GregorianCalendar(2021,rand.nextInt(12)+1,rand.nextInt(28)+1,rand.nextInt(24),30));
+			Screening sc3 = new Screening(m,theaters.get(2),new GregorianCalendar(2021,rand.nextInt(12)+1,rand.nextInt(28)+1,rand.nextInt(24),00));
 			s.add(sc1);
 			s.add(sc2);
 			s.add(sc3);
