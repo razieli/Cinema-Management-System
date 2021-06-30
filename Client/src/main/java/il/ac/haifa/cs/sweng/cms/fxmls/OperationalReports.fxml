@@ -74,7 +74,7 @@
                <children>
                   <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <PieChart fx:id="purchasePie" minHeight="-Infinity" minWidth="-Infinity" visible="false" StackPane.alignment="CENTER" />
+                        <PieChart fx:id="purchasePie" minHeight="-Infinity" minWidth="-Infinity" StackPane.alignment="CENTER" />
                         <PieChart fx:id="packLink" visible="false" StackPane.alignment="CENTER" />
                         <BarChart fx:id="pbchart" visible="false" StackPane.alignment="CENTER">
                           <xAxis>

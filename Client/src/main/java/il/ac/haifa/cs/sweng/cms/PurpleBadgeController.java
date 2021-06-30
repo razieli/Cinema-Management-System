@@ -156,6 +156,7 @@ public class PurpleBadgeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		App.getPb();
+		while (pb==null) {Thread.yield();}
 		App.getOcsfClient(this).getListOfCinemas();
 		toggleSwitch.setSelected(pb.getStatus());
 		if(pb.getStatus()) {

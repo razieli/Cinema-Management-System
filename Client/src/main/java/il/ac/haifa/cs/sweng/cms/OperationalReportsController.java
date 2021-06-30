@@ -91,8 +91,8 @@ public class OperationalReportsController implements Initializable{
     @FXML
     void purchase(ActionEvent event) {
     	//getCinemas();
-    	stackPane.getChildren().remove(pbchart);
-    	pbchart.setVisible(false);
+    	//stackPane.getChildren().remove(pbchart);
+    	//pbchart.setVisible(false);
     	ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                 new PieChart.Data("Tel Aviv", 65),
@@ -106,7 +106,7 @@ public class OperationalReportsController implements Initializable{
 
     @FXML
     void purpleBadgeRefunds(ActionEvent event) {
-    	purchasePie.setVisible(false);
+    	/*purchasePie.setVisible(false);
     	stackPane.getChildren().remove(purchasePie);
     	pbchart.setTitle("Country Summary");
     	final CategoryAxis xAxis = new CategoryAxis();
@@ -136,7 +136,7 @@ public class OperationalReportsController implements Initializable{
         series1.getData().add(new XYChart.Data("Fourth week", 35407.15)); 
         pbchart.getData().addAll(series1, series2, series3);
         stackPane.getChildren().add(pbchart);
-        pbchart.setVisible(true);
+        pbchart.setVisible(true);*/
     }
 
 	/**
@@ -156,7 +156,7 @@ public class OperationalReportsController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		stackPane = new StackPane(); 
+		//stackPane = new StackPane(); 
 	}
 
 
