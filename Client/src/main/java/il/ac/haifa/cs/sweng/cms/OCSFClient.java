@@ -132,9 +132,12 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof UpdateTicketsResponse) {
             // TODO: Check if successful or not and show it on the screen.
             ((PaymentController) controller).setTickets(((UpdateTicketsResponse) response).getTicketList());
+            ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateLinksResponse) {
             // TODO: Check if successful or not and show it on the screen.
+            ((PaymentController) controller).setLink(((UpdateLinksResponse) response).getLink());
+            ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof AlertMessageResponse) {
             Alert.AlertType alertType = Alert.AlertType.values()[((AlertMessageResponse) response).getAlertType()];

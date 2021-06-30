@@ -40,6 +40,7 @@ public class PaymentController implements Initializable {
     private String inputFirstName, inputLastName,inputEmail, inputPhone, inputCardOwnerName, inputCardOwnerLastName, inputCardNumber, inputCvvNumber;
     private int inputCardExpirationYear=0,inputCardExpirationMonth=0;
     private GregorianCalendar inputExpirationDate;
+    private Boolean messageStatus=false;
 
 
     @FXML // fx:id="accordion"
@@ -165,7 +166,7 @@ public class PaymentController implements Initializable {
         inputCvvNumber= cvvNumber.getText();
 
         if (isChecked()){
-            if(!tickets.isEmpty()) {
+            if(fromScreen==1 && !tickets.isEmpty()) {
                     if (tickets.get(0).getCustomer().isHas_package()) {
                         boolean payWithPackage;
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -188,11 +189,11 @@ public class PaymentController implements Initializable {
                             // TODO: Declare success only after acknowledge from server was received.
 
 
-//                            if(){
+                            if(messageStatus){
                                 // TODO: 30/06/2021 update the packeg statuse
                                 sendMail(tickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -205,16 +206,16 @@ public class PaymentController implements Initializable {
                             System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
-//                            if(){
+                            if(messageStatus){
                                 sendMail(tickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
 
-            } else if (link!=null) {//links
+            } else if (fromScreen==2 && link!=null) {//links
                 try {
                     // TODO: set the selected movie.
                     Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
@@ -224,13 +225,25 @@ public class PaymentController implements Initializable {
                     System.out.println(link);
                     App.getOcsfClient(this).updateLinks(newLink, true);
                     // TODO: Declare success only after acknowledge from server was received.
-//                    if(){
+                    if(messageStatus){
                         sendMail(link);//send mail
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                    }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+
+            else if(fromScreen==3){//package
+                Customer customer=(Customer)App.getUser();
+                if(!customer.isHas_package()) {
+                    Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+
+                }
+                else{
+
+               }
+//                App.getUser()
             }
         }
         else{//if one or more of the section are empty
@@ -728,6 +741,14 @@ public class PaymentController implements Initializable {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public Boolean getMessageStatus() {
+        return messageStatus;
+    }
+
+    public void setMessageStatus(Boolean messageStatus) {
+        this.messageStatus = messageStatus;
     }
 
     /**

@@ -13,7 +13,6 @@ import java.util.List;
  */
 public class UpdateTicketsResponse extends AbstractResponse {
     List<Ticket> ticketList;
-    Boolean isUpdated = false;
 
     /**
      * Constructs an UpdateTicketsResponse instance with the given status.

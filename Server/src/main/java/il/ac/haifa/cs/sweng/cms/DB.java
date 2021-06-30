@@ -661,19 +661,10 @@ public class DB {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
-				session.save(ticket.getPayment());
-				session.save(ticket);
-				session.flush();
-
+			session.save(ticket.getPayment());
+			session.save(ticket);
+			session.flush();
 			ticket.getScreening().addTicket(ticket);
-//			for(Screening screening : getAllScreening()) {
-//				if(screening.getId() == ticket.getScreening().getId()) {
-//					screening.copyFrom(ticket.getScreening());
-//					ticket.setScreening(screening);
-//					break;
-//				}
-//			}
-//			session.update(ticket.getScreening());
 			session.merge(ticket.getScreening());
 		}
 		else{
