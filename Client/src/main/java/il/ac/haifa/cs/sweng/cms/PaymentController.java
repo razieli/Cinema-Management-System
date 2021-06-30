@@ -221,11 +221,10 @@ public class PaymentController implements Initializable {
                     Link newLink = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
                     newLink.setPayment(payment);
 
-                    System.out.println(link);
                     App.getOcsfClient(this).updateLinks(newLink, true);
                     // TODO: Declare success only after acknowledge from server was received.
 //                    if(){
-                        sendMail(link);//send mail
+                        sendMail(newLink);//send mail
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
 //                    }
                 } catch (IOException e) {
@@ -940,7 +939,7 @@ public class PaymentController implements Initializable {
                         "      <td>movie</td>\n" +
                         "    </tr>\n" +
                         "    <tr>\n" +
-                        "      <td>"+link.getMovie().getEngName()+"</td>\n" +
+                        //"      <td>"+link.getMovie().getEngName()+"</td>\n" +
                         "      <td> The link will be available between: "+format.format(link.getDate().getTime().getTime()).toString()+" to: "+format.format(to.getTime()).toString() +"</td>\n" +
                         "    </tr></table dir=\"ltr\">" +
                         "</bdo>");
