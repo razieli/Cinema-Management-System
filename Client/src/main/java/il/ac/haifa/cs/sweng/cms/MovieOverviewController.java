@@ -295,10 +295,12 @@ public class MovieOverviewController implements Initializable {
                 Thread.yield();
             }
             List<Screening> screenList = new ArrayList<Screening>();
-            for(Screening screening: movie.getScreening()){
-                if(screening.getTheater().getCinema().equals(pickedCinema)){
-                    screenList.add(screening);
-                }
+            for (Theater theater : pickedCinema.getTheaters()) {
+                for (Screening screening : theater.getScreeningList())
+                    if(screening.getMovie().getId()==(movie.getId())){
+                        screenList.add(screening);
+                        break;
+                    }
             }
             screeningComboBox.setItems(FXCollections.observableArrayList(screenList));
         }
@@ -316,10 +318,12 @@ public class MovieOverviewController implements Initializable {
                 }
                 List<Screening> screenList = new ArrayList<Screening>();
                 for (Theater theater : pickedCinema.getTheaters()) {
-                    for (Screening screen : theater.getScreeningList())
-                        screenList.add(screen);
+                    for (Screening screening : theater.getScreeningList())
+                        if(screening.getMovie().getId()==(movie.getId())){
+                            screenList.add(screening);
+                            break;
+                        }
                 }
-
                 screeningComboBox.setItems(FXCollections.observableArrayList(screenList));
             }
         });

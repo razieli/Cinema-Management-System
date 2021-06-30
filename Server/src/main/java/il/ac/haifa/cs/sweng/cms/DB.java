@@ -661,15 +661,30 @@ public class DB {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
-			session.save(ticket.getPayment());
-			session.save(ticket);
+				session.save(ticket.getPayment());
+				session.save(ticket);
+				session.flush();
+
+			ticket.getScreening().addTicket(ticket);
+//			for(Screening screening : getAllScreening()) {
+//				if(screening.getId() == ticket.getScreening().getId()) {
+//					screening.copyFrom(ticket.getScreening());
+//					ticket.setScreening(screening);
+//					break;
+//				}
+//			}
+//			session.update(ticket.getScreening());
+			session.merge(ticket.getScreening());
 		}
 		else{
-			Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
-			if (ticketToRemove != null) {
-				session.remove(ticketToRemove.getPayment());
-				session.remove(ticketToRemove);
-			}
+				Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
+				if (ticketToRemove != null) {
+					ticket.getScreening().removeTicket(ticket);
+					session.merge(ticket.getScreening());
+					session.delete(ticketToRemove.getPayment());
+					session.remove(ticketToRemove);
+				}
+
 		}
 		session.flush();
 		session.getTransaction().commit();

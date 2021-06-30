@@ -11,6 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 public class SuccessfulPurchaseController {
 
     private static Payment payment=null;
@@ -31,7 +33,12 @@ public class SuccessfulPurchaseController {
 
     @FXML
     void handheldsBackToMovieList(ActionEvent event) {
-
+        try {
+            // storing the selected film to customise the newly created scene
+            App.setRoot("CustomerHome.fxml");//load edit movie screen
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public Payment getPayment() {
