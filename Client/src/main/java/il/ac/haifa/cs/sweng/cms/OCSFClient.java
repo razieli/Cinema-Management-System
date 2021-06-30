@@ -140,6 +140,10 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof UpdateCustomerResponse) {
             ((PaymentController) controller).setMessageStatus(true);
         }
+        if (response instanceof UpdateCinemaResponse) {
+            // TODO: Check if successful or not and show it on the screen.
+            //((PurpleBadgeController) controller).changeMeToYourSuccessFunction();
+        }
         if (response instanceof AlertMessageResponse) {
             Alert.AlertType alertType = Alert.AlertType.values()[((AlertMessageResponse) response).getAlertType()];
             String header = ((AlertMessageResponse) response).getHeader();
@@ -271,6 +275,14 @@ public class OCSFClient extends AbstractClient {
     protected void updateCustomer(Customer customer) {
         try {
             sendToServer(new UpdateCustomerRequest(customer));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    protected void updateCinema(Cinema cinema) {
+        try {
+            sendToServer(new UpdateCinemaRequest(cinema));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }
