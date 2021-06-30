@@ -174,7 +174,7 @@ public class DB {
 		String description1 = ("When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.");
 		URI uri1a = new URI("https://upload.wikimedia.org/wikipedia/en/c/c9/Darkknight_cd.jpg");
 		URI uri1b = new URI("https://www.imdb.com/video/vi324468761?playlistId=tt0468569");
-		session.save(new Movie("The Dark Knight","ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½",2008,cast1s,152,13,description1, uri1a, uri1b,new GregorianCalendar(2010,5,27,0,00)));
+		session.save(new Movie("The Dark Knight","äàáéø äàôì",2008,cast1s,152,13,description1, uri1a, uri1b,new GregorianCalendar(2010,5,27,0,00)));
 		List<String> cast2=new LinkedList<String>();
 		cast2.add("Christopher Nolan");
 		cast2.add("Leonardo DiCaprio");
@@ -184,7 +184,7 @@ public class DB {
 		String description2 = ("A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.");
 		URI uri2a = new URI("https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri2b = new URI("https://www.imdb.com/video/vi2959588889?playlistId=tt1375666");
-		session.save(new Movie("Inception","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
+		session.save(new Movie("Inception","ääúçìä",2010,cast2s,148,13,description2,uri2a, uri2b,new GregorianCalendar(2020,6,27,0,00)));
 		List<String> cast3=new LinkedList<String>();
 		cast3.add("Christopher Nolan");
 		cast3.add("Matthew McConaughey");
@@ -194,7 +194,7 @@ public class DB {
 		String description3 = ("A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.");
 		URI uri3a = new URI("https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri3b = new URI("https://www.imdb.com/video/vi1586278169?playlistId=tt0816692");
-		session.save(new Movie("Interstellar","ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",2014,cast3s,169,13,description3, uri3a, uri3b, new GregorianCalendar(2018,3,13,0,00)));
+		session.save(new Movie("Interstellar","áéï ëåëáéí",2014,cast3s,169,13,description3, uri3a, uri3b, new GregorianCalendar(2018,3,13,0,00)));
 		List<String> cast4=new LinkedList<String>();
 		cast4.add("Antoine Fuqua");
 		cast4.add("Denzel Washington");
@@ -204,7 +204,7 @@ public class DB {
 		String description4 = ("A rookie cop spends his first day as a Los Angeles narcotics officer with a rogue detective who isn't what he appears to be.");
 		URI uri4a = new URI("https://m.media-amazon.com/images/M/MV5BMDZkMTUxYWEtMDY5NS00ZTA5LTg3MTItNTlkZWE1YWRjYjMwL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri4b = new URI("https://www.imdb.com/video/vi671023385?playlistId=tt0139654");
-		session.save(new Movie("Training Day","ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½",2001,cast4s,122,0,description4, uri4a, uri4b,new GregorianCalendar(2000,12,3,0,00)));
+		session.save(new Movie("Training Day","éåí àéîåðéí îñåëï",2001,cast4s,122,0,description4, uri4a, uri4b,new GregorianCalendar(2000,12,3,0,00)));
 		List<String> cast5=new LinkedList<String>();
 		cast5.add("Jon Favreau");
 		cast5.add("Donald Glover");
@@ -214,7 +214,7 @@ public class DB {
 		String description5 = ("After the murder of his father, a young lion prince flees his kingdom only to learn the true meaning of responsibility and bravery.");
 		URI uri5a = new URI("https://m.media-amazon.com/images/M/MV5BMjIwMjE1Nzc4NV5BMl5BanBnXkFtZTgwNDg4OTA1NzM@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri5b = new URI("https://www.imdb.com/video/vi3509369881?playlistId=tt6105098");
-		session.save(new Movie("The Lion King","ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",2019,cast5s,118,0,description5, uri5a, uri5b, new GregorianCalendar(2021,6,27,0,00)));
+		session.save(new Movie("The Lion King","îìê äàøéåú",2019,cast5s,118,0,description5, uri5a, uri5b, new GregorianCalendar(2021,6,27,0,00)));
 		List<String> cast6=new LinkedList<String>();
 		cast6.add("Gabriele Muccino");
 		cast6.add("Will Smith");
@@ -224,7 +224,7 @@ public class DB {
 		String description6 = ("A struggling salesman takes custody of his son as he's poised to begin a life-changing professional career.");
 		URI uri6a = new URI("https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri6b = new URI("https://www.imdb.com/video/vi1413719065?playlistId=tt0454921");
-		session.save(new Movie("The Pursuit of Happyness","ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½",2006,cast5s,117,13,description6, uri6a, uri6b, new GregorianCalendar(18,3,27,0,00)));
+		session.save(new Movie("The Pursuit of Happyness","äãøê àì äàåùø",2006,cast5s,117,13,description6, uri6a, uri6b, new GregorianCalendar(18,3,27,0,00)));
 		session.flush();
 	}
 
@@ -438,7 +438,7 @@ public class DB {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<PurpleBadge> query = builder.createQuery(PurpleBadge.class);
 		query.from(PurpleBadge.class);
-		PurpleBadge data = session.createQuery(query).getSingleResult();
+		PurpleBadge data = PurpleBadge.getInstance(session.createQuery(query).getResultList().get(0));
 		return data;
 	}
 

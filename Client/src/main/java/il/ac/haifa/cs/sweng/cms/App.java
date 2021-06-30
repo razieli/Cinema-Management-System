@@ -165,11 +165,10 @@ public class App extends Application {
     }
 
 	/**
-	 * @return the pb
 	 */
-	public static PurpleBadge getPb() {
-		pb = PurpleBadge.getInstance();//TODO: get pb from ocsf
-		return pb;
+	public static void getPb() {
+		ocsfClient.getPurpleBadge();
+		
 	}
 
 	/**

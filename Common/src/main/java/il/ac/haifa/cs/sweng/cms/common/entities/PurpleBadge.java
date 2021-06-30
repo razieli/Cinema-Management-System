@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import il.ac.haifa.cs.sweng.cms.common.util.Log;
+
 @Entity
 @Table(name = "purpleBadge")
 public class PurpleBadge implements Serializable {
@@ -72,6 +74,8 @@ public class PurpleBadge implements Serializable {
 	}
 
 	public static PurpleBadge getInstance(PurpleBadge pb) {
+		if (pb==null)
+			single_instance= getInstance();
 		if (single_instance == null)
 			single_instance = new PurpleBadge(pb);
 		else {
@@ -79,7 +83,13 @@ public class PurpleBadge implements Serializable {
 			single_instance.status = pb.status;
 			single_instance.setClosingDates(pb.getClosingDates());
 		}
+		single_instance.id=pb.id;
 		return single_instance;
+	}
+
+	@Override
+	public String toString() {
+		return "PurpleBadge [status=" + status + ", Y=" + Y + ", closingDates=" + closingDates + "]";
 	}
 
 	/**
@@ -136,6 +146,7 @@ public class PurpleBadge implements Serializable {
 			}
 			from.add(Calendar.DAY_OF_MONTH, 1);
 		}
+		Collections.sort(this.closingDates);
 	}
 
 	public void addClosingDate(GregorianCalendar date) {
