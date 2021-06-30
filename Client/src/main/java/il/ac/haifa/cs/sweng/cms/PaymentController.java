@@ -469,7 +469,7 @@ public class PaymentController implements Initializable {
 
                 }
 
-                else{
+                else if(!PurpleBadge.getInstance().getStatus()){
                     // TODO: 29/06/2021 error.
                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                     errorAlert.setTitle(null);

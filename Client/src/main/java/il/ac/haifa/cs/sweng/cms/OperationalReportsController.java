@@ -262,6 +262,11 @@ public class OperationalReportsController implements Initializable{
 		stackPane.getChildren().add(pbchart);
 		stackPane.getChildren().add(purchaseChart);
 		stackPane.getChildren().add(ComplaintTable);
+		
+		App.getOcsfClient(this).getListOfCinemas();
+		App.getOcsfClient(this).getListOfComplaints(manager);
+		App.getOcsfClient(this).getListOfMovies();
+		
 	}
 
 private static class complaint{
