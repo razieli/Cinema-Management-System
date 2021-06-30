@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.App;
+import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
 import il.ac.haifa.cs.sweng.cms.common.entities.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,16 +18,19 @@ import java.util.ResourceBundle;
 
 public class CustomerHomeController implements Initializable {
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        helloUserName.setText("Hello " + App.getUserName() + " !");
-    }
+
 
     @FXML
     private Button LogOutBtn;
 
     @FXML
     private Button movieListBtn;
+
+    @FXML
+    private Text creditStatus;
+
+    @FXML
+    private Text packageStatus;
 
     @FXML
     private Button buyLinkBtn;
@@ -64,6 +68,8 @@ public class CustomerHomeController implements Initializable {
         }
     }
 
+
+
     @FXML
     void switchToAddComplaintScreen(ActionEvent event) {
         try {
@@ -71,15 +77,6 @@ public class CustomerHomeController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    void switchToBuyLinkScreen(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("New features coming soon..  :)");
-        alert.showAndWait();
     }
 
     @FXML
@@ -108,6 +105,22 @@ public class CustomerHomeController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Customer customer=(Customer)App.getUser();
+        helloUserName.setText("Hello " + App.getUserName() + " !");
+        if (customer.getBalance()>0)
+            creditStatus.setText("Credit: " + customer.getBalance());
+        else
+            creditStatus.setText("Credit: 0");
+
+        if(customer.isHas_package())
+            packageStatus.setText("Your package has "+customer.getPackageTicketsRemaining() +" more ticket to use.");
+        else
+            packageStatus.setText("No package has directed.");
+
     }
 
 }
