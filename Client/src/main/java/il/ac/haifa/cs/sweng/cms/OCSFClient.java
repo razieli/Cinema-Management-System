@@ -6,6 +6,7 @@ import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 
@@ -135,10 +136,23 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof UpdateLinksResponse) {
             // TODO: Check if successful or not and show it on the screen.
         }
+        if (response instanceof AlertMessageResponse) {
+            Alert.AlertType alertType = Alert.AlertType.values()[((AlertMessageResponse) response).getAlertType()];
+            String header = ((AlertMessageResponse) response).getHeader();
+            String message = ((AlertMessageResponse) response).getMessage();
+            Platform.runLater(() -> showAlert(alertType, header, message));
+        }
         // TODO: Show "Unidentified response".
 
     }
 
+    private void showAlert(Alert.AlertType alertType, String header, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType.name().substring(0, 1).toUpperCase() + alertType.name().substring(1).toLowerCase());
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 
     /**
