@@ -306,7 +306,13 @@ public class EditMovieScreenController implements Initializable  {
             //set poster to show from url
             posterBox.setText(movie.getPosterUrl().toString());
             trailerBox.setText(movie.getTrailerUrl().toString());
-            inputImage.setImage(new Image(movie.getPosterUrl().toString()));
+//            if(movie.getPosterUrl()==null)
+//                inputImage.setImage(new Image("DefaultMoviePoster.png"));
+//            else
+                inputImage.setImage(new Image(movie.getPosterUrl().toString()));
+
+
+
             inputTrailer.setOnAction(new EventHandler<ActionEvent>() {
                                          @Override
                                          public void handle(ActionEvent e) {

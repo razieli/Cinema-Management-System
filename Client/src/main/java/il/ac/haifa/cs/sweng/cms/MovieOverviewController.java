@@ -295,10 +295,12 @@ public class MovieOverviewController implements Initializable {
                 Thread.yield();
             }
             List<Screening> screenList = new ArrayList<Screening>();
-            for(Screening screening: movie.getScreening()){
-                if(screening.getTheater().getCinema().equals(pickedCinema)){
-                    screenList.add(screening);
-                }
+            for (Theater theater : pickedCinema.getTheaters()) {
+                for (Screening screening : theater.getScreeningList())
+                    if(screening.getMovie().getId()==(movie.getId())){
+                        screenList.add(screening);
+                        break;
+                    }
             }
             screeningComboBox.setItems(FXCollections.observableArrayList(screenList));
         }
@@ -316,10 +318,12 @@ public class MovieOverviewController implements Initializable {
                 }
                 List<Screening> screenList = new ArrayList<Screening>();
                 for (Theater theater : pickedCinema.getTheaters()) {
-                    for (Screening screen : theater.getScreeningList())
-                        screenList.add(screen);
+                    for (Screening screening : theater.getScreeningList())
+                        if(screening.getMovie().getId()==(movie.getId())){
+                            screenList.add(screening);
+                            break;
+                        }
                 }
-
                 screeningComboBox.setItems(FXCollections.observableArrayList(screenList));
             }
         });
@@ -343,13 +347,6 @@ public class MovieOverviewController implements Initializable {
                 try {
                     PaymentController.setMovie(movie);
                     PaymentController.setScreening(pickedScreening);
-
-                    int[][] seatsMap = pickedScreening.getSeats();
-                    for (int row = 0; row <= pickedScreening.getSeatsCapacity() / 10; row++) {
-                        for (int col = 0; col < 10; col++) {
-                    System.out.println("seats: "+seatsMap[row][col]);
-                        }}
-
                     PaymentController.setFromScreen(1);
                     cinemaComboBox.getItems().clear();//clean combobox
                     App.setRoot("Payment.fxml"); //set the scean to the last page.

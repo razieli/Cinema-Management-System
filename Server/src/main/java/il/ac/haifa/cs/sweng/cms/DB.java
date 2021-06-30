@@ -650,20 +650,25 @@ public class DB {
 				session.save(ticket.getPayment());
 				session.save(ticket);
 				session.flush();
-//				session.getTransaction().commit();
-				ticket.getScreening().addTicket(ticket);
-				session.save(ticket.getScreening());
+
+			ticket.getScreening().addTicket(ticket);
+//			for(Screening screening : getAllScreening()) {
+//				if(screening.getId() == ticket.getScreening().getId()) {
+//					screening.copyFrom(ticket.getScreening());
+//					ticket.setScreening(screening);
+//					break;
+//				}
+//			}
+//			session.update(ticket.getScreening());
+			session.merge(ticket.getScreening());
 		}
 		else{
 				Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
 				if (ticketToRemove != null) {
-					session.remove(ticketToRemove.getPayment());
-					session.remove(ticketToRemove);
-
-					session.flush();
-//					session.getTransaction().commit();
 					ticket.getScreening().removeTicket(ticket);
-					session.save(ticket.getScreening());
+					session.merge(ticket.getScreening());
+					session.delete(ticketToRemove.getPayment());
+					session.remove(ticketToRemove);
 				}
 
 		}
