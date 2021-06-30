@@ -343,6 +343,13 @@ public class MovieOverviewController implements Initializable {
                 try {
                     PaymentController.setMovie(movie);
                     PaymentController.setScreening(pickedScreening);
+
+                    int[][] seatsMap = pickedScreening.getSeats();
+                    for (int row = 0; row <= pickedScreening.getSeatsCapacity() / 10; row++) {
+                        for (int col = 0; col < 10; col++) {
+                    System.out.println("seats: "+seatsMap[row][col]);
+                        }}
+
                     PaymentController.setFromScreen(1);
                     cinemaComboBox.getItems().clear();//clean combobox
                     App.setRoot("Payment.fxml"); //set the scean to the last page.

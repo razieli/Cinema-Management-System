@@ -146,7 +146,7 @@ public class ManagerViewMoviesController implements Initializable {
         GridPane gridPane = new GridPane();
 
         /*add screening times*/
-        SimpleDateFormat format= new SimpleDateFormat ("YY.MM.dd E HH:mm; ");//set a date format
+        SimpleDateFormat format= new SimpleDateFormat ("dd.MM.YYYY E HH:mm; ");//set a date format
         String screenTime="";
         int i=0,j=0;
         for(Screening screen:movie.getScreening()){

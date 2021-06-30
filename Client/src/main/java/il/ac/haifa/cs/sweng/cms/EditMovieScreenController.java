@@ -342,7 +342,7 @@ public class EditMovieScreenController implements Initializable  {
             //set premiere to show on screen
             premiere = movie.getPremiere();
             premiereDate.setValue(LocalDate.of(premiere.get(Calendar.YEAR), premiere.get(Calendar.MONTH)+1, premiere.get(Calendar.DAY_OF_MONTH)));
-            SimpleDateFormat f = new SimpleDateFormat("YY.MM.dd E"); //set a date format
+            SimpleDateFormat f = new SimpleDateFormat("dd.MM.YYYY E"); //set a date format
             inputPremiere.setText(String.valueOf(f.format(premiere.getTime())));
 
             inputPrice.setText(String.valueOf(movie.getPrice()));
@@ -353,7 +353,7 @@ public class EditMovieScreenController implements Initializable  {
             }
 
             String displayScreening = "";
-            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm; "); //set a date format
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm; "); //set a date format
             for (Screening screening : movie.getScreening()) {
                 displayScreening += format.format(screening.getDate().getTime()).toString();
             }
@@ -493,7 +493,7 @@ public class EditMovieScreenController implements Initializable  {
 
             /*add a button*/
             //set a date format
-            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm");
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm");
             String name = format.format(screening.getDate().getTime()).toString();
 
             //add button to screen
@@ -520,7 +520,7 @@ public class EditMovieScreenController implements Initializable  {
 
             /*add a button*/
             //set a date format
-            SimpleDateFormat format = new SimpleDateFormat("YY.MM.dd E HH:mm");
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm");
             String name = format.format(screening.getDate().getTime()).toString();
 
             //add button to screen
