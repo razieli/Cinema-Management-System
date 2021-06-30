@@ -11,11 +11,15 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -51,14 +55,8 @@ public class App extends Application {
         scene = new Scene(root, 640, 480);//new scene to load
         stage.setScene(scene);//set scene
 //        stage.setMaximized(true); //set max size available
-        try {
-        Image img = new Image(new FileInputStream("Client/src/main/resourses/icon.png"));
         stage.setTitle("Cinema");
-        stage.getIcons().add(img);
-        } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
-        }
-
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png"))));
         stage.show();//show stage
         
 

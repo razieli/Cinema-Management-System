@@ -619,11 +619,11 @@ public class PaymentController implements Initializable {
         ImageView imageView = new ImageView();
         if(seatMap[row][col] == 0){
             // TODO: 22/06/2021 toggle collor,   max seat to select
-            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png"),30,30,false,false));
+            imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
         }
 
         else{
-            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/BusySeat.png"),30,30,false,false));
+            imageView.setImage(new Image("BusySeat.png", 30,30,false,false));
         }
 
         seatGridPane.add(imageView,col,row);
@@ -633,32 +633,28 @@ public class PaymentController implements Initializable {
         imageView.setOnMouseClicked(e -> {
             if (seatMap[row][col] == 0) {
                 seatFlag.set(!seatFlag.get());
-                try {
-                    if (seatFlag.get() == true) {//if purpleBadge is on in the same values
-                        if (pickSeats == 0) {
-                            //set a error alert
-                            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                            errorAlert.setTitle(null);
-                            errorAlert.setHeaderText(null);
-                            errorAlert.setContentText("You can't pick more seats.");
-                            errorAlert.showAndWait();
-                            if (errorAlert.getResult() == ButtonType.OK) {
-                                seatFlag.set(false);//if cant pick reset chack
-                            }
-                        } else {
-                            imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/ChackedSeat.png"), 30, 30, false, false));
-                            ticket.setCustomer((Customer)App.getUser());
-                            tickets.add(ticket);
-                            pickSeats--;
+                if (seatFlag.get() == true) {//if purpleBadge is on in the same values
+                    if (pickSeats == 0) {
+                        //set a error alert
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                        errorAlert.setTitle(null);
+                        errorAlert.setHeaderText(null);
+                        errorAlert.setContentText("You can't pick more seats.");
+                        errorAlert.showAndWait();
+                        if (errorAlert.getResult() == ButtonType.OK) {
+                            seatFlag.set(false);//if cant pick reset chack
                         }
-                    } else if (seatFlag.get() == false) {
-                        imageView.setImage(new Image(new FileInputStream("Client/src/main/resourses/FreeSeat.png"), 30, 30, false, false));
-                        ticket.setCustomer(null);
-                        tickets.remove(ticket);
-                        pickSeats++;
+                    } else {
+                        imageView.setImage(new Image("ChackedSeat.png", 30,30,false,false));
+                        ticket.setCustomer((Customer)App.getUser());
+                        tickets.add(ticket);
+                        pickSeats--;
                     }
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
+                } else if (seatFlag.get() == false) {
+                    imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
+                    ticket.setCustomer(null);
+                    tickets.remove(ticket);
+                    pickSeats++;
                 }
             }
 
