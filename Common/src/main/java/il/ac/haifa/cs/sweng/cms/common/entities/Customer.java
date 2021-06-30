@@ -38,11 +38,11 @@ public class Customer extends User implements Serializable {
 	/**
 	 * constructors
 	 */
-	public Customer(){super(); balance = 200;}
+	public Customer(){super(); balance = 250;}
 	public Customer(String firstName, String lastName, String password, String userName, int permission)
 	{
 		super(firstName,lastName, password, userName, permission);
-		this.balance = 200;
+		this.balance = 250;
 		this.packageTicketsRemaining = 0;
 	}
 
@@ -171,4 +171,11 @@ public class Customer extends User implements Serializable {
 		this.packagePaymentDate = packagePaymentDate;
 	}
 
+	public int getPackageTicketsRemaining() {
+		return packageTicketsRemaining;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
 }
