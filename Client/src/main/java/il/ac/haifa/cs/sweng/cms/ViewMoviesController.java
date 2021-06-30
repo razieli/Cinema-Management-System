@@ -174,7 +174,12 @@ public class ViewMoviesController implements Initializable {
     protected void addImage(Movie movie){
 
         /*add poster of the movie*/
-        pic = new ImageView(movie.getPosterUrl().toString());
+        try {
+            pic = new ImageView(movie.getPosterUrl().toString());
+        } catch (Exception e) {
+            pic = new ImageView("DefaultMoviePoster.png");
+            e.printStackTrace();
+        }
         pic.setFitWidth(160);
         pic.setFitHeight(220);
 
@@ -398,7 +403,7 @@ public class ViewMoviesController implements Initializable {
             LocalDate date = dateFilter.getValue();
 
             if(date!=null){
-            pickedDate = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth(), 23,59,59);
+            pickedDate = new GregorianCalendar(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth()-1, 23,59,59);
 
             //set a conformation alert
             if (pickedDate.getTime().before(GregorianCalendar.getInstance().getTime())) {
