@@ -37,10 +37,11 @@ public class PaymentController implements Initializable {
     private static Movie movie;
     private static Screening screening = null;
     private static int pickSeats = 0;
-    private List<Ticket> tickets =new ArrayList<Ticket>();
+    private List<Ticket> tickets =new ArrayList<Ticket>(),newTickets =new ArrayList<Ticket>() ;
     private String inputFirstName, inputLastName,inputEmail, inputPhone, inputCardOwnerName, inputCardOwnerLastName, inputCardNumber, inputCvvNumber;
     private int inputCardExpirationYear=0,inputCardExpirationMonth=0;
     private GregorianCalendar inputExpirationDate;
+    private Boolean messageStatus=false;
     private ImageView seatBlockAttemptImage;
     private Ticket ticket;
 
@@ -168,7 +169,7 @@ public class PaymentController implements Initializable {
         inputCvvNumber= cvvNumber.getText();
 
         if (isChecked()){
-            if(!tickets.isEmpty()) {
+            if(fromScreen==1 && !tickets.isEmpty()) {
                     if (tickets.get(0).getCustomer().isHas_package()) {
                         boolean payWithPackage;
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -180,58 +181,98 @@ public class PaymentController implements Initializable {
                         alert.showAndWait();
                         payWithPackage = alert.getResult() == ButtonType.YES;
 
-                        try {
-                            Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                            for (Ticket tic : tickets)
-                                tic.setPayment(payment);
-
-                            System.out.println(tickets);
-                            App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
-                            App.getOcsfClient(this).getListOfTickets();
-                            // TODO: Declare success only after acknowledge from server was received.
+                       if(payWithPackage==true && tickets.get(0).getCustomer().getPackageTicketsRemaining()>pickSeats) {
 
 
-//                            if(){
-                                // TODO: 30/06/2021 update the packeg statuse
-                                sendMail(tickets);//send mail
-                                App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                           try {
+                               App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
+                               while (newTickets.isEmpty()) { Thread.yield(); }
+                               for (Ticket tic : newTickets)
+                                   System.out.println(tic.getId());
+
+                            if(messageStatus){
+                               // TODO: 30/06/2021 update the packeg statuse
+                               sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
+                               App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                            }
+                           } catch (IOException e) {
+                               e.printStackTrace();
+                           }
+                       }
+                       else{
+                           Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                           errorAlert.setTitle(null);
+                           errorAlert.setHeaderText(null);
+                           errorAlert.setContentText("You don't have enough tickets remaining in your package.");
+                           errorAlert.showAndWait();
+                       }
                     } else { //in case of no package available for the customer
                         try {
                             Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
                             for (Ticket tic : tickets)
                                 tic.setPayment(payment);
 
-                            System.out.println(tickets);
+//                            System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
-//                            if(){
-                                sendMail(tickets);//send mail
+
+                            while (newTickets.isEmpty()) { Thread.yield(); }
+                            for (Ticket tic : newTickets)
+                                System.out.println(tic.getId());
+
+                            if(messageStatus){
+                                sendMail(newTickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
 
-            } else if (link!=null) {//links
+            } else if (fromScreen==2 && link!=null) {//links
                 try {
                     // TODO: set the selected movie.
                     Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                    Link newLink = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
-                    newLink.setPayment(payment);
+                    link = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
+                    link.setPayment(payment);
 
-                    App.getOcsfClient(this).updateLinks(newLink, true);
+                    System.out.println(link);
+                    App.getOcsfClient(this).updateLinks(link, true);
                     // TODO: Declare success only after acknowledge from server was received.
-//                    if(){
-                        sendMail(newLink);//send mail
+                    System.out.println(messageStatus);
+                    if(messageStatus){
+                        sendMail(link);//send mail
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                    }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            }
+
+            else if(fromScreen==3){//package
+                Customer customer=(Customer)App.getUser();
+                if(customer.isHas_package()) {
+                    Alert errorAlert = new Alert(Alert.AlertType.WARNING);
+                    errorAlert.setTitle(null);
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("You already have a ticket package.");
+                    errorAlert.showAndWait();
+                }
+                else{
+                    try {
+                        Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+                        customer.setPayment(payment);
+                        customer.addPackage();
+                        App.getOcsfClient(this).updateCustomer(customer);
+
+                        System.out.println(messageStatus);
+                        if(messageStatus){
+    //                        sendMail(link);//send mail
+                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                    }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -335,16 +376,16 @@ public class PaymentController implements Initializable {
                                     tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                     j++;
                                     j = j % 10;
-                                    if (i == 0) {
-                                        j = 1;
-                                        i += 2;
+                                    if (j == 0) {
+//                                        j = 1;
+                                        i += 1;
                                     }
                                 }
 
                             }
 
                             else { // TODO: 27/06/2021 what hapand if not empthy???????
-                                lastTicket = screening.getTickets().get(screening.getTickets().size());
+                                lastTicket = screening.getTickets().get(screening.getTickets().size()-1);
                                 if (lastTicket.getCustomer().equals((Customer) App.getUser())) {//if the same customer
 
                                     int i = lastTicket.getRow() + 1;
@@ -352,9 +393,9 @@ public class PaymentController implements Initializable {
                                     for (int k = 0; k < pickSeats; k++) {
                                         j++;
                                         j = j % 10;
-                                        if (i == 0) {
-                                            j = 1;
-                                            i += 2;
+                                        if (j == 0) {
+//                                            j = 1;
+                                            i += 1;
                                         }
                                         tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                         System.out.println(tickets.size());
@@ -364,18 +405,18 @@ public class PaymentController implements Initializable {
                                     int j = lastTicket.getCol() + 1;
                                     j++;
                                     j = j % 10;
-                                    if (i == 0) {
-                                        j = 1;
-                                        i += 2;
+                                    if (j == 0) {
+//                                        j = 1;
+                                        i += 1;
                                     }
                                     screening.addTicket(new Ticket(null, null, i, j));//add blank seat
 
                                     for (int k = 0; k < pickSeats; k++) {
                                         j++;
                                         j = j % 10;
-                                        if (i == 0) {
-                                            j = 1;
-                                            i += 2;
+                                        if (j == 0) {
+//                                            j = 1;
+                                            i += 1;
                                         }
                                         tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                     }
@@ -388,8 +429,9 @@ public class PaymentController implements Initializable {
                         PBAcceptButton.setText("Accept");//change button text
 
                         tickets.clear(); //Remove all tickets that insert
-                        if(!screening.getTickets().isEmpty() && screening.getTickets().get(screening.getTickets().size()).getCustomer()==null){//if added blank seat remove it.
-                            screening.getTickets().remove(screening.getTickets().size());
+                        System.out.println(tickets.size());
+                        if(!screening.getTickets().isEmpty() && screening.getTickets().get(screening.getTickets().size()-1).getCustomer()==null){//if added blank seat remove it.
+                            screening.getTickets().remove(screening.getTickets().size()-1);
                         }
                     }});
             }
@@ -735,6 +777,22 @@ public class PaymentController implements Initializable {
         this.tickets = tickets;
     }
 
+    public List<Ticket> getNewTickets() {
+        return newTickets;
+    }
+
+    public void setNewTickets(List<Ticket> newTickets) {
+        this.newTickets = newTickets;
+    }
+
+    public Boolean getMessageStatus() {
+        return messageStatus;
+    }
+
+    public void setMessageStatus(Boolean messageStatus) {
+        this.messageStatus = messageStatus;
+    }
+
     /**
      * chack if valid details inserts
      * @return
@@ -902,33 +960,113 @@ public class PaymentController implements Initializable {
     }
 
     private void sendMail(List<Ticket> tickets){
-        String seats="      <td>";
-
-        for (Ticket ticket:tickets){
-            seats+="("+ticket.getRow()+", "+ticket.getCol()+") ";
+        String color = "blue";
+        String firstNameOfCustomer = tickets.get(0).getPayment().getFirstName();
+        String lastNameOfCustomer = tickets.get(0).getPayment().getLastName();
+        String nameOfCinema = tickets.get(0).getScreening().getTheater().getCinema().getName();
+        String nameOfTheater = tickets.get(0).getScreening().getTheater().getPlaceName();
+        String nameOfMovie = tickets.get(0).getScreening().getMovie().getEngName();
+        GregorianCalendar screeningGeo = new GregorianCalendar(
+                tickets.get(0).getScreening().getDate().get(Calendar.YEAR),
+                tickets.get(0).getScreening().getDate().get(Calendar.MONTH),
+                tickets.get(0).getScreening().getDate().get(Calendar.DAY_OF_MONTH),
+                tickets.get(0).getScreening().getDate().get(Calendar.HOUR_OF_DAY),
+                tickets.get(0).getScreening().getDate().get(Calendar.MINUTE));
+        screeningGeo.add(Calendar.DAY_OF_MONTH,7);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm"); //set a date format
+        String screeningDate = format.format(screeningGeo.getTime());
+        String ticketsString = "";
+        for(int i=0; i<tickets.size(); i++)
+        {
+            String num = String.valueOf(i+1);
+            String ticketId = String.valueOf(tickets.get(i).getId());
+            String seat = "(" + tickets.get(i).getRow() + ", " + tickets.get(i).getCol() + ")";
+            ticketsString = ticketsString + "<tr>" +
+                    "<td>" + num + "</td>" +
+                    "<td>" + ticketId + "</td>" +
+                    "<td>" + seat + "</td>" +
+                    "<td>" + nameOfCinema + "</td>" +
+                    "<td>" + nameOfTheater + "</td>" +
+                    "<td>" + nameOfMovie + "</td>" +
+                    "<td>" + screeningDate + "</td>" + "</tr>";
         }
-        seats+="<td>\n";
-
             App.getOcsfClient(this).sendMail(
-                    "galuk3@gmail.com, "+tickets.get(0).getPayment().getEmail(),
-                    "Order Confirmed",
-                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+tickets.get(0).getPayment().getFirstName()+" "+ tickets.get(0).getPayment().getLastName()+"</i></h1><br>" +
+                    tickets.get(0).getPayment().getEmail(),
+                    "Confirmed Order",
+                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "
+                            + firstNameOfCustomer + " "
+                            + lastNameOfCustomer +",</i></h1>" +
                             "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
                             "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
-                            "<br><table border='1' dir=\"ltr\">\n" +
-                            "    <tr>\n" +
-                            "      <td>theater</td>\n" +
-                            "      <td>movie</td>\n" +
-                            "      <td>quantity</td></td>\n" +
-                            "      <td>seats</td></td>\n" +
-                            "    </tr>\n" +
-                            "    <tr>\n" +
-                            "      <td>"+tickets.get(0).getScreening().getTheater().getName()+"</td>\n" +
-                            "      <td>"+tickets.get(0).getScreening().getMovie().getEngName()+"</td>\n" +
-                            "      <td>"+tickets.size()+"</td>\n" +
-                            seats +
-                            "    </tr></table dir=\"ltr\">" +
-                            "</bdo>");
+                            "<br><table align=\"center\" border='2' dir=\"ltr\" td style=\"text-align:center\">" +
+                            "<tr>" +
+                            "<th> - </th>" +
+                            "<th><font color=\"" + color + "\">OrderID</font></th>" +
+                            "<th><font color=\"" + color + "\">Seat</font></th>" +
+                            "<th><font color=\"" + color + "\">Cinema</font></th>" +
+                            "<th><font color=\"" + color + "\">Theater</font></th>" +
+                            "<th><font color=\"" + color + "\">Movie</font></th>" +
+                            "<th><font color=\"" + color + "\">Screening</font></th>" +
+                            "</tr>" +
+                            ticketsString +
+                            "</table dir=\"ltr\">" +
+                            "</bdo>"
+            );
+    }
+
+    private void sendMail(List<Ticket> tickets,int remain){
+        String color = "blue";
+        String firstNameOfCustomer = tickets.get(0).getPayment().getFirstName();
+        String lastNameOfCustomer = tickets.get(0).getPayment().getLastName();
+        String nameOfCinema = tickets.get(0).getScreening().getTheater().getCinema().getName();
+        String nameOfTheater = tickets.get(0).getScreening().getTheater().getPlaceName();
+        String nameOfMovie = tickets.get(0).getScreening().getMovie().getEngName();
+        GregorianCalendar screeningGeo = new GregorianCalendar(
+                tickets.get(0).getScreening().getDate().get(Calendar.YEAR),
+                tickets.get(0).getScreening().getDate().get(Calendar.MONTH),
+                tickets.get(0).getScreening().getDate().get(Calendar.DAY_OF_MONTH),
+                tickets.get(0).getScreening().getDate().get(Calendar.HOUR_OF_DAY),
+                tickets.get(0).getScreening().getDate().get(Calendar.MINUTE));
+        screeningGeo.add(Calendar.DAY_OF_MONTH,7);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm"); //set a date format
+        String screeningDate = format.format(screeningGeo.getTime());
+        String ticketsString = "";
+        for(int i=0; i<tickets.size(); i++)
+        {
+            String num = String.valueOf(i+1);
+            String ticketId = String.valueOf(tickets.get(i).getId());
+            String seat = "(" + tickets.get(i).getRow() + ", " + tickets.get(i).getCol() + ")";
+            ticketsString = ticketsString + "<tr>" +
+                    "<td>" + num + "</td>" +
+                    "<td>" + ticketId + "</td>" +
+                    "<td>" + seat + "</td>" +
+                    "<td>" + nameOfCinema + "</td>" +
+                    "<td>" + nameOfTheater + "</td>" +
+                    "<td>" + nameOfMovie + "</td>" +
+                    "<td>" + screeningDate + "</td>" + "</tr>";
+        }
+        App.getOcsfClient(this).sendMail(
+                tickets.get(0).getPayment().getEmail(),
+                "Confirmed Order",
+                "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "
+                        + firstNameOfCustomer + " "
+                        + lastNameOfCustomer +",</i></h1>" +
+                        "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                        "<br><h3 style=\"color:black;\">Your order is confirmed. You remain "+remain +" in your Tickets Package</h3> "+
+                        "<br><table align=\"center\" border='2' dir=\"ltr\" td style=\"text-align:center\">" +
+                        "<tr>" +
+                        "<th> - </th>" +
+                        "<th><font color=\"" + color + "\">OrderID</font></th>" +
+                        "<th><font color=\"" + color + "\">Seat</font></th>" +
+                        "<th><font color=\"" + color + "\">Cinema</font></th>" +
+                        "<th><font color=\"" + color + "\">Theater</font></th>" +
+                        "<th><font color=\"" + color + "\">Movie</font></th>" +
+                        "<th><font color=\"" + color + "\">Screening</font></th>" +
+                        "</tr>" +
+                        ticketsString +
+                        "</table dir=\"ltr\">" +
+                        "</bdo>"
+        );
     }
 
     private void sendMail(Link link) {
@@ -939,13 +1077,13 @@ public class PaymentController implements Initializable {
                 "Order Confirmed",
                 "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+link.getPayment().getFirstName()+" "+ link.getPayment().getLastName()+"</i></h1><br>" +
                         "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
-                        "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
+                        "<br><h3 style=\"color:black;\">Your order is confirmed. Your order No. is  "+ link.getId() +"</h3> "+
                         "<br><table border='1' dir=\"ltr\">\n" +
                         "    <tr>\n" +
                         "      <td>movie</td>\n" +
                         "    </tr>\n" +
                         "    <tr>\n" +
-                        //"      <td>"+link.getMovie().getEngName()+"</td>\n" +
+                        "      <td>"+link.getMovie().getEngName()+"</td>\n" +
                         "      <td> The link will be available between: "+format.format(link.getDate().getTime().getTime()).toString()+" to: "+format.format(to.getTime()).toString() +"</td>\n" +
                         "    </tr></table dir=\"ltr\">" +
                         "</bdo>");

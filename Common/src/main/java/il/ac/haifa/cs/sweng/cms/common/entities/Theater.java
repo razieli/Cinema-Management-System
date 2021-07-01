@@ -130,17 +130,17 @@ public class Theater implements Serializable {
 			}
 
 			/*change taken seats*/
-			int i =1;
-			int j = 1;
+			int i =0;
+			int j = 0;
 			while(!stack.isEmpty()){
 				Ticket tic = stack.pop();
-				if (!stack.peek().getCustomer().equals(tic.getCustomer())){//skip seat
+				if (!stack.isEmpty() && !stack.peek().getCustomer().equals(tic.getCustomer())){//skip seat
 					s.addTicket(new Ticket(null,null,i,j));
 					j++;
 					j=j%10;
-					if (i==0){
-						j=1;
-						i+=2;
+					if (j==0){
+//						j=1;
+						i+=1;
 					}
 				}
 
@@ -151,9 +151,9 @@ public class Theater implements Serializable {
 
 				j++;
 				j=j%10;
-				if (i==0){
-					j=1;
-					i+=2;
+				if (j==0){
+//					j=1;
+					i+=1;
 				}
 			}
 //				for(Ticket t: s.getTickets()) {

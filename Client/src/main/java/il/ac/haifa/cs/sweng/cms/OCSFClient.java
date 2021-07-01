@@ -130,14 +130,15 @@ public class OCSFClient extends AbstractClient {
         	((OperationalReportsController) controller).setPayments(((ListAllPaymentsResponse) response).getPayments());
         }
         if (response instanceof UpdateTicketsResponse) {
-            // TODO: Check if successful or not and show it on the screen.
-            ((PaymentController) controller).setTickets(((UpdateTicketsResponse) response).getTicketList());
+            ((PaymentController) controller).setNewTickets(((UpdateTicketsResponse) response).getTicketList());
+            ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateLinksResponse) {
-            // TODO: Check if successful or not and show it on the screen.
+            ((PaymentController) controller).setLink(((UpdateLinksResponse) response).getLink());
+            ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateCustomerResponse) {
-            // TODO: Check if successful or not and show it on the screen.
+            ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateCinemaResponse) {
             // TODO: Check if successful or not and show it on the screen.

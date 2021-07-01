@@ -155,7 +155,7 @@ public class OCSFServer extends AbstractServer {
             List<Ticket> allTickets= db.getAllTickets(); //read all tickets
 
             for (Ticket ticket: tickets) {
-                for (int i = allTickets.size() ; i >=0 ; i--) {
+                for (int i = allTickets.size()-1 ; i >=0 ; i--) {
                     Ticket allTicket=allTickets.get(i);
                     if (ticket.getCustomer().equals(allTicket.getCustomer()) && ticket.getPayment().equals(allTicket.getPayment())){
                         tempTickets.add(allTicket);
@@ -175,7 +175,7 @@ public class OCSFServer extends AbstractServer {
             Link link = ((UpdateLinksRequest) request).getLinksList();
             boolean addOrRemove = ((UpdateLinksRequest) request).getAddOrRemove();
             db.setLinks(link, addOrRemove);
-            return new UpdateLinksResponse(ResponseStatus.Acknowledged);
+            return new UpdateLinksResponse(link, ResponseStatus.Acknowledged);
         }
         if(request instanceof UpdateCustomerRequest) {
             db.setCustomer(((UpdateCustomerRequest) request).getCustomer());
