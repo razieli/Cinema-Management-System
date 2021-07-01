@@ -222,6 +222,38 @@ public class DB {
 	 * generate initial payments
 	 */
 	public void generatePayments() throws Exception{
+		List<Ticket> t = getAllTickets();
+		Payment pay1 = new Payment("Yan", "Cohen",
+				new GregorianCalendar(),
+				"Cinema2021SWE@gmail.com", "0587772929",
+				"4205260000000005",
+				new GregorianCalendar(2023, 6, 1, 00, 00),
+				"213");
+		Payment pay2 = new Payment("Moshe", "Levi",
+				new GregorianCalendar(),
+				"Cinema2021SWE@gmail.com", "0523123444",
+				"4311780000241417",
+				new GregorianCalendar(2023, 2, 1, 00, 00),
+				"733");
+		pay1.setTicketList(t.subList(0,2));
+		pay2.setTicketList(t.subList(5,8));
+		session.save(pay1);
+		session.save(pay2);
+//		t.get(0).setPayment(pay1);
+//		t.get(1).setPayment(pay1);
+//		t.get(2).setPayment(pay1);
+//		session.saveOrUpdate(t.get(0));
+//		session.saveOrUpdate(t.get(1));
+//		session.saveOrUpdate(t.get(2));
+//		t.get(5).setPayment(pay2);
+//		t.get(6).setPayment(pay2);
+//		t.get(7).setPayment(pay2);
+//		t.get(8).setPayment(pay2);
+//		session.saveOrUpdate(t.get(5));
+//		session.saveOrUpdate(t.get(6));
+//		session.saveOrUpdate(t.get(7));
+//		session.saveOrUpdate(t.get(8));
+		session.flush();
 	}
 
 
