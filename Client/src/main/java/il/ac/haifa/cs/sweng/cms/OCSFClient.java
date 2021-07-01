@@ -153,7 +153,7 @@ public class OCSFClient extends AbstractClient {
             ((PaymentController) controller).handleBlockSeatResponse(response.getStatus());
         }
         if (response instanceof ListAllBlockedSeatsResponse) {
-
+            ((PaymentController) controller).setFlag(((ListAllBlockedSeatsResponse) response).getBlockedSeatsList());
         }
         // TODO: Show "Unidentified response".
 

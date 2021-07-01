@@ -28,7 +28,7 @@ import org.mindrot.jbcrypt.BCrypt;
 public class DB {
 
 	private static final String TAG = "DB";
-
+	public static boolean status = false;
 	private Session session;
 	private SessionFactory sessionFactory;
 
@@ -91,6 +91,7 @@ public class DB {
 			generateLinks();
 			generatePriceChanges();
 			generatePayments();
+			status=true;
 			session.getTransaction().commit(); // Save everything.
 
 		} catch (URISyntaxException e) {
