@@ -183,9 +183,10 @@ public class PaymentController implements Initializable {
                             for (Ticket tic : tickets)
                                 tic.setPayment(payment);
 
-                            System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
-                            App.getOcsfClient(this).getListOfTickets();
+//                            App.getOcsfClient(this).getListOfTickets();
+                            for (Ticket tic : tickets)
+                                 System.out.println(tic.getId());
                             // TODO: Declare success only after acknowledge from server was received.
 
                             System.out.println(messageStatus);
@@ -206,6 +207,9 @@ public class PaymentController implements Initializable {
                             System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
+                            for (Ticket tic : tickets)
+                                System.out.println(tic.getId());
+
 //                            if(messageStatus){
                                 sendMail(tickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
@@ -936,7 +940,7 @@ public class PaymentController implements Initializable {
         String seats="      <td>";
 
         for (Ticket ticket:tickets){
-            seats+="("+ticket.getRow()+", "+ticket.getCol()+") ";
+            seats+="("+ticket.getRow()+", "+ticket.getCol()+") [Order No. "+ticket.getPayment().getId() +"] ";
         }
         seats+="<td>\n";
 
@@ -970,7 +974,7 @@ public class PaymentController implements Initializable {
                 "Order Confirmed",
                 "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+link.getPayment().getFirstName()+" "+ link.getPayment().getLastName()+"</i></h1><br>" +
                         "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
-                        "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
+                        "<br><h3 style=\"color:black;\">Your order is confirmed. Order No. "+ link.getPayment().getId()+"</h3> "+
                         "<br><table border='1' dir=\"ltr\">\n" +
                         "    <tr>\n" +
                         "      <td>movie</td>\n" +

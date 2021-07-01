@@ -178,9 +178,10 @@ public class OCSFServer extends AbstractServer {
             return new UpdateLinksResponse(link, ResponseStatus.Acknowledged);
         }
         if(request instanceof UpdateCustomerRequest) {
-
-            db.setCustomer(((UpdateCustomerRequest) request).getCustomer());
-
+            // TODO: 01/07/2021 fixxxxxxxxxxxxxxxxx
+            Customer customer = ((UpdateCustomerRequest) request).getCustomer();
+//            customer.addPackage();
+            db.setCustomer(customer);
             return new UpdateCustomerResponse(ResponseStatus.Acknowledged);
         }
         if(request instanceof UpdateCinemaRequest) {
