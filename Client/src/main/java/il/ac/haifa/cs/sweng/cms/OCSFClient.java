@@ -134,7 +134,7 @@ public class OCSFClient extends AbstractClient {
             ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateLinksResponse) {
-            ((PaymentController) controller).setLink(((UpdateLinksResponse) response).getLink());
+            ((PaymentController) controller).setNewLink(((UpdateLinksResponse) response).getLink());
             ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateCustomerResponse) {

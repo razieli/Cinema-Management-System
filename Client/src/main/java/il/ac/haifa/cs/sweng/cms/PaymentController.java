@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 public class PaymentController implements Initializable {
     private static Link link = null;
+    private  Link newLink = null;
     private static int fromScreen =0;
     private double price=0;
     private static Movie movie;
@@ -167,43 +168,43 @@ public class PaymentController implements Initializable {
 
         if (isChecked()){
             if(fromScreen==1 && !tickets.isEmpty()) {
-                    if (tickets.get(0).getCustomer().isHas_package()) {
-                        boolean payWithPackage;
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Pay With Package");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Package was detected, would you like to pay with it?");
-                        alert.getButtonTypes().clear();
-                        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
-                        alert.showAndWait();
-                        payWithPackage = alert.getResult() == ButtonType.YES;
-
-                       if(payWithPackage==true && tickets.get(0).getCustomer().getPackageTicketsRemaining()>pickSeats) {
-
-
-                           try {
-                               App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
-                               while (newTickets.isEmpty()) { Thread.yield(); }
-                               for (Ticket tic : newTickets)
-                                   System.out.println(tic.getId());
-
-                            if(messageStatus){
-                               // TODO: 30/06/2021 update the packeg statuse
-                               sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
-                               App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                            }
-                           } catch (IOException e) {
-                               e.printStackTrace();
-                           }
-                       }
-                       else{
-                           Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                           errorAlert.setTitle(null);
-                           errorAlert.setHeaderText(null);
-                           errorAlert.setContentText("You don't have enough tickets remaining in your package.");
-                           errorAlert.showAndWait();
-                       }
-                    } else { //in case of no package available for the customer
+//                    if (tickets.get(0).getCustomer().isHas_package()) {
+//                        boolean payWithPackage;
+//                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//                        alert.setTitle("Pay With Package");
+//                        alert.setHeaderText(null);
+//                        alert.setContentText("Package was detected, would you like to pay with it?");
+//                        alert.getButtonTypes().clear();
+//                        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+//                        alert.showAndWait();
+//                        payWithPackage = alert.getResult() == ButtonType.YES;
+//
+//                       if(payWithPackage==true && tickets.get(0).getCustomer().getPackageTicketsRemaining()>pickSeats) {
+//
+//
+//                           try {
+//                               App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
+//                               while (newTickets.isEmpty()) { Thread.yield(); }
+//                               for (Ticket tic : newTickets)
+//                                   System.out.println(tic.getId());
+//
+//                            if(messageStatus){
+//                               // TODO: 30/06/2021 update the packeg statuse
+//                               sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
+//                               App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+//                            }
+//                           } catch (IOException e) {
+//                               e.printStackTrace();
+//                           }
+//                       }
+//                       else{
+//                           Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+//                           errorAlert.setTitle(null);
+//                           errorAlert.setHeaderText(null);
+//                           errorAlert.setContentText("You don't have enough tickets remaining in your package.");
+//                           errorAlert.showAndWait();
+//                       }
+//                    } else { //in case of no package available for the customer
                         try {
                             Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
                             for (Ticket tic : tickets)
@@ -224,21 +225,21 @@ public class PaymentController implements Initializable {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
+//                    }
 
             } else if (fromScreen==2 && link!=null) {//links
                 try {
                     // TODO: set the selected movie.
                     Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                    link = new Link((Customer) App.getUser(), (GregorianCalendar) GregorianCalendar.getInstance(), movie);
                     link.setPayment(payment);
 
-                    System.out.println(link);
+
                     App.getOcsfClient(this).updateLinks(link, true);
                     // TODO: Declare success only after acknowledge from server was received.
-                    System.out.println(messageStatus);
+
+                        while (newLink==null) { Thread.yield(); }
                     if(messageStatus){
-                        sendMail(link);//send mail
+                        sendMail(newLink);//send mail
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                     }
                 } catch (IOException e) {
@@ -263,6 +264,7 @@ public class PaymentController implements Initializable {
                         App.getOcsfClient(this).updateCustomer(customer);
 
                         System.out.println(messageStatus);
+                        while (messageStatus==false) { Thread.yield(); }
                         if(messageStatus){
     //                        sendMail(link);//send mail
                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
@@ -367,8 +369,8 @@ public class PaymentController implements Initializable {
                             Ticket lastTicket;
 
                             if(screening.getTickets().isEmpty()) {
-                                int i = 1;
-                                int j = 1;
+                                int i = 0;
+                                int j = 0;
                                 for (int k = 0; k < pickSeats; k++) {
                                     tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                     j++;
@@ -469,58 +471,57 @@ public class PaymentController implements Initializable {
             * set payment Details
             */
             selectSeatsButton.setOnAction(e->{
-                if(!tickets.isEmpty()){ // Details for Ticket
-                    price=tickets.get(0).getScreening().getMovie().getPrice()* tickets.size(); //set the price for the purchase
+                if(!tickets.isEmpty()) { // Details for Ticket
+                    if(fromScreen==1 && !tickets.isEmpty()) {
+                        if (tickets.get(0).getCustomer().isHas_package()) {
+                            boolean payWithPackage;
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Pay With Package");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Package was detected, would you like to pay with it?");
+                            alert.getButtonTypes().clear();
+                            alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+                            alert.showAndWait();
+                            payWithPackage = alert.getResult() == ButtonType.YES;
 
-                    /*set Order Details*/
-                    //set movie title in Order Details
-                    HBox hbMovie = new HBox();
-                    hbMovie.setSpacing(10);
-                    Label movieLabel = new Label("Movie: ");
-                    Text movieTitle = new Text(tickets.get(0).getScreening().getMovie().getEngName());
-                    movieLabel.setTextFill(Color.WHITE);
-                    movieTitle.setFill(Color.WHITE);
-                    hbMovie.getChildren().addAll(movieLabel ,movieTitle);
+                            if (payWithPackage == true) {
+                                if (tickets.get(0).getCustomer().getPackageTicketsRemaining() > pickSeats) {
+                                    Customer customer= (Customer)App.getUser();
+                                    try {
+                                        for(Ticket ticket: tickets){
+                                            ticket.setPayment(customer.getPayment());
+                                        }
 
-                    //set Screening Details in Order Details
-                    HBox hbScreening = new HBox();
-                    hbMovie.setSpacing(10);
-                    Label screeningLabel = new Label("Screening: ");
-                    Text screeningText = new Text(tickets.get(0).getScreening().toString());
-                    screeningLabel.setTextFill(Color.WHITE);
-                    screeningText.setFill(Color.WHITE);
-                    hbScreening.getChildren().addAll(screeningLabel ,screeningText);
+                                        App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
 
-                    orderDetailsVBox.getChildren().addAll(hbMovie, hbScreening);//add to screen
+                                        while (newTickets.isEmpty()) {
+                                            Thread.yield();
+                                        }
+                                        for (Ticket tic : newTickets)
+                                            System.out.println(tic.getId());
 
-                    //set ticket in Order Details
-                    HBox hbTicket = new HBox();
-                    hbMovie.setSpacing(10);
-                    Label ticketLabel = new Label("Seats: ");
-                    ticketLabel.setTextFill(Color.WHITE);
-                    hbTicket.getChildren().add(ticketLabel);
-                    for(Ticket ticket: tickets){
-                        Text ticketSeat = new Text("(" +ticket.getRow()+", "+ticket.getCol()+") ");
-                        ticketSeat.setFill(Color.WHITE);
-                        hbTicket.getChildren().add(ticketSeat);
+                                        if (messageStatus) {
+                                            // TODO: 30/06/2021 update the packeg statuse
+                                            sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
+                                            App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                                        } else {
+                                            setTicketDetileds();
+                                        }
+                                    } catch (IOException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                } else {
+                                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                                    errorAlert.setTitle(null);
+                                    errorAlert.setHeaderText(null);
+                                    errorAlert.setContentText("You don't have enough tickets remaining in your package.");
+                                    errorAlert.showAndWait();
+                                }
+                            } else {
+                                setTicketDetileds();
+                            }
+                        }
                     }
-                    orderDetailsVBox.getChildren().add(hbTicket);
-
-                    //set price in Order Details
-                    HBox hbPrice = new HBox();
-                    hbMovie.setSpacing(10);
-                    Label PriceLabel = new Label("Price: ");
-                    Text PriceText = new Text(String.valueOf(price));
-                    PriceLabel.setTextFill(Color.WHITE);
-                    PriceText.setFill(Color.WHITE);
-                    hbPrice.getChildren().addAll(PriceLabel ,PriceText);
-                    orderDetailsVBox.getChildren().add(hbPrice);
-
-                    /*set price*/
-                    totalPrice.setText(String.valueOf(price));
-
-                    accordion.setExpandedPane(paymentPane);//open payment section
-
 
                 }
 
@@ -582,7 +583,7 @@ public class PaymentController implements Initializable {
                 /*set price*/
                 totalPrice.setText(String.valueOf(price));
             }
-            
+
             else{
                 // TODO: 29/06/2021 error
             }
@@ -763,6 +764,14 @@ public class PaymentController implements Initializable {
         PaymentController.link = link;
     }
 
+    public  Link getNewLink() {
+        return newLink;
+    }
+
+    public  void setNewLink(Link newLink) {
+        this.newLink = newLink;
+    }
+
     public List<Ticket> getTickets() {
         return tickets;
     }
@@ -786,6 +795,79 @@ public class PaymentController implements Initializable {
     public void setMessageStatus(Boolean messageStatus) {
         this.messageStatus = messageStatus;
     }
+
+    private void setTicketDetileds(){
+        /*set Order Details*/
+        //set movie title in Order Details
+        HBox hbMovie = new HBox();
+        hbMovie.setSpacing(10);
+        Label movieLabel = new Label("Movie: ");
+        Text movieTitle = new Text(tickets.get(0).getScreening().getMovie().getEngName());
+        movieLabel.setTextFill(Color.WHITE);
+        movieTitle.setFill(Color.WHITE);
+        hbMovie.getChildren().
+
+                addAll(movieLabel, movieTitle);
+
+        //set Screening Details in Order Details
+        HBox hbScreening = new HBox();
+        hbMovie.setSpacing(10);
+        Label screeningLabel = new Label("Screening: ");
+        Text screeningText = new Text(tickets.get(0).getScreening().toString());
+        screeningLabel.setTextFill(Color.WHITE);
+        screeningText.setFill(Color.WHITE);
+        hbScreening.getChildren().
+
+                addAll(screeningLabel, screeningText);
+
+        orderDetailsVBox.getChildren().
+
+                addAll(hbMovie, hbScreening);//add to screen
+
+        //set ticket in Order Details
+        HBox hbTicket = new HBox();
+        hbMovie.setSpacing(10);
+        Label ticketLabel = new Label("Seats: ");
+        ticketLabel.setTextFill(Color.WHITE);
+        hbTicket.getChildren().
+
+                add(ticketLabel);
+        for(
+                Ticket ticket :tickets)
+
+        {
+            Text ticketSeat = new Text("(" + ticket.getRow() + ", " + ticket.getCol() + ") ");
+            ticketSeat.setFill(Color.WHITE);
+            hbTicket.getChildren().add(ticketSeat);
+        }
+        orderDetailsVBox.getChildren().
+
+                add(hbTicket);
+
+        //set price in Order Details
+        HBox hbPrice = new HBox();
+        hbMovie.setSpacing(10);
+        Label PriceLabel = new Label("Price: ");
+        Text PriceText = new Text(String.valueOf(price));
+        PriceLabel.setTextFill(Color.WHITE);
+        PriceText.setFill(Color.WHITE);
+        hbPrice.getChildren().
+
+                addAll(PriceLabel, PriceText);
+        orderDetailsVBox.getChildren().
+
+                add(hbPrice);
+
+        /*set price*/
+        totalPrice.setText(String.valueOf(price));
+
+        accordion.setExpandedPane(paymentPane);//open payment section
+
+    }
+
+
+
+
 
     /**
      * chack if valid details inserts
