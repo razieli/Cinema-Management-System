@@ -57,7 +57,7 @@
 											<children>
 												<VBox fx:id="packegeVBox" alignment="CENTER" prefHeight="499.0" prefWidth="788.0" spacing="50.0" style="-fx-background-color: black;">
 													<children>
-														<Button id="BuyPackage" fx:id="BuyPackageButton" minWidth="200.0" mnemonicParsing="false" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Buy Package">
+														<Button id="BuyPackage" fx:id="BuyPackageButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Buy Package">
 															<font>
 																<Font name="System Bold" size="24.0" />
 															</font>
@@ -103,9 +103,9 @@
 													<center>
 														<StackPane fx:id="seatStackPane" cache="true" BorderPane.alignment="CENTER">
 															<children>
-																<VBox fx:id="PBAcceptVBox" alignment="CENTER" style="-fx-background-color: black;">
+																<VBox fx:id="PBAcceptVBox" alignment="CENTER" style="-fx-background-color: black; -fx-border-color: red;">
 																	<children>
-																		<Button fx:id="PBAcceptButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: orange;" />
+																		<Button fx:id="PBAcceptButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: orange;" text="Accept " />
 																	</children>
 																</VBox>
 																<Pane fx:id="seatsPane" style="-fx-background-color: black;">

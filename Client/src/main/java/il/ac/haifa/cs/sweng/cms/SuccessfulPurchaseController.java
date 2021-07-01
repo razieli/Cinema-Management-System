@@ -45,17 +45,6 @@ public class SuccessfulPurchaseController implements Initializable {
     @FXML
     private Text PlacesLabel;
 
-
-    @FXML
-    void handheldsBackButton(ActionEvent event) {
-            try {
-                // storing the selected film to customise the newly created scene
-                App.setRoot("CustomerHome.fxml");//load edit movie screen
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-    }
-
     @FXML
     void handheldsBackToMovieList(ActionEvent event) {
         try {
