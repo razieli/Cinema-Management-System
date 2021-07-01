@@ -18,7 +18,7 @@ public class Payment implements Serializable {
 	@OneToMany(targetEntity = Ticket.class ,mappedBy="payment", fetch = FetchType.LAZY)
 	private List<Ticket> ticketList;
 
-	@OneToMany(targetEntity = Link.class ,mappedBy="payment", fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = Link.class ,mappedBy="payment", fetch = FetchType.EAGER)
 	private List<Link> linkList;
 
 	public String getFirstName() {

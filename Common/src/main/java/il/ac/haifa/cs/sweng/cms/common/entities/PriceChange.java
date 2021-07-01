@@ -21,7 +21,7 @@ public class PriceChange implements Serializable {
     @JoinColumn(name="employee_id")
     private Employee submitter;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="movie")
     private Movie movie;
 
