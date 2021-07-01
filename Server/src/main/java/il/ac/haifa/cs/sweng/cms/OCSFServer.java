@@ -270,6 +270,10 @@ public class OCSFServer extends AbstractServer {
             }
             return new BlockReleaseSeatResponse(responseStatus);
         }
+        if(request instanceof ListAllBlockedSeatsRequest) {
+            boolean seatStatus = getBlockedSeatStatus(((ListAllBlockedSeatsRequest) request).getScreening(), ((ListAllBlockedSeatsRequest) request).getRow(), ((ListAllBlockedSeatsRequest) request).getCol());
+            return new ListAllBlockedSeatsResponse(seatStatus);
+        }
 
         Log.w(TAG, "Unidentified request.");
         return null;
@@ -419,6 +423,17 @@ public class OCSFServer extends AbstractServer {
                 tempData.getSelectedSeats().remove(timeSeatPair);
             }
         }
+    }
+
+    private boolean getBlockedSeatStatus(Screening screening, int row, int col) {
+        for(TimeSeatPair timeSeatPair : this.tempData.getSelectedSeats()) {
+            if(timeSeatPair.getScreening().getId() == screening.getId()) {
+                if(timeSeatPair.getRow() == row && timeSeatPair.getCol() == col) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
