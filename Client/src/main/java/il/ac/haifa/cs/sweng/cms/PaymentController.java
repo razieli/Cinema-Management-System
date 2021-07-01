@@ -375,7 +375,7 @@ public class PaymentController implements Initializable {
                                 int i = 0;
                                 int j = 0;
                                 for (int k = 0; k < pickSeats; k++) {
-                                    tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
+                                    tickets.add(new Ticket((Customer) App.getUser(), screening, i, j, false));//add Tickets to purchase
                                     j++;
                                     j = j % 10;
                                     if (j == 0) {
@@ -399,7 +399,7 @@ public class PaymentController implements Initializable {
 //                                            j = 1;
                                             i += 1;
                                         }
-                                        tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
+                                        tickets.add(new Ticket((Customer) App.getUser(), screening, i, j, false));//add Tickets to purchase
                                         System.out.println(tickets.size());
                                     }
                                 } else {//if different than the last customer
@@ -411,7 +411,7 @@ public class PaymentController implements Initializable {
 //                                        j = 1;
                                         i += 1;
                                     }
-                                    screening.addTicket(new Ticket(null, null, i, j));//add blank seat
+                                    screening.addTicket(new Ticket(null, null, i, j, false));//add blank seat
 
                                     for (int k = 0; k < pickSeats; k++) {
                                         j++;
@@ -420,7 +420,7 @@ public class PaymentController implements Initializable {
 //                                            j = 1;
                                             i += 1;
                                         }
-                                        tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
+                                        tickets.add(new Ticket((Customer) App.getUser(), screening, i, j, false));//add Tickets to purchase
                                     }
                                     System.out.println(tickets);
                                 }
@@ -487,11 +487,12 @@ public class PaymentController implements Initializable {
                             alert.showAndWait();
                             payWithPackage = alert.getResult() == ButtonType.YES;
 
-                            if (payWithPackage == true) {
+                            if (payWithPackage) {
                                 if (tickets.get(0).getCustomer().getPackageTicketsRemaining() > pickSeats) {
                                     Customer customer= (Customer)App.getUser();
                                     try {
                                         for(Ticket ticket: tickets){
+                                            ticket.setPaidWithPackage(true);
                                             ticket.setPayment(customer.getPayment());
                                         }
 
@@ -673,7 +674,7 @@ public class PaymentController implements Initializable {
      */
     protected void addSeat(Screening s, int row, int col) throws FileNotFoundException {
         AtomicBoolean seatFlag = new AtomicBoolean(false);
-        Ticket ticket = new Ticket(null, s, row,col);
+        Ticket ticket = new Ticket(null, s, row,col, false);
         int[][] seatMap = s.getSeats();
         ImageView imageView = new ImageView();
 

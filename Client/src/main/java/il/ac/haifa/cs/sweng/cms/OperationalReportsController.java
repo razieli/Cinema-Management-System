@@ -384,10 +384,10 @@ public class OperationalReportsController implements Initializable{
 
 public void generateTicket() {
 	for(Screening s:screenings) {
-		Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4);
-		Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2);
-		Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5);
-		Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1);
+		Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4, false);
+		Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2, false);
+		Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5, false);
+		Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1, false);
 		tickets.add(tic1);
 		tickets.add(tic2);
 		tickets.add(tic3);
