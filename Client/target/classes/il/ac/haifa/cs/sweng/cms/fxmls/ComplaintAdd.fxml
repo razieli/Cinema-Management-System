@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="669.0" prefWidth="745.0"
+	style="-fx-background-color: black;"
+	xmlns="http://javafx.com/javafx/15.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintAddController">
+	<children>
+		<BorderPane style="-fx-background-color: black;"
+			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<top>
+				<AnchorPane minHeight="-Infinity" minWidth="-Infinity"
+					prefHeight="38.0" prefWidth="683.0"
+					style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+					<children>
+						<MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0"
+							prefWidth="681.0" style="-fx-background-color: black;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0"
+							AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
+						<Text fill="ORANGE" layoutX="22.0" layoutY="33.0"
+							strokeType="OUTSIDE" strokeWidth="0.0" text="File Complaint"
+							textAlignment="CENTER" wrappingWidth="640.0"
+							AnchorPane.bottomAnchor="-3.0" AnchorPane.topAnchor="5.0">
+							<font>
+								<Font name="Aharoni Bold" size="30.0" />
+							</font>
+						</Text>
+						<Button fx:id="backButton" layoutX="679.0" layoutY="5.0"
+							mnemonicParsing="false" onAction="#handheldsBackButton"
+							prefHeight="27.0" prefWidth="57.0"
+							style="-fx-background-color: orange;" text="back"
+							AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="50.0"
+							AnchorPane.topAnchor="5.0">
+							<font>
+								<Font name="Aharoni Bold" size="14.0" />
+							</font>
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+					</children>
+				</AnchorPane>
+			</top>
+			<bottom>
+				<AnchorPane prefHeight="35.0" prefWidth="671.0"
+					style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+					<children>
+						<ButtonBar layoutX="341.0" layoutY="11.0"
+							prefHeight="35.0" prefWidth="309.0"
+							style="-fx-background-color: black;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+							AnchorPane.topAnchor="0.0">
+							<buttons>
+								<Button fx:id="addComplaintButton" alignment="CENTER"
+									minWidth="27.0" mnemonicParsing="false"
+									onAction="#addComplaint" prefHeight="25.0" prefWidth="270.0"
+									style="-fx-background-color: #ffa500;" text="Add Complaint"
+									textAlignment="CENTER">
+									<font>
+										<Font name="System Bold" size="12.0" />
+									</font>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</Button>
+							</buttons>
+						</ButtonBar>
+					</children>
+				</AnchorPane>
+			</bottom>
+			<center>
+				<AnchorPane prefHeight="359.0" prefWidth="681.0"
+					style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+					<children>
+						<SplitPane cache="true" dividerPositions="0.5"
+							prefHeight="373.0" prefWidth="683.0"
+							style="-fx-background-color: black; -fx-border-color: ORANGE;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+							AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<items>
+								<ScrollPane fx:id="scrollPaneLeft" fitToHeight="true"
+									hbarPolicy="NEVER" prefHeight="357.0" prefWidth="454.0"
+									style="-fx-background-color: BLACK;">
+									<content>
+										<AnchorPane fx:id="anchorPaneLeft"
+											maxHeight="9000000.0" maxWidth="9000000.0"
+											minHeight="9000000.0" minWidth="900000.0"
+											prefHeight="9000000.0" prefWidth="9000000.0"
+											style="-fx-background-color: black;">
+											<children>
+												<Label layoutX="5.0" layoutY="36.0" prefHeight="19.0"
+													prefWidth="72.0" text="Name:" textFill="ORANGE"
+													underline="true">
+													<font>
+														<Font name="System Bold" size="12.0" />
+													</font>
+												</Label>
+												<Label fx:id="name" layoutX="88.0" layoutY="36.0"
+													prefHeight="19.0" prefWidth="72.0" text="user"
+													textFill="ORANGE">
+													<font>
+														<Font name="System Bold" size="12.0" />
+													</font>
+												</Label>
+												<Label layoutX="5.0" layoutY="100.0" text="Subject:"
+													textFill="ORANGE" underline="true">
+													<font>
+														<Font name="System Bold" size="12.0" />
+													</font>
+												</Label>
+												<Label layoutX="5.0" layoutY="150.0" text="Body:"
+													textFill="ORANGE" underline="true">
+													<font>
+														<Font name="System Bold" size="12.0" />
+													</font>
+												</Label>
+												<TextArea fx:id="body" layoutX="88.0"
+													layoutY="91.0" maxHeight="-Infinity" minHeight="-Infinity"
+													prefHeight="134.0" prefWidth="222.0"
+													promptText="Explanation of the complaint."
+													translateY="60.0" wrapText="true" />
+												<FlowPane fx:id="screeningFlow" layoutX="88.0"
+													layoutY="479.0" prefHeight="89.0" prefWidth="362.0" />
+												<ComboBox fx:id="subject" layoutX="88.0"
+													layoutY="96.0" prefHeight="25.0" prefWidth="234.0" />
+											</children>
+										</AnchorPane>
+									</content>
+								</ScrollPane>
+								<ScrollPane fx:id="scrollPaneRight"
+									fitToHeight="true" hbarPolicy="NEVER"
+									maxHeight="1.7976931348623157E308"
+									maxWidth="1.7976931348623157E308" prefHeight="353.0"
+									prefWidth="237.0" style="-fx-background-color: black;">
+									<content>
+										<AnchorPane fx:id="anchorPaneRight"
+											cacheShape="false" focusTraversable="true"
+											maxHeight="1.7976931348623157E308"
+											maxWidth="1.7976931348623157E308"
+											style="-fx-background-color: black;">
+											<children>
+												<VBox layoutX="1.0" layoutY="207.0"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308"
+													style="-fx-background-color: black;"
+													AnchorPane.bottomAnchor="10.0"
+													AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+													<children>
+														<AnchorPane minHeight="-Infinity"
+															minWidth="-Infinity" prefHeight="900000.0"
+															prefWidth="900000.0" style="-fx-background-color: black;">
+															<VBox.margin>
+																<Insets bottom="5.0" />
+															</VBox.margin>
+															<children>
+																<ListView fx:id="complaintListView"
+																	layoutX="15.0" layoutY="-8.0" prefHeight="159.0"
+																	prefWidth="280.0" AnchorPane.leftAnchor="7.0"
+																	AnchorPane.topAnchor="0.0" />
+																<Label layoutX="16.0" layoutY="164.0"
+																	text="Subject:" textFill="ORANGE" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="complaintListSubject" fill="ORANGE"
+																	layoutX="8.0" layoutY="204.0" strokeType="OUTSIDE"
+																	strokeWidth="0.0" textAlignment="JUSTIFY"
+																	wrappingWidth="120.0" AnchorPane.leftAnchor="8.0" />
+																<Label layoutX="19.0" layoutY="208.0" text="Body:"
+																	textFill="ORANGE" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<TextArea fx:id="complaintListBody"
+																	editable="false" layoutX="7.0" layoutY="235.0"
+																	maxWidth="280.0" prefHeight="61.0" wrapText="true"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="6.0" layoutY="211.0"
+																	text="Status:" textFill="ORANGE" translateY="90.0"
+																	underline="true" AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="complaintListStatus" fill="ORANGE"
+																	layoutX="6.0" layoutY="251.0" strokeType="OUTSIDE"
+																	strokeWidth="0.0" textAlignment="JUSTIFY"
+																	translateY="90.0" wrappingWidth="282.0" />
+																<Label layoutX="5.0" layoutY="344.0" text="Reply:"
+																	textFill="ORANGE" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<TextArea fx:id="complaintListReply"
+																	editable="false" layoutX="7.0" layoutY="372.0"
+																	maxWidth="280.0" prefHeight="61.0" wrapText="true"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="437.0"
+																	text="Compensation:" textFill="ORANGE" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="complaintListCompensation"
+																	fill="ORANGE" layoutX="7.0" layoutY="481.0"
+																	strokeType="OUTSIDE" strokeWidth="0.0"
+																	textAlignment="JUSTIFY" wrappingWidth="282.0"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="352.0" text="Date:"
+																	textFill="ORANGE" translateY="130.0" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="complaintListDate" fill="ORANGE"
+																	layoutX="7.0" layoutY="399.0" strokeType="OUTSIDE"
+																	strokeWidth="0.0" textAlignment="JUSTIFY"
+																	translateY="130.0" wrappingWidth="511.0"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="403.0"
+																	text="Time to respond:" textFill="ORANGE"
+																	translateY="130.0" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="complaintListTtr" fill="ORANGE"
+																	layoutX="7.0" layoutY="483.0" strokeType="OUTSIDE"
+																	strokeWidth="0.0" textAlignment="JUSTIFY"
+																	translateY="90.0" wrappingWidth="120.0"
+																	AnchorPane.leftAnchor="7.0" />
+															</children>
+														</AnchorPane>
+													</children>
+													<opaqueInsets>
+														<Insets bottom="5.0" />
+													</opaqueInsets>
+												</VBox>
+											</children>
+										</AnchorPane>
+									</content>
+								</ScrollPane>
+							</items>
+						</SplitPane>
+					</children>
+				</AnchorPane>
+			</center>
+		</BorderPane>
+	</children>
+</AnchorPane>

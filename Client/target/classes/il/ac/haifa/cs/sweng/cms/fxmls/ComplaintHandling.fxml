@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="619.0" prefWidth="690.0"
+	style="-fx-background-color: black;"
+	xmlns="http://javafx.com/javafx/15.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="il.ac.haifa.cs.sweng.cms.ComplaintHandlingController">
+	<children>
+		<BorderPane AnchorPane.bottomAnchor="0.0"
+			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="0.0">
+			<top>
+				<AnchorPane minHeight="-Infinity" minWidth="-Infinity"
+					prefHeight="38.0" prefWidth="683.0"
+					style="-fx-background-color: BLACK; -fx-border-color: ORANGE;"
+					BorderPane.alignment="CENTER">
+					<children>
+						<MenuBar layoutX="2.0" layoutY="2.0" prefHeight="108.0"
+							prefWidth="681.0" style="-fx-background-color: black;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0"
+							AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
+						<Text fill="ORANGE" layoutX="22.0" layoutY="30.0458984375"
+							strokeType="OUTSIDE" strokeWidth="0.0" text="Complaint Handling"
+							textAlignment="CENTER" wrappingWidth="640.0"
+							AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+							<font>
+								<Font name="Aharoni Bold" size="30.0" />
+							</font>
+						</Text>
+						<Button fx:id="backButton" layoutX="593.0" layoutY="8.0"
+							mnemonicParsing="false" onAction="#handheldsBackButton"
+							prefHeight="30.0" prefWidth="68.0"
+							style="-fx-background-color: orange;" text="BACK"
+							AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="22.0"
+							AnchorPane.topAnchor="8.0">
+							<font>
+								<Font name="Aharoni Bold" size="14.0" />
+							</font>
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+					</children>
+				</AnchorPane>
+			</top>
+			<bottom>
+				<AnchorPane prefHeight="35.0" prefWidth="690.0"
+					style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+					<children>
+						<ButtonBar layoutX="341.0" layoutY="11.0"
+							prefHeight="35.0" prefWidth="309.0"
+							style="-fx-background-color: black;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+							AnchorPane.topAnchor="0.0">
+							<buttons>
+								<Button fx:id="sendReplyButton" alignment="CENTER"
+									mnemonicParsing="false" onAction="#replyToComplaint"
+									prefHeight="25.0" prefWidth="352.0"
+									style="-fx-background-color: #ffa500;" text="Send reply"
+									textAlignment="CENTER">
+									<font>
+										<Font name="System Bold" size="12.0" />
+									</font>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+									<padding>
+										<Insets left="40.0" right="40.0" />
+									</padding>
+								</Button>
+							</buttons>
+						</ButtonBar>
+					</children>
+				</AnchorPane>
+			</bottom>
+			<center>
+				<AnchorPane prefHeight="359.0" prefWidth="681.0"
+					style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+					<children>
+						<SplitPane cache="true" dividerPositions="0.5"
+							prefHeight="373.0" prefWidth="683.0"
+							style="-fx-background-color: black; -fx-border-color: ORANGE;"
+							AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+							AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<items>
+								<ScrollPane fx:id="scrollPaneLeft" fitToHeight="true"
+									hbarPolicy="NEVER" prefHeight="357.0" prefWidth="454.0"
+									style="-fx-background-color: BLACK;">
+									<content>
+										<AnchorPane fx:id="anchorPaneLeft"
+											style="-fx-background-color: black;">
+											<children>
+												<VBox maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308" prefHeight="9000000.0"
+													prefWidth="9000000.0" style="-fx-background-color: BLACK;"
+													AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0"
+													AnchorPane.rightAnchor="-18.0" AnchorPane.topAnchor="0.0">
+													<children>
+														<Label prefHeight="19.0" prefWidth="72.0"
+															text="Reply:" textFill="ORANGE" underline="true">
+															<font>
+																<Font name="System Bold" size="12.0" />
+															</font>
+														</Label>
+														<VBox maxHeight="1.7976931348623157E308"
+															maxWidth="1.7976931348623157E308"
+															style="-fx-background-color: black;">
+															<children>
+																<TextArea fx:id="reply" maxWidth="280.0"
+																	promptText="Enter a reply to the customer."
+																	wrapText="true">
+																	<VBox.margin>
+																		<Insets bottom="4.0" top="4.0" />
+																	</VBox.margin>
+																</TextArea>
+															</children>
+														</VBox>
+														<Label minWidth="-Infinity" text="Compensation:"
+															textFill="ORANGE" underline="true">
+															<font>
+																<Font name="System Bold" size="12.0" />
+															</font>
+															<VBox.margin>
+																<Insets top="8.0" />
+															</VBox.margin>
+														</Label>
+														<TextField fx:id="compensation"
+															maxWidth="-Infinity" minHeight="-Infinity"
+															promptText="Compensation in ILS.">
+															<VBox.margin>
+																<Insets top="4.0" />
+															</VBox.margin>
+														</TextField>
+														<FlowPane fx:id="screeningFlow" prefHeight="89.0"
+															prefWidth="362.0" />
+													</children>
+													<opaqueInsets>
+														<Insets />
+													</opaqueInsets>
+													<padding>
+														<Insets top="1.0" />
+													</padding>
+												</VBox>
+											</children>
+										</AnchorPane>
+									</content>
+								</ScrollPane>
+								<ScrollPane fx:id="scrollPaneRight"
+									fitToHeight="true" hbarPolicy="NEVER"
+									maxHeight="1.7976931348623157E308"
+									maxWidth="1.7976931348623157E308" prefHeight="353.0"
+									prefWidth="237.0" style="-fx-background-color: black;">
+									<content>
+										<AnchorPane fx:id="anchorPaneRight"
+											cacheShape="false" focusTraversable="true"
+											maxHeight="1.7976931348623157E308"
+											maxWidth="1.7976931348623157E308"
+											style="-fx-background-color: black;">
+											<children>
+												<VBox layoutX="1.0" layoutY="207.0"
+													maxHeight="1.7976931348623157E308"
+													maxWidth="1.7976931348623157E308"
+													AnchorPane.bottomAnchor="10.0"
+													AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+													<children>
+														<AnchorPane prefHeight="9000000.0"
+															prefWidth="9000000.0">
+															<VBox.margin>
+																<Insets bottom="5.0" />
+															</VBox.margin>
+															<children>
+																<ListView fx:id="complaintListView"
+																	layoutX="9.0" layoutY="-4.0" maxWidth="280.0"
+																	prefHeight="137.0" />
+																<Label layoutX="7.0" layoutY="137.0"
+																	text="Subject:" textFill="ORANGE" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="subject" fill="ORANGE" layoutX="9.0"
+																	layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0"
+																	textAlignment="JUSTIFY" wrappingWidth="184.0"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="175.0" text="Body:"
+																	textFill="ORANGE" underline="true">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<TextArea fx:id="body" editable="false"
+																	layoutX="7.0" layoutY="203.0" maxWidth="280.0"
+																	prefHeight="61.0" wrapText="true"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="211.0"
+																	text="Status:" textFill="ORANGE" translateY="55.0"
+																	underline="true" AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="status" fill="ORANGE" layoutX="7.0"
+																	layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0"
+																	textAlignment="JUSTIFY" translateY="55.0"
+																	wrappingWidth="247.0" AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="5.0" layoutY="309.0" text="Reply:"
+																	textFill="ORANGE" underline="true">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<TextArea fx:id="submittedReply"
+																	editable="false" layoutX="7.0" layoutY="336.0"
+																	maxWidth="280.0" prefHeight="61.0" wrapText="true"
+																	AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="306.0"
+																	text="Compensation:" textFill="ORANGE"
+																	translateY="90.0" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="comp" fill="ORANGE" layoutX="7.0"
+																	layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0"
+																	textAlignment="JUSTIFY" translateY="90.0"
+																	wrappingWidth="247.0" AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="254.0" text="Date:"
+																	textFill="ORANGE" translateY="190.0" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="date" fill="ORANGE" layoutX="7.0"
+																	layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0"
+																	textAlignment="JUSTIFY" translateY="190.0"
+																	wrappingWidth="273.0" AnchorPane.leftAnchor="7.0" />
+																<Label layoutX="7.0" layoutY="297.0"
+																	text="Time to respond:" textFill="ORANGE"
+																	translateY="190.0" underline="true"
+																	AnchorPane.leftAnchor="7.0">
+																	<font>
+																		<Font name="System Bold" size="18.0" />
+																	</font>
+																</Label>
+																<Text fx:id="ttr" fill="ORANGE" layoutX="7.0"
+																	layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0"
+																	textAlignment="JUSTIFY" translateY="190.0"
+																	wrappingWidth="120.0" AnchorPane.leftAnchor="7.0" />
+															</children>
+														</AnchorPane>
+													</children>
+													<opaqueInsets>
+														<Insets bottom="5.0" />
+													</opaqueInsets>
+												</VBox>
+											</children>
+										</AnchorPane>
+									</content>
+								</ScrollPane>
+							</items>
+						</SplitPane>
+					</children>
+				</AnchorPane>
+			</center>
+		</BorderPane>
+	</children>
+</AnchorPane>
