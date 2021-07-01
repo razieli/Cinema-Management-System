@@ -344,14 +344,23 @@ public class MovieOverviewController implements Initializable {
                 errorAlert.showAndWait();
             }
             else {
-                try {
-                    PaymentController.setMovie(movie);
-                    PaymentController.setScreening(pickedScreening);
-                    PaymentController.setFromScreen(1);
-                    cinemaComboBox.getItems().clear();//clean combobox
-                    App.setRoot("Payment.fxml"); //set the scean to the last page.
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Note");
+                alert.setHeaderText(null);
+                alert.setContentText("The seats you have chosen will keep you for 5 minutes.");
+                alert.getButtonTypes().clear();
+                alert.getButtonTypes().addAll(ButtonType.OK);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.OK) {
+                    try {
+                        PaymentController.setMovie(movie);
+                        PaymentController.setScreening(pickedScreening);
+                        PaymentController.setFromScreen(1);
+                        cinemaComboBox.getItems().clear();//clean combobox
+                        App.setRoot("Payment.fxml"); //set the scean to the last page.
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
