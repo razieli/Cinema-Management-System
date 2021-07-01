@@ -509,6 +509,7 @@ public class PaymentController implements Initializable {
                                         if (messageStatus) {
                                             // TODO: 30/06/2021 update the packeg statuse
                                             sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
+                                            App.getStage().setUserData(newTickets);
                                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                                         } else {
                                             setTicketDetileds();

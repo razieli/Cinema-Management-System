@@ -79,7 +79,7 @@ public class SuccessfulPurchaseController implements Initializable {
             Screening lastScreening = ticketList.get(ticketList.size()-1).getScreening();
             TheaterLabel.setText(TheaterLabel.getText() + " " + lastScreening.getTheater().getName());
             MovieLabel.setText(MovieLabel.getText() + " " + lastScreening.getMovie().getEngName());
-            NumLabel.setText(NumLabel.getText() + " " + (String.valueOf((lastScreening.getTheater().getSeatsCapacity()))));
+            NumLabel.setText(NumLabel.getText() + " " + (ticketList.size()));
             ticketList.forEach(ticket -> PlacesLabel.setText(PlacesLabel.getText() + " " + "[Row: " + ticket.getRow() + " Seat: " + ticket.getCol() + "]"));
         }
         else if(App.getStage().getUserData() instanceof Link) {
@@ -87,6 +87,11 @@ public class SuccessfulPurchaseController implements Initializable {
             TheaterLabel.setText("");
             MovieLabel.setText(MovieLabel.getText() + " " + link.getMovie().getEngName());
             NumLabel.setText("Activation: " + link.getDate().get(Calendar.DAY_OF_MONTH) + "." + (link.getDate().get(Calendar.MONTH) + 1) + "." + link.getDate().get(Calendar.YEAR) + " " + link.getDate().get(Calendar.HOUR_OF_DAY) + ":" + link.getDate().get(Calendar.MINUTE));
+            PlacesLabel.setText("");
+        } else {
+            TheaterLabel.setText("");
+            MovieLabel.setText("");
+            NumLabel.setText("");
             PlacesLabel.setText("");
         }
     }
