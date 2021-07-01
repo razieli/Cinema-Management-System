@@ -23,229 +23,229 @@ import java.util.*;
  */
 public class OCSFServer extends AbstractServer {
 
-    private static final String TAG = "OCSFServer";
+	private static final String TAG = "OCSFServer";
 
-    private static final int LOW_PORT_THRESH = 1024;
+	private static final int LOW_PORT_THRESH = 1024;
 
-    private final DB db;
+	private final DB db;
 
-    private final TempData tempData;
+	private final TempData tempData;
 
-    private final Timer timer;
-    private final TimerTask timerTaskLinks;
-    private final TimerTask timerTaskSeats;
-    private final long LINKS_NOTIFY_PERIOD = 60000;
-    private final long SEATS_CHECK_PERIOD = 60000;
-    private final int MAX_BLOCK_TIME = 5;
+	private final Timer timer;
+	private final TimerTask timerTaskLinks;
+	private final TimerTask timerTaskSeats;
+	private final long LINKS_NOTIFY_PERIOD = 60000;
+	private final long SEATS_CHECK_PERIOD = 60000;
+	private final int MAX_BLOCK_TIME = 5;
 
-    /**
-     * Constructs a new server.
-     *
-     * @param port the port number on which to listen.
-     */
-    public OCSFServer(int port, DB db) {
-        super(port);
-        if(port <= LOW_PORT_THRESH) {
-            Log.w(TAG, "Using low port " + port + ".");
-        }
-        this.db = db;
-        this.tempData = new TempData();
-        this.timer = new Timer();
-        this.timerTaskLinks = new TimerTask() {
-            @Override
-            public void run() {
-                notifyUpcomingLinks();
-            }
-        };
-        this.timerTaskSeats = new TimerTask() {
-            @Override
-            public void run() {
-                checkExpiredSeatSelections();
-            }
-        };
-        timer.scheduleAtFixedRate(timerTaskLinks, 0, LINKS_NOTIFY_PERIOD);
-        timer.scheduleAtFixedRate(timerTaskSeats, 0, SEATS_CHECK_PERIOD);
-    }
+	/**
+	 * Constructs a new server.
+	 *
+	 * @param port the port number on which to listen.
+	 */
+	public OCSFServer(int port, DB db) {
+		super(port);
+		if(port <= LOW_PORT_THRESH) {
+			Log.w(TAG, "Using low port " + port + ".");
+		}
+		this.db = db;
+		this.tempData = new TempData();
+		this.timer = new Timer();
+		this.timerTaskLinks = new TimerTask() {
+			@Override
+			public void run() {
+				notifyUpcomingLinks();
+			}
+		};
+		this.timerTaskSeats = new TimerTask() {
+			@Override
+			public void run() {
+				checkExpiredSeatSelections();
+			}
+		};
+		timer.scheduleAtFixedRate(timerTaskLinks, 0, LINKS_NOTIFY_PERIOD);
+		timer.scheduleAtFixedRate(timerTaskSeats, 0, SEATS_CHECK_PERIOD);
+	}
 
-    @Override
-    synchronized protected void clientDisconnected(ConnectionToClient client) {
-        tempData.getConnectedUsers().removeIf(clientUserPair -> clientUserPair.getClient().equals(client));
-    }
+	@Override
+	synchronized protected void clientDisconnected(ConnectionToClient client) {
+		tempData.getConnectedUsers().removeIf(clientUserPair -> clientUserPair.getClient().equals(client));
+	}
 
-    /**
-     * Receives a request sent from the client to the server, tries to fulfill it and respond to it.
-     * @param msg    the message received.
-     * @param client the connection connected to the client that sent the message.
-     */
-    @Override
-    protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        Log.i(TAG, "Message received from client " + client);
+	/**
+	 * Receives a request sent from the client to the server, tries to fulfill it and respond to it.
+	 * @param msg    the message received.
+	 * @param client the connection connected to the client that sent the message.
+	 */
+	@Override
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		Log.i(TAG, "Message received from client " + client);
 
-        if(msg instanceof AbstractRequest) {
-            AbstractResponse response = genResponse((AbstractRequest) msg, client);
-            if(response != null) {
-                try {
-                    client.sendToClient(response);
-                    Log.i(TAG, "Response sent to client " + client);
-                } catch (IOException e) {
-                    Log.e(TAG, "IO exception while trying to send response to client.");
-                }
-            } else {
-                Log.w(TAG, "Response not sent.");
-            }
-        } else {
-            Log.w(TAG, "Received an unexpected message from client " + client);
-        }
-    }
+		if(msg instanceof AbstractRequest) {
+			AbstractResponse response = genResponse((AbstractRequest) msg, client);
+			if(response != null) {
+				try {
+					client.sendToClient(response);
+					Log.i(TAG, "Response sent to client " + client);
+				} catch (IOException e) {
+					Log.e(TAG, "IO exception while trying to send response to client.");
+				}
+			} else {
+				Log.w(TAG, "Response not sent.");
+			}
+		} else {
+			Log.w(TAG, "Received an unexpected message from client " + client);
+		}
+	}
 
-    /**
-     * Parses the request message and creates a response message.
-     * @param request Request message.
-     * @return Response message, or null if request is unidentified.
-     */
-    private AbstractResponse genResponse(AbstractRequest request, ConnectionToClient client) {
-        if(request instanceof ListAllCinemasRequest) {
-            // Get list of tickets from DB.
-            List<Cinema> cinemaList = null;
-            try {
-                cinemaList = db.getAllCinemas();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return new ListAllCinemasResponse(cinemaList);
-        }
+	/**
+	 * Parses the request message and creates a response message.
+	 * @param request Request message.
+	 * @return Response message, or null if request is unidentified.
+	 */
+	private AbstractResponse genResponse(AbstractRequest request, ConnectionToClient client) {
+		if(request instanceof ListAllCinemasRequest) {
+			// Get list of tickets from DB.
+			List<Cinema> cinemaList = null;
+			try {
+				cinemaList = db.getAllCinemas();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return new ListAllCinemasResponse(cinemaList);
+		}
 
-        if(request instanceof ListAllMoviesRequest) {
-            // Get list of movies from DB.
-            List<Movie> movieList = db.getAllMovies();
-            return new ListAllMoviesResponse(movieList);
-        }
+		if(request instanceof ListAllMoviesRequest) {
+			// Get list of movies from DB.
+			List<Movie> movieList = db.getAllMovies();
+			return new ListAllMoviesResponse(movieList);
+		}
 
-        if(request instanceof ListAllTicketsRequest) {
-            // Get list of tickets from DB.
-            List<Ticket> ticketList = db.getAllTickets();
-            return new ListAllTicketsResponse(ticketList);
-        }
+		if(request instanceof ListAllTicketsRequest) {
+			// Get list of tickets from DB.
+			List<Ticket> ticketList = db.getAllTickets();
+			return new ListAllTicketsResponse(ticketList);
+		}
 
-        if(request instanceof ListAllLinksRequest) {
-            // Get list of tickets from DB.
-            List<Link> linkList = db.getAllLinks();
-            return new ListAllLinksResponse(linkList);
-        }
+		if(request instanceof ListAllLinksRequest) {
+			// Get list of tickets from DB.
+			List<Link> linkList = db.getAllLinks();
+			return new ListAllLinksResponse(linkList);
+		}
 
-        if(request instanceof ListAllPaymentsRequest) {
-            // Get list of payments from DB.
-            List<Payment> paymentList = db.getAllPayments();
-            return new ListAllPaymentsResponse(paymentList);
-        }
+		if(request instanceof ListAllPaymentsRequest) {
+			// Get list of payments from DB.
+			List<Payment> paymentList = db.getAllPayments();
+			return new ListAllPaymentsResponse(paymentList);
+		}
 
-        if(request instanceof UpdateMovieRequest) {
-            // Save updated movie in DB.
-            Movie movie = ((UpdateMovieRequest) request).getMovie();
-            db.setMovie(movie);
-            return new UpdateMovieResponse(ResponseStatus.Acknowledged);
-        }
+		if(request instanceof UpdateMovieRequest) {
+			// Save updated movie in DB.
+			Movie movie = ((UpdateMovieRequest) request).getMovie();
+			db.setMovie(movie);
+			return new UpdateMovieResponse(ResponseStatus.Acknowledged);
+		}
 
-        if(request instanceof DeleteMovieRequest) {
-            // Delete Movie from DB.
-            Movie movie = ((DeleteMovieRequest) request).getMovie();
-            db.deleteMovie(movie);
-            return new DeleteMovieResponse(ResponseStatus.Acknowledged);
-        }
+		if(request instanceof DeleteMovieRequest) {
+			// Delete Movie from DB.
+			Movie movie = ((DeleteMovieRequest) request).getMovie();
+			db.deleteMovie(movie);
+			return new DeleteMovieResponse(ResponseStatus.Acknowledged);
+		}
 
-        if(request instanceof UpdateTicketsRequest) {
-            // Save tickets in DB.
-            List<Ticket> tempTickets = new ArrayList<Ticket>();
-            List<Ticket> tickets= ((UpdateTicketsRequest) request).getTicket();
-            boolean addOrRemove = ((UpdateTicketsRequest) request).getAddOrRemove();
-            for (Ticket ticket: tickets) {
-                db.setTickets(ticket, addOrRemove);
-            }
-            List<Ticket> allTickets= db.getAllTickets(); //read all tickets
+		if(request instanceof UpdateTicketsRequest) {
+			// Save tickets in DB.
+			List<Ticket> tempTickets = new ArrayList<Ticket>();
+			List<Ticket> tickets= ((UpdateTicketsRequest) request).getTicket();
+			boolean addOrRemove = ((UpdateTicketsRequest) request).getAddOrRemove();
+			for (Ticket ticket: tickets) {
+				db.setTickets(ticket, addOrRemove);
+			}
+			List<Ticket> allTickets= db.getAllTickets(); //read all tickets
 
-            for (Ticket ticket: tickets) {
-                for (int i = allTickets.size()-1 ; i >=0 ; i--) {
-                    Ticket allTicket=allTickets.get(i);
-                    if (ticket.getCustomer().equals(allTicket.getCustomer()) && ticket.getPayment().equals(allTicket.getPayment())){
-                        tempTickets.add(allTicket);
-                        break;
-                    }
-                }
-            }
+			for (Ticket ticket: tickets) {
+				for (int i = allTickets.size()-1 ; i >=0 ; i--) {
+					Ticket allTicket=allTickets.get(i);
+					if (ticket.getCustomer().equals(allTicket.getCustomer()) && ticket.getPayment().equals(allTicket.getPayment())){
+						tempTickets.add(allTicket);
+						break;
+					}
+				}
+			}
 
-            if (!tempTickets.isEmpty() && tempTickets.size()==tickets.size()) {
-                tickets.clear();
-                tickets.addAll(tempTickets);
-            }
+			if (!tempTickets.isEmpty() && tempTickets.size()==tickets.size())
+				tickets=tempTickets;
 
-            return new UpdateTicketsResponse(ResponseStatus.Acknowledged, tickets);
-        }
+			return new UpdateTicketsResponse(ResponseStatus.Acknowledged, tickets);
+		}
 
-        if(request instanceof UpdateLinksRequest) {
-            // Save links in DB.
-            Link link = ((UpdateLinksRequest) request).getLinksList();
-            boolean addOrRemove = ((UpdateLinksRequest) request).getAddOrRemove();
-            db.setLinks(link, addOrRemove);
+		if(request instanceof UpdateLinksRequest) {
+			// Save links in DB.
+			Link link = ((UpdateLinksRequest) request).getLinksList();
+			boolean addOrRemove = ((UpdateLinksRequest) request).getAddOrRemove();
+			db.setLinks(link, addOrRemove);
 
-            System.out.println(link.getId());
+			System.out.println(link.getId());
 
-            return new UpdateLinksResponse(link, ResponseStatus.Acknowledged);
-        }
-        if(request instanceof UpdateCustomerRequest) {
-            db.setCustomer(((UpdateCustomerRequest) request).getCustomer());
-            return new UpdateCustomerResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof UpdateCinemaRequest) {
-            db.setCinema(((UpdateCinemaRequest) request).getCinema());
-            return new UpdateCinemaResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof LoginRequest) {
-            return handleLoginRequest((LoginRequest) request, client);
-        }
-        if(request instanceof MailRequest) {
-            sendMail(((MailRequest) request).getEmailAddressToSend(),
-                    ((MailRequest) request).getSubject(), ((MailRequest) request).getMsg());
-            return new MailResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof ComplaintFileRequest) {
-            Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
-            db.setComplaint(complaint);
-            return new ComplaintFileResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof ListAllComplaintsRequest) {
-            List<Complaint> complaints = db.getAllComplaints(((ListAllComplaintsRequest) request).getUser());
-            return new ListAllComplaintsResponse(complaints);
-        }
-        if(request instanceof ComplaintReplyRequest) {
-            db.setComplaint(((ComplaintReplyRequest) request).getComplaint());
-            return new ComplaintReplyResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof PriceChangeSubmissionRequest) {
-            PriceChange priceChange = ((PriceChangeSubmissionRequest) request).getPriceChange();
-            db.setPriceChange(priceChange);
-            return new PriceChangeSubmissionResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof ListAllPriceChangesRequest) {
-            List<PriceChange> priceChanges = db.getAllPriceChanges(((ListAllPriceChangesRequest) request).getUser());
-            return new ListAllPriceChangesResponse(priceChanges);
-        }
-        if(request instanceof PriceChangeReplyRequest) {
-            db.setPriceChange(((PriceChangeReplyRequest) request).getPriceChange());
-            return new PriceChangeReplyResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof UpdatePurpleBadgeRequest) {
-            // Save updated PurpleBadge in DB.
-            PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest)request).getPb()) ;
-            try {
-                for(Ticket t: db.setPurpleBadge(pb)){
-                    sendMail(t.getPayment().getEmail(),"Your ticket has been canceled",
-                            "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
-                            "<br><h2 style=\"color:black;\">Unfortunately, the screening of the movie " +
-                            "you bought tickets for is canceled. </h2>" +
-                            "<br><h2 style=\"color:black;\">your bank account will receive a compensation of 50$ shortly." +
-                            "</bdo>");
-                    System.out.println(t.getPayment().getEmail());
-                }
+			return new UpdateLinksResponse(link, ResponseStatus.Acknowledged);
+		}
+		if(request instanceof UpdateCustomerRequest) {
+			db.setCustomer(((UpdateCustomerRequest) request).getCustomer());
+			return new UpdateCustomerResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof UpdateCinemaRequest) {
+			db.setCinema(((UpdateCinemaRequest) request).getCinema());
+			return new UpdateCinemaResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof LoginRequest) {
+			return handleLoginRequest((LoginRequest) request, client);
+		}
+		if(request instanceof MailRequest) {
+			sendMail(((MailRequest) request).getEmailAddressToSend(),
+					((MailRequest) request).getSubject(), ((MailRequest) request).getMsg());
+			return new MailResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof ComplaintFileRequest) {
+			Complaint complaint = ((ComplaintFileRequest) request).getComplaint();
+			db.setComplaint(complaint);
+			return new ComplaintFileResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof ListAllComplaintsRequest) {
+			List<Complaint> complaints = db.getAllComplaints(((ListAllComplaintsRequest) request).getUser());
+			return new ListAllComplaintsResponse(complaints);
+		}
+		if(request instanceof ComplaintReplyRequest) {
+			db.setComplaint(((ComplaintReplyRequest) request).getComplaint());
+			return new ComplaintReplyResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof PriceChangeSubmissionRequest) {
+			PriceChange priceChange = ((PriceChangeSubmissionRequest) request).getPriceChange();
+			db.setPriceChange(priceChange);
+			return new PriceChangeSubmissionResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof ListAllPriceChangesRequest) {
+			List<PriceChange> priceChanges = db.getAllPriceChanges(((ListAllPriceChangesRequest) request).getUser());
+			return new ListAllPriceChangesResponse(priceChanges);
+		}
+		if(request instanceof PriceChangeReplyRequest) {
+			db.setPriceChange(((PriceChangeReplyRequest) request).getPriceChange());
+			return new PriceChangeReplyResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof UpdatePurpleBadgeRequest) {
+			// Save updated PurpleBadge in DB.
+			PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest)request).getPb()) ;
+			try {
+				for(Ticket t: db.setPurpleBadge(pb)){
+					if(t.getPayment()!=null) {
+						sendMail(t.getPayment().getEmail(),"Your ticket has been canceled",
+								"<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+										"<br><h2 style=\"color:black;\">Unfortunately, the screening of the movie " +
+										"you bought tickets for is canceled. </h2>" +
+										"<br><h2 style=\"color:black;\">your bank account will receive a compensation of 50$ shortly." +
+								"</bdo>");
+						System.out.println(t.getPayment().getEmail());
+					}
+				}
 
 
 
@@ -253,188 +253,177 @@ public class OCSFServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
-        }
-        if(request instanceof getPurpleBadgeRequest) {
-            // Save updated PurpleBadge in DB.
-            PurpleBadge pb = PurpleBadge.getInstance(db.getPurpleBadge()) ;
-            return new getPurpleBadgeResponse(pb);
-        }
-        if(request instanceof BlockReleaseSeatRequest) {
-            BlockReleaseSeatRequest blockReleaseSeatRequest = (BlockReleaseSeatRequest) request;
-            ResponseStatus responseStatus;
-            if(blockReleaseSeat(blockReleaseSeatRequest.getScreening(), blockReleaseSeatRequest.getRow(), blockReleaseSeatRequest.getCol(), blockReleaseSeatRequest.isBlock())) {
-                responseStatus = ResponseStatus.Acknowledged;
-            } else {
-                responseStatus = ResponseStatus.Rejected;
-            }
-            return new BlockReleaseSeatResponse(responseStatus);
-        }
-        if(request instanceof ListAllBlockedSeatsRequest) {
-            boolean seatStatus = getBlockedSeatStatus(((ListAllBlockedSeatsRequest) request).getScreening(), ((ListAllBlockedSeatsRequest) request).getRow(), ((ListAllBlockedSeatsRequest) request).getCol());
-            return new ListAllBlockedSeatsResponse(seatStatus);
-        }
+			return new UpdatePurpleBadgeResponse(ResponseStatus.Acknowledged);
+		}
+		if(request instanceof getPurpleBadgeRequest) {
+			// Save updated PurpleBadge in DB.
+			PurpleBadge pb = PurpleBadge.getInstance(db.getPurpleBadge()) ;
+			return new getPurpleBadgeResponse(pb);
+		}
+		if(request instanceof BlockReleaseSeatRequest) {
+			BlockReleaseSeatRequest blockReleaseSeatRequest = (BlockReleaseSeatRequest) request;
+			ResponseStatus responseStatus;
+			if(blockReleaseSeat(blockReleaseSeatRequest.getScreening(), blockReleaseSeatRequest.getRow(), blockReleaseSeatRequest.getCol(), blockReleaseSeatRequest.isBlock())) {
+				responseStatus = ResponseStatus.Acknowledged;
+			} else {
+				responseStatus = ResponseStatus.Rejected;
+			}
+			return new BlockReleaseSeatResponse(responseStatus);
+		}
 
-        Log.w(TAG, "Unidentified request.");
-        return null;
-    }
+		Log.w(TAG, "Unidentified request.");
+		return null;
+	}
 
-    private LoginResponse handleLoginRequest(LoginRequest request, ConnectionToClient client) {
-        String username = ((LoginRequest) request).getUsername();
-        String password = ((LoginRequest) request).getPassword();
-        String userFromDB = db.checkUserName(username);
-        LoginResponse loginResponse = null;
-        if (userFromDB != null) {
-            String pwFromDB = db.getPassword(username);
-            int perFromDB = db.getPermission(username);
-            if (DB.passMatches(password, pwFromDB) == 0) {
-                User user = null;
-                try {
-                    user = db.getLoggedUser(username);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                User finalUser = user;
-                if(tempData.getConnectedUsers().stream().anyMatch(clientUserPair -> clientUserPair.getUser().equals(finalUser))) {
-                    return new LoginResponse(ResponseStatus.DeclinedMultConnections, null);
-                }
-                tempData.getConnectedUsers().add(new ClientUserPair(client, user));
-                if (perFromDB == 0) {
-                    loginResponse = new LoginResponse(ResponseStatus.Customer, user);
-                } else if (perFromDB == 1) {
-                    loginResponse = new LoginResponse(ResponseStatus.CustomerService, user);
-                } else if (perFromDB == 2) {
-                    loginResponse = new LoginResponse(ResponseStatus.ContentManager, user);
-                } else if (perFromDB == 3) {
-                    loginResponse = new LoginResponse(ResponseStatus.BranchManager, user);
-                } else if (perFromDB == 4) {
-                    loginResponse = new LoginResponse(ResponseStatus.Administrator, user);
-                }
-            } else if (DB.passMatches(password, pwFromDB) == -1) {
-                loginResponse = new LoginResponse(ResponseStatus.DeclinedPass, null);
-            }
-        }
-        else {
-            loginResponse = new LoginResponse(ResponseStatus.DeclinedUser, null);
-        }
-        return loginResponse;
-    }
+	private LoginResponse handleLoginRequest(LoginRequest request, ConnectionToClient client) {
+		String username = ((LoginRequest) request).getUsername();
+		String password = ((LoginRequest) request).getPassword();
+		String userFromDB = db.checkUserName(username);
+		LoginResponse loginResponse = null;
+		if (userFromDB != null) {
+			String pwFromDB = db.getPassword(username);
+			int perFromDB = db.getPermission(username);
+			if (DB.passMatches(password, pwFromDB) == 0) {
+				User user = null;
+				try {
+					user = db.getLoggedUser(username);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				User finalUser = user;
+				if(tempData.getConnectedUsers().stream().anyMatch(clientUserPair -> clientUserPair.getUser().equals(finalUser))) {
+					return new LoginResponse(ResponseStatus.DeclinedMultConnections, null);
+				}
+				tempData.getConnectedUsers().add(new ClientUserPair(client, user));
+				if (perFromDB == 0) {
+					loginResponse = new LoginResponse(ResponseStatus.Customer, user);
+				} else if (perFromDB == 1) {
+					loginResponse = new LoginResponse(ResponseStatus.CustomerService, user);
+				} else if (perFromDB == 2) {
+					loginResponse = new LoginResponse(ResponseStatus.ContentManager, user);
+				} else if (perFromDB == 3) {
+					loginResponse = new LoginResponse(ResponseStatus.BranchManager, user);
+				} else if (perFromDB == 4) {
+					loginResponse = new LoginResponse(ResponseStatus.Administrator, user);
+				}
+			} else if (DB.passMatches(password, pwFromDB) == -1) {
+				loginResponse = new LoginResponse(ResponseStatus.DeclinedPass, null);
+			}
+		}
+		else {
+			loginResponse = new LoginResponse(ResponseStatus.DeclinedUser, null);
+		}
+		return loginResponse;
+	}
 
-    private void notifyUpcomingLinks() {
-        List<Link> linkList = db.getAllLinks();
-        GregorianCalendar now = new GregorianCalendar();
-        now.add(Calendar.MINUTE, -5);
-        GregorianCalendar hourFromNow = new GregorianCalendar();
-        hourFromNow.add(Calendar.HOUR_OF_DAY, 1);
-        for(Link link : linkList) {
-            if(link.getDate().after(now) && link.getDate().before(hourFromNow) && !link.isNotified()) {
-                link.setNotified(true);
-                String fullName = link.getCustomer().getFirstName() + " " + link.getCustomer().getLastName();
-                sendMail(link.getPayment().getEmail(), "Reminder: Your link will activate in less than one hour.", "Hi " + fullName + ",\nThe link you have purchased is about to become active in the next hour.");
-                User user = link.getCustomer();
-                ClientUserPair linkClientUserPair = tempData.getConnectedUsers().stream().filter(clientUserPair -> clientUserPair.getUser().getId() == user.getId()).findAny().orElse(null);
-                if(linkClientUserPair != null) {
-                    try {
-                        linkClientUserPair.getClient().sendToClient(new AlertMessageResponse(ResponseStatus.Acknowledged, 1,"Reminder", "Link will be active in one hour."));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
+	private void notifyUpcomingLinks() {
+		if (DB.status) {
+			List<Link> linkList = db.getAllLinks();
+			if(linkList!=null) {
+				GregorianCalendar now = new GregorianCalendar();
+				now.add(Calendar.MINUTE, -5);
+				GregorianCalendar hourFromNow = new GregorianCalendar();
+				hourFromNow.add(Calendar.HOUR_OF_DAY, 1);
+				for(Link link : linkList) {
+					if(link.getDate().after(now) && link.getDate().before(hourFromNow) && !link.isNotified()) {
+						link.setNotified(true);
+						String fullName = link.getCustomer().getFirstName() + " " + link.getCustomer().getLastName();
+						sendMail(link.getPayment().getEmail(), "Reminder: Your link will activate in less than one hour.", "Hi " + fullName + ",\nThe link you have purchased is about to become active in the next hour.");
+						User user = link.getCustomer();
+						ClientUserPair linkClientUserPair = tempData.getConnectedUsers().stream().filter(clientUserPair -> clientUserPair.getUser().getId() == user.getId()).findAny().orElse(null);
+						if(linkClientUserPair != null) {
+							try {
+								linkClientUserPair.getClient().sendToClient(new AlertMessageResponse(ResponseStatus.Acknowledged, 1,"Reminder", "Link will be active in one hour."));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-    public void sendMail(String emailAddressToSend, String subject, String msg) {
-        final String username = "Cinema2021SWE@gmail.com";
-        final String password = "fd34DS4$3Jdo";
-        String from = "Cinema@no-reply";
+	public void sendMail(String emailAddressToSend, String subject, String msg) {
+		final String username = "Cinema2021SWE@gmail.com";
+		final String password = "fd34DS4$3Jdo";
+		String from = "Cinema@no-reply";
 
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+		Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "587");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.starttls.enable", "true"); //TLS
 
-        javax.mail.Session session = javax.mail.Session.getInstance(prop,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new
-                                PasswordAuthentication(username, password);
-                    }
-                });
+		javax.mail.Session session = javax.mail.Session.getInstance(prop,
+				new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new
+						PasswordAuthentication(username, password);
+			}
+		});
 
-        try {
-            System.out.println("Trying To send an e-mail....\n");
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(emailAddressToSend)
-            );
-            message.setSubject(subject);
-            Multipart multipart = new MimeMultipart();
-            MimeBodyPart bodyMessagePart = new MimeBodyPart();
-            bodyMessagePart.setContent(msg, "text/html; charset=utf-8");
-            multipart.addBodyPart(bodyMessagePart);
+		try {
+			System.out.println("Trying To send an e-mail....\n");
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(
+					Message.RecipientType.TO,
+					InternetAddress.parse(emailAddressToSend)
+					);
+			message.setSubject(subject);
+			Multipart multipart = new MimeMultipart();
+			MimeBodyPart bodyMessagePart = new MimeBodyPart();
+			bodyMessagePart.setContent(msg, "text/html; charset=utf-8");
+			multipart.addBodyPart(bodyMessagePart);
 
-            message.setContent(multipart);
+			message.setContent(multipart);
 
-//			message.setContent(msg, "text/html; charset=utf-8");
-            message.saveChanges();
+			//			message.setContent(msg, "text/html; charset=utf-8");
+			message.saveChanges();
 
-            Transport.send(message);
-            System.out.println("E-Mail Sent Successfully!!....");
+			Transport.send(message);
+			System.out.println("E-Mail Sent Successfully!!....");
 
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
 
-    private boolean blockReleaseSeat(Screening screening, int row, int col, boolean block) {
-        boolean found = false;
-        for(TimeSeatPair tsp : tempData.getSelectedSeats()) { // If screening already exists in list take that reference.
-            if(tsp.getScreening().getId() == screening.getId()) {
-                found = true;
-                screening = tsp.getScreening();
-            }
-        }
-        if (block) { // Block request.
-            if (screening.getSeats()[row][col] > 0) {
-                return false;
-            }
-            screening.getSeats()[row][col] = 1;
-        } else if(screening.getSeats()[row][col] == 1) { // Release request.
-            screening.getSeats()[row][col] = 0;
-        }
-        // TODO: set time of blocking.
-        if(!found) {
-            tempData.getSelectedSeats().add(new TimeSeatPair(screening, row, col, new GregorianCalendar()));
-        }
-        return true;
-    }
+	private boolean blockReleaseSeat(Screening screening, int row, int col, boolean block) {
+		boolean found = false;
+		for(TimeSeatPair tsp : tempData.getSelectedSeats()) { // If screening already exists in list take that reference.
+			if(tsp.getScreening().getId() == screening.getId()) {
+				found = true;
+				screening = tsp.getScreening();
+			}
+		}
+		if (block) { // Block request.
+			if (screening.getSeats()[row][col] > 0) {
+				return false;
+			}
+			screening.getSeats()[row][col] = 1;
+		} else if(screening.getSeats()[row][col] == 1) { // Release request.
+			screening.getSeats()[row][col] = 0;
+		}
+		// TODO: set time of blocking.
+		if(!found) {
+			tempData.getSelectedSeats().add(new TimeSeatPair(screening, row, col, new GregorianCalendar()));
+		}
+		return true;
+	}
 
-    private void checkExpiredSeatSelections() {
-        GregorianCalendar now = new GregorianCalendar();
-        for(TimeSeatPair timeSeatPair : tempData.getSelectedSeats()) {
-            GregorianCalendar blockingTimePlusMax = (GregorianCalendar) timeSeatPair.getBlockingTime().clone();
-            blockingTimePlusMax.add(Calendar.MINUTE, MAX_BLOCK_TIME);
-            if(blockingTimePlusMax.before(now)) {
-                blockReleaseSeat(timeSeatPair.getScreening(), timeSeatPair.getRow(), timeSeatPair.getCol(), false);
-                tempData.getSelectedSeats().remove(timeSeatPair);
-            }
-        }
-    }
-
-    private boolean getBlockedSeatStatus(Screening screening, int row, int col) {
-        for(TimeSeatPair timeSeatPair : this.tempData.getSelectedSeats()) {
-            if(timeSeatPair.getScreening().getId() == screening.getId()) {
-                if(timeSeatPair.getRow() == row && timeSeatPair.getCol() == col) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	private void checkExpiredSeatSelections() {
+		GregorianCalendar now = new GregorianCalendar();
+		for(TimeSeatPair timeSeatPair : tempData.getSelectedSeats()) {
+			GregorianCalendar blockingTimePlusMax = (GregorianCalendar) timeSeatPair.getBlockingTime().clone();
+			blockingTimePlusMax.add(Calendar.MINUTE, MAX_BLOCK_TIME);
+			if(blockingTimePlusMax.before(now)) {
+				blockReleaseSeat(timeSeatPair.getScreening(), timeSeatPair.getRow(), timeSeatPair.getCol(), false);
+				tempData.getSelectedSeats().remove(timeSeatPair);
+			}
+		}
+	}
 
 }
 
