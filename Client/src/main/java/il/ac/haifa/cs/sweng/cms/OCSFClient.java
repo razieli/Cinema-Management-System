@@ -152,6 +152,9 @@ public class OCSFClient extends AbstractClient {
         if (response instanceof BlockReleaseSeatResponse) {
             ((PaymentController) controller).handleBlockSeatResponse(response.getStatus());
         }
+        if (response instanceof ListAllBlockedSeatsResponse) {
+            ((PaymentController) controller).setFlag(((ListAllBlockedSeatsResponse) response).getBlockedSeatsList());
+        }
         // TODO: Show "Unidentified response".
 
     }
@@ -391,6 +394,14 @@ public class OCSFClient extends AbstractClient {
     public void blockSeat(Screening screening, int row, int col, boolean block) {
         try {
             sendToServer(new BlockReleaseSeatRequest(screening, row, col, block));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
+        }
+    }
+
+    public void getListOfBlockedSeats(Screening screening, int row, int col) {
+        try {
+            sendToServer(new ListAllBlockedSeatsRequest(screening, row, col));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

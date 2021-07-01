@@ -45,6 +45,7 @@ public class PaymentController implements Initializable {
     private Boolean messageStatus=false;
     private ImageView seatBlockAttemptImage;
     private Ticket ticket;
+    private boolean flag=false;
 
 
     @FXML // fx:id="accordion"
@@ -298,18 +299,8 @@ public class PaymentController implements Initializable {
                 seatStackPane.getChildren().remove(seatsPane);
                 seatStackPane.getChildren().add(seatsPane);
 
-                int[][] seatsMap = screening.getSeats();
-                seatGridPane.getChildren().clear();
-                for (int row = 0; row <= screening.getSeatsCapacity() / 10; row++) {
-                    for (int col = 0; col < 10; col++) {
-//                        System.out.println("seats: "+seatsMap[row][col]);
-                        try {
-                            addSeat(screening, row, col);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                rebuildMatrix();
+
             }
 
             else{ //purple badge case
@@ -404,17 +395,7 @@ public class PaymentController implements Initializable {
             seatComboBox.setOnAction(e->{
                 pickSeats = seatComboBox.getValue();
                 if(!PurpleBadge.getInstance().isPurpleBadge(screening.getDate())) {
-                    tickets.clear();//clear all picked seats
-                    seatGridPane.getChildren().clear();//reload seats map
-                    for (int row = 0; row <= screening.getSeatsCapacity() / 10; row++) {
-                        for (int col = 0; col < 10; col++) {
-                            try {
-                                addSeat(screening, row, col);
-                            } catch (FileNotFoundException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
+                    rebuildMatrix();
                 }
 
                 else{
@@ -625,6 +606,21 @@ public class PaymentController implements Initializable {
     }
 
 
+    private void rebuildMatrix(){
+        tickets.clear();//clear all picked seats
+        seatGridPane.getChildren().clear();//reload seats map
+        for (int row = 0; row <= screening.getSeatsCapacity() / 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                try {
+                    addSeat(screening, row, col);
+                    // TODO: 01/07/2021 remove from list
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
     /**
      * add seats to grid and set there stats
      * @param s
@@ -637,8 +633,11 @@ public class PaymentController implements Initializable {
         Ticket ticket = new Ticket(null, s, row,col, false);
         int[][] seatMap = s.getSeats();
         ImageView imageView = new ImageView();
-
-        if(seatMap[row][col] == 0){
+//       App.getOcsfClient(this).getListOfBlockedSeats(s, row,col);
+//
+//
+//        if(seatMap[row][col] == 0 || !flag){
+        if(seatMap[row][col] == 0 ){
             // TODO: 22/06/2021 toggle collor,   max seat to select
             imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
         }
@@ -704,6 +703,14 @@ public class PaymentController implements Initializable {
      */
     public static Screening getScreening() {
         return screening;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     /**
