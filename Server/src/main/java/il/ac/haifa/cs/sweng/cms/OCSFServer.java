@@ -32,8 +32,11 @@ public class OCSFServer extends AbstractServer {
     private final TempData tempData;
 
     private final Timer timer;
-    private final TimerTask timerTask;
+    private final TimerTask timerTaskLinks;
+    private final TimerTask timerTaskSeats;
     private final long LINKS_NOTIFY_PERIOD = 60000;
+    private final long SEATS_CHECK_PERIOD = 60000;
+    private final int MAX_BLOCK_TIME = 5;
 
     /**
      * Constructs a new server.
@@ -48,13 +51,20 @@ public class OCSFServer extends AbstractServer {
         this.db = db;
         this.tempData = new TempData();
         this.timer = new Timer();
-        this.timerTask = new TimerTask() {
+        this.timerTaskLinks = new TimerTask() {
             @Override
             public void run() {
                 notifyUpcomingLinks();
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, LINKS_NOTIFY_PERIOD);
+        this.timerTaskSeats = new TimerTask() {
+            @Override
+            public void run() {
+                checkExpiredSeatSelections();
+            }
+        };
+        timer.scheduleAtFixedRate(timerTaskLinks, 0, LINKS_NOTIFY_PERIOD);
+        timer.scheduleAtFixedRate(timerTaskSeats, 0, SEATS_CHECK_PERIOD);
     }
 
     @Override
@@ -363,10 +373,10 @@ public class OCSFServer extends AbstractServer {
 
     private boolean blockReleaseSeat(Screening screening, int row, int col, boolean block) {
         boolean found = false;
-        for(Screening scr : tempData.getSelectedSeats()) { // If screening already exists in list take that reference.
-            if(scr.getId() == screening.getId()) {
+        for(TimeSeatPair tsp : tempData.getSelectedSeats()) { // If screening already exists in list take that reference.
+            if(tsp.getScreening().getId() == screening.getId()) {
                 found = true;
-                screening = scr;
+                screening = tsp.getScreening();
             }
         }
         if (block) { // Block request.
@@ -379,9 +389,21 @@ public class OCSFServer extends AbstractServer {
         }
         // TODO: set time of blocking.
         if(!found) {
-            tempData.getSelectedSeats().add(screening);
+            tempData.getSelectedSeats().add(new TimeSeatPair(screening, row, col, new GregorianCalendar()));
         }
         return true;
+    }
+
+    private void checkExpiredSeatSelections() {
+        GregorianCalendar now = new GregorianCalendar();
+        for(TimeSeatPair timeSeatPair : tempData.getSelectedSeats()) {
+            GregorianCalendar blockingTimePlusMax = (GregorianCalendar) timeSeatPair.getBlockingTime().clone();
+            blockingTimePlusMax.add(Calendar.MINUTE, MAX_BLOCK_TIME);
+            if(blockingTimePlusMax.before(now)) {
+                blockReleaseSeat(timeSeatPair.getScreening(), timeSeatPair.getRow(), timeSeatPair.getCol(), false);
+                tempData.getSelectedSeats().remove(timeSeatPair);
+            }
+        }
     }
 
 }
