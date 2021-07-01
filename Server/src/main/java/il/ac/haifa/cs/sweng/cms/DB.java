@@ -263,16 +263,22 @@ public class DB {
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		List<Customer> customers=getAllCustomer();
+		ArrayList<Ticket> t0 = new ArrayList<>();
+		ArrayList<Ticket> t1 = new ArrayList<>();
 		for(Screening s:screenings) {
 			ArrayList<Ticket> t = new ArrayList<>();
-			Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4);
-			Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2);
-			Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5);
-			Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1);
+			Ticket tic1 = new Ticket(customers.get(0), s, 0, 3);
+			Ticket tic2 = new Ticket(customers.get(1), s, 0, 2);
+			Ticket tic3 = new Ticket(customers.get(0), s, 0, 1);
+			Ticket tic4 = new Ticket(customers.get(1), s, 0, 0);
 			t.add(tic1);
 			t.add(tic2);
 			t.add(tic3);
 			t.add(tic4);
+			t0.add(tic1);
+			t1.add(tic2);
+			t0.add(tic3);
+			t1.add(tic4);
 			session.save(tic1);
 			session.save(tic2);
 			session.save(tic3);
@@ -280,6 +286,10 @@ public class DB {
 			s.setTickets(t);
 			session.save(s);
 		}
+		customers.get(0).setTicket(t0);
+		session.saveOrUpdate(customers.get(0));
+		customers.get(1).setTicket(t1);
+		session.saveOrUpdate(customers.get(1));
 		session.flush();
 	}
 
