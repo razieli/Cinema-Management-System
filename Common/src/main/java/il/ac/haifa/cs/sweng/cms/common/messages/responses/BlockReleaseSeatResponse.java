@@ -4,17 +4,17 @@ import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
 import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 
 /**
- * Response for the BlockSeatRequest request.
+ * Response for the BlockReleaseSeatRequest request.
  *
  * @author Yuval Razieli
  */
-public class BlockSeatResponse extends AbstractResponse {
+public class BlockReleaseSeatResponse extends AbstractResponse {
 
     /**
-     * Constructs an BlockSeatResponse instance with the given status.
+     * Constructs an BlockReleaseSeatResponse instance with the given status.
      * @param status Whether the seat was blocked or not.
      */
-    public BlockSeatResponse(ResponseStatus status) {
+    public BlockReleaseSeatResponse(ResponseStatus status) {
         super(status);
     }
 

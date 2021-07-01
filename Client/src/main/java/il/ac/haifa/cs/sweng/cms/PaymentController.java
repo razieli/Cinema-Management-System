@@ -692,7 +692,7 @@ public class PaymentController implements Initializable {
         imageView.setOnMouseClicked(e -> {
             if (seatMap[row][col] == 0) {
                 seatFlag.set(!seatFlag.get());
-                if (seatFlag.get() == true) {//if purpleBadge is on in the same values
+                if (seatFlag.get()) {//if purpleBadge is on in the same values
                     if (pickSeats == 0) {
                         //set a error alert
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -707,18 +707,17 @@ public class PaymentController implements Initializable {
                         imageView.setImage(new Image("ChackedSeat.png", 30,30,false,false));
                         ticket.setCustomer((Customer)App.getUser());
                         tickets.add(ticket);
-                        // TODO: 30/06/2021  mark seat as taken in screening seat[][]<- -1
                         pickSeats--;
                         seatBlockAttemptImage = imageView;
                         this.ticket = ticket;
-                        App.getOcsfClient(this).blockSeat(screening, row, col);
+                        App.getOcsfClient(this).blockSeat(screening, row, col, true);
                     }
-                } else if (seatFlag.get() == false) {
+                } else if (!seatFlag.get()) {
                     imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
                     ticket.setCustomer(null);
                     tickets.remove(ticket);
-                    // TODO: 30/06/2021  mark seat as not taken in screening seat[][] <-0
                     pickSeats++;
+                    App.getOcsfClient(this).blockSeat(screening, row, col, false);
                 }
             }
 

@@ -2,7 +2,6 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
@@ -150,7 +149,7 @@ public class OCSFClient extends AbstractClient {
             String message = ((AlertMessageResponse) response).getMessage();
             Platform.runLater(() -> showAlert(alertType, header, message));
         }
-        if (response instanceof BlockSeatResponse) {
+        if (response instanceof BlockReleaseSeatResponse) {
             ((PaymentController) controller).handleBlockSeatResponse(response.getStatus());
         }
         // TODO: Show "Unidentified response".
@@ -387,10 +386,11 @@ public class OCSFClient extends AbstractClient {
      * @param screening Screening to block a seat on.
      * @param row Row of seat.
      * @param col Column of seat.
+     * @param block Whether to block the seat or release it.
      */
-    public void blockSeat(Screening screening, int row, int col) {
+    public void blockSeat(Screening screening, int row, int col, boolean block) {
         try {
-            sendToServer(new BlockSeatRequest(screening, row, col));
+            sendToServer(new BlockReleaseSeatRequest(screening, row, col, block));
         } catch (IOException e) {
             // TODO: Show "IO exception while sending request to server."
         }

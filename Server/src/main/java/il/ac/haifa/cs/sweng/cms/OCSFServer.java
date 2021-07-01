@@ -235,15 +235,15 @@ public class OCSFServer extends AbstractServer {
             PurpleBadge pb = PurpleBadge.getInstance(db.getPurpleBadge()) ;
             return new getPurpleBadgeResponse(pb);
         }
-        if(request instanceof BlockSeatRequest) {
-            BlockSeatRequest blockSeatRequest = (BlockSeatRequest) request;
+        if(request instanceof BlockReleaseSeatRequest) {
+            BlockReleaseSeatRequest blockReleaseSeatRequest = (BlockReleaseSeatRequest) request;
             ResponseStatus responseStatus;
-            if(blockSeat(blockSeatRequest.getScreening(), blockSeatRequest.getRow(), blockSeatRequest.getCol())) {
+            if(blockReleaseSeat(blockReleaseSeatRequest.getScreening(), blockReleaseSeatRequest.getRow(), blockReleaseSeatRequest.getCol(), blockReleaseSeatRequest.isBlock())) {
                 responseStatus = ResponseStatus.Acknowledged;
             } else {
                 responseStatus = ResponseStatus.Rejected;
             }
-            return new BlockSeatResponse(responseStatus);
+            return new BlockReleaseSeatResponse(responseStatus);
         }
 
         Log.w(TAG, "Unidentified request.");
@@ -361,18 +361,22 @@ public class OCSFServer extends AbstractServer {
         }
     }
 
-    private boolean blockSeat(Screening screening, int row, int col) {
+    private boolean blockReleaseSeat(Screening screening, int row, int col, boolean block) {
         boolean found = false;
-        for(Screening scr : tempData.getSelectedSeats()) {
+        for(Screening scr : tempData.getSelectedSeats()) { // If screening already exists in list take that reference.
             if(scr.getId() == screening.getId()) {
                 found = true;
                 screening = scr;
             }
         }
-        if(screening.getSeats()[row][col] > 0) {
-            return false;
+        if (block) { // Block request.
+            if (screening.getSeats()[row][col] > 0) {
+                return false;
+            }
+            screening.getSeats()[row][col] = 1;
+        } else if(screening.getSeats()[row][col] == 1) { // Release request.
+            screening.getSeats()[row][col] = 0;
         }
-        screening.getSeats()[row][col] = 1;
         // TODO: set time of blocking.
         if(!found) {
             tempData.getSelectedSeats().add(screening);

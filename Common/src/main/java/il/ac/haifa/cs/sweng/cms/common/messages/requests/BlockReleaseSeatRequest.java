@@ -9,22 +9,25 @@ import il.ac.haifa.cs.sweng.cms.common.messages.AbstractRequest;
  *
  * @author Yuval Razieli
  */
-public class BlockSeatRequest extends AbstractRequest {
+public class BlockReleaseSeatRequest extends AbstractRequest {
 
     private Screening screening;
     private int row;
     private int col;
+    boolean block;
 
     /**
-     * Constructs an BlockSeatRequest instance with the screening and seat to block.
+     * Constructs an BlockReleaseSeatRequest instance with the screening and seat to block.
      * @param screening Screening to block the seat on.
      * @param row Row of seat to block.
      * @param col Column of seat to block.
+     * @param block Whether to block (true) or release (false) this seat.
      */
-    public BlockSeatRequest(Screening screening, int row, int col) {
+    public BlockReleaseSeatRequest(Screening screening, int row, int col, boolean block) {
         this.screening = screening;
         this.row = row;
         this.col = col;
+        this.block = block;
     }
 
     /**
@@ -51,4 +54,11 @@ public class BlockSeatRequest extends AbstractRequest {
         return col;
     }
 
+    /**
+     * Returns whether this is a block or release request.
+     * @return True if this is a block request, false if this is a release request.
+     */
+    public boolean isBlock() {
+        return block;
+    }
 }
