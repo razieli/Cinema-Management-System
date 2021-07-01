@@ -5,13 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.time.format.DateTimeFormatter;
 import il.ac.haifa.cs.sweng.cms.common.entities.Cinema;
 import il.ac.haifa.cs.sweng.cms.common.entities.Complaint;
@@ -30,6 +24,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -90,6 +86,12 @@ public class OperationalReportsController implements Initializable{
 
 	@FXML
 	private StackedBarChart<String, Number> pbchart;
+
+	@FXML
+	private CategoryAxis pcCatAxis;
+
+	@FXML
+	private NumberAxis pcNumAxis;
 
 	@FXML
 	private TableView<complaint> ComplaintTable;
@@ -155,12 +157,11 @@ public class OperationalReportsController implements Initializable{
 		ComplaintTable.setVisible(false);
 		purchaseChart.setVisible(true);
 		packLinkChart.setVisible(false);
+
 		
-		purchaseChart=null;
-		
-		final CategoryAxis xAxis = new CategoryAxis();
-		final NumberAxis yAxis = new NumberAxis();
-		purchaseChart=new StackedBarChart<>(xAxis, yAxis); 
+		final CategoryAxis xAxis = pcCatAxis;
+		final NumberAxis yAxis = pcNumAxis;
+
 		purchaseChart.setTitle("Purchase By Cinema And Movie\n\t\t"+new GregorianCalendar().toZonedDateTime().format(DateTimeFormatter.ofPattern("MMM uuuu")));
 		yAxis.setLabel("Purchases");
 		ObservableList<StackedBarChart<String,Number>> data = FXCollections.observableArrayList();
@@ -174,16 +175,20 @@ public class OperationalReportsController implements Initializable{
 					int count=0;
 					String name = m.getEngName();
 					for (Screening s: m.getScreening()) {
-						if(s.getTheater().getCinema().getName().equals(c.getName()))
-							if(s.getDate().get(GregorianCalendar.MONTH)==month && s.getDate().get(GregorianCalendar.YEAR)==year)
-								for(Ticket t:s.getTickets()) {
-									if (t.getCustomer()!=null )
+						if(s.getTheater().getCinema().getName().equals(c.getName())) {
+							GregorianCalendar now = new GregorianCalendar();
+							if (s.getDate().get(GregorianCalendar.MONTH) == now.get(Calendar.MONTH) && s.getDate().get(GregorianCalendar.YEAR) == now.get(Calendar.YEAR)) {
+								for (Ticket t : s.getTickets()) {
+									if (t.getCustomer() != null)
 										count++;
 								}
+							}
+						}
 					}
 					series1.getData().add(new XYChart.Data<String, Number>(name,count));
 					
 				}
+				purchaseChart.getData().add(series1);
 			}
 		}
 		else {
@@ -207,13 +212,12 @@ public class OperationalReportsController implements Initializable{
 							}
 				}
 				series1.getData().add(new XYChart.Data<>(name,count));
-				purchaseChart.getData().add(series1);
 			}
-
+			purchaseChart.getData().add(series1);
 		}
-		purchaseChart.setData(null);
+
+		//purchaseChart.setData(null);
 		//final StackedBarChart<String,Number> purchaseChart = new StackedBarChart<String,Number>(xAxis,yAxis);
-		
 	}
 
 	@FXML
@@ -293,13 +297,11 @@ public class OperationalReportsController implements Initializable{
 //		App.getOcsfClient(this).getListOfMovies();
 //		App.getOcsfClient(this).getListOfPayments();
 		stackPane.setStyle("-fx-background-color: BLACK;");
-		if(cinemas.size()==0)
-			try {
-				Demo();
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if(cinemas.size()==0) {
+			//Demo();
+			App.getOcsfClient(this).getListOfCinemas();
+			App.getOcsfClient(this).getListOfMovies();
+		}
 		ComplaintTable.setVisible(false);
 		purchaseChart.setVisible(false);
 		packLinkChart.setVisible(false);
