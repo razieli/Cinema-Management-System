@@ -10,9 +10,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import il.ac.haifa.cs.sweng.cms.common.entities.Movie;
 import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
 import javafx.scene.control.Alert;
@@ -74,7 +73,6 @@ public class CancelTicketController implements Initializable {
     public void handheldsCancelTicket(ActionEvent actionEvent) throws URISyntaxException {
         //set a warning alert
         Alert alert = new Alert(Alert.AlertType.WARNING);
-
         // if a ticket was selected remove it from DB
         if(TicketsComboBox.getValue()!= null) {
             alert.setTitle("Ticket Cancel");
@@ -89,7 +87,6 @@ public class CancelTicketController implements Initializable {
             {
                 List <Ticket> tickets = new ArrayList<Ticket>();
                 tickets.add(TicketsComboBox.getValue());
-
                 App.getOcsfClient(this).updateTickets(tickets, false);
                 ticketList.remove(TicketsComboBox.getValue());
                 alert.setHeaderText(null);
@@ -123,7 +120,7 @@ public class CancelTicketController implements Initializable {
             movieName.setText(TicketsComboBox.getValue().getScreening().getMovie().getEngName());
             theaterName.setText(String.valueOf(TicketsComboBox.getValue().getScreening().getTheater().getId()));
             screeningTime.setText(format.format(TicketsComboBox.getValue().getScreening().getDate().getTime()));
-            seats.setText(String.valueOf(TicketsComboBox.getValue().getRow() + "add later"));
+            seats.setText(String.valueOf(TicketsComboBox.getValue().getRow() + ", " + TicketsComboBox.getValue().getCol()));
 //            locationName.setText(TicketsComboBox.getValue().getScreening().getTheater().getPlaceName()); // not working yet
         }
     }
