@@ -39,6 +39,7 @@ public class App extends Application {
     private static String pass = "123";
     private static User user;
     private static PurpleBadge pb;
+    private static Stage stage;
 
 
     /**
@@ -48,17 +49,17 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
+        this.stage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/UserLogin.fxml"));
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/PurchaseCancel.fxml"));
         Parent root = (Parent)loader.load();
 
         scene = new Scene(root, 640, 480);//new scene to load
-        stage.setScene(scene);//set scene
+        this.stage.setScene(scene);//set scene
 //        stage.setMaximized(true); //set max size available
-        stage.setTitle("Cinema");
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png"))));
-        stage.show();//show stage
-        
+        this.stage.setTitle("Cinema");
+        this.stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png"))));
+        this.stage.show();//show stage
 
     }
 
@@ -175,5 +176,7 @@ public class App extends Application {
 	public static void setPb(PurpleBadge pb) {
 		ocsfClient.updatePurpleBadge(pb);
 	}
+
+	protected static Stage getStage() { return stage; }
 
 }
