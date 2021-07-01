@@ -2,6 +2,7 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User Entity
@@ -12,16 +13,24 @@ public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+    private String userName;
+    private String password;
 	private String firstName;
 	private String lastName;
+	private int permission;
+
+
 
 	/**
 	 *constructors
 	 */
-	public User(String firstName, String lastName){
+	public User(String firstName, String lastName, String password, String userName, int permission){
 		this();
+		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.password = password;
+		this.permission = permission;
 	}
 	
 	public User() {
@@ -48,6 +57,34 @@ public abstract class User implements Serializable {
 	 */
 	public String getLastName() { return lastName; }
 	public void setLastName(String lastName) { this.lastName = lastName; }
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @return Permission
+	 */
+	public int getPermission() {return permission;}
+
+	/**
+	 * setting Permission
+	 * @param permission
+	 */
+	public void setPermission(int permission) {this.permission = permission;}
 
 
 }

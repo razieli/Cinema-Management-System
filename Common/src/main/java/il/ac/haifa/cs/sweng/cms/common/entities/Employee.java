@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "employees")
 public class Employee extends User implements Serializable {
-	private String passkey;
 	private int permission;
 
 	/**
@@ -18,23 +17,10 @@ public class Employee extends User implements Serializable {
 	public Employee() {
 		super();
 	}
-	public Employee(String firstName, String lastName, String passkey, int permission) {
-		super(firstName,lastName);
-		this.passkey=passkey;
+	public Employee(String firstName, String lastName, String password, String userName, int permission) {
+		super(firstName,lastName, password, userName, permission);
 		this.permission=permission;
 	}
-
-	/**
-	 * @return password
-	 */
-	public String getPasskey() {return passkey;}
-
-	/**
-	 * setting password
-	 * @param passkey
-	 */
-	public void setPasskey(String passkey) {this.passkey = passkey;}
-
 	/**
 	 * @return Permission
 	 */

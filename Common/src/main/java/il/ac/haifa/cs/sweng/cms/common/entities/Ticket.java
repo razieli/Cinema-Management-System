@@ -3,59 +3,72 @@ package il.ac.haifa.cs.sweng.cms.common.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Ticket Entity
- */
 @Entity
 @Table(name = "tickets")
 public class Ticket implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "costumer_id")
-	private Customer customer;
-	@ManyToOne
-	@JoinColumn(name ="screening")
-	private Screening screening;
-	private int seat;
 
-	/**
-	 * constructors
-	 */
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="customer_id")
+	private Customer customer;
+
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="payment_id")
+	private Payment payment;
+
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="screening")
+	private Screening screening;
+
+	// TODO: 22/06/2021  payment, waiting to Yaniv
+	private int seatRow;
+	private int seatCol;
+
+	private boolean paidWithPackage;
+
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
+		this.payment=null;
+		this.seatRow = 0;
+		this.seatCol = 0;
+		this.paidWithPackage = false;
 	}
-	public Ticket(Customer customer, Screening screening,int seat){
+	public Ticket(Customer customer, Screening screening, int row, int col, boolean paidWithPackage){
 		this.customer=customer;
 		this.screening=screening;
-		this.seat=seat;
-		
-	}
-	public Ticket(Screening screening,int seat){
-		this.customer=null;
-		this.screening=screening;
-		this.seat=seat;
+		if (this.screening!=null)
+			this.screening.getTickets().add(this);
+		this.payment=null;
+		this.seatRow = row;
+		this.seatCol = col;
+		this.paidWithPackage = paidWithPackage;
 	}
 
-	/**
-	 * customer set/get
-	 */
+	
 	public Customer getCustomer() {return customer;}
+	
 	public void setCustomer(Customer customer) {this.customer = customer;}
-
-	/**
-	 * screening set/get
-	 */
+	
 	public Screening getScreening() {return screening;}
-	public void setScreening(Screening screening) {this.screening = screening;}
 
-	/**
-	 * seat set/get
-	 */
-	public int getSeat() {return seat;}
-	public void setSeat(int seat) {this.seat = seat;}
+	public void setScreening(Screening screening) {this.screening = screening; this.screening.getTickets().add(this);}
+
+	public int getRow() {
+		return seatRow;
+	}
+
+	public int getCol() {
+		return seatCol;
+	}
+
+	public void setSeat(int row ,int col){
+		this.seatRow = row;
+		this.seatCol = col;
+	}
+
 
 	/**
 	 * Id set/get
@@ -66,4 +79,31 @@ public class Ticket implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	/**
+	 * convert ticket to the movie name
+	 */
+	@Override
+	public String toString() {
+		return "seats: ("+this.seatRow+", "+this.seatCol+") "+this.getScreening().getMovie().getEngName() +this.getScreening();
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	public boolean isPaidWithPackage() {
+		return paidWithPackage;
+	}
+
+	public void setPaidWithPackage(boolean paidWithPackage) {
+		this.paidWithPackage = paidWithPackage;
+	}
+
+
+
 }

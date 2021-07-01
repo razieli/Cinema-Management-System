@@ -1,10 +1,9 @@
 package il.ac.haifa.cs.sweng.cms.common.entities;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.*;
@@ -16,7 +15,9 @@ import javax.persistence.*;
  * Movie Entity
  */
 public class Movie implements Serializable {
-    @Id
+	private static final double BASE_PRICE = 40;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String engName;
@@ -25,21 +26,27 @@ public class Movie implements Serializable {
 	private String castList;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="movie")
 	private List<Screening> screening;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="movie")
+	private List<Link> links;
+	private GregorianCalendar premiere;
 	private Integer length;
 	private Integer ageRestriction;
 	private String description;
 	private URI posterUrl;
 	private URI trailerUrl;
+	private double price;
 
 	/**
 	 * constructors
 	 */
 	public Movie() {
+		this.screening = new ArrayList<>();
+		this.links = new ArrayList<>();
 	}
 	
 	public Movie(String engName,String hebName,Integer year,
 				 String castList, Integer length, Integer ageRestriction,
-				 String description, URI inputStream, URI inputStream2) {
+				 String description, URI inputStream, URI inputStream2,GregorianCalendar premiere) {
 		this();
 		this.engName = engName;
 		this.hebName=hebName;
@@ -50,6 +57,8 @@ public class Movie implements Serializable {
 		this.posterUrl = inputStream;
 		this.trailerUrl = inputStream2;
 		this.description = description;
+		this.price = BASE_PRICE;
+		this.premiere = premiere;
 	}
 
 	/**
@@ -123,12 +132,8 @@ public class Movie implements Serializable {
 	/**
 	 * screening list set/get
 	 */
-	public List<Screening> getScreening() {
-		return screening;
-	}
-	public void setScreening(List<Screening> screening) {
-		this.screening = screening;
-	}
+	public List<Screening> getScreening() { return screening; }
+	public void setScreening(List<Screening> screening) { this.screening = screening; }
 
 	/**
 	 * Description list set/get
@@ -139,4 +144,48 @@ public class Movie implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	/**
+	 * links list set/get
+	 */
+	public List<Link> getLinks() { return links; }
+	public void setLinks(List<Link> links) { this.links = links; }
+
+	/**
+	 * Price set/get
+	 */
+	public double getPrice() { return price; }
+	public void setPrice(double price) { this.price = price; }
+
+	public GregorianCalendar getPremiere() {
+		return premiere;
+	}
+
+	public void setPremiere(GregorianCalendar premiere) {
+		this.premiere = premiere;
+	}
+
+	public void copyFrom(Movie movie) {
+		this.engName = movie.engName;
+		this.hebName = movie.hebName;
+		this.year = movie.year;
+		this.castList = movie.castList;
+		this.length = movie.length;
+		this.ageRestriction = movie.ageRestriction;
+		this.description = movie.description;
+		this.posterUrl = movie.posterUrl;
+		this.trailerUrl = movie.trailerUrl;
+		this.screening.clear();
+		this.screening.addAll(movie.screening);
+		this.links.clear();
+		this.links.addAll(movie.links);
+		this.price = movie.price;
+		this.premiere = movie.premiere;
+    }
+
+    public String toString() {
+		return this.engName + " (" + this.year + ")";
+	}
+
+
 }
