@@ -158,9 +158,8 @@ public class OCSFServer extends AbstractServer {
             List<Ticket> tempTickets = new ArrayList<Ticket>();
             List<Ticket> tickets= ((UpdateTicketsRequest) request).getTicket();
             boolean addOrRemove = ((UpdateTicketsRequest) request).getAddOrRemove();
-            boolean boughtWithPackage = ((UpdateTicketsRequest) request).getBoughtWithPackage();
             for (Ticket ticket: tickets) {
-                db.setTickets(ticket, addOrRemove, boughtWithPackage);
+                db.setTickets(ticket, addOrRemove);
             }
             List<Ticket> allTickets= db.getAllTickets(); //read all tickets
 
@@ -236,7 +235,18 @@ public class OCSFServer extends AbstractServer {
             // Save updated PurpleBadge in DB.
             PurpleBadge pb = PurpleBadge.getInstance(((UpdatePurpleBadgeRequest)request).getPb()) ;
             try {
-				db.setPurpleBadge(pb);
+                for(Ticket t: db.setPurpleBadge(pb)){
+                    sendMail(t.getPayment().getEmail(),"Your ticket has been canceled",
+                            "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello Dear Customer,</i></h1><br>" +
+                            "<br><h2 style=\"color:black;\">Unfortunately, the screening of the movie " +
+                            "you bought tickets for is canceled. </h2>" +
+                            "<br><h2 style=\"color:black;\">your bank account will receive a compensation of 50$ shortly." +
+                            "</bdo>");
+                    System.out.println(t.getPayment().getEmail());
+                }
+
+
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

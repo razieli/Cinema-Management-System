@@ -574,25 +574,36 @@ public class DB {
 	 * @param pb PurpleBadge to update.
 	 * @throws Exception 
 	 */
-	protected void setPurpleBadge(PurpleBadge pb) throws Exception {
+	protected List<Ticket> setPurpleBadge(PurpleBadge pb) throws Exception {
+		List<Ticket> tickets =new ArrayList<Ticket>();
 		PurpleBadge newPb = PurpleBadge.getInstance(pb);
 		newPb.id=pb.id;
 		session.beginTransaction();
 		session.merge(newPb);
 		session.flush();
 		session.getTransaction().commit();
-//		if(pb.getStatus())
-//		{
-//			List<Theater> theaters = getAllTheaters();
-//			List<Ticket> tickets = getAllTickets();
-//			List<Screening> screenings = getAllScreening();
-//			for (Theater t:theaters) {
-//				t.coronaCheck();
-//				t.setPurpleBadge();
-//				session.save(t);
-//			}
-//			
-//		}
+
+
+
+		if(pb.getStatus())
+		{
+			List<Theater> theaters = getAllTheaters();
+			List<Screening> screenings = getAllScreening();
+			for (Theater t:theaters) {
+				t.setPurpleBadge();
+				tickets= t.coronaCheck();
+				for (Ticket ticket: tickets){
+					setTickets(ticket,false);
+				}
+
+				for (Screening screen : t.getScreeningList())
+					session.merge(screen);
+				session.save(t);
+			}
+			session.flush();
+			session.getTransaction().commit();
+		}
+		return tickets;
 		//session.close();
 		//session = sessionFactory.openSession();
 	}
@@ -647,11 +658,11 @@ public class DB {
 	 * Updates the database according to the given ticket
 	 * @param ticket New list of tickets for a movie.
 	 */
-	protected void setTickets(Ticket ticket, boolean addOrRemove, boolean boughtWithPackage) {
+	protected void setTickets(Ticket ticket, boolean addOrRemove ) {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
-			if(boughtWithPackage){
+			if(ticket.isPaidWithPackage()){
 				Customer customer =session.get(Customer.class, ticket.getCustomer().getId());
 				customer.setPackageTicketsRemaining(customer.getPackageTicketsRemaining()-1);
 				session.merge(customer);
@@ -667,9 +678,15 @@ public class DB {
 		else{
 				Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());
 				if (ticketToRemove != null) {
+					if(ticket.isPaidWithPackage()){
+						Customer customer =session.get(Customer.class, ticket.getCustomer().getId());
+						customer.setPackageTicketsRemaining(customer.getPackageTicketsRemaining()+1);
+						session.merge(customer);
+					}
 					ticket.getScreening().removeTicket(ticket);
 					session.merge(ticket.getScreening());
-					session.delete(ticketToRemove.getPayment());
+//					session.delete(ticketToRemove.getPayment());
+					session.remove(ticketToRemove.getPayment());
 					session.remove(ticketToRemove);
 				}
 

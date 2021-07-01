@@ -27,9 +27,6 @@ public class CustomerHomeController implements Initializable {
     private Button movieListBtn;
 
     @FXML
-    private Text creditStatus;
-
-    @FXML
     private Text packageStatus;
 
     @FXML
@@ -111,10 +108,6 @@ public class CustomerHomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Customer customer=(Customer)App.getUser();
         helloUserName.setText("Hello " + App.getUserName() + " !");
-        if (customer.getBalance()>0)
-            creditStatus.setText("Credit: " + customer.getBalance());
-        else
-            creditStatus.setText("Credit: 0");
 
         if(customer.isHas_package())
             packageStatus.setText("Your package has "+customer.getPackageTicketsRemaining() +" more ticket to use.");

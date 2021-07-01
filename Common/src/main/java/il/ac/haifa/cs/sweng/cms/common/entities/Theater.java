@@ -127,6 +127,7 @@ public class Theater implements Serializable {
 				Ticket tic = stack.pop();
 				cancel.add(tic);
 				// TODO: 25/06/2021 sand massege of cancelation
+
 			}
 
 			/*change taken seats*/
@@ -135,7 +136,7 @@ public class Theater implements Serializable {
 			while(!stack.isEmpty()){
 				Ticket tic = stack.pop();
 				if (!stack.isEmpty() && !stack.peek().getCustomer().equals(tic.getCustomer())){//skip seat
-					s.addTicket(new Ticket(null,null,i,j, false));
+//					s.addTicket(new Ticket(null,null,i,j, false));
 					j++;
 					j=j%10;
 					if (j==0){
@@ -148,6 +149,7 @@ public class Theater implements Serializable {
 				s.addTicket(tic);
 
 				// TODO: 25/06/2021 sand massege of changing seats.
+
 
 				j++;
 				j=j%10;

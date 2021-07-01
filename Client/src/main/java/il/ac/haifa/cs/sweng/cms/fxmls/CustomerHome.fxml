@@ -52,15 +52,6 @@
                                     </TextFlow>
                               <TextFlow>
                                  <children>
-                                    <Text fx:id="creditStatus" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </TextFlow>
-                              <TextFlow>
-                                 <children>
                                     <Text fx:id="packageStatus" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                                        <font>
                                           <Font size="14.0" />

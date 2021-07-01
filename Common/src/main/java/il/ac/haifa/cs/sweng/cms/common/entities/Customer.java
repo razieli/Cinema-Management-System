@@ -33,20 +33,22 @@ public class Customer extends User implements Serializable {
 	@OneToMany(targetEntity = Link.class, fetch = FetchType.LAZY, mappedBy = "customer")
 	private List<Link> links;
 
-	private double balance;
+	private double packagePrice;
 
 	@OneToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="payment_id")
 	private Payment payment;
 
+
+
 	/**
 	 * constructors
 	 */
-	public Customer(){super(); balance = 250;}
+	public Customer(){super(); packagePrice = 500;}
 	public Customer(String firstName, String lastName, String password, String userName, int permission)
 	{
 		super(firstName,lastName, password, userName, permission);
-		this.balance = 250;
+		this.packagePrice = 500;
 		this.packageTicketsRemaining = 0;
 	}
 
@@ -95,7 +97,6 @@ public class Customer extends User implements Serializable {
 		}
 		else{
 			this.ticket.add(ticket);
-			this.balance-=ticket.getScreening().getMovie().getPrice();
 		}
 	}
 
@@ -111,7 +112,7 @@ public class Customer extends User implements Serializable {
 		}
 		else{
 			this.ticket.add(ticket);
-			this.balance+=ticket.getScreening().getMovie().getPrice();
+
 		}
 	}
 
@@ -140,7 +141,6 @@ public class Customer extends User implements Serializable {
 		if (links == null)
 				this.links = new ArrayList<Link>();
 		this.links.add(link);
-		this.balance-=link.getLinkPrice();
 		setHas_link(true);
 	}
 
@@ -150,7 +150,6 @@ public class Customer extends User implements Serializable {
 	 */
 	public void removeLink(Link link) {
 		links.remove(link);
-		this.balance+=link.getLinkPrice();
 		if(links.isEmpty()){
 			setHas_link(false);
 		}
@@ -186,8 +185,12 @@ public class Customer extends User implements Serializable {
 		return packageTicketsRemaining;
 	}
 
-	public double getBalance() {
-		return balance;
+	public double getPackagePrice() {
+		return packagePrice;
+	}
+
+	public void setPackagePrice(double packagePrice) {
+		this.packagePrice = packagePrice;
 	}
 
 	public Payment getPayment() {

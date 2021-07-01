@@ -214,7 +214,7 @@ public class PaymentController implements Initializable {
                                 tic.setPayment(payment);
 
 //                            System.out.println(tickets);
-                            App.getOcsfClient(this).updateTickets(tickets, true, false);
+                            App.getOcsfClient(this).updateTickets(tickets, true);
                             // TODO: Declare success only after acknowledge from server was received.
 
                             while (newTickets.isEmpty()) { Thread.yield(); }
@@ -368,7 +368,6 @@ public class PaymentController implements Initializable {
                         }
                         else{
                             PBAcceptButton.setText("Cancel");
-                            int[][] seatMap = screening.getSeats();
                             Ticket lastTicket;
 
                             if(screening.getTickets().isEmpty()) {
@@ -379,7 +378,7 @@ public class PaymentController implements Initializable {
                                     j++;
                                     j = j % 10;
                                     if (j == 0) {
-//                                        j = 1;
+
                                         i += 1;
                                     }
                                 }
@@ -390,25 +389,23 @@ public class PaymentController implements Initializable {
                                 lastTicket = screening.getTickets().get(screening.getTickets().size()-1);
                                 if (lastTicket.getCustomer().equals((Customer) App.getUser())) {//if the same customer
 
-                                    int i = lastTicket.getRow() + 1;
-                                    int j = lastTicket.getCol() + 1;
+                                    int i = lastTicket.getRow();
+                                    int j = lastTicket.getCol();
                                     for (int k = 0; k < pickSeats; k++) {
                                         j++;
                                         j = j % 10;
                                         if (j == 0) {
-//                                            j = 1;
                                             i += 1;
                                         }
                                         tickets.add(new Ticket((Customer) App.getUser(), screening, i, j, false));//add Tickets to purchase
                                         System.out.println(tickets.size());
                                     }
                                 } else {//if different than the last customer
-                                    int i = lastTicket.getRow() + 1;
-                                    int j = lastTicket.getCol() + 1;
+                                    int i = lastTicket.getRow();
+                                    int j = lastTicket.getCol() ;
                                     j++;
                                     j = j % 10;
                                     if (j == 0) {
-//                                        j = 1;
                                         i += 1;
                                     }
                                     screening.addTicket(new Ticket(null, null, i, j, false));//add blank seat
@@ -417,7 +414,6 @@ public class PaymentController implements Initializable {
                                         j++;
                                         j = j % 10;
                                         if (j == 0) {
-//                                            j = 1;
                                             i += 1;
                                         }
                                         tickets.add(new Ticket((Customer) App.getUser(), screening, i, j, false));//add Tickets to purchase
@@ -474,8 +470,7 @@ public class PaymentController implements Initializable {
             * set payment Details
             */
             selectSeatsButton.setOnAction(e->{
-                if(!tickets.isEmpty()) { // Details for Ticket
-                    if(fromScreen==1 && !tickets.isEmpty()) {
+                    if(!tickets.isEmpty()) {// Details for Ticket
                         if (tickets.get(0).getCustomer().isHas_package()) {
                             boolean payWithPackage;
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -489,14 +484,14 @@ public class PaymentController implements Initializable {
 
                             if (payWithPackage) {
                                 if (tickets.get(0).getCustomer().getPackageTicketsRemaining() > pickSeats) {
-                                    Customer customer= (Customer)App.getUser();
+                                    Customer customer = (Customer) App.getUser();
                                     try {
-                                        for(Ticket ticket: tickets){
+                                        for (Ticket ticket : tickets) {
                                             ticket.setPaidWithPackage(true);
                                             ticket.setPayment(customer.getPayment());
                                         }
 
-                                        App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
+                                        App.getOcsfClient(this).updateTickets(tickets, true);
 
                                         while (newTickets.isEmpty()) {
                                             Thread.yield();
@@ -508,12 +503,13 @@ public class PaymentController implements Initializable {
                                             // TODO: 30/06/2021 update the packeg statuse
                                             sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
                                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-                                        } else {
-                                            setTicketDetileds();
                                         }
                                     } catch (IOException e1) {
                                         e1.printStackTrace();
                                     }
+                                }else {
+                                    setTicketDetileds();
+                                }
                                 } else {
                                     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                                     errorAlert.setTitle(null);
@@ -525,9 +521,9 @@ public class PaymentController implements Initializable {
                                 setTicketDetileds();
                             }
                         }
-                    }
 
-                }
+
+
 
                 else if(!PurpleBadge.getInstance().getStatus()){
                     // TODO: 29/06/2021 error.
@@ -607,7 +603,8 @@ public class PaymentController implements Initializable {
              * set payment Details
              */
             // TODO: 23/06/2021 add price of a packege
-            price= 500;
+            Customer customer= (Customer)App.getUser();
+            price= customer.getPackagePrice();
 
             /*set Order Details*/
             //set movie package
@@ -881,10 +878,6 @@ public class PaymentController implements Initializable {
      */
     private Boolean isChecked(){
        if( inputFirstName!=null || inputLastName!=null ||  inputPhone!=null|| inputCardOwnerName!=null || inputCardOwnerLastName!=null || inputCardNumber!=null || inputCardExpirationYear!=0||inputCardExpirationMonth!=0|| inputCvvNumber!=null || inputEmail!=null){
-//           System.out.println("email: "+inputEmail+" is "+isValidMail(inputEmail));
-//           System.out.println("phone: "+inputPhone+" is "+isValidPhone(inputPhone));
-//           System.out.println("CVV: "+ inputCvvNumber+" is " +isValidCVVNumber(inputCvvNumber) );
-//           System.out.println("credit card: "+inputCardNumber+" is "+isValidCreditCard(Long.parseLong(inputCardNumber)));
            if(isValidMail(inputEmail) && isValidPhone(inputPhone) && isValidCreditCard(Long.parseLong(inputCardNumber))&& isValidCVVNumber(inputCvvNumber) &&(fromScreen==1 && !tickets.isEmpty()) || (fromScreen==2 && link!=null)||fromScreen==3)
                return true;
        }

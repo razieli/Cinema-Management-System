@@ -14,16 +14,15 @@ public class UpdateTicketsRequest extends AbstractRequest {
 
     private List <Ticket> tickets;
     private boolean addOrRemove; //true if add ticket, false if delete ticket
-    private boolean boughtWithPackage; // true if ticket was  with a package
+
 
     /**
      * Constructs an UpdateTicketsRequest instance with the tickets to update.
      * @param tickets List of tickets to replace the existing list of this tickets.
      */
-    public UpdateTicketsRequest(List<Ticket> tickets, boolean addOrRemove ,boolean boughtWithPackage) {
+    public UpdateTicketsRequest(List<Ticket> tickets, boolean addOrRemove ) {
         this.tickets = tickets;
         this.addOrRemove = addOrRemove;
-        this.boughtWithPackage = boughtWithPackage;
     }
 
     public List <Ticket> getTicket() {
@@ -34,7 +33,5 @@ public class UpdateTicketsRequest extends AbstractRequest {
         return addOrRemove;
     }
 
-    public boolean getBoughtWithPackage() {
-        return boughtWithPackage;
-    }
+
 }

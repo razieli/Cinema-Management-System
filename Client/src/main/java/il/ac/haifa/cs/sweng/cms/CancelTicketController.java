@@ -90,7 +90,7 @@ public class CancelTicketController implements Initializable {
                 List <Ticket> tickets = new ArrayList<Ticket>();
                 tickets.add(TicketsComboBox.getValue());
 
-                App.getOcsfClient(this).updateTickets(tickets, false, false);
+                App.getOcsfClient(this).updateTickets(tickets, false);
                 ticketList.remove(TicketsComboBox.getValue());
                 alert.setHeaderText(null);
                 alert.setContentText("Ticket Canceled");

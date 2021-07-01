@@ -135,10 +135,6 @@ public class PurpleBadgeController implements Initializable {
 		pb.setStatus(!pb.getStatus());
 		setMode();
 		App.getOcsfClient(this).updatePurpleBadge(this.pb);
-		for (Cinema c: cinemas) {
-			c.updatePurpleBadge();
-		}
-		//App.getOcsfClient(this).updateCinemas();
 	}
 
 	@FXML
