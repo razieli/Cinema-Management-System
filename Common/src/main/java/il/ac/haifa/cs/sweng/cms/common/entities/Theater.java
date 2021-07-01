@@ -21,10 +21,10 @@ public class Theater implements Serializable {
 	private int seatsCapacity; //how many seats in the theater
 	private int realSeatsCapacity; //after PB change
 
-	@OneToMany(targetEntity = Screening.class ,mappedBy="theater", fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = Screening.class ,mappedBy="theater", fetch = FetchType.EAGER)
 	private List<Screening> screeningList;
 
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name="cinema_id")
 	private Cinema cinema;
 

@@ -19,7 +19,7 @@ public class Cinema implements Serializable {
 	@JoinColumn (name="employee")
 	private Employee manager;
 	
-	@OneToMany (targetEntity = Theater.class ,mappedBy = "cinema", fetch = FetchType.LAZY)
+	@OneToMany (targetEntity = Theater.class ,mappedBy = "cinema", fetch = FetchType.EAGER)
 	private List<Theater> theaters;
 	
 	public Cinema() {

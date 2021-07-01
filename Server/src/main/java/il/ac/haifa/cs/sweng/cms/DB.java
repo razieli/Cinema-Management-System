@@ -131,6 +131,8 @@ public class DB {
 //		session.save(new Customer("Ron","Bonbon", hash("df38jed"), "RonBonbon", 0));
 		session.save(new Customer("Gal","Galgal", hash("0"), "0", 0));
 		session.save(new Customer("Ron","Bonbon", hash("00"), "00", 0));
+		session.save(new Customer("Malki","Grossman", hash("malki"), "malki", 0));
+		session.save(new Customer("Liel","Friedman", hash("liel"), "liel", 0));
 		session.flush();
 	}
 

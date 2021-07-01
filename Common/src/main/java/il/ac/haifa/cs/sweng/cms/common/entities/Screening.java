@@ -22,12 +22,12 @@ public class Screening implements Serializable {
 	@JoinColumn(name="movie")
 	private Movie movie;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="theater_id")
 	private Theater theater;
 	private GregorianCalendar date;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="screening")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="screening")
 	private List<Ticket> tickets;
 
 	private int seatsCapacity;
@@ -48,7 +48,7 @@ public class Screening implements Serializable {
 		this.date = new GregorianCalendar();
 		this.tickets = new ArrayList<>();
 //		this.setTickets(new ArrayList<Ticket>(theater.getSeatsCapacity()));
-		this.seatsCapacity = 0;
+		this.seatsCapacity = 40;
 		this.realSeatsCapacity=this.seatsCapacity;
 	}
 

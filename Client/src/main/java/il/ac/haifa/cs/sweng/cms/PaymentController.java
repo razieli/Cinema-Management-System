@@ -399,7 +399,8 @@ public class PaymentController implements Initializable {
                 }
 
                 else{
-                    if((screening.getTickets().size()+pickSeats) > screening.getRealSeatsCapacity()){ //case of reach limit of purple badge
+             
+                	if((screening.getTickets().size()+pickSeats) > screening.getRealSeatsCapacity()){ //case of reach limit of purple badge
                         //set a error alert
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                         errorAlert.setTitle(null);
