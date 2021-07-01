@@ -130,7 +130,7 @@ public class OCSFClient extends AbstractClient {
         	((OperationalReportsController) controller).setPayments(((ListAllPaymentsResponse) response).getPayments());
         }
         if (response instanceof UpdateTicketsResponse) {
-            ((PaymentController) controller).setTickets(((UpdateTicketsResponse) response).getTicketList());
+            ((PaymentController) controller).setNewTickets(((UpdateTicketsResponse) response).getTicketList());
             ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateLinksResponse) {

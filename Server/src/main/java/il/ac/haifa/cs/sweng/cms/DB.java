@@ -651,11 +651,18 @@ public class DB {
 		// TODO: 23/06/2021  add/ remove money/tickets from customer
 		session.beginTransaction();
 		if(addOrRemove){
+			if(boughtWithPackage){
+				Customer customer =session.get(Customer.class, ticket.getCustomer().getId());
+				customer.setPackageTicketsRemaining(customer.getPackageTicketsRemaining()-1);
+				session.merge(customer);
+			}
+
 			session.save(ticket.getPayment());
 			session.save(ticket);
 			session.flush();
 			ticket.getScreening().addTicket(ticket);
 			session.merge(ticket.getScreening());
+
 		}
 		else{
 				Ticket ticketToRemove = session.get(Ticket.class, ticket.getId());

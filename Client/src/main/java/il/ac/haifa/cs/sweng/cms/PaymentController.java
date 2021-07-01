@@ -36,7 +36,7 @@ public class PaymentController implements Initializable {
     private static Movie movie;
     private static Screening screening = null;
     private static int pickSeats = 0;
-    private List<Ticket> tickets =new ArrayList<Ticket>();
+    private List<Ticket> tickets =new ArrayList<Ticket>(),newTickets =new ArrayList<Ticket>() ;
     private String inputFirstName, inputLastName,inputEmail, inputPhone, inputCardOwnerName, inputCardOwnerLastName, inputCardNumber, inputCvvNumber;
     private int inputCardExpirationYear=0,inputCardExpirationMonth=0;
     private GregorianCalendar inputExpirationDate;
@@ -178,25 +178,45 @@ public class PaymentController implements Initializable {
                         alert.showAndWait();
                         payWithPackage = alert.getResult() == ButtonType.YES;
 
-                        try {
-                            Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
-                            for (Ticket tic : tickets)
-                                tic.setPayment(payment);
+                       if(payWithPackage==true && tickets.get(0).getCustomer().getPackageTicketsRemaining()>pickSeats) {
 
+<<<<<<< Updated upstream
                             System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
                             App.getOcsfClient(this).getListOfTickets();
                             // TODO: Declare success only after acknowledge from server was received.
+=======
+                           try {
+                               Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
+                               for (Ticket tic : tickets)
+                                   tic.setPayment(payment);
+>>>>>>> Stashed changes
 
-                            System.out.println(messageStatus);
-//                            if(messageStatus){
-                                // TODO: 30/06/2021 update the packeg statuse
-                                sendMail(tickets);//send mail
-                                App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+
+                               App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
+
+
+                               for (Ticket tic : tickets)
+                                   System.out.println(tic.getId());
+                               // TODO: Declare success only after acknowledge from server was received.
+
+                               System.out.println(messageStatus);
+                            if(messageStatus){
+                               // TODO: 30/06/2021 update the packeg statuse
+                               sendMail(tickets, tickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
+                               App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
+                            }
+                           } catch (IOException e) {
+                               e.printStackTrace();
+                           }
+                       }
+                       else{
+                           Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                           errorAlert.setTitle(null);
+                           errorAlert.setHeaderText(null);
+                           errorAlert.setContentText("You don't have enough tickets remaining in your package.");
+                           errorAlert.showAndWait();
+                       }
                     } else { //in case of no package available for the customer
                         try {
                             Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
@@ -206,10 +226,19 @@ public class PaymentController implements Initializable {
 //                            System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
+<<<<<<< Updated upstream
 //                            if(messageStatus){
+=======
+
+                            while (newTickets.isEmpty()) { Thread.yield(); }
+                            for (Ticket tic : newTickets)
+                                System.out.println(tic.getId());
+
+                            if(messageStatus){
+>>>>>>> Stashed changes
                                 sendMail(tickets);//send mail
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -226,10 +255,10 @@ public class PaymentController implements Initializable {
                     App.getOcsfClient(this).updateLinks(link, true);
                     // TODO: Declare success only after acknowledge from server was received.
                     System.out.println(messageStatus);
-//                    if(messageStatus){
+                    if(messageStatus){
                         sendMail(link);//send mail
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                    }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -238,7 +267,7 @@ public class PaymentController implements Initializable {
             else if(fromScreen==3){//package
                 Customer customer=(Customer)App.getUser();
                 if(customer.isHas_package()) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    Alert errorAlert = new Alert(Alert.AlertType.WARNING);
                     errorAlert.setTitle(null);
                     errorAlert.setHeaderText(null);
                     errorAlert.setContentText("You already have a ticket package.");
@@ -248,13 +277,14 @@ public class PaymentController implements Initializable {
                     try {
                         Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
                         customer.setPayment(payment);
+                        customer.addPackage();
                         App.getOcsfClient(this).updateCustomer(customer);
 
                         System.out.println(messageStatus);
-    //                    if(messageStatus){
+                        if(messageStatus){
     //                        sendMail(link);//send mail
                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                    }
+                    }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -361,16 +391,16 @@ public class PaymentController implements Initializable {
                                     tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                     j++;
                                     j = j % 10;
-                                    if (i == 0) {
-                                        j = 1;
-                                        i += 2;
+                                    if (j == 0) {
+//                                        j = 1;
+                                        i += 1;
                                     }
                                 }
 
                             }
 
                             else { // TODO: 27/06/2021 what hapand if not empthy???????
-                                lastTicket = screening.getTickets().get(screening.getTickets().size());
+                                lastTicket = screening.getTickets().get(screening.getTickets().size()-1);
                                 if (lastTicket.getCustomer().equals((Customer) App.getUser())) {//if the same customer
 
                                     int i = lastTicket.getRow() + 1;
@@ -378,9 +408,9 @@ public class PaymentController implements Initializable {
                                     for (int k = 0; k < pickSeats; k++) {
                                         j++;
                                         j = j % 10;
-                                        if (i == 0) {
-                                            j = 1;
-                                            i += 2;
+                                        if (j == 0) {
+//                                            j = 1;
+                                            i += 1;
                                         }
                                         tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                         System.out.println(tickets.size());
@@ -390,18 +420,18 @@ public class PaymentController implements Initializable {
                                     int j = lastTicket.getCol() + 1;
                                     j++;
                                     j = j % 10;
-                                    if (i == 0) {
-                                        j = 1;
-                                        i += 2;
+                                    if (j == 0) {
+//                                        j = 1;
+                                        i += 1;
                                     }
                                     screening.addTicket(new Ticket(null, null, i, j));//add blank seat
 
                                     for (int k = 0; k < pickSeats; k++) {
                                         j++;
                                         j = j % 10;
-                                        if (i == 0) {
-                                            j = 1;
-                                            i += 2;
+                                        if (j == 0) {
+//                                            j = 1;
+                                            i += 1;
                                         }
                                         tickets.add(new Ticket((Customer) App.getUser(), screening, i, j));//add Tickets to purchase
                                     }
@@ -414,8 +444,9 @@ public class PaymentController implements Initializable {
                         PBAcceptButton.setText("Accept");//change button text
 
                         tickets.clear(); //Remove all tickets that insert
-                        if(!screening.getTickets().isEmpty() && screening.getTickets().get(screening.getTickets().size()).getCustomer()==null){//if added blank seat remove it.
-                            screening.getTickets().remove(screening.getTickets().size());
+                        System.out.println(tickets.size());
+                        if(!screening.getTickets().isEmpty() && screening.getTickets().get(screening.getTickets().size()-1).getCustomer()==null){//if added blank seat remove it.
+                            screening.getTickets().remove(screening.getTickets().size()-1);
                         }
                     }});
             }
@@ -758,6 +789,14 @@ public class PaymentController implements Initializable {
         this.tickets = tickets;
     }
 
+    public List<Ticket> getNewTickets() {
+        return newTickets;
+    }
+
+    public void setNewTickets(List<Ticket> newTickets) {
+        this.newTickets = newTickets;
+    }
+
     public Boolean getMessageStatus() {
         return messageStatus;
     }
@@ -985,6 +1024,36 @@ public class PaymentController implements Initializable {
                             "</table dir=\"ltr\">" +
                             "</bdo>"
             );
+    }
+
+    private void sendMail(List<Ticket> tickets,int remain){
+        String seats="      <td>";
+
+        for (Ticket ticket:tickets){
+            seats+="("+ticket.getRow()+", "+ticket.getCol()+") [Order No. "+ticket.getPayment().getId() +"] ";
+        }
+        seats+="<td>\n";
+
+        App.getOcsfClient(this).sendMail(
+                "galuk3@gmail.com, "+tickets.get(0).getPayment().getEmail(),
+                "Order Confirmed",
+                "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+tickets.get(0).getPayment().getFirstName()+" "+ tickets.get(0).getPayment().getLastName()+"</i></h1><br>" +
+                        "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
+                        "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
+                        "<br><table border='1' dir=\"ltr\">\n" +
+                        "    <tr>\n" +
+                        "      <td>theater</td>\n" +
+                        "      <td>movie</td>\n" +
+                        "      <td>quantity</td></td>\n" +
+                        "      <td>seats</td></td>\n" +
+                        "    </tr>\n" +
+                        "    <tr>\n" +
+                        "      <td>"+tickets.get(0).getScreening().getTheater().getName()+"</td>\n" +
+                        "      <td>"+tickets.get(0).getScreening().getMovie().getEngName()+"</td>\n" +
+                        "      <td>"+tickets.size()+"</td>\n" +
+                        seats +
+                        "    </tr></table dir=\"ltr\">" +
+                        "</bdo>");
     }
 
     private void sendMail(Link link) {

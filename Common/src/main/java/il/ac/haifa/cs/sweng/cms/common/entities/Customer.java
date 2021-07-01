@@ -159,11 +159,9 @@ public class Customer extends User implements Serializable {
 	/**
 	 * add tickets to package
 	 */
-	public void addPackage(/*GregorianCalendar paymentDate*/){
-		// TODO: 01/07/2021 fixxxxxxxxxxxxxx!
-		this.has_package=true;//*****
-		this.packageTicketsRemaining+=packageTicketsNumber;
-	//	this.setPackagePaymentDate(paymentDate);
+	public void addPackage(){
+		this.has_package=true;
+		this.packageTicketsRemaining=packageTicketsNumber;
 	}
 	/**
 	 * @return the packagePaymentDate
@@ -176,6 +174,12 @@ public class Customer extends User implements Serializable {
 	 */
 	public void setPackagePaymentDate(GregorianCalendar packagePaymentDate) {
 		this.packagePaymentDate = packagePaymentDate;
+	}
+
+	public void setPackageTicketsRemaining(int packageTicketsRemaining) {
+		this.packageTicketsRemaining = packageTicketsRemaining;
+		if(this.packageTicketsRemaining==0)
+			this.has_package=false;
 	}
 
 	public int getPackageTicketsRemaining() {
