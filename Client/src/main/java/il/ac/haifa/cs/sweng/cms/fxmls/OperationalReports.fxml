@@ -83,10 +83,10 @@
 							<children>
                         <StackedBarChart fx:id="purchaseChart" StackPane.alignment="CENTER"> 
                           <xAxis>
-                            <CategoryAxis label="Movies" side="BOTTOM" />
+                            <CategoryAxis fx:id="pcCatAxis" label="Movies" side="BOTTOM" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis label="Amount" minorTickCount="1" side="LEFT" upperBound="10.0">
+                            <NumberAxis fx:id="pcNumAxis" label="Amount" minorTickCount="1" side="LEFT" upperBound="10.0">
                                  <tickLabelFont>
                                     <Font size="11.0" />
                                  </tickLabelFont>
