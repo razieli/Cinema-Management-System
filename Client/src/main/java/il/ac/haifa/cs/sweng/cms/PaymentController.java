@@ -185,7 +185,7 @@ public class PaymentController implements Initializable {
                                 System.out.println(tic.getId());
 
                             if(messageStatus){
-                                sendMail(newTickets);//send mail
+                                sendMail(tickets);//send mail
                                 App.getStage().setUserData(newTickets);
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                             }
@@ -460,13 +460,11 @@ public class PaymentController implements Initializable {
                                         while (newTickets.isEmpty()) {
                                             Thread.yield();
                                         }
-                                        for (Ticket tic : newTickets)
-                                            System.out.println(tic.getId());
 
                                         if (messageStatus) {
                                             // TODO: 30/06/2021 update the packeg statuse
-                                            sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
-                                            App.getStage().setUserData(newTickets);
+                                            sendMail(tickets, tickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
+                                            App.getStage().setUserData(tickets);
                                             App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                                         }
                                     } catch (IOException e1) {
@@ -1020,11 +1018,9 @@ public class PaymentController implements Initializable {
         for(int i=0; i<tickets.size(); i++)
         {
             String num = String.valueOf(i+1);
-            String ticketId = String.valueOf(tickets.get(i).getId());
             String seat = "(" + tickets.get(i).getRow() + ", " + tickets.get(i).getCol() + ")";
             ticketsString = ticketsString + "<tr>" +
                     "<td>" + num + "</td>" +
-                    "<td>" + ticketId + "</td>" +
                     "<td>" + seat + "</td>" +
                     "<td>" + nameOfCinema + "</td>" +
                     "<td>" + nameOfTheater + "</td>" +
@@ -1042,7 +1038,6 @@ public class PaymentController implements Initializable {
                             "<br><table align=\"center\" border='2' dir=\"ltr\" td style=\"text-align:center\">" +
                             "<tr>" +
                             "<th> - </th>" +
-                            "<th><font color=\"" + color + "\">OrderID</font></th>" +
                             "<th><font color=\"" + color + "\">Seat</font></th>" +
                             "<th><font color=\"" + color + "\">Cinema</font></th>" +
                             "<th><font color=\"" + color + "\">Theater</font></th>" +
@@ -1075,11 +1070,10 @@ public class PaymentController implements Initializable {
         for(int i=0; i<tickets.size(); i++)
         {
             String num = String.valueOf(i+1);
-            String ticketId = String.valueOf(tickets.get(i).getId());
+
             String seat = "(" + tickets.get(i).getRow() + ", " + tickets.get(i).getCol() + ")";
             ticketsString = ticketsString + "<tr>" +
                     "<td>" + num + "</td>" +
-                    "<td>" + ticketId + "</td>" +
                     "<td>" + seat + "</td>" +
                     "<td>" + nameOfCinema + "</td>" +
                     "<td>" + nameOfTheater + "</td>" +
@@ -1097,7 +1091,6 @@ public class PaymentController implements Initializable {
                         "<br><table align=\"center\" border='2' dir=\"ltr\" td style=\"text-align:center\">" +
                         "<tr>" +
                         "<th> - </th>" +
-                        "<th><font color=\"" + color + "\">OrderID</font></th>" +
                         "<th><font color=\"" + color + "\">Seat</font></th>" +
                         "<th><font color=\"" + color + "\">Cinema</font></th>" +
                         "<th><font color=\"" + color + "\">Theater</font></th>" +
