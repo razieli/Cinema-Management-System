@@ -5,6 +5,7 @@
 package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
+import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.UpdateTicketsResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +43,8 @@ public class PaymentController implements Initializable {
     private int inputCardExpirationYear=0,inputCardExpirationMonth=0;
     private GregorianCalendar inputExpirationDate;
     private Boolean messageStatus=false;
+    private ImageView seatBlockAttemptImage;
+    private Ticket ticket;
 
 
     @FXML // fx:id="accordion"
@@ -690,7 +693,7 @@ public class PaymentController implements Initializable {
         imageView.setOnMouseClicked(e -> {
             if (seatMap[row][col] == 0) {
                 seatFlag.set(!seatFlag.get());
-                if (seatFlag.get() == true) {//if purpleBadge is on in the same values
+                if (seatFlag.get()) {//if purpleBadge is on in the same values
                     if (pickSeats == 0) {
                         //set a error alert
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -705,15 +708,17 @@ public class PaymentController implements Initializable {
                         imageView.setImage(new Image("ChackedSeat.png", 30,30,false,false));
                         ticket.setCustomer((Customer)App.getUser());
                         tickets.add(ticket);
-                        // TODO: 30/06/2021  mark seat as taken in screening seat[][]<- -1
                         pickSeats--;
+                        seatBlockAttemptImage = imageView;
+                        this.ticket = ticket;
+                        App.getOcsfClient(this).blockSeat(screening, row, col, true);
                     }
-                } else if (seatFlag.get() == false) {
+                } else if (!seatFlag.get()) {
                     imageView.setImage(new Image("FreeSeat.png", 30,30,false,false));
                     ticket.setCustomer(null);
                     tickets.remove(ticket);
-                    // TODO: 30/06/2021  mark seat as not taken in screening seat[][] <-0
                     pickSeats++;
+                    App.getOcsfClient(this).blockSeat(screening, row, col, false);
                 }
             }
 
@@ -1163,6 +1168,32 @@ public class PaymentController implements Initializable {
                         "      <td> The link will be available between: "+format.format(link.getDate().getTime().getTime()).toString()+" to: "+format.format(to.getTime()).toString() +"</td>\n" +
                         "    </tr></table dir=\"ltr\">" +
                         "</bdo>");
+    }
+
+    private enum SeatStatus {
+        AVAILABLE,
+        BLOCKED,
+        SELECTED
+    }
+
+    protected void handleBlockSeatResponse(ResponseStatus responseStatus) {
+        switch (responseStatus) {
+            case Acknowledged -> setSeatStatus(SeatStatus.SELECTED);
+            case Rejected -> setSeatStatus(SeatStatus.BLOCKED);
+        }
+    }
+
+    private void setSeatStatus(SeatStatus seatStatus) {
+        switch(seatStatus) {
+            case AVAILABLE -> {
+                seatBlockAttemptImage.setImage(new Image("ChackedSeat.png", 30,30,false,false));
+                ticket.setCustomer((Customer)App.getUser());
+                tickets.add(ticket);
+                pickSeats--;
+            }
+            case BLOCKED -> seatBlockAttemptImage.setImage(new Image("BusySeat.png", 30,30,false,false));
+        }
+
     }
 }
 

@@ -9,7 +9,7 @@ import java.util.List;
 public class TempData {
 
     private final List<ClientUserPair> connectedUsers;
-    private final List<Screening> selectedSeats;
+    private final List<TimeSeatPair> selectedSeats;
 
     protected TempData() {
         this.connectedUsers = new ArrayList<>();
@@ -20,7 +20,7 @@ public class TempData {
         return connectedUsers;
     }
 
-    public List<Screening> getSelectedSeats() {
+    public List<TimeSeatPair> getSelectedSeats() {
         return selectedSeats;
     }
 }
