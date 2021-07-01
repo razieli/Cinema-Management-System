@@ -171,49 +171,12 @@ public class PaymentController implements Initializable {
 
         if (isChecked()){
             if(fromScreen==1 && !tickets.isEmpty()) {
-//                    if (tickets.get(0).getCustomer().isHas_package()) {
-//                        boolean payWithPackage;
-//                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//                        alert.setTitle("Pay With Package");
-//                        alert.setHeaderText(null);
-//                        alert.setContentText("Package was detected, would you like to pay with it?");
-//                        alert.getButtonTypes().clear();
-//                        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
-//                        alert.showAndWait();
-//                        payWithPackage = alert.getResult() == ButtonType.YES;
-//
-//                       if(payWithPackage==true && tickets.get(0).getCustomer().getPackageTicketsRemaining()>pickSeats) {
-//
-//
-//                           try {
-//                               App.getOcsfClient(this).updateTickets(tickets, true, payWithPackage);
-//                               while (newTickets.isEmpty()) { Thread.yield(); }
-//                               for (Ticket tic : newTickets)
-//                                   System.out.println(tic.getId());
-//
-//                            if(messageStatus){
-//                               // TODO: 30/06/2021 update the packeg statuse
-//                               sendMail(newTickets, newTickets.get(0).getCustomer().getPackageTicketsRemaining());//send mail
-//                               App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
-//                            }
-//                           } catch (IOException e) {
-//                               e.printStackTrace();
-//                           }
-//                       }
-//                       else{
-//                           Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-//                           errorAlert.setTitle(null);
-//                           errorAlert.setHeaderText(null);
-//                           errorAlert.setContentText("You don't have enough tickets remaining in your package.");
-//                           errorAlert.showAndWait();
-//                       }
-//                    } else { //in case of no package available for the customer
+
                         try {
                             Payment payment = new Payment(inputCardOwnerName, inputCardOwnerLastName, (GregorianCalendar) GregorianCalendar.getInstance(), inputEmail, inputPhone, inputCardNumber, inputExpirationDate, inputCvvNumber);
                             for (Ticket tic : tickets)
                                 tic.setPayment(payment);
 
-//                            System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true);
                             // TODO: Declare success only after acknowledge from server was received.
 
@@ -429,7 +392,6 @@ public class PaymentController implements Initializable {
                         PBAcceptButton.setText("Accept");//change button text
 
                         tickets.clear(); //Remove all tickets that insert
-                        System.out.println(tickets.size());
                         if(!screening.getTickets().isEmpty() && screening.getTickets().get(screening.getTickets().size()-1).getCustomer()==null){//if added blank seat remove it.
                             screening.getTickets().remove(screening.getTickets().size()-1);
                         }
@@ -803,6 +765,7 @@ public class PaymentController implements Initializable {
     }
 
     private void setTicketDetileds(){
+        price= tickets.get(0).getScreening().getMovie().getPrice()*tickets.size();
         /*set Order Details*/
         //set movie title in Order Details
         HBox hbMovie = new HBox();
