@@ -2,7 +2,6 @@ package il.ac.haifa.cs.sweng.cms;
 
 import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.AbstractResponse;
-import il.ac.haifa.cs.sweng.cms.common.messages.ResponseStatus;
 import il.ac.haifa.cs.sweng.cms.common.messages.requests.*;
 import il.ac.haifa.cs.sweng.cms.common.messages.responses.*;
 import il.ac.haifa.cs.sweng.cms.ocsf.AbstractClient;
@@ -134,7 +133,7 @@ public class OCSFClient extends AbstractClient {
             ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateLinksResponse) {
-            ((PaymentController) controller).setLink(((UpdateLinksResponse) response).getLink());
+            ((PaymentController) controller).setNewLink(((UpdateLinksResponse) response).getLink());
             ((PaymentController) controller).setMessageStatus(true);
         }
         if (response instanceof UpdateCustomerResponse) {
@@ -149,6 +148,9 @@ public class OCSFClient extends AbstractClient {
             String header = ((AlertMessageResponse) response).getHeader();
             String message = ((AlertMessageResponse) response).getMessage();
             Platform.runLater(() -> showAlert(alertType, header, message));
+        }
+        if (response instanceof BlockReleaseSeatResponse) {
+            ((PaymentController) controller).handleBlockSeatResponse(response.getStatus());
         }
         // TODO: Show "Unidentified response".
 
@@ -379,64 +381,19 @@ public class OCSFClient extends AbstractClient {
         }
     }
 
-/*
-    private void handleLoginResponse(LoginResponse response) {
-        if (response.getStatus() == ResponseStatus.Declined) {
-            App.setUserPermission(-1);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(null);
-            alert.setHeaderText(null);
-            alert.setContentText("Wrong Login!");
-            alert.showAndWait();
+    /**
+     * Sends a request to the server to block seats.
+     * @param screening Screening to block a seat on.
+     * @param row Row of seat.
+     * @param col Column of seat.
+     * @param block Whether to block the seat or release it.
+     */
+    public void blockSeat(Screening screening, int row, int col, boolean block) {
+        try {
+            sendToServer(new BlockReleaseSeatRequest(screening, row, col, block));
+        } catch (IOException e) {
+            // TODO: Show "IO exception while sending request to server."
         }
-        else if (response.getStatus() == ResponseStatus.Customer) {
-            App.setUserPermission(0);
-        }
-        else if (response.getStatus() == ResponseStatus.CustomerService) {
-            App.setUserPermission(1);
-        }
-        else if (response.getStatus() == ResponseStatus.ContentManager) {
-            App.setUserPermission(2);
-        }
-        else if (response.getStatus() == ResponseStatus.BranchManager) {
-            App.setUserPermission(3);
-        }
-        else if (response.getStatus() == ResponseStatus.Administrator) {
-            App.setUserPermission(4);
-        }
-        App.setUser(response.getUser());
-        int permission = App.getUserPermission();
-
-        if(permission >= 3){
-            try {
-                App.setRoot("CinemaManagerHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if(permission >= 2) {
-            try {
-                App.setRoot("ContentManagerHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if(permission > 0){
-            try {
-                App.setRoot("EmployeeHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if (permission == 0) {
-            try {
-                App.setRoot("CustomerHome.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        // TODO: Show "Unidentified response".
     }
-*/
 
 }

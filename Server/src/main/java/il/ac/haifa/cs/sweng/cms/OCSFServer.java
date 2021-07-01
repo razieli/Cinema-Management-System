@@ -32,8 +32,11 @@ public class OCSFServer extends AbstractServer {
     private final TempData tempData;
 
     private final Timer timer;
-    private final TimerTask timerTask;
+    private final TimerTask timerTaskLinks;
+    private final TimerTask timerTaskSeats;
     private final long LINKS_NOTIFY_PERIOD = 60000;
+    private final long SEATS_CHECK_PERIOD = 60000;
+    private final int MAX_BLOCK_TIME = 5;
 
     /**
      * Constructs a new server.
@@ -48,13 +51,20 @@ public class OCSFServer extends AbstractServer {
         this.db = db;
         this.tempData = new TempData();
         this.timer = new Timer();
-        this.timerTask = new TimerTask() {
+        this.timerTaskLinks = new TimerTask() {
             @Override
             public void run() {
                 notifyUpcomingLinks();
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, LINKS_NOTIFY_PERIOD);
+        this.timerTaskSeats = new TimerTask() {
+            @Override
+            public void run() {
+                checkExpiredSeatSelections();
+            }
+        };
+        timer.scheduleAtFixedRate(timerTaskLinks, 0, LINKS_NOTIFY_PERIOD);
+        timer.scheduleAtFixedRate(timerTaskSeats, 0, SEATS_CHECK_PERIOD);
     }
 
     @Override
@@ -175,6 +185,9 @@ public class OCSFServer extends AbstractServer {
             Link link = ((UpdateLinksRequest) request).getLinksList();
             boolean addOrRemove = ((UpdateLinksRequest) request).getAddOrRemove();
             db.setLinks(link, addOrRemove);
+
+            System.out.println(link.getId());
+
             return new UpdateLinksResponse(link, ResponseStatus.Acknowledged);
         }
         if(request instanceof UpdateCustomerRequest) {
@@ -235,6 +248,17 @@ public class OCSFServer extends AbstractServer {
             PurpleBadge pb = PurpleBadge.getInstance(db.getPurpleBadge()) ;
             return new getPurpleBadgeResponse(pb);
         }
+        if(request instanceof BlockReleaseSeatRequest) {
+            BlockReleaseSeatRequest blockReleaseSeatRequest = (BlockReleaseSeatRequest) request;
+            ResponseStatus responseStatus;
+            if(blockReleaseSeat(blockReleaseSeatRequest.getScreening(), blockReleaseSeatRequest.getRow(), blockReleaseSeatRequest.getCol(), blockReleaseSeatRequest.isBlock())) {
+                responseStatus = ResponseStatus.Acknowledged;
+            } else {
+                responseStatus = ResponseStatus.Rejected;
+            }
+            return new BlockReleaseSeatResponse(responseStatus);
+        }
+
         Log.w(TAG, "Unidentified request.");
         return null;
     }
@@ -347,6 +371,41 @@ public class OCSFServer extends AbstractServer {
 
         } catch (MessagingException e) {
             e.printStackTrace();
+        }
+    }
+
+    private boolean blockReleaseSeat(Screening screening, int row, int col, boolean block) {
+        boolean found = false;
+        for(TimeSeatPair tsp : tempData.getSelectedSeats()) { // If screening already exists in list take that reference.
+            if(tsp.getScreening().getId() == screening.getId()) {
+                found = true;
+                screening = tsp.getScreening();
+            }
+        }
+        if (block) { // Block request.
+            if (screening.getSeats()[row][col] > 0) {
+                return false;
+            }
+            screening.getSeats()[row][col] = 1;
+        } else if(screening.getSeats()[row][col] == 1) { // Release request.
+            screening.getSeats()[row][col] = 0;
+        }
+        // TODO: set time of blocking.
+        if(!found) {
+            tempData.getSelectedSeats().add(new TimeSeatPair(screening, row, col, new GregorianCalendar()));
+        }
+        return true;
+    }
+
+    private void checkExpiredSeatSelections() {
+        GregorianCalendar now = new GregorianCalendar();
+        for(TimeSeatPair timeSeatPair : tempData.getSelectedSeats()) {
+            GregorianCalendar blockingTimePlusMax = (GregorianCalendar) timeSeatPair.getBlockingTime().clone();
+            blockingTimePlusMax.add(Calendar.MINUTE, MAX_BLOCK_TIME);
+            if(blockingTimePlusMax.before(now)) {
+                blockReleaseSeat(timeSeatPair.getScreening(), timeSeatPair.getRow(), timeSeatPair.getCol(), false);
+                tempData.getSelectedSeats().remove(timeSeatPair);
+            }
         }
     }
 

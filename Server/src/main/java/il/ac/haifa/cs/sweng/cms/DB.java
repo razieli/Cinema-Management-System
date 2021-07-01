@@ -222,6 +222,38 @@ public class DB {
 	 * generate initial payments
 	 */
 	public void generatePayments() throws Exception{
+		List<Ticket> t = getAllTickets();
+		Payment pay1 = new Payment("Yan", "Cohen",
+				new GregorianCalendar(),
+				"Cinema2021SWE@gmail.com", "0587772929",
+				"4205260000000005",
+				new GregorianCalendar(2023, 6, 1, 00, 00),
+				"213");
+		Payment pay2 = new Payment("Moshe", "Levi",
+				new GregorianCalendar(),
+				"Cinema2021SWE@gmail.com", "0523123444",
+				"4311780000241417",
+				new GregorianCalendar(2023, 2, 1, 00, 00),
+				"733");
+		pay1.setTicketList(t.subList(0,2));
+		pay2.setTicketList(t.subList(5,8));
+		session.save(pay1);
+		session.save(pay2);
+//		t.get(0).setPayment(pay1);
+//		t.get(1).setPayment(pay1);
+//		t.get(2).setPayment(pay1);
+//		session.saveOrUpdate(t.get(0));
+//		session.saveOrUpdate(t.get(1));
+//		session.saveOrUpdate(t.get(2));
+//		t.get(5).setPayment(pay2);
+//		t.get(6).setPayment(pay2);
+//		t.get(7).setPayment(pay2);
+//		t.get(8).setPayment(pay2);
+//		session.saveOrUpdate(t.get(5));
+//		session.saveOrUpdate(t.get(6));
+//		session.saveOrUpdate(t.get(7));
+//		session.saveOrUpdate(t.get(8));
+		session.flush();
 	}
 
 
@@ -231,16 +263,22 @@ public class DB {
 	public void generateTicket() throws Exception{
 		List<Screening> screenings=getAllScreening();
 		List<Customer> customers=getAllCustomer();
+		ArrayList<Ticket> t0 = new ArrayList<>();
+		ArrayList<Ticket> t1 = new ArrayList<>();
 		for(Screening s:screenings) {
 			ArrayList<Ticket> t = new ArrayList<>();
-			Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4);
-			Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2);
-			Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5);
-			Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1);
+			Ticket tic1 = new Ticket(customers.get(0), s, 0, 3, false);
+			Ticket tic2 = new Ticket(customers.get(1), s, 0, 2, false);
+			Ticket tic3 = new Ticket(customers.get(0), s, 0, 1, false);
+			Ticket tic4 = new Ticket(customers.get(1), s, 0, 0, false);
 			t.add(tic1);
 			t.add(tic2);
 			t.add(tic3);
 			t.add(tic4);
+			t0.add(tic1);
+			t1.add(tic2);
+			t0.add(tic3);
+			t1.add(tic4);
 			session.save(tic1);
 			session.save(tic2);
 			session.save(tic3);
@@ -248,6 +286,10 @@ public class DB {
 			s.setTickets(t);
 			session.save(s);
 		}
+		customers.get(0).setTicket(t0);
+		session.saveOrUpdate(customers.get(0));
+		customers.get(1).setTicket(t1);
+		session.saveOrUpdate(customers.get(1));
 		session.flush();
 	}
 
