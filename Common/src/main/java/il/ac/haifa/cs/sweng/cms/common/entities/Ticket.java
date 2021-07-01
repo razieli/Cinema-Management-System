@@ -26,14 +26,17 @@ public class Ticket implements Serializable {
 	private int seatRow;
 	private int seatCol;
 
+	private boolean paidWithPackage;
+
 	public Ticket() {
 		this.customer=null;
 		this.screening=null;
 		this.payment=null;
 		this.seatRow = 0;
 		this.seatCol = 0;
+		this.paidWithPackage = false;
 	}
-	public Ticket(Customer customer, Screening screening, int row, int col){
+	public Ticket(Customer customer, Screening screening, int row, int col, boolean paidWithPackage){
 		this.customer=customer;
 		this.screening=screening;
 		if (this.screening!=null)
@@ -41,6 +44,7 @@ public class Ticket implements Serializable {
 		this.payment=null;
 		this.seatRow = row;
 		this.seatCol = col;
+		this.paidWithPackage = paidWithPackage;
 	}
 
 	
@@ -91,4 +95,13 @@ public class Ticket implements Serializable {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+
+	public boolean isPaidWithPackage() {
+		return paidWithPackage;
+	}
+
+	public void setPaidWithPackage(boolean paidWithPackage) {
+		this.paidWithPackage = paidWithPackage;
+	}
+
 }

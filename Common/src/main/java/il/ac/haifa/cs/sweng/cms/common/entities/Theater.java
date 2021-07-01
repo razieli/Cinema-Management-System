@@ -135,7 +135,7 @@ public class Theater implements Serializable {
 			while(!stack.isEmpty()){
 				Ticket tic = stack.pop();
 				if (!stack.isEmpty() && !stack.peek().getCustomer().equals(tic.getCustomer())){//skip seat
-					s.addTicket(new Ticket(null,null,i,j));
+					s.addTicket(new Ticket(null,null,i,j, false));
 					j++;
 					j=j%10;
 					if (j==0){

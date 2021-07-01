@@ -233,10 +233,10 @@ public class DB {
 		List<Customer> customers=getAllCustomer();
 		for(Screening s:screenings) {
 			ArrayList<Ticket> t = new ArrayList<>();
-			Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4);
-			Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2);
-			Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5);
-			Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1);
+			Ticket tic1 = new Ticket(customers.get(0), screenings.get(0), 0, 4, false);
+			Ticket tic2 = new Ticket(customers.get(1), screenings.get(1), 0, 2, false);
+			Ticket tic3 = new Ticket(customers.get(0), screenings.get(2), 0, 5, false);
+			Ticket tic4 = new Ticket(customers.get(1), screenings.get(2), 0, 1, false);
 			t.add(tic1);
 			t.add(tic2);
 			t.add(tic3);
