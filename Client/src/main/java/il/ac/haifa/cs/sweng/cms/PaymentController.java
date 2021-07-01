@@ -203,7 +203,7 @@ public class PaymentController implements Initializable {
                             for (Ticket tic : tickets)
                                 tic.setPayment(payment);
 
-                            System.out.println(tickets);
+//                            System.out.println(tickets);
                             App.getOcsfClient(this).updateTickets(tickets, true, false);
                             // TODO: Declare success only after acknowledge from server was received.
 //                            if(messageStatus){
@@ -933,33 +933,58 @@ public class PaymentController implements Initializable {
     }
 
     private void sendMail(List<Ticket> tickets){
-        String seats="      <td>";
-
-        for (Ticket ticket:tickets){
-            seats+="("+ticket.getRow()+", "+ticket.getCol()+") ";
+        String color = "blue";
+        String firstNameOfCustomer = tickets.get(0).getPayment().getFirstName();
+        String lastNameOfCustomer = tickets.get(0).getPayment().getLastName();
+        String nameOfCinema = tickets.get(0).getScreening().getTheater().getCinema().getName();
+        String nameOfTheater = tickets.get(0).getScreening().getTheater().getPlaceName();
+        String nameOfMovie = tickets.get(0).getScreening().getMovie().getEngName();
+        GregorianCalendar screeningGeo = new GregorianCalendar(
+                tickets.get(0).getScreening().getDate().get(Calendar.YEAR),
+                tickets.get(0).getScreening().getDate().get(Calendar.MONTH),
+                tickets.get(0).getScreening().getDate().get(Calendar.DAY_OF_MONTH),
+                tickets.get(0).getScreening().getDate().get(Calendar.HOUR_OF_DAY),
+                tickets.get(0).getScreening().getDate().get(Calendar.MINUTE));
+        screeningGeo.add(Calendar.DAY_OF_MONTH,7);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY E HH:mm"); //set a date format
+        String screeningDate = format.format(screeningGeo.getTime());
+        String ticketsString = "";
+        for(int i=0; i<tickets.size(); i++)
+        {
+            String num = String.valueOf(i+1);
+            String ticketId = String.valueOf(tickets.get(i).getId());
+            String seat = "(" + tickets.get(i).getRow() + ", " + tickets.get(i).getCol() + ")";
+            ticketsString = ticketsString + "<tr>" +
+                    "<td>" + num + "</td>" +
+                    "<td>" + ticketId + "</td>" +
+                    "<td>" + seat + "</td>" +
+                    "<td>" + nameOfCinema + "</td>" +
+                    "<td>" + nameOfTheater + "</td>" +
+                    "<td>" + nameOfMovie + "</td>" +
+                    "<td>" + screeningDate + "</td>" + "</tr>";
         }
-        seats+="<td>\n";
-
             App.getOcsfClient(this).sendMail(
-                    "galuk3@gmail.com, "+tickets.get(0).getPayment().getEmail(),
-                    "Order Confirmed",
-                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "+tickets.get(0).getPayment().getFirstName()+" "+ tickets.get(0).getPayment().getLastName()+"</i></h1><br>" +
+                    tickets.get(0).getPayment().getEmail(),
+                    "Confirmed Order",
+                    "<bdo dir=\"ltr\"><h1 style=\"color:orange;\"><i>Hello "
+                            + firstNameOfCustomer + " "
+                            + lastNameOfCustomer +",</i></h1>" +
                             "<br><h2 style=\"color:black;\">Thanks for your purchase!</h2>" +
                             "<br><h3 style=\"color:black;\">Your order is confirmed.</h3> "+
-                            "<br><table border='1' dir=\"ltr\">\n" +
-                            "    <tr>\n" +
-                            "      <td>theater</td>\n" +
-                            "      <td>movie</td>\n" +
-                            "      <td>quantity</td></td>\n" +
-                            "      <td>seats</td></td>\n" +
-                            "    </tr>\n" +
-                            "    <tr>\n" +
-                            "      <td>"+tickets.get(0).getScreening().getTheater().getName()+"</td>\n" +
-                            "      <td>"+tickets.get(0).getScreening().getMovie().getEngName()+"</td>\n" +
-                            "      <td>"+tickets.size()+"</td>\n" +
-                            seats +
-                            "    </tr></table dir=\"ltr\">" +
-                            "</bdo>");
+                            "<br><table align=\"center\" border='2' dir=\"ltr\" td style=\"text-align:center\">" +
+                            "<tr>" +
+                            "<th> - </th>" +
+                            "<th><font color=\"" + color + "\">OrderID</font></th>" +
+                            "<th><font color=\"" + color + "\">Seat</font></th>" +
+                            "<th><font color=\"" + color + "\">Cinema</font></th>" +
+                            "<th><font color=\"" + color + "\">Theater</font></th>" +
+                            "<th><font color=\"" + color + "\">Movie</font></th>" +
+                            "<th><font color=\"" + color + "\">Screening</font></th>" +
+                            "</tr>" +
+                            ticketsString +
+                            "</table dir=\"ltr\">" +
+                            "</bdo>"
+            );
     }
 
     private void sendMail(Link link) {
