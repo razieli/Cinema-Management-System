@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.CustomerHomeController">
+    <children>
+        <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <AnchorPane prefHeight="0.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <MenuBar prefHeight="45.0" prefWidth="600.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TextFlow prefHeight="46.0" prefWidth="600.0" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                            <children>
+                                <Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home Screen" textAlignment="CENTER" wrappingWidth="600.0">
+                                    <font>
+                                        <Font name="Aharoni Bold" size="30.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </TextFlow>
+                        <Button fx:id="LogOutBtn" mnemonicParsing="false" onAction="#logOut" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Log Out" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </AnchorPane>
+            </top>
+            <center>
+            <BorderPane BorderPane.alignment="CENTER">
+               <top>
+                      <AnchorPane BorderPane.alignment="CENTER">
+                          <children>
+                        <VBox layoutX="70.0" layoutY="10.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                                    <TextFlow>
+                                        <children>
+                                            <Text fx:id="helloUserName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Yaniv !" textAlignment="CENTER" wrappingWidth="182.20184326171875">
+                                                <font>
+                                                    <Font name="Britannic Bold" size="24.0" />
+                                                </font>
+                                            </Text>
+                                        </children>
+                                    </TextFlow>
+                              <TextFlow>
+                                 <children>
+                                    <Text fx:id="packageStatus" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </TextFlow>
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </VBox>
+                          </children>
+                      </AnchorPane>
+               </top>
+               <center>
+                      <AnchorPane BorderPane.alignment="CENTER">
+                          <children>
+                        <VBox alignment="CENTER" layoutX="180.0" layoutY="7.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                                        <Button fx:id="movieListBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToMovieListScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Movie List" textAlignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="buyPackageBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToPurchasePackageScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Purchase Movie Package" textAlignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="cancelBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToCancelScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Cancel Purchase" textAlignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="supportBtn" minWidth="220.0" mnemonicParsing="false" onAction="#switchToAddComplaintScreen" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Support" textAlignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Button>
+                           </children>
+                        </VBox>
+                          </children>
+                      </AnchorPane>
+               </center>
+            </BorderPane>
+            </center>
+
+        </BorderPane>
+    </children>
+</AnchorPane>
