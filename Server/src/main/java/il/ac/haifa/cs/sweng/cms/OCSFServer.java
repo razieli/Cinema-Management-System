@@ -173,9 +173,11 @@ public class OCSFServer extends AbstractServer {
                 }
             }
 
-            if (!tempTickets.isEmpty() && tempTickets.size()==tickets.size())
-                tickets=tempTickets;
-            
+            if (!tempTickets.isEmpty() && tempTickets.size()==tickets.size()) {
+                tickets.clear();
+                tickets.addAll(tempTickets);
+            }
+
             return new UpdateTicketsResponse(ResponseStatus.Acknowledged, tickets);
         }
 
