@@ -223,6 +223,7 @@ public class PaymentController implements Initializable {
 
                             if(messageStatus){
                                 sendMail(newTickets);//send mail
+                                App.getStage().setUserData(newTickets);
                                 App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                             }
                         } catch (IOException e) {
@@ -243,6 +244,7 @@ public class PaymentController implements Initializable {
                         while (newLink==null) { Thread.yield(); }
                     if(messageStatus){
                         sendMail(newLink);//send mail
+                        App.getStage().setUserData(newLink);
                         App.setRoot("SuccessfulPurchase.fxml"); //set the screen to the last page.
                     }
                 } catch (IOException e) {

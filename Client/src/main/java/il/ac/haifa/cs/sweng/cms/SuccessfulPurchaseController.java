@@ -4,12 +4,10 @@
 
 package il.ac.haifa.cs.sweng.cms;
 
-import il.ac.haifa.cs.sweng.cms.common.entities.Customer;
-import il.ac.haifa.cs.sweng.cms.common.entities.Payment;
-import il.ac.haifa.cs.sweng.cms.common.entities.Screening;
-import il.ac.haifa.cs.sweng.cms.common.entities.Ticket;
+import il.ac.haifa.cs.sweng.cms.common.entities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -17,10 +15,11 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SuccessfulPurchaseController {
+public class SuccessfulPurchaseController implements Initializable {
 
     private static Payment payment=null;
 
@@ -35,16 +34,16 @@ public class SuccessfulPurchaseController {
 
 
     @FXML
-    private Label TheaterLabel;
+    private Text TheaterLabel;
 
     @FXML
-    private Label MovieLabel;
+    private Text MovieLabel;
 
     @FXML
-    private Label NumLabel;
+    private Text NumLabel;
 
     @FXML
-    private Label PlacesLabel;
+    private Text PlacesLabel;
 
 
     @FXML
@@ -75,32 +74,21 @@ public class SuccessfulPurchaseController {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(getPayment().getLinkList().isEmpty())
-            {
-
-                int ticketLength=((Customer)App.getUser()).getTicket().size();
-            TheaterLabel.setText(((Customer)App.getUser()).getTicket().get(ticketLength-1).getScreening().getTheater().getName());
-            MovieLabel.setText(((Customer)App.getUser()).getTicket().get(ticketLength-1).getScreening().getMovie().getEngName());
-            NumLabel.setText((String.valueOf((((Customer)App.getUser()).getTicket().get(ticketLength-1).getScreening()
-                    .getTheater().getSeatsCapacity()))));
-                List<Ticket> ticketList=((Customer)App.getUser()).getPayment().getTicketList() ;
-                Screening lastscreen = ((Customer) App.getUser()).getTicket(). ;
-                for(int i=ticketList.size()-1;i>=0;i++)
-                {
-                    PlacesLabel.setText(PlacesLabel.getText()+" "+""+);
-                }
-
-            }
-        else
-            if(getPayment().getTicketList().isEmpty()){
-                TheaterLabel = new Label(payment.getLinkList().get(0).getMovie().getEngName());
-                MovieLabel = new Label(" The link will be available between:");
-                NumLabel = new Label(payment.getLinkList().get(0).getDate().getTime().toString()+" to ");
-                PlacesLabel =new Label(payment.getLinkList().get(0).getDate().getTime().toString()); //to
-
-            }
-
-
+        if(App.getStage().getUserData() instanceof List) { // TODO: link case
+            List<Ticket> ticketList = (List<Ticket>) App.getStage().getUserData();
+            Screening lastScreening = ticketList.get(ticketList.size()-1).getScreening();
+            TheaterLabel.setText(TheaterLabel.getText() + " " + lastScreening.getTheater().getName());
+            MovieLabel.setText(MovieLabel.getText() + " " + lastScreening.getMovie().getEngName());
+            NumLabel.setText(NumLabel.getText() + " " + (String.valueOf((lastScreening.getTheater().getSeatsCapacity()))));
+            ticketList.forEach(ticket -> PlacesLabel.setText(PlacesLabel.getText() + " " + "[Row: " + ticket.getRow() + " Seat: " + ticket.getCol() + "]"));
+        }
+        else if(App.getStage().getUserData() instanceof Link) {
+            Link link = (Link) App.getStage().getUserData();
+            TheaterLabel.setText("");
+            MovieLabel.setText(MovieLabel.getText() + " " + link.getMovie().getEngName());
+            NumLabel.setText("Activation: " + link.getDate().get(Calendar.DAY_OF_MONTH) + "." + (link.getDate().get(Calendar.MONTH) + 1) + "." + link.getDate().get(Calendar.YEAR) + " " + link.getDate().get(Calendar.HOUR_OF_DAY) + ":" + link.getDate().get(Calendar.MINUTE));
+            PlacesLabel.setText("");
+        }
     }
-    }
+}
 
