@@ -5,7 +5,7 @@
 * [Yaniv Shnur](https://github.com/Yaniv-Sh)
 * [Gal Gibly](https://github.com/Galgibly)
 * [Shay Silberklang](https://github.com/ShaySilbeklang)
-* [Regev Aloni](https://github.com/Aloniregev)
+* [Regev Aloni](https://www.linkedin.com/in/aloniregev)
 * [Zvi Knoll](https://github.com/ZviKnoll)
 
 
