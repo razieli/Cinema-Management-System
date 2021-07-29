@@ -2,7 +2,7 @@
 
 ### Developers:
 * [Yuval Razieli](https://github.com/Razieli)
-* [Yaniv Shnur](https://github.com/Yaniv-Sh)
+* [Yaniv Shnur](https://github.com/YanivShnur)
 * [Gal Gibly](https://github.com/Galgibly)
 * [Shay Silberklang](https://github.com/ShaySilbeklang)
 * [Regev Aloni](https://www.linkedin.com/in/aloniregev)
