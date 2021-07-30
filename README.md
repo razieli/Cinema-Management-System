@@ -1,6 +1,6 @@
 # **Cinema-Management-System**
 
-### Developers:
+## Developers:
 * [Yuval Razieli](https://github.com/Razieli)
 * [Yaniv Shnur](https://github.com/YanivShnur)
 * [Gal Gibly](https://github.com/Galgibly)
@@ -8,17 +8,81 @@
 * [Regev Aloni](https://www.linkedin.com/in/aloniregev)
 * [Zvi Knoll](https://github.com/ZviKnoll)
 
+## What can be done using this system?
 
-## What is this project?
-* ...
-* ...
+There are 5 authorization levels for customers and employees:
+* Level 0 - Customer
+* Level 1 - CustomerService
+* Level 2 - ContentManager
+* Level 3 - BranchManager
+* Level 4 - Administrator
 
 
-## How was it built?
-* ...
-* ...
+The System allows the **customer** to:
+1. Browse movie list
+2. Purchase a movie ticket with the option to reserve seats for up to 10 minutes
+3. Purchase a viewing package
+4. Purchase a link to watch a specific movie online
+5. Receive a purchase confirmation email
+6. Cancel purchase
+7. File a complaint
+
+
+In addition this system allows **employees** to:
+1. Update content, add and remove movies, etc. (Level 2+)
+2. Handling customer complaints with the option of providing a financial credit (Level 1+)
+3. Update restrictions following a Purple Badge due to COVID-19 (Level 1+)
+4. Request for price update (Level 1+)
+5. Confirmation of price update (Level 3+)
+6. Receipt of reports on branch activity (Level 3+)
+7. Receive reports on network activity (Level 4)
+
+
+Special features:
+* Reports are displayed by way of graphs and histograms
+* Automatic seat selection according to the number of people limit (Purple Badge restrictions)
+* Save seats for 10 minutes from the moment a purchase process begins
+* Multiple customers can simultaneously purchase movie tickets without a collision
+* Customer messages are delivered in real time via email
+* The passwords are encrypted
+* There is an automatic check of the correctness of the input
+* A combo box is used on many screens
+* Sending an email to subscribers about a new screening
+* Automatic handling of customer complaints that have not been processed for 24 hours
+
+
+## Why and how was it built?
+* This project was built as part of a software engineering course at the university.
+* The system is based on a client-server model architecture.
+* The code is written in Java.
+* Design patterns such as: Observer, Singelton and Adapter.
+* Compiled as a Maven project in IntelliJ.
+* The application uses the Hibernate Java Framework.
+* Hashing Passwords in Java with BCrypt
+* Sending Email with JavaMail API
+
 
 ## How can I run it?
-1. CREATE SCHEMA `cinema` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
-2.
-3.
+1. Download Server.jar and Client.jar from the main dir
+2. Install MySQL Workbench
+3. Execute the command:
+    * `CREATE SCHEMA 'cinema' DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;`
+4. Make sure you define the following on the Administartion screen:
+    * hostname (="localhost")
+    * login name (="root")
+    * password (="cinema1234password")
+    
+    check [hibernate.properties](Common/src/main/resources/hibernate.properties) just to be sure
+5. Run from CMD the command: (wait for "Server connected" message appears)
+    * `java -jar Server.jar 8080`
+6. Open the file Client.jar (we recommend via CMD, but a simple double-click will do)
+7. For login info you can lookup usernames and passwords in the [DB](Server/src/main/java/il/ac/haifa/cs/sweng/cms/DB.java#L114).
+
+
+## Upcoming features
+- Connecting a guest user to the system without the need for prior registration
+- Interface from the browser
+
+
+## Note
+- This GitHub project is for study purpose only. For other purposes, please contact me at Cinema2021SWE@gmail.com
