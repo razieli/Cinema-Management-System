@@ -95,3 +95,46 @@ Special features:
 
 
 ## Examples
+
+#### 1. Login Demo
+![01_login_demo](https://user-images.githubusercontent.com/79280930/127687731-d25df841-5016-48db-b0a5-3411d3d5b9fd.gif)
+
+---
+
+#### 2. Coming Soon Demo
+![02_coming_soon_demo](https://user-images.githubusercontent.com/79280930/127687738-801148cf-07cf-4a5c-89a1-abf3f90f27d0.gif)
+
+---
+
+#### 3. Ticket Purchase Demo
+![03_ticket_demo](https://user-images.githubusercontent.com/79280930/127687943-5542b51a-c627-4746-8fcb-0c90d9112a26.gif)
+
+---
+
+#### 4. Link Purchase Demo
+![04_link_demo](https://user-images.githubusercontent.com/79280930/127687958-843f4bab-8edf-4285-b44f-92087120fd1b.gif)
+
+---
+
+#### 5. Package Purchase Demo
+![05_package_demo](https://user-images.githubusercontent.com/79280930/127687965-0152190f-4a2f-47e7-bd90-bde9efbe8e36.gif)
+
+---
+
+#### 6. Cancel Purchase Demo
+![06_cancel_purchase_demo](https://user-images.githubusercontent.com/79280930/127687970-a2cb944c-3968-4a9c-85dd-717e2b0d61ab.gif)
+
+---
+
+#### 7. Update Movie Demo
+![07_update_movie_Demo](https://user-images.githubusercontent.com/79280930/127687973-f4de88aa-8258-4593-8fa1-95f568b1cf39.gif)
+
+---
+
+#### 8. Price Change Demo
+![08_price_change_demo](https://user-images.githubusercontent.com/79280930/127687981-4606d7ef-b830-415b-8357-989be9082f4d.gif)
+
+---
+
+#### 9. Support Demo
+![09_support_demo](https://user-images.githubusercontent.com/79280930/127687987-a1bed281-4cbf-41b3-8b76-c4d1d33e5d5c.gif)
