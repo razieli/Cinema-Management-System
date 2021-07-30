@@ -10,7 +10,7 @@
 
 ## What can be done using this system?
 
-There are 5 authorization levels for customers and employees:
+There are 5 authorization levels for customers and employees (we used numbers for convenience):
 * Level 0 - Customer
 * Level 1 - CustomerService
 * Level 2 - ContentManager
@@ -34,8 +34,8 @@ In addition this system allows **employees** to:
 3. Update restrictions following a Purple Badge due to COVID-19 (Level 1+)
 4. Request for price update (Level 1+)
 5. Confirmation of price update (Level 3+)
-6. Receipt of reports on branch activity (Level 3+)
-7. Receive reports on network activity (Level 4)
+6. View branch reports (Level 3+)
+7. View reports of all branches (Level 4)
 
 
 Special features:
@@ -78,6 +78,12 @@ Special features:
 6. Open the file Client.jar (we recommend via CMD, but a simple double-click will do)
 7. For login info you can lookup usernames and passwords in the [DB](Server/src/main/java/il/ac/haifa/cs/sweng/cms/DB.java#L114).
 
+   For convenience the user and password are the same and can be connected according to the level of permission you want (see details above)
+   
+   For example (user:pass):
+   * Customer (Level-0) 0:0 or 00:00
+   * Employee 1:1 or 2:2 or 3:3 or 4:4 (Permission level respectively)
+
 
 ## Upcoming features
 - Connecting a guest user to the system without the need for prior registration
@@ -86,3 +92,6 @@ Special features:
 
 ## Note
 - This GitHub project is for study purpose only. For other purposes, please contact me at Cinema2021SWE@gmail.com
+
+
+## Examples
