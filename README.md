@@ -5,7 +5,7 @@
 * [Yaniv Shnur](https://github.com/YanivShnur)
 * [Gal Gibly](https://github.com/Galgibly)
 * [Shay Silberklang](https://github.com/ShaySilbeklang)
-* [Regev Aloni](https://www.linkedin.com/in/aloniregev)
+* [Regev Aloni](https://github.com/AloniRegev)
 * [Zvi Knoll](https://github.com/ZviKnoll)
 
 ## What can be done using this system?
