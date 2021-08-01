@@ -1,40 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity"
-	style="-fx-background-color: BLACK;"
-	xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="il.ac.haifa.cs.sweng.cms.PurchaseCancelController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.sweng.cms.PurchaseCancelController">
 	<children>
-		<BorderPane prefHeight="200.0" prefWidth="200.0"
-			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<top>
-				<AnchorPane style="-fx-border-color: orange;"
-					BorderPane.alignment="CENTER">
+				<AnchorPane prefHeight="28.0" prefWidth="420.0" style="-fx-border-color: orange;" BorderPane.alignment="CENTER">
 					<children>
-						<Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0"
-							text="Cancel Purchase" textAlignment="CENTER"
-							wrappingWidth="640.0" AnchorPane.bottomAnchor="5.0"
-							AnchorPane.topAnchor="5.0">
-							<font>
-								<Font name="Aharoni Bold" size="30.0" />
-							</font>
-						</Text>
-						<Button fx:id="backButton" mnemonicParsing="false"
-							onAction="#handheldsBackButton" prefHeight="25.0"
-							prefWidth="61.0"
-							style="-fx-background-color: ORANGE; -fx-background-radius: 10;"
-							text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0"
-							AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                  <MenuBar prefHeight="45.0" prefWidth="640.0" style="-fx-background-color: BLACK; -fx-border-color: ORANGE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TextFlow layoutY="6.0" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                     <children>
+      						<Text fill="ORANGE" strokeType="OUTSIDE" strokeWidth="0.0" text="Cancel Purchase" textAlignment="CENTER" wrappingWidth="640.0">
+      							<font>
+      								<Font name="Aharoni Bold" size="30.0" />
+      							</font>
+      						</Text>
+                     </children>
+                  </TextFlow>
+						<Button fx:id="backButton" mnemonicParsing="false" onAction="#handheldsBackButton" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="back" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
 							<font>
 								<Font name="System Bold" size="12.0" />
 							</font>
@@ -48,20 +40,12 @@
 			<center>
 				<HBox alignment="CENTER" spacing="20.0">
 					<children>
-						<Button fx:id="CancelTicket" minHeight="180.0"
-							minWidth="200.0" mnemonicParsing="false"
-							onAction="#handheldsCancelTicket"
-							style="-fx-background-color: ORANGE; -fx-background-radius: 10;"
-							text="Cancel Ticket">
+						<Button fx:id="CancelTicket" minHeight="180.0" minWidth="200.0" mnemonicParsing="false" onAction="#handheldsCancelTicket" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Cancel Ticket">
 							<font>
 								<Font name="System Bold" size="24.0" />
 							</font>
 						</Button>
-						<Button fx:id="CancelLink" minHeight="180.0"
-							minWidth="200.0" mnemonicParsing="false"
-							onAction="#handheldsCancelLink"
-							style="-fx-background-color: ORANGE; -fx-background-radius: 10;"
-							text="Cancel Link">
+						<Button fx:id="CancelLink" minHeight="180.0" minWidth="200.0" mnemonicParsing="false" onAction="#handheldsCancelLink" style="-fx-background-color: ORANGE; -fx-background-radius: 10;" text="Cancel Link">
 							<font>
 								<Font name="System Bold" size="24.0" />
 							</font>

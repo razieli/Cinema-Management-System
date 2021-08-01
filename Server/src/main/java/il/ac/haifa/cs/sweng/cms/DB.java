@@ -205,7 +205,7 @@ public class DB {
 		String description5 = ("After the murder of his father, a young lion prince flees his kingdom only to learn the true meaning of responsibility and bravery.");
 		URI uri5a = new URI("https://m.media-amazon.com/images/M/MV5BMjIwMjE1Nzc4NV5BMl5BanBnXkFtZTgwNDg4OTA1NzM@._V1_UX182_CR0,0,182,268_AL_.jpg");
 		URI uri5b = new URI("https://www.imdb.com/video/vi3509369881?playlistId=tt6105098");
-		session.save(new Movie("The Lion King","מלך האריות",2019,cast5s,118,0,description5, uri5a, uri5b, new GregorianCalendar(2021,6,27,0,00)));
+		session.save(new Movie("The Lion King","מלך האריות",2019,cast5s,118,0,description5, uri5a, uri5b, new GregorianCalendar(2021,10,27,0,00)));
 		List<String> cast6=new LinkedList<String>();
 		cast6.add("Gabriele Muccino");
 		cast6.add("Will Smith");
