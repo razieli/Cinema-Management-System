@@ -70,7 +70,7 @@ Special features:
 4. Make sure you define the following on the Administartion screen:
     * hostname (="localhost")
     * login name (="root")
-    * password (="cinema1234password")
+    * password (="password")
     
     check [hibernate.properties](Common/src/main/resources/hibernate.properties) just to be sure
 5. Run from CMD the command: (wait for "Server connected" message appears)
