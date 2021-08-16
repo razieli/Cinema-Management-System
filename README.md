@@ -1,5 +1,8 @@
 # **Cinema-Management-System**
 
+## About:
+A Client-Server based system that manages a cinema under COVID limitations.
+
 ## Developers:
 * [Yuval Razieli](https://github.com/Razieli)
 * [Yaniv Shnur](https://github.com/YanivShnur)
